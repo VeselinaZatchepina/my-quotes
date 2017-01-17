@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">MyQuote</string>
+
+    <!-- AddQuoteFragment-->
+    <string name="hint_quote_text">Enter the quote text</string>
+    <string name="hint_book_name">Enter the book name</string>
+    <string name="hint_author_name">Enter the author name</string>
+    <string name="hint_page_number">Enter the page number</string>
+    <string name="hint_year_number">Enter the year number</string>
+    <string name="hint_publish_name">Enter the publish name</string>
+
+</resources>
