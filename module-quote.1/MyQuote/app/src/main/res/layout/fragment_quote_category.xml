@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.developer.cookie.myquote.QuoteCategoryFragment">
+    tools:context="com.developer.cookie.myquote.quote.QuoteCategoryFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/quote_category_recycler_view"
