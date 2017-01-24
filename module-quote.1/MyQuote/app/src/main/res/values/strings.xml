@@ -9,4 +9,7 @@
     <string name="hint_year_number">Enter the year number</string>
     <string name="hint_publish_name">Enter the publish name</string>
 
+    <!-- Add category dialog -->
+    <string name="title">Enter the category name</string>
+
 </resources>

@@ -5,11 +5,17 @@ import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.database.model.QuoteText;
+
+import io.realm.Realm;
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 
 /**
@@ -17,8 +23,28 @@ import com.developer.cookie.myquote.R;
  */
 public class QuoteCategoryFragment extends Fragment {
 
+    Realm realm;
+
 
     public QuoteCategoryFragment() {
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        realm = Realm.getDefaultInstance();
+        RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).findAll();
+
+        // set up a Realm change listener
+        quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+            @Override
+            public void onChange(RealmResults<QuoteText> element) {
+                //String cat = element.get(element.size() - 1).getTypification().getCategory();
+                Log.v("SIZE", "size= " + element.size());
+            }
+        });
+
     }
 
     @Override
@@ -40,6 +66,7 @@ public class QuoteCategoryFragment extends Fragment {
                 }
             }
         });
+
 
         return rootView;
     }
