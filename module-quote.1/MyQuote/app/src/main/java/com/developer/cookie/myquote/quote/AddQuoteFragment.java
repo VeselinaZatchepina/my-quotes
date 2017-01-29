@@ -180,10 +180,18 @@ public class AddQuoteFragment extends Fragment {
                                          pageRealmObject.setId(getNextKey(pageRealmObject, realm));
                                          pageRealmObject.setPageNumber(currentPageNumber);
 
-                                         Typification typificationRealmObject = realm.createObject(Typification.class);
-                                         typificationRealmObject.setId(getNextKey(typificationRealmObject, realm));
-                                         typificationRealmObject.setCategory(valueOfCategory);
-                                         typificationRealmObject.setType("MyQUOTE");
+                                         RealmResults<Typification> results = realm.where(Typification.class)
+                                                 .contains("category", valueOfCategory)
+                                                 .findAll();
+                                         Typification typificationRealmObject;
+                                         if (results == null || results.isEmpty()) {
+                                             typificationRealmObject = realm.createObject(Typification.class);
+                                             typificationRealmObject.setId(getNextKey(typificationRealmObject, realm));
+                                             typificationRealmObject.setCategory(valueOfCategory);
+                                             typificationRealmObject.setType("MyQUOTE");
+                                         } else {
+                                             typificationRealmObject = results.get(0);
+                                         }
 
                                          QuoteText quoteTextRealmObject = realm.createObject(QuoteText.class);
                                          quoteTextRealmObject.setId(getNextKey(quoteTextRealmObject, realm));

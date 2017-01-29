@@ -12,4 +12,7 @@
     <!-- Add category dialog -->
     <string name="title">Enter the category name</string>
 
+    <!-- Category recyclerView empty view -->
+    <string name="title_empty_view">You have no quote</string>
+
 </resources>
