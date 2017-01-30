@@ -20,12 +20,12 @@ public class QuoteCategoryRecyclerViewAdapter
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView itemQuoteCategory;
-        //public TextView itemQuoteCount;
+        TextView itemQuoteCount;
 
         MyViewHolder(View container) {
             super(container);
             itemQuoteCategory = (TextView) container.findViewById(R.id.item_quote_category);
-            //this.itemQuoteCount = (TextView) container.findViewById(R.id.item_quote_count);
+            itemQuoteCount = (TextView) container.findViewById(R.id.item_quote_count);
         }
     }
 
@@ -64,7 +64,7 @@ public class QuoteCategoryRecyclerViewAdapter
 //
 //        for (int i = 0; i < realmResults.size(); i++) {
 //            QuoteText currentQuoteText = realmResults.get(i);
-//            String currentCategory = currentQuoteText.getTypification().getCategory();
+//            String currentCategory = currentQuoteText.getCategory().getCategory();
 //
 //            if (!mapOfAllCategory.containsKey(currentCategory)) {
 //                mapOfAllCategory.put(currentCategory, count++);

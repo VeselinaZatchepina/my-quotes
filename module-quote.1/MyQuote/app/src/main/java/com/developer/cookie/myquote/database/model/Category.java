@@ -3,11 +3,11 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class Typification extends RealmObject {
+public class Category extends RealmObject {
 
     private long id;
     private String category;
-    private String type;
+
 
     public String getCategory() {
         return category;
@@ -23,13 +23,5 @@ public class Typification extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

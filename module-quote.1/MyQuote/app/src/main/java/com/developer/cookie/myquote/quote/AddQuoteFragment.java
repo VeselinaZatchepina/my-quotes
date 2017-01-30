@@ -15,14 +15,16 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.model.BookAuthor;
 import com.developer.cookie.myquote.database.model.BookName;
+import com.developer.cookie.myquote.database.model.Category;
 import com.developer.cookie.myquote.database.model.Page;
 import com.developer.cookie.myquote.database.model.Publisher;
 import com.developer.cookie.myquote.database.model.QuoteText;
-import com.developer.cookie.myquote.database.model.Typification;
+import com.developer.cookie.myquote.database.model.Type;
 import com.developer.cookie.myquote.database.model.Year;
 
 import java.util.ArrayList;
@@ -66,10 +68,11 @@ public class AddQuoteFragment extends Fragment {
         //Work with Spinner
         listOfAllCategory = new ArrayList<>();
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-        RealmResults<Typification> listOfCategoryAndType = realm.where(Typification.class).findAll();
-        if (listOfCategoryAndType != null || !listOfCategoryAndType.isEmpty()) {
-            for (int i = 0; i < listOfCategoryAndType.size(); i++) {
-                Typification typification = listOfCategoryAndType.get(i);
+
+        RealmResults<Category> listOfCategory = realm.where(Category.class).findAll();
+        if (listOfCategory != null || !listOfCategory.isEmpty()) {
+            for (int i = 0; i < listOfCategory.size(); i++) {
+                Category typification = listOfCategory.get(i);
                 if (typification != null) {
                     String currentCategory = typification.getCategory();
                     if (!listOfAllCategory.contains(currentCategory)) {
@@ -78,13 +81,40 @@ public class AddQuoteFragment extends Fragment {
                 }
             }
             listOfAllCategory.add("+ Add new category");
+            listOfAllCategory.add("Select category");
         } else {
             listOfAllCategory.add("+ Add new category");
+            listOfAllCategory.add("Select category");
         }
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter< >(getActivity(),
-                android.R.layout.simple_list_item_1, listOfAllCategory);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1) {
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+
+                View v = super.getView(position, convertView, parent);
+                if (position == getCount()) {
+                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                }
+
+                return v;
+            }
+
+            @Override
+            public int getCount() {
+                return super.getCount()-1; // you dont display last item. It is used as hint.
+            }
+
+        };
+
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
+        spinnerAdapter.addAll(listOfAllCategory);
         spinner.setAdapter(spinnerAdapter);
+        spinner.setSelection(spinnerAdapter.getCount()); //set the hint the default selection so it appears on launch.
+        //spinner.setOnItemSelectedListener(getActivity());
+        //Log.v("SIZE", "size " + listOfAllCategory.size());
+
 
         //Add listener to spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -104,6 +134,9 @@ public class AddQuoteFragment extends Fragment {
                                         public void onClick(DialogInterface dialog, int id) {
                                             listOfAllCategory.add(0, userInput.getText().toString());
                                             spinner.setSelection(0);
+                                            spinnerAdapter.clear();
+                                            spinnerAdapter.addAll(listOfAllCategory);
+                                            //spinnerAdapter.notifyDataSetChanged();
                                         }
                                     })
                             .setNegativeButton("Отмена",
@@ -180,25 +213,29 @@ public class AddQuoteFragment extends Fragment {
                                          pageRealmObject.setId(getNextKey(pageRealmObject, realm));
                                          pageRealmObject.setPageNumber(currentPageNumber);
 
-                                         RealmResults<Typification> results = realm.where(Typification.class)
+                                         RealmResults<Category> results = realm.where(Category.class)
                                                  .contains("category", valueOfCategory)
                                                  .findAll();
-                                         Typification typificationRealmObject;
+                                         Category typificationRealmObject;
                                          if (results == null || results.isEmpty()) {
-                                             typificationRealmObject = realm.createObject(Typification.class);
+                                             typificationRealmObject = realm.createObject(Category.class);
                                              typificationRealmObject.setId(getNextKey(typificationRealmObject, realm));
                                              typificationRealmObject.setCategory(valueOfCategory);
-                                             typificationRealmObject.setType("MyQUOTE");
                                          } else {
                                              typificationRealmObject = results.get(0);
                                          }
+
+                                         Type type = realm.createObject(Type.class);
+                                         type.setId((getNextKey(type, realm)));
+                                         type.setType("MyQuote");
 
                                          QuoteText quoteTextRealmObject = realm.createObject(QuoteText.class);
                                          quoteTextRealmObject.setId(getNextKey(quoteTextRealmObject, realm));
                                          quoteTextRealmObject.setQuoteText(currentQuoteText);
                                          quoteTextRealmObject.setBookName(bookNameRealmObject);
                                          quoteTextRealmObject.setPage(pageRealmObject);
-                                         quoteTextRealmObject.setTypification(typificationRealmObject);
+                                         quoteTextRealmObject.setCategory(typificationRealmObject);
+                                         quoteTextRealmObject.setType(type);
 
                                      }
                                  }

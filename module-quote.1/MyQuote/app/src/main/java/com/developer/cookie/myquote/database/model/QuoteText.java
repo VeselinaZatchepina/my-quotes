@@ -18,8 +18,18 @@ public class QuoteText extends RealmObject {
     private QuoteDate date;
 
     //1-many
-    private Typification typification;
+    private Category category;
 
+    //1-many
+    private Type type;
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 
     public BookName getBookName() {
         return bookName;
@@ -61,11 +71,11 @@ public class QuoteText extends RealmObject {
         this.quoteText = quoteText;
     }
 
-    public Typification getTypification() {
-        return typification;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setTypification(Typification typification) {
-        this.typification = typification;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

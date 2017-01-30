@@ -14,7 +14,6 @@ public class MyQuoteApplication extends Application {
 
         // Initialize Realm. Should only be done once when the application starts.
         Realm.init(this);
-
         }
     }
 
