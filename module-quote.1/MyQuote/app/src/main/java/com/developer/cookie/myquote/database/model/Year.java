@@ -6,7 +6,7 @@ import io.realm.RealmObject;
 public class Year extends RealmObject {
 
     private long id;
-    private int yearNumber;
+    private String yearNumber;
 
     public long getId() {
         return id;
@@ -16,11 +16,11 @@ public class Year extends RealmObject {
         this.id = id;
     }
 
-    public int getYearNumber() {
+    public String getYearNumber() {
         return yearNumber;
     }
 
-    public void setYearNumber(int yearNumber) {
+    public void setYearNumber(String yearNumber) {
         this.yearNumber = yearNumber;
     }
 }

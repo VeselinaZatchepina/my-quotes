@@ -1,4 +1,4 @@
-package com.developer.cookie.myquote.quote;
+package com.developer.cookie.myquote.quote.fragments;
 
 
 import android.app.Fragment;
@@ -53,9 +53,6 @@ public class QuoteCategoryFragment extends Fragment {
         listOfCategories = new ArrayList<>();
         for (int i = 0; i<typifications.size(); i++) {
             String currentCategory = typifications.get(i).getCategory();
-//            if (listOfCategories.contains(currentCategory)) {
-//                continue;
-//            }
             listOfCategories.add(currentCategory);
         }
 
@@ -77,7 +74,6 @@ public class QuoteCategoryFragment extends Fragment {
                 }
             }
         });
-
         return rootView;
     }
 
@@ -92,20 +88,14 @@ public class QuoteCategoryFragment extends Fragment {
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
-
                 RealmResults<Category> typifications = realm
                         .where(Category.class)
                         .findAllSorted("id", Sort.DESCENDING);
-
                 listOfCategories = new ArrayList<>();
                 for (int i = 0; i<typifications.size(); i++) {
                     String currentCategory = typifications.get(i).getCategory();
-//                    if (listOfCategories.contains(currentCategory)) {
-//                        continue;
-//                    }
                     listOfCategories.add(currentCategory);
                 }
-
                 quoteCategoryRecyclerViewAdapter.changeDate(listOfCategories);
             }
         });

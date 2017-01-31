@@ -6,7 +6,7 @@ import io.realm.RealmObject;
 public class Page extends RealmObject {
 
     private long id;
-    private long pageNumber;
+    private String pageNumber;
 
     public long getId() {
         return id;
@@ -16,11 +16,11 @@ public class Page extends RealmObject {
         this.id = id;
     }
 
-    public long getPageNumber() {
+    public String getPageNumber() {
         return pageNumber;
     }
 
-    public void setPageNumber(long pageNumber) {
+    public void setPageNumber(String pageNumber) {
         this.pageNumber = pageNumber;
     }
 }
