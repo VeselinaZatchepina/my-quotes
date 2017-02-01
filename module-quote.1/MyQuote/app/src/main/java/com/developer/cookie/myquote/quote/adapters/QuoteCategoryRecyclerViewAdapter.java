@@ -1,6 +1,7 @@
 package com.developer.cookie.myquote.quote.adapters;
 
 
+import android.support.v4.util.Pair;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ public class QuoteCategoryRecyclerViewAdapter
         extends RecyclerView.Adapter<QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
 
     private List<String> listOfCategory;
+    private List<Integer> quoteCountList;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,8 +31,9 @@ public class QuoteCategoryRecyclerViewAdapter
         }
     }
 
-    public QuoteCategoryRecyclerViewAdapter (List<String> realmResults) {
-        listOfCategory = realmResults;
+    public QuoteCategoryRecyclerViewAdapter (Pair<List<String>,List<Integer>> pair) {
+        listOfCategory = pair.first;
+        quoteCountList = pair.second;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class QuoteCategoryRecyclerViewAdapter
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.itemQuoteCategory.setText(listOfCategory.get(position));
+        holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
     }
 
     @Override
@@ -50,8 +54,9 @@ public class QuoteCategoryRecyclerViewAdapter
         return listOfCategory.size();
     }
 
-    public void changeDate(List<String> list) {
-        listOfCategory = list;
+    public void changeDate(Pair<List<String>,List<Integer>> pair) {
+        listOfCategory = pair.first;
+        quoteCountList = pair.second;
         notifyDataSetChanged();
     }
 

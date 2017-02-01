@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -34,6 +35,8 @@ public class QuoteCategoryFragment extends Fragment {
     View rootView;
     QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
     List<String> listOfCategories;
+    List<Integer> quoteCountListOfEveryCategory;
+    Pair<List<String>,List<Integer>> pair;
 
     public QuoteCategoryFragment() { }
 
@@ -50,15 +53,24 @@ public class QuoteCategoryFragment extends Fragment {
                 .where(Category.class)
                 .findAllSorted("id", Sort.DESCENDING);
 
+        quoteCountListOfEveryCategory = new ArrayList<Integer>();
+
+        for (int i = 0; i < typifications.size(); i++) {
+            RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
+                    .equalTo("category.category", typifications.get(i).getCategory()).findAll();
+            quoteCountListOfEveryCategory.add(quoteTexts.size());
+        }
+
         listOfCategories = new ArrayList<>();
         for (int i = 0; i<typifications.size(); i++) {
             String currentCategory = typifications.get(i).getCategory();
             listOfCategories.add(currentCategory);
         }
 
+        pair = new Pair<>(listOfCategories, quoteCountListOfEveryCategory);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(listOfCategories);
+        quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
         recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
 
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
@@ -91,12 +103,20 @@ public class QuoteCategoryFragment extends Fragment {
                 RealmResults<Category> typifications = realm
                         .where(Category.class)
                         .findAllSorted("id", Sort.DESCENDING);
+                quoteCountListOfEveryCategory = new ArrayList<Integer>();
+                for (int i = 0; i < typifications.size(); i++) {
+                    RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
+                            .equalTo("category.category", typifications.get(i).getCategory()).findAll();
+                    quoteCountListOfEveryCategory.add(quoteTexts.size());
+                }
+
                 listOfCategories = new ArrayList<>();
                 for (int i = 0; i<typifications.size(); i++) {
                     String currentCategory = typifications.get(i).getCategory();
                     listOfCategories.add(currentCategory);
                 }
-                quoteCategoryRecyclerViewAdapter.changeDate(listOfCategories);
+                quoteCategoryRecyclerViewAdapter.changeDate(
+                        new Pair<List<String>, List<Integer>>(listOfCategories, quoteCountListOfEveryCategory));
             }
         });
     }

@@ -59,10 +59,10 @@ public class AddQuoteFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
         // Create the Realm instance
         realm = Realm.getDefaultInstance();
+
         //Work with Spinner
         listOfAllCategory = new ArrayList<>();
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-
         RealmResults<Category> listOfCategory = realm.where(Category.class).findAll();
         if (listOfCategory != null || !listOfCategory.isEmpty()) {
             for (int i = 0; i < listOfCategory.size(); i++) {
@@ -134,14 +134,12 @@ public class AddQuoteFragment extends Fragment {
                     alertDialog.show();
                 } else {
                     valueOfCategory = selectedItem;
-
                 }
             }
-            // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent) { }
         });
 
-        //Create and save quote
+        //Create quote data
         fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,7 +153,6 @@ public class AddQuoteFragment extends Fragment {
     }
 
     private void createMapOfQuoteProperties() {
-
         EditText quoteText = (EditText) rootView.findViewById(R.id.quote_text);
         final EditText bookName = (EditText) rootView.findViewById(R.id.book_name);
         EditText authorName = (EditText) rootView.findViewById(R.id.author_name);
