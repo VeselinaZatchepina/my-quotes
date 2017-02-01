@@ -186,10 +186,11 @@ public class AddQuoteFragment extends Fragment {
     }
 
     private void replaceFragment() {
-            Fragment quoteCategoryFragment = new QuoteCategoryFragment();
-            FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.container, quoteCategoryFragment);
-            ft.commit();
+
+        FragmentTransaction fragmentTransaction = getActivity().getFragmentManager().beginTransaction();
+        fragmentTransaction.remove(this)
+                           .add(R.id.container, new QuoteCategoryFragment()).commit();
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp, getActivity().getTheme()));
         } else {
