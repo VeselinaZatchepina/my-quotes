@@ -59,27 +59,4 @@ public class QuoteCategoryRecyclerViewAdapter
         quoteCountList = pair.second;
         notifyDataSetChanged();
     }
-
-
-
-
-//    private HashMap<String, Integer> getAllCategoryAndItsCount(RealmResults<QuoteText> realmResults) {
-//        HashMap<String, Integer> mapOfAllCategory = new HashMap<>();
-//        int count = 0;
-//
-//        for (int i = 0; i < realmResults.size(); i++) {
-//            QuoteText currentQuoteText = realmResults.get(i);
-//            String currentCategory = currentQuoteText.getCategory().getCategory();
-//
-//            if (!mapOfAllCategory.containsKey(currentCategory)) {
-//                mapOfAllCategory.put(currentCategory, count++);
-//            } else {
-//                int currentValue = mapOfAllCategory.get(currentCategory).intValue();
-//                mapOfAllCategory.put(currentCategory, currentValue++);
-//            }
-//        }
-//
-//        return mapOfAllCategory;
-//
-//    }
 }

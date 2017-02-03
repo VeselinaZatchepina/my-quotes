@@ -49,29 +49,35 @@ public class QuoteCategoryFragment extends Fragment {
         //Create adapter for category recyclerView
         realm = Realm.getDefaultInstance();
 
-        RealmResults<Category> typifications = realm
+        final RealmResults<Category> typifications = realm
                 .where(Category.class)
-                .findAllSorted("id", Sort.DESCENDING);
+                .findAllSortedAsync("id", Sort.DESCENDING);
 
-        quoteCountListOfEveryCategory = new ArrayList<Integer>();
+        typifications.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
+            @Override
+            public void onChange(RealmResults<Category> element) {
+                quoteCountListOfEveryCategory = new ArrayList<Integer>();
 
-        for (int i = 0; i < typifications.size(); i++) {
-            RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
-                    .equalTo("category.category", typifications.get(i).getCategory()).findAll();
-            quoteCountListOfEveryCategory.add(quoteTexts.size());
-        }
+                for (int i = 0; i < typifications.size(); i++) {
+                    RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
+                            .equalTo("category.category", typifications.get(i).getCategory()).findAll();
+                    quoteCountListOfEveryCategory.add(quoteTexts.size());
+                }
 
-        listOfCategories = new ArrayList<>();
-        for (int i = 0; i<typifications.size(); i++) {
-            String currentCategory = typifications.get(i).getCategory();
-            listOfCategories.add(currentCategory);
-        }
+                listOfCategories = new ArrayList<>();
+                for (int i = 0; i<typifications.size(); i++) {
+                    String currentCategory = typifications.get(i).getCategory();
+                    listOfCategories.add(currentCategory);
+                }
 
-        pair = new Pair<>(listOfCategories, quoteCountListOfEveryCategory);
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
-        recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
+                pair = new Pair<>(listOfCategories, quoteCountListOfEveryCategory);
+                RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
+                recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
+
+            }
+        });
 
         final FloatingActionButton fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +92,7 @@ public class QuoteCategoryFragment extends Fragment {
                 }
             }
         });
+
         return rootView;
     }
 
@@ -94,7 +101,7 @@ public class QuoteCategoryFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         //realm = Realm.getDefaultInstance();
-        RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).findAll();
+        RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).findAllAsync();
 
         // set up a Realm change listener
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
@@ -102,21 +109,27 @@ public class QuoteCategoryFragment extends Fragment {
             public void onChange(RealmResults<QuoteText> element) {
                 RealmResults<Category> typifications = realm
                         .where(Category.class)
-                        .findAllSorted("id", Sort.DESCENDING);
-                quoteCountListOfEveryCategory = new ArrayList<Integer>();
-                for (int i = 0; i < typifications.size(); i++) {
-                    RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
-                            .equalTo("category.category", typifications.get(i).getCategory()).findAll();
-                    quoteCountListOfEveryCategory.add(quoteTexts.size());
-                }
+                        .findAllSortedAsync("id", Sort.DESCENDING);
 
-                listOfCategories = new ArrayList<>();
-                for (int i = 0; i<typifications.size(); i++) {
-                    String currentCategory = typifications.get(i).getCategory();
-                    listOfCategories.add(currentCategory);
-                }
-                quoteCategoryRecyclerViewAdapter.changeDate(
-                        new Pair<List<String>, List<Integer>>(listOfCategories, quoteCountListOfEveryCategory));
+                typifications.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
+                    @Override
+                    public void onChange(RealmResults<Category> element) {
+
+                        quoteCountListOfEveryCategory = new ArrayList<Integer>();
+                        for (int i = 0; i < element.size(); i++) {
+                            RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
+                                    .equalTo("category.category", element.get(i).getCategory()).findAll();
+                            quoteCountListOfEveryCategory.add(quoteTexts.size());
+                        }
+                        listOfCategories = new ArrayList<>();
+                        for (int i = 0; i <element.size(); i++) {
+                            String currentCategory = element.get(i).getCategory();
+                            listOfCategories.add(currentCategory);
+                        }
+                        quoteCategoryRecyclerViewAdapter.changeDate(
+                                new Pair<List<String>, List<Integer>>(listOfCategories, quoteCountListOfEveryCategory));
+                    }
+                });
             }
         });
     }
@@ -127,3 +140,4 @@ public class QuoteCategoryFragment extends Fragment {
         realm.close();
     }
 }
+

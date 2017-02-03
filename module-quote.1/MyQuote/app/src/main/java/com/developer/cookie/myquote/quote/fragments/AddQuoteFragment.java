@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
 
@@ -48,6 +49,8 @@ public class AddQuoteFragment extends Fragment {
 
     private List<String> listOfAllCategory;
 
+    ArrayAdapter<String> spinnerAdapter;
+
 
     public AddQuoteFragment() {
         // Required empty public constructor
@@ -63,42 +66,51 @@ public class AddQuoteFragment extends Fragment {
         //Work with Spinner
         listOfAllCategory = new ArrayList<>();
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-        RealmResults<Category> listOfCategory = realm.where(Category.class).findAll();
-        if (listOfCategory != null || !listOfCategory.isEmpty()) {
-            for (int i = 0; i < listOfCategory.size(); i++) {
-                Category currentCategory = listOfCategory.get(i);
-                if (currentCategory != null) {
-                    String category = currentCategory.getCategory();
-                    listOfAllCategory.add(category);
-                }
-            }
-            listOfAllCategory.add("+ Add new category");
-            listOfAllCategory.add("Select category");
-        } else {
-            listOfAllCategory.add("+ Add new category");
-            listOfAllCategory.add("Select category");
-        }
-        final ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1) {
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                View v = super.getView(position, convertView, parent);
-                if (position == getCount()) {
-                    ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                    ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
-                }
-                return v;
-            }
 
-            @Override
-            public int getCount() {
-                return super.getCount()-1; // you dont display last item. It is used as hint.
-            }
-        };
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
-        spinnerAdapter.addAll(listOfAllCategory);
-        spinner.setAdapter(spinnerAdapter);
-        spinner.setSelection(spinnerAdapter.getCount()); //set the hint the default selection so it appears on launch.
+
+        RealmResults<Category> listOfCategory = realm.where(Category.class).findAllAsync();
+        listOfCategory.addChangeListener(new RealmChangeListener<RealmResults<Category>>() {
+           @Override
+           public void onChange(RealmResults<Category> element) {
+               if (element != null || !element.isEmpty()) {
+                   for (int i = 0; i < element.size(); i++) {
+                       Category currentCategory = element.get(i);
+                       if (currentCategory != null) {
+                           String category = currentCategory.getCategory();
+                           listOfAllCategory.add(category);
+                       }
+                   }
+                   listOfAllCategory.add("+ Add new category");
+                   listOfAllCategory.add("Select category");
+               } else {
+                   listOfAllCategory.add("+ Add new category");
+                   listOfAllCategory.add("Select category");
+               }
+
+               spinnerAdapter = new ArrayAdapter<String>(getActivity(),
+                       android.R.layout.simple_list_item_1) {
+                   @Override
+                   public View getView(int position, View convertView, ViewGroup parent) {
+                       View v = super.getView(position, convertView, parent);
+                       if (position == getCount()) {
+                           ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                           ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount())); //"Hint to be displayed"
+                       }
+                       return v;
+                   }
+
+                   @Override
+                   public int getCount() {
+                       return super.getCount()-1; // you dont display last item. It is used as hint.
+                   }
+               };
+
+               spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
+               spinnerAdapter.addAll(listOfAllCategory);
+               spinner.setAdapter(spinnerAdapter);
+               spinner.setSelection(spinnerAdapter.getCount()); //set the hint the default selection so it appears on launch.
+           }
+        });
 
         //Add listener to spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
