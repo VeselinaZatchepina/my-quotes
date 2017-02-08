@@ -3,8 +3,11 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class Year extends RealmObject {
-
+/**
+ * Realm model class for table named "year".
+ * It helps get and set year number for every book contains quote.
+ */
+public class BookPublicationYear extends RealmObject {
     private long id;
     private String yearNumber;
 

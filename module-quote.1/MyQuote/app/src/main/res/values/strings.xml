@@ -8,11 +8,13 @@
     <string name="hint_page_number">Enter the page number</string>
     <string name="hint_year_number">Enter the year number</string>
     <string name="hint_publish_name">Enter the publish name</string>
+    <string name="spinner_add_category">+ add new category</string>
+    <string name="spinner_hint">Select quote category</string>
 
     <!-- Add category dialog -->
     <string name="title">Enter the category name</string>
 
-    <!-- Category recyclerView empty view -->
+    <!-- QuoteCategory recyclerView empty view -->
     <string name="title_empty_view">You have no quote</string>
 
 </resources>

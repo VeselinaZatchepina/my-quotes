@@ -4,27 +4,27 @@ package com.developer.cookie.myquote.database.model;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 
-
+/**
+ * Realm model class for table named "book_name".
+ * It helps get and set book name for every book contains quote
+ * and has link to "publisher", "year", "book_author" tables.
+ */
 public class BookName extends RealmObject {
-
     private long id;
     private String bookName;
-
-    //1-many
-    private Publisher publisher;
-
-    //1-many
-    private Year year;
-
-    //many-many
+    //Relationship one-to-many
+    private BookPublisher publisher;
+    //Relationship one-to-many
+    private BookPublicationYear year;
+    //Relationship many-to-many
     private RealmList<BookAuthor> bookAuthors;
 
-    public RealmList<BookAuthor> getBookAuthors() {
-        return bookAuthors;
+    public long getId() {
+        return id;
     }
 
-    public void setBookAuthors(RealmList<BookAuthor> bookAuthors) {
-        this.bookAuthors = bookAuthors;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getBookName() {
@@ -35,27 +35,27 @@ public class BookName extends RealmObject {
         this.bookName = bookName;
     }
 
-    public Publisher getPublisher() {
+    public BookPublisher getPublisher() {
         return publisher;
     }
 
-    public void setPublisher(Publisher publisher) {
+    public void setPublisher(BookPublisher publisher) {
         this.publisher = publisher;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Year getYear() {
+    public BookPublicationYear getYear() {
         return year;
     }
 
-    public void setYear(Year year) {
+    public void setYear(BookPublicationYear year) {
         this.year = year;
+    }
+
+    public RealmList<BookAuthor> getBookAuthors() {
+        return bookAuthors;
+    }
+
+    public void setBookAuthors(RealmList<BookAuthor> bookAuthors) {
+        this.bookAuthors = bookAuthors;
     }
 }

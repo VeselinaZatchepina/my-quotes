@@ -12,15 +12,16 @@ import com.developer.cookie.myquote.R;
 
 import java.util.List;
 
-
+/**
+ * This class is custom adapter for QuoteCategoryFragment.
+ * It helps to show list of all quote categories and how quote counts belongs to every this category.
+ */
 public class QuoteCategoryRecyclerViewAdapter
         extends RecyclerView.Adapter<QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
-
     private List<String> listOfCategory;
     private List<Integer> quoteCountList;
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-
         TextView itemQuoteCategory;
         TextView itemQuoteCount;
 
@@ -31,6 +32,11 @@ public class QuoteCategoryRecyclerViewAdapter
         }
     }
 
+    /**
+     * Method create custom adapter.
+     * @param pair object with two field List<String> and List<Integer>. First field is for list of category.
+     *             Second field is for list of quote count.
+     */
     public QuoteCategoryRecyclerViewAdapter (Pair<List<String>,List<Integer>> pair) {
         listOfCategory = pair.first;
         quoteCountList = pair.second;
@@ -54,6 +60,10 @@ public class QuoteCategoryRecyclerViewAdapter
         return listOfCategory.size();
     }
 
+    /**
+     * When adapter data is changed this method helps set new data for adapter.
+     * @param pair
+     */
     public void changeDate(Pair<List<String>,List<Integer>> pair) {
         listOfCategory = pair.first;
         quoteCountList = pair.second;

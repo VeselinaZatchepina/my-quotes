@@ -2,8 +2,12 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class Type extends RealmObject {
-
+/**
+ * Realm model class for table named "type".
+ * It helps get and set type for every quote.
+ * Example for quote type: "QuoteFromBook", "MyQuote".
+ */
+public class QuoteType extends RealmObject {
     private long id;
     private String type;
 

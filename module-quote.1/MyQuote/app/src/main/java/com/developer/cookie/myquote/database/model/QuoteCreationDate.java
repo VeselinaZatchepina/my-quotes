@@ -3,8 +3,11 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class QuoteDate extends RealmObject {
-
+/**
+ * Realm model class for table named "quote_date".
+ * It helps get and set creation date (when user save quote) for every quote.
+ */
+public class QuoteCreationDate extends RealmObject {
     private long id;
     private String quoteDate;
 

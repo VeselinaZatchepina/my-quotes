@@ -3,8 +3,11 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class Publisher extends RealmObject {
-
+/**
+ * Realm model class for table named "publisher".
+ * It helps get and set publisher for every book contains quote.
+ */
+public class BookPublisher extends RealmObject {
     private long id;
     private String publisherName;
 

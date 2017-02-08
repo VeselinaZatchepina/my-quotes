@@ -1,8 +1,8 @@
 package com.developer.cookie.myquote;
 
-import android.app.FragmentTransaction;
+import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
@@ -15,9 +15,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Fragment quoteCategoryFragment = new QuoteCategoryFragment();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.add(R.id.container, quoteCategoryFragment);
         ft.commit();
-
     }
 }

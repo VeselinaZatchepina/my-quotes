@@ -3,8 +3,11 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmObject;
 
-public class Page extends RealmObject {
-
+/**
+ * Realm model class for table named "page".
+ * It helps get and set book page number for every quote.
+ */
+public class BookPage extends RealmObject {
     private long id;
     private String pageNumber;
 

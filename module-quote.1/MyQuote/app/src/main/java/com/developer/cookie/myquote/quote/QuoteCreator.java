@@ -3,13 +3,13 @@ package com.developer.cookie.myquote.quote;
 
 import com.developer.cookie.myquote.database.model.BookAuthor;
 import com.developer.cookie.myquote.database.model.BookName;
-import com.developer.cookie.myquote.database.model.Category;
-import com.developer.cookie.myquote.database.model.Page;
-import com.developer.cookie.myquote.database.model.Publisher;
-import com.developer.cookie.myquote.database.model.QuoteDate;
+import com.developer.cookie.myquote.database.model.BookPage;
+import com.developer.cookie.myquote.database.model.BookPublicationYear;
+import com.developer.cookie.myquote.database.model.QuoteCategory;
+import com.developer.cookie.myquote.database.model.BookPublisher;
+import com.developer.cookie.myquote.database.model.QuoteCreationDate;
 import com.developer.cookie.myquote.database.model.QuoteText;
-import com.developer.cookie.myquote.database.model.Type;
-import com.developer.cookie.myquote.database.model.Year;
+import com.developer.cookie.myquote.database.model.QuoteType;
 
 import java.util.HashMap;
 
@@ -17,23 +17,30 @@ import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
+/**
+ * Class is used for create RealmObject and save it in database.
+ */
 public class QuoteCreator {
 
     private Realm realm;
 
     public QuoteCreator() { }
 
+    /**
+     * Method create RealmObjects and save it in database.
+     * @param mapOfQuoteProperties it is map of quote properties. Key is field of QuotePropertiesEnum class,
+     *                             value is user input data.
+     */
     public void createAndSaveQuote(final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
         realm = Realm.getDefaultInstance();
-        //Write data to DB
         realm.executeTransactionAsync(new Realm.Transaction() {
                                           @Override
                                           public void execute(Realm realm) {
-                                              Publisher publisherRealmObject = realm.createObject(Publisher.class);
+                                              BookPublisher publisherRealmObject = realm.createObject(BookPublisher.class);
                                               publisherRealmObject.setId(getNextKey(publisherRealmObject, realm));
-                                              publisherRealmObject.setPublisherName(mapOfQuoteProperties.get(QuotePropertiesEnum.PUBLISH_NAME));
+                                              publisherRealmObject.setPublisherName(mapOfQuoteProperties.get(QuotePropertiesEnum.PUBLISHER_NAME));
 
-                                              Year yearRealmObject = realm.createObject(Year.class);
+                                              BookPublicationYear yearRealmObject = realm.createObject(BookPublicationYear.class);
                                               yearRealmObject.setId(getNextKey(yearRealmObject, realm));
                                               yearRealmObject.setYearNumber(mapOfQuoteProperties.get(QuotePropertiesEnum.YEAR_NUMBER));
 
@@ -48,28 +55,28 @@ public class QuoteCreator {
                                               bookNameRealmObject.setYear(yearRealmObject);
                                               bookNameRealmObject.getBookAuthors().add(bookAuthorRealmObject);
 
-                                              Page pageRealmObject = realm.createObject(Page.class);
+                                              BookPage pageRealmObject = realm.createObject(BookPage.class);
                                               pageRealmObject.setId(getNextKey(pageRealmObject, realm));
                                               pageRealmObject.setPageNumber(mapOfQuoteProperties.get(QuotePropertiesEnum.PAGE_NUMBER));
 
                                               String valueOfCategory = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CATEGORY);
-                                              RealmResults<Category> results = realm.where(Category.class)
+                                              RealmResults<QuoteCategory> results = realm.where(QuoteCategory.class)
                                                       .contains("category", valueOfCategory)
                                                       .findAll();
-                                              Category categoryRealmObject;
+                                              QuoteCategory categoryRealmObject;
                                               if (results == null || results.isEmpty()) {
-                                                  categoryRealmObject = realm.createObject(Category.class);
+                                                  categoryRealmObject = realm.createObject(QuoteCategory.class);
                                                   categoryRealmObject.setId(getNextKey(categoryRealmObject, realm));
                                                   categoryRealmObject.setCategory(valueOfCategory);
                                               } else {
                                                   categoryRealmObject = results.get(0);
                                               }
 
-                                              Type type = realm.createObject(Type.class);
+                                              QuoteType type = realm.createObject(QuoteType.class);
                                               type.setId((getNextKey(type, realm)));
                                               type.setType(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE));
 
-                                              QuoteDate quoteDate = realm.createObject(QuoteDate.class);
+                                              QuoteCreationDate quoteDate = realm.createObject(QuoteCreationDate.class);
                                               quoteDate.setId(getNextKey(quoteDate, realm));
                                               quoteDate.setQuoteDate(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
 
@@ -97,6 +104,12 @@ public class QuoteCreator {
         realm.close();
     }
 
+    /**
+     * Method is used for increment "id".
+     * @param currentClass
+     * @param realm
+     * @return id
+     */
     private int getNextKey(RealmObject currentClass, Realm realm) {
         int id;
         try {
