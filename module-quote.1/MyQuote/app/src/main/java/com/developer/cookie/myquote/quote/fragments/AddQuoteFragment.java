@@ -1,12 +1,11 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
-import android.support.v4.app.FragmentTransaction;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -137,23 +136,15 @@ public class AddQuoteFragment extends Fragment {
             }
             public void onNothingSelected(AdapterView<?> parent) { }
         });
-        fab = (FloatingActionButton) getActivity().findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createMapOfQuoteProperties();
-                replaceFragment();
-            }
-        });
         return rootView;
     }
 
     /**
      * Method creates quote properties map for QuoteCreator class and pass map to it.
      */
-    private void createMapOfQuoteProperties() {
+    public void createMapOfQuoteProperties() {
         EditText quoteText = (EditText) rootView.findViewById(R.id.quote_text);
-        final EditText bookName = (EditText) rootView.findViewById(R.id.book_name);
+        EditText bookName = (EditText) rootView.findViewById(R.id.book_name);
         EditText authorName = (EditText) rootView.findViewById(R.id.author_name);
         EditText pageNumber = (EditText) rootView.findViewById(R.id.page_number);
         EditText yearNumber = (EditText) rootView.findViewById(R.id.year_number);
@@ -191,11 +182,6 @@ public class AddQuoteFragment extends Fragment {
         FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
         fragmentTransaction.remove(this)
                            .add(R.id.container, new QuoteCategoryFragment()).commit();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp, getActivity().getTheme()));
-        } else {
-            fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_add_white_24dp));
-        }
     }
 
     @Override

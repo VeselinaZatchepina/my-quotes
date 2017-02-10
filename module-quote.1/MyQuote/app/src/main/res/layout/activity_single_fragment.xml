@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.developer.cookie.myquote.MainActivity">
+    tools:context="com.developer.cookie.myquote.quote.activities.SingleFragmentActivity">
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

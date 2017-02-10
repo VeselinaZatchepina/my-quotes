@@ -5,8 +5,8 @@ import com.developer.cookie.myquote.database.model.BookAuthor;
 import com.developer.cookie.myquote.database.model.BookName;
 import com.developer.cookie.myquote.database.model.BookPage;
 import com.developer.cookie.myquote.database.model.BookPublicationYear;
-import com.developer.cookie.myquote.database.model.QuoteCategory;
 import com.developer.cookie.myquote.database.model.BookPublisher;
+import com.developer.cookie.myquote.database.model.QuoteCategory;
 import com.developer.cookie.myquote.database.model.QuoteCreationDate;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.database.model.QuoteType;
@@ -22,6 +22,7 @@ import io.realm.RealmResults;
  */
 public class QuoteCreator {
 
+    private final String LOG_TAG = QuoteCreator.class.getSimpleName();
     private Realm realm;
 
     public QuoteCreator() { }
