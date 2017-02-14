@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.adapters.QuoteCategoryRecyclerViewAdapter;
@@ -18,23 +19,18 @@ import com.developer.cookie.myquote.quote.adapters.QuoteCategoryRecyclerViewAdap
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
-import io.realm.Sort;
-
 /**
  * QuoteCategoryFragment is used for presentation list of all categories (quote category) and
  * count of the quotes for every this category.
  */
 public class QuoteCategoryFragment extends Fragment {
 
-    Realm realm;
     View rootView;
     QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
     List<String> listOfCategories;
     List<Integer> quoteCountListOfEveryCategory;
     Pair<List<String>,List<Integer>> pair;
+    QuoteDataRepository quoteDataRepository;
 
     public QuoteCategoryFragment() { }
 
@@ -43,62 +39,27 @@ public class QuoteCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_quote_category, container, false);
 
-        realm = Realm.getDefaultInstance();
-        final RealmResults<QuoteCategory> categories = realm
-                .where(QuoteCategory.class)
-                .findAllSortedAsync("id", Sort.DESCENDING);
-        categories.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-            @Override
-            public void onChange(RealmResults<QuoteCategory> element) {
-                createPairObject(element);
+        quoteDataRepository = new QuoteDataRepository();
+        List<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+                createPairObject(quoteCategoryList);
                 // Create and set custom adapter for recyclerview
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
                 recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
-            }
-        });
         return rootView;
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).findAllAsync();
-        // Hear changes in QuoteText class and set new dates to adapter
-        quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
-            @Override
-            public void onChange(RealmResults<QuoteText> element) {
-                RealmResults<QuoteCategory> categories = realm
-                        .where(QuoteCategory.class)
-                        .findAllSortedAsync("id", Sort.DESCENDING);
-                categories.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-                    @Override
-                    public void onChange(RealmResults<QuoteCategory> element) {
-                        createPairObject(element);
-                        quoteCategoryRecyclerViewAdapter.changeDate(pair);
-                    }
-                });
-            }
-        });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        realm.close();
     }
 
     /**
      * Method create Pair object for custom adapter.
      * @param element list of quote category realm object.
      */
-    private void createPairObject(RealmResults<QuoteCategory> element) {
+    private void createPairObject(List<QuoteCategory> element) {
                 // Create parameters for pair object
                 quoteCountListOfEveryCategory = new ArrayList<Integer>();
                 for (int i = 0; i < element.size(); i++) {
-                    RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
-                            .equalTo("category.category", element.get(i).getCategory()).findAll();
+                    String category = element.get(i).getCategory();
+                    List<QuoteText> quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(category);
                     quoteCountListOfEveryCategory.add(quoteTexts.size());
                 }
                 listOfCategories = new ArrayList<>();
@@ -108,4 +69,10 @@ public class QuoteCategoryFragment extends Fragment {
                 }
                 pair = new Pair<>(listOfCategories, quoteCountListOfEveryCategory);
             }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        quoteDataRepository.closeDbConnect();
     }
+}

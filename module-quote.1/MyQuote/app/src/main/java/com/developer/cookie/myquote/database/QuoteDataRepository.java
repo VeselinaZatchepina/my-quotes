@@ -1,4 +1,4 @@
-package com.developer.cookie.myquote.quote;
+package com.developer.cookie.myquote.database;
 
 
 import com.developer.cookie.myquote.database.model.BookAuthor;
@@ -10,31 +10,35 @@ import com.developer.cookie.myquote.database.model.QuoteCategory;
 import com.developer.cookie.myquote.database.model.QuoteCreationDate;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.database.model.QuoteType;
+import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 
 import java.util.HashMap;
+import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
- * Class is used for create RealmObject and save it in database.
+ * QuoteDataRepository helps to abstract realm layer.
  */
-public class QuoteCreator {
+public class QuoteDataRepository implements QuoteRepository {
 
-    private final String LOG_TAG = QuoteCreator.class.getSimpleName();
-    private Realm realm;
+    private static final String LOG_TAG = QuoteDataRepository.class.getSimpleName();
+    private final Realm realm;
 
-    public QuoteCreator() { }
-
-    /**
-     * Method create RealmObjects and save it in database.
-     * @param mapOfQuoteProperties it is map of quote properties. Key is field of QuotePropertiesEnum class,
-     *                             value is user input data.
-     */
-    public void createAndSaveQuote(final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
+    public QuoteDataRepository() {
         realm = Realm.getDefaultInstance();
-        realm.executeTransactionAsync(new Realm.Transaction() {
+    }
+
+    @Override
+    public List<QuoteCategory> getListOfQuoteCategories() {
+        return realm.where(QuoteCategory.class).findAllSorted("id");
+    }
+
+    @Override
+    public void saveQuote(final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
+        realm.executeTransaction(new Realm.Transaction() {
                                           @Override
                                           public void execute(Realm realm) {
                                               BookPublisher publisherRealmObject = realm.createObject(BookPublisher.class);
@@ -89,20 +93,7 @@ public class QuoteCreator {
                                               quoteTextRealmObject.setCategory(categoryRealmObject);
                                               quoteTextRealmObject.setType(type);
                                           }
-                                      }
-                , new Realm.Transaction.OnSuccess() {
-                    @Override
-                    public void onSuccess() {
-
-                    }
-                }, new Realm.Transaction.OnError() {
-                    @Override
-                    public void onError(Throwable error) {
-
-                    }
-                });
-
-        realm.close();
+                                      });
     }
 
     /**
@@ -119,5 +110,21 @@ public class QuoteCreator {
             id = 0;
         }
         return id;
+    }
+
+    @Override
+    public List<QuoteText> getListOfQuoteText() {
+        return realm.where(QuoteText.class).findAll();
+    }
+
+    @Override
+    public List<QuoteText> getListOfQuoteTextByCategory(String category) {
+        return realm.where(QuoteText.class)
+                .equalTo("category.category", category).findAll();
+    }
+
+    @Override
+    public void closeDbConnect() {
+        realm.close();
     }
 }

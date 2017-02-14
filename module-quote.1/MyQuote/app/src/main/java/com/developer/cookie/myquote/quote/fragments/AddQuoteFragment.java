@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,18 +16,14 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.quote.QuoteCreator;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-
-import io.realm.Realm;
-import io.realm.RealmChangeListener;
-import io.realm.RealmResults;
 
 
 /**
@@ -37,12 +32,12 @@ import io.realm.RealmResults;
 public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
-    private Realm realm;
     private View rootView;
     private FloatingActionButton fab;
     private String valueOfCategory;
     private List<String> listOfAllCategories;
     ArrayAdapter<String> spinnerAdapter;
+    QuoteDataRepository quoteDataRepository;
 
     public AddQuoteFragment() { }
 
@@ -50,18 +45,15 @@ public class AddQuoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-        realm = Realm.getDefaultInstance();
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-
         listOfAllCategories = new ArrayList<>();
-        RealmResults<QuoteCategory> listOfCategory = realm.where(QuoteCategory.class).findAllAsync();
-        listOfCategory.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-           @Override
-           public void onChange(RealmResults<QuoteCategory> element) {
+
+        quoteDataRepository = new QuoteDataRepository();
+        List<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
                // Create list of categories for spinnerAdapter
-               if (element != null || !element.isEmpty()) {
-                   for (int i = 0; i < element.size(); i++) {
-                       QuoteCategory currentCategory = element.get(i);
+               if (quoteCategoryList != null || !quoteCategoryList.isEmpty()) {
+                   for (int i = 0; i < quoteCategoryList.size(); i++) {
+                       QuoteCategory currentCategory = quoteCategoryList.get(i);
                        if (currentCategory != null) {
                            String category = currentCategory.getCategory();
                            listOfAllCategories.add(category);
@@ -95,8 +87,6 @@ public class AddQuoteFragment extends Fragment {
                spinnerAdapter.addAll(listOfAllCategories);
                spinner.setAdapter(spinnerAdapter);
                spinner.setSelection(spinnerAdapter.getCount());
-           }
-        });
 
         //Add listener to spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -171,22 +161,12 @@ public class AddQuoteFragment extends Fragment {
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentMillis));
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, "MyQuote");
 
-        QuoteCreator quoteCreator = new QuoteCreator();
-        quoteCreator.createAndSaveQuote(mapOfQuoteProperties);
-    }
-
-    /**
-     * Method replaces fragment and changes icon for fab.
-     */
-    private void replaceFragment() {
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.remove(this)
-                           .add(R.id.container, new QuoteCategoryFragment()).commit();
+        quoteDataRepository.saveQuote(mapOfQuoteProperties);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        realm.close();
+        quoteDataRepository.closeDbConnect();
     }
 }
