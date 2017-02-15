@@ -25,12 +25,15 @@ import java.util.List;
  */
 public class QuoteCategoryFragment extends Fragment {
 
+    private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
     View rootView;
-    QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
-    List<String> listOfCategories;
-    List<Integer> quoteCountListOfEveryCategory;
-    Pair<List<String>,List<Integer>> pair;
     QuoteDataRepository quoteDataRepository;
+
+    List<Integer> quoteCountListOfEveryCategory;
+    List<String> listOfCategories;
+    Pair<List<String>,List<Integer>> pair;
+
+    QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
 
     public QuoteCategoryFragment() { }
 
@@ -51,7 +54,8 @@ public class QuoteCategoryFragment extends Fragment {
     }
 
     /**
-     * Method create Pair object for custom adapter.
+     * Method create Pair object for custom adapter. First parameter is name list of category,
+     * second is quote count list of this categories.
      * @param element list of quote category realm object.
      */
     private void createPairObject(List<QuoteCategory> element) {

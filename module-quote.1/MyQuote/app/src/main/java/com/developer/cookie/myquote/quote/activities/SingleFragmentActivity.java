@@ -11,9 +11,13 @@ import android.view.View;
 
 import com.developer.cookie.myquote.R;
 
+/**
+ * SingleFragmentActivity helps avoid boilerplate code.
+ */
 public abstract class SingleFragmentActivity extends FragmentActivity {
 
     public Fragment currentFragment;
+    FloatingActionButton fab;
     public int fabImageResourceId = setFabImageResourceId();
 
     public abstract Fragment createFragment();
@@ -35,7 +39,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
                     .commit();
         }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             fab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
         } else {

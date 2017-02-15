@@ -3,9 +3,9 @@ package com.developer.cookie.myquote.quote.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +33,14 @@ public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
     private View rootView;
-    private FloatingActionButton fab;
-    private String valueOfCategory;
+    QuoteDataRepository quoteDataRepository;
     private List<String> listOfAllCategories;
     ArrayAdapter<String> spinnerAdapter;
-    QuoteDataRepository quoteDataRepository;
+    private String valueOfCategory;
+
+    String currentQuoteText;
+    String currentBookName;
+    String currentAuthorName;
 
     public AddQuoteFragment() { }
 
@@ -46,25 +49,10 @@ public class AddQuoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-        listOfAllCategories = new ArrayList<>();
 
         quoteDataRepository = new QuoteDataRepository();
         List<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
-               // Create list of categories for spinnerAdapter
-               if (quoteCategoryList != null || !quoteCategoryList.isEmpty()) {
-                   for (int i = 0; i < quoteCategoryList.size(); i++) {
-                       QuoteCategory currentCategory = quoteCategoryList.get(i);
-                       if (currentCategory != null) {
-                           String category = currentCategory.getCategory();
-                           listOfAllCategories.add(category);
-                       }
-                   }
-                   listOfAllCategories.add(getString(R.string.spinner_add_category));
-                   listOfAllCategories.add(getString(R.string.spinner_hint));
-               } else {
-                   listOfAllCategories.add(getString(R.string.spinner_add_category));
-                   listOfAllCategories.add(getString(R.string.spinner_hint));
-               }
+               createQuoteCategoryListForSpinner(quoteCategoryList);
                // Set hint for spinner
                spinnerAdapter = new ArrayAdapter<String>(getActivity(),
                        android.R.layout.simple_list_item_1) {
@@ -130,19 +118,64 @@ public class AddQuoteFragment extends Fragment {
     }
 
     /**
-     * Method creates quote properties map for QuoteCreator class and pass map to it.
+     * Method creates list of categories for spinnerAdapter.
+     * @param quoteCategoryList list of all quotes category from db.
      */
-    public void createMapOfQuoteProperties() {
+    private void createQuoteCategoryListForSpinner(List<QuoteCategory> quoteCategoryList) {
+        listOfAllCategories = new ArrayList<>();
+        // Create list of categories for spinnerAdapter
+        if (quoteCategoryList != null || !quoteCategoryList.isEmpty()) {
+            for (int i = 0; i < quoteCategoryList.size(); i++) {
+                QuoteCategory currentCategory = quoteCategoryList.get(i);
+                if (currentCategory != null) {
+                    String category = currentCategory.getCategory();
+                    listOfAllCategories.add(category);
+                }
+            }
+            listOfAllCategories.add(getString(R.string.spinner_add_category));
+            listOfAllCategories.add(getString(R.string.spinner_hint));
+        } else {
+            listOfAllCategories.add(getString(R.string.spinner_add_category));
+            listOfAllCategories.add(getString(R.string.spinner_hint));
+        }
+    }
+
+    /**
+     * Method checks if main EditText is empty or not.
+     * @return false if EditText not empty and true if else.
+     */
+    public boolean isEditTextEmpty() {
         EditText quoteText = (EditText) rootView.findViewById(R.id.quote_text);
         EditText bookName = (EditText) rootView.findViewById(R.id.book_name);
         EditText authorName = (EditText) rootView.findViewById(R.id.author_name);
+
+        currentQuoteText = quoteText.getText().toString();
+        currentBookName = bookName.getText().toString();
+        currentAuthorName = authorName.getText().toString();
+
+        if(TextUtils.isEmpty(currentQuoteText)) {
+            quoteText.setError("Quote text cannot be empty");
+            return true;
+        }
+        if (TextUtils.isEmpty(currentBookName)) {
+            bookName.setError("Book name cannot be empty");
+            return true;
+        }
+        if (TextUtils.isEmpty(currentAuthorName)) {
+            authorName.setError("Author name cannot be empty");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Method creates quote properties map for QuoteCreator class and pass map to it.
+     */
+    public void createMapOfQuoteProperties() {
         EditText pageNumber = (EditText) rootView.findViewById(R.id.page_number);
         EditText yearNumber = (EditText) rootView.findViewById(R.id.year_number);
         EditText publishName = (EditText) rootView.findViewById(R.id.publish_name);
 
-        final String currentQuoteText = quoteText.getText().toString();
-        final String currentBookName = bookName.getText().toString();
-        final String currentAuthorName = authorName.getText().toString();
         final String currentPageNumber = pageNumber.getText().toString();
         final String currentYearNumber = yearNumber.getText().toString();
         final String currentPublishName = publishName.getText().toString();

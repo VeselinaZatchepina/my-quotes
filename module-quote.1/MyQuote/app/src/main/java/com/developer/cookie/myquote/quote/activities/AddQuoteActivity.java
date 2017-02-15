@@ -21,9 +21,12 @@ public class AddQuoteActivity extends SingleFragmentActivity {
 
     @Override
     public void toDoWhenFabIsPressed() {
-        ((AddQuoteFragment)currentFragment).createMapOfQuoteProperties();
-        Intent intent = QuoteCategoryMainActivity.newIntent(this);
-        startActivity(intent);
+        AddQuoteFragment addQuoteFragment =  ((AddQuoteFragment)currentFragment);
+        if (!addQuoteFragment.isEditTextEmpty()) {
+            addQuoteFragment.createMapOfQuoteProperties();
+            Intent intent = QuoteCategoryMainActivity.newIntent(this);
+            startActivity(intent);
+        }
     }
 
     public static Intent newIntent(Context context) {
