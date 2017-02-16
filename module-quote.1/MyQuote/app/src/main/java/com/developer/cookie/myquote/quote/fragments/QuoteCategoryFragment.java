@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.adapters.QuoteCategoryRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -70,11 +69,7 @@ public class QuoteCategoryFragment extends Fragment {
                 // Create parameters for pair object
                 quoteCountListOfEveryCategory = new ArrayList<Integer>();
                 for (int i = 0; i < element.size(); i++) {
-                    String category = element.get(i).getCategory();
-                    RealmResults<QuoteText> quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(category);
-                    if (quoteTexts.isLoaded()) {
-                        quoteCountListOfEveryCategory.add(quoteTexts.size());
-                    }
+                    quoteCountListOfEveryCategory.add(element.get(i).getQuoteCountCurrentCategory());
                 }
                 listOfCategories = new ArrayList<>();
                 for (int i = 0; i<element.size(); i++) {

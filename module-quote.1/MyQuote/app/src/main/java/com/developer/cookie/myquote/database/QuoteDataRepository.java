@@ -72,8 +72,12 @@ public class QuoteDataRepository implements QuoteRepository {
                                                   categoryRealmObject = realm.createObject(QuoteCategory.class);
                                                   categoryRealmObject.setId(getNextKey(categoryRealmObject, realm));
                                                   categoryRealmObject.setCategory(valueOfCategory);
+                                                  categoryRealmObject.setQuoteCountCurrentCategory(
+                                                          categoryRealmObject.getQuoteCountCurrentCategory() + 1);
                                               } else {
                                                   categoryRealmObject = results.get(0);
+                                                  categoryRealmObject.setQuoteCountCurrentCategory(
+                                                          categoryRealmObject.getQuoteCountCurrentCategory() + 1);
                                               }
 
                                               QuoteType type = realm.createObject(QuoteType.class);

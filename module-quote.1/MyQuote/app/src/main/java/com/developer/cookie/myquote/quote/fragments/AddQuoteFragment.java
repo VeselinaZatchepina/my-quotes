@@ -40,6 +40,7 @@ public class AddQuoteFragment extends Fragment {
     private List<String> listOfAllCategories;
     ArrayAdapter<String> spinnerAdapter;
     private String valueOfCategory;
+    Spinner spinner;
 
     String currentQuoteText;
     String currentBookName;
@@ -51,7 +52,7 @@ public class AddQuoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-        final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+        spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
 
         quoteDataRepository = new QuoteDataRepository();
         RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
@@ -61,7 +62,7 @@ public class AddQuoteFragment extends Fragment {
                 createQuoteCategoryListForSpinner(element);
                 // Set hint for spinner
                 spinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_list_item_1) {
+                        android.R.layout.simple_spinner_dropdown_item) {
                     @Override
                     public View getView(int position, View convertView, ViewGroup parent) {
                         View v = super.getView(position, convertView, parent);
@@ -123,6 +124,14 @@ public class AddQuoteFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) { }
         });
         return rootView;
+    }
+
+    /**
+     * Method checks if user choose hint in spinner.
+     * @return true if user choose hint and false else if.
+     */
+    public boolean isSpinnerSelectedItemHint() {
+        return valueOfCategory.equals(getString(R.string.spinner_hint));
     }
 
     /**

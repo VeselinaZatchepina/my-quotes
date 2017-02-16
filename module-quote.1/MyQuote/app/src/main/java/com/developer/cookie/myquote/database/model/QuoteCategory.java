@@ -2,7 +2,6 @@ package com.developer.cookie.myquote.database.model;
 
 
 import io.realm.RealmObject;
-import io.realm.annotations.Required;
 
 /**
  * Realm model class for table named "category".
@@ -11,8 +10,8 @@ import io.realm.annotations.Required;
  */
 public class QuoteCategory extends RealmObject {
     private long id;
-    @Required
     private String category;
+    private int quoteCountCurrentCategory = 0;
 
     public long getId() {
         return id;
@@ -28,5 +27,13 @@ public class QuoteCategory extends RealmObject {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public int getQuoteCountCurrentCategory() {
+        return quoteCountCurrentCategory;
+    }
+
+    public void setQuoteCountCurrentCategory(int quoteCountCurrentCategory) {
+        this.quoteCountCurrentCategory = quoteCountCurrentCategory;
     }
 }
