@@ -19,6 +19,9 @@ import com.developer.cookie.myquote.quote.adapters.QuoteCategoryRecyclerViewAdap
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+
 /**
  * QuoteCategoryFragment is used for presentation list of all categories (quote category) and
  * count of the quotes for every this category.
@@ -43,13 +46,18 @@ public class QuoteCategoryFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_quote_category, container, false);
 
         quoteDataRepository = new QuoteDataRepository();
-        List<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
-                createPairObject(quoteCategoryList);
+        RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+        quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
+            @Override
+            public void onChange(RealmResults<QuoteCategory> element) {
+                createPairObject(element);
                 // Create and set custom adapter for recyclerview
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
                 recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
+            }
+        });
         return rootView;
     }
 
@@ -63,8 +71,10 @@ public class QuoteCategoryFragment extends Fragment {
                 quoteCountListOfEveryCategory = new ArrayList<Integer>();
                 for (int i = 0; i < element.size(); i++) {
                     String category = element.get(i).getCategory();
-                    List<QuoteText> quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(category);
-                    quoteCountListOfEveryCategory.add(quoteTexts.size());
+                    RealmResults<QuoteText> quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(category);
+                    if (quoteTexts.isLoaded()) {
+                        quoteCountListOfEveryCategory.add(quoteTexts.size());
+                    }
                 }
                 listOfCategories = new ArrayList<>();
                 for (int i = 0; i<element.size(); i++) {

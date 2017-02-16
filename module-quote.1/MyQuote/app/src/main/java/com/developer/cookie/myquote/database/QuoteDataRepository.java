@@ -13,7 +13,6 @@ import com.developer.cookie.myquote.database.model.QuoteType;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 
 import java.util.HashMap;
-import java.util.List;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
@@ -32,8 +31,8 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public List<QuoteCategory> getListOfQuoteCategories() {
-        return realm.where(QuoteCategory.class).findAllSorted("id");
+    public RealmResults<QuoteCategory> getListOfQuoteCategories() {
+        return realm.where(QuoteCategory.class).findAllSortedAsync("id");
     }
 
     @Override
@@ -113,12 +112,12 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public List<QuoteText> getListOfQuoteText() {
-        return realm.where(QuoteText.class).findAll();
+    public RealmResults<QuoteText> getListOfQuoteText() {
+        return realm.where(QuoteText.class).findAllAsync();
     }
 
     @Override
-    public List<QuoteText> getListOfQuoteTextByCategory(String category) {
+    public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category) {
         return realm.where(QuoteText.class)
                 .equalTo("category.category", category).findAll();
     }

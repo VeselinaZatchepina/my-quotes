@@ -25,6 +25,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
+
 
 /**
  * AddQuoteFragment is used for input properties of the quote.
@@ -51,30 +54,35 @@ public class AddQuoteFragment extends Fragment {
         final Spinner spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
 
         quoteDataRepository = new QuoteDataRepository();
-        List<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
-               createQuoteCategoryListForSpinner(quoteCategoryList);
-               // Set hint for spinner
-               spinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                       android.R.layout.simple_list_item_1) {
-                   @Override
-                   public View getView(int position, View convertView, ViewGroup parent) {
-                       View v = super.getView(position, convertView, parent);
-                       if (position == getCount()) {
-                           ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                           ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
-                       }
-                       return v;
-                   }
+        RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+        quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
+            @Override
+            public void onChange(RealmResults<QuoteCategory> element) {
+                createQuoteCategoryListForSpinner(element);
+                // Set hint for spinner
+                spinnerAdapter = new ArrayAdapter<String>(getActivity(),
+                        android.R.layout.simple_list_item_1) {
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        View v = super.getView(position, convertView, parent);
+                        if (position == getCount()) {
+                            ((TextView)v.findViewById(android.R.id.text1)).setText("");
+                            ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
+                        }
+                        return v;
+                    }
 
-                   @Override
-                   public int getCount() {
-                       return super.getCount()-1;
-                   }
-               };
-               spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
-               spinnerAdapter.addAll(listOfAllCategories);
-               spinner.setAdapter(spinnerAdapter);
-               spinner.setSelection(spinnerAdapter.getCount());
+                    @Override
+                    public int getCount() {
+                        return super.getCount()-1;
+                    }
+                };
+                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
+                spinnerAdapter.addAll(listOfAllCategories);
+                spinner.setAdapter(spinnerAdapter);
+                spinner.setSelection(spinnerAdapter.getCount());
+            }
+        });
 
         //Add listener to spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
