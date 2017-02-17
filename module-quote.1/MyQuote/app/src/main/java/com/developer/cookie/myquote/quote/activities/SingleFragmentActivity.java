@@ -1,6 +1,7 @@
 package com.developer.cookie.myquote.quote.activities;
 
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,9 +23,14 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
 
     public abstract Fragment createFragment();
 
-    public abstract int setFabImageResourceId();
+    public int setFabImageResourceId() {
+        return R.drawable.ic_add_white_24dp;
+    }
 
-    public abstract void toDoWhenFabIsPressed();
+    public void toDoWhenFabIsPressed() {
+        Intent intent = AddQuoteActivity.newIntent(this);
+        startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

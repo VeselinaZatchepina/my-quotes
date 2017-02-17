@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".quote.activities.AddQuoteActivity"></activity>
+        <activity android:name=".quote.activities.AllQuoteCurrentCategoryActivity"></activity>
     </application>
 
 </manifest>

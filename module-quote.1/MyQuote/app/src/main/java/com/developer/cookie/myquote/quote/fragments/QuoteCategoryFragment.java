@@ -1,6 +1,7 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
@@ -9,11 +10,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.quote.adapters.QuoteCategoryRecyclerViewAdapter;
+import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +44,7 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_quote_category, container, false);
+        rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
 
         quoteDataRepository = new QuoteDataRepository();
         RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
@@ -83,5 +85,72 @@ public class QuoteCategoryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         quoteDataRepository.closeDbConnect();
+    }
+
+    /**
+     * This class is custom adapter for QuoteCategoryFragment.
+     * It helps to show list of all quote categories and how quote counts belongs to every this category.
+     */
+    private class QuoteCategoryRecyclerViewAdapter
+            extends RecyclerView.Adapter<QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
+        private List<String> listOfCategory;
+        private List<Integer> quoteCountList;
+
+        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+            TextView itemQuoteCategory;
+            TextView itemQuoteCount;
+
+            MyViewHolder(View container) {
+                super(container);
+                itemQuoteCategory = (TextView) container.findViewById(R.id.item_quote_category);
+                itemQuoteCount = (TextView) container.findViewById(R.id.item_quote_count);
+                container.setOnClickListener(this);
+            }
+
+            @Override
+            public void onClick(View view) {
+                Intent intent = AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
+                        itemQuoteCategory.getText().toString());
+                startActivity(intent);
+            }
+        }
+
+        /**
+         * Method create custom adapter.
+         * @param pair object with two field List<String> and List<Integer>. First field is for list of category.
+         *             Second field is for list of quote count.
+         */
+        public QuoteCategoryRecyclerViewAdapter (Pair<List<String>,List<Integer>> pair) {
+            listOfCategory = pair.first;
+            quoteCountList = pair.second;
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.quote_category_recycler_view_item, parent, false);
+            return new MyViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(MyViewHolder holder, int position) {
+            holder.itemQuoteCategory.setText(listOfCategory.get(position));
+            holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
+        }
+
+        @Override
+        public int getItemCount() {
+            return listOfCategory.size();
+        }
+
+        /**
+         * When adapter data is changed this method helps set new data for adapter.
+         * @param pair
+         */
+        public void changeDate(Pair<List<String>,List<Integer>> pair) {
+            listOfCategory = pair.first;
+            quoteCountList = pair.second;
+            notifyDataSetChanged();
+        }
     }
 }

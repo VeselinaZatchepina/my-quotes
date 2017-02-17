@@ -37,7 +37,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public void saveQuote(final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
-        realm.executeTransaction(new Realm.Transaction() {
+        realm.executeTransactionAsync(new Realm.Transaction() {
                                           @Override
                                           public void execute(Realm realm) {
                                               BookPublisher publisherRealmObject = realm.createObject(BookPublisher.class);
@@ -123,7 +123,7 @@ public class QuoteDataRepository implements QuoteRepository {
     @Override
     public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category) {
         return realm.where(QuoteText.class)
-                .equalTo("category.category", category).findAll();
+                .equalTo("category.category", category).findAllAsync();
     }
 
     @Override
