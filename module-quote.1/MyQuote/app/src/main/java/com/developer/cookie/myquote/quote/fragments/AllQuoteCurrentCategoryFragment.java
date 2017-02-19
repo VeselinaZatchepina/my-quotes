@@ -1,6 +1,7 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,7 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
+import com.developer.cookie.myquote.quote.activities.QuotePagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,11 +83,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             MyViewHolder(View container) {
                 super(container);
                 currentQuote = (TextView) container.findViewById(R.id.current_quote);
+                container.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-
+                Intent intent = QuotePagerActivity.newIntent(getActivity(),
+                        (ArrayList<String>) currentCategoryQuoteList);
+                startActivity(intent);
             }
         }
 

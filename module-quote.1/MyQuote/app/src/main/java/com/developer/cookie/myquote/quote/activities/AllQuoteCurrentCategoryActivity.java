@@ -9,6 +9,7 @@ import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragm
 
 public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
     public static final String CATEGORY_NAME = "com.developer.cookie.myquote.category_name";
+
     @Override
     public Fragment createFragment() {
         return new AllQuoteCurrentCategoryFragment();

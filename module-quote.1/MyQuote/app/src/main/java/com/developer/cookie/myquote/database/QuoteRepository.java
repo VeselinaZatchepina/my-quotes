@@ -41,6 +41,13 @@ public interface QuoteRepository {
     List<QuoteText> getListOfQuoteTextByCategory(String category);
 
     /**
+     * Method requests QuoteText object from the database by quote text.
+     * @param quoteText
+     * @return QuoteText
+     */
+    List<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText);
+
+    /**
      * Method closes realm connection.
      */
     void closeDbConnect();

@@ -127,6 +127,11 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
+    public RealmResults<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText) {
+        return realm.where(QuoteText.class).equalTo("quoteText", quoteText).findAllAsync();
+    }
+
+    @Override
     public void closeDbConnect() {
         realm.close();
     }
