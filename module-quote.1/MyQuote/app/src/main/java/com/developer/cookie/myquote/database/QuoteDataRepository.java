@@ -15,6 +15,7 @@ import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 import java.util.HashMap;
 
 import io.realm.Realm;
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
@@ -116,6 +117,42 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
+    public void saveChangedQuoteObject(final QuoteText quoteText, final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
+        realm.beginTransaction();
+
+        quoteText.setQuoteText(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TEXT));
+
+                BookName bookName = quoteText.getBookName();
+                bookName.setBookName(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_NAME));
+
+                RealmList<BookAuthor> bookAuthor = bookName.getBookAuthors();
+                bookAuthor.clear();
+                BookAuthor newBookAuthor = realm.createObject(BookAuthor.class);
+
+                newBookAuthor.setBookAuthor(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_AUTHOR));
+                bookAuthor.add(newBookAuthor);
+
+                BookPublicationYear year = bookName.getYear();
+                year.setYearNumber(mapOfQuoteProperties.get(QuotePropertiesEnum.YEAR_NUMBER));
+
+                BookPublisher bookPublisher = bookName.getPublisher();
+                bookPublisher.setPublisherName(mapOfQuoteProperties.get(QuotePropertiesEnum.PUBLISHER_NAME));
+
+                QuoteCategory quoteCategory = quoteText.getCategory();
+                quoteCategory.setCategory(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CATEGORY));
+
+                BookPage bookPage = quoteText.getPage();
+                bookPage.setPageNumber(mapOfQuoteProperties.get(QuotePropertiesEnum.PAGE_NUMBER));
+
+//                QuoteCreationDate date = quoteText.getDate();
+//                date.setQuoteDate(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
+
+                QuoteType type = quoteText.getType();
+                type.setType(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE));
+        realm.commitTransaction();
+    }
+
+    @Override
     public RealmResults<QuoteText> getListOfQuoteText() {
         return realm.where(QuoteText.class).findAllAsync();
     }
@@ -129,6 +166,11 @@ public class QuoteDataRepository implements QuoteRepository {
     @Override
     public RealmResults<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText) {
         return realm.where(QuoteText.class).equalTo("quoteText", quoteText).findAllAsync();
+    }
+
+    @Override
+    public RealmResults<QuoteText> getQuoteTextObjectsByQuoteId(Long quoteTextId) {
+        return realm.where(QuoteText.class).equalTo("id", quoteTextId).findAllAsync();
     }
 
     @Override

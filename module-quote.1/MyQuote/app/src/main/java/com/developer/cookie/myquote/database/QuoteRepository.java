@@ -27,6 +27,7 @@ public interface QuoteRepository {
      */
     void saveQuote(HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
+    void saveChangedQuoteObject(QuoteText quoteText, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
     /**
      * Method requests QuoteText list from the database.
      * @return List<QuoteText>
@@ -46,6 +47,13 @@ public interface QuoteRepository {
      * @return QuoteText
      */
     List<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText);
+
+    /**
+     * Method requests QuoteText object from the database by quote text id.
+     * @param quoteTextId
+     * @return QuoteText
+     */
+    List<QuoteText> getQuoteTextObjectsByQuoteId(Long quoteTextId);
 
     /**
      * Method closes realm connection.

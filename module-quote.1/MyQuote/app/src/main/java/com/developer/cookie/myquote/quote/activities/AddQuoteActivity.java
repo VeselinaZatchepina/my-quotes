@@ -9,6 +9,7 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentActivity {
+    public static final String QUOTE_DATA_FOR_EDIT = "quote_data_for_edit";
 
     @Override
     public Fragment createFragment() {
@@ -33,7 +34,9 @@ public class AddQuoteActivity extends SingleFragmentActivity {
         }
     }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AddQuoteActivity.class);
+    public static Intent newIntent(Context context, Long currentQuoteTextId) {
+        Intent intent = new Intent(context, AddQuoteActivity.class);
+        intent.putExtra(QUOTE_DATA_FOR_EDIT, currentQuoteTextId);
+        return intent;
     }
 }

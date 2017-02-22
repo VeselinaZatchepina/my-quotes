@@ -3,6 +3,7 @@ package com.developer.cookie.myquote.quote.fragments;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -17,15 +18,21 @@ import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
+import com.developer.cookie.myquote.database.model.BookAuthor;
+import com.developer.cookie.myquote.database.model.BookName;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
+import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
+import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import io.realm.RealmChangeListener;
+import io.realm.RealmList;
 import io.realm.RealmResults;
 
 
@@ -35,6 +42,7 @@ import io.realm.RealmResults;
 public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
+
     private View rootView;
     QuoteDataRepository quoteDataRepository;
     private List<String> listOfAllCategories;
@@ -46,7 +54,29 @@ public class AddQuoteFragment extends Fragment {
     String currentBookName;
     String currentAuthorName;
 
+    Long quoteIdFromIntent;
+
+    EditText quoteText;
+    EditText bookName;
+    EditText authorName;
+    EditText pageNumber;
+    EditText yearNumber;
+    EditText publishName;
+
+    QuoteText quoteTextObject;
+
     public AddQuoteFragment() { }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Serializable quoteTextId = getActivity()
+                .getIntent()
+                .getSerializableExtra(AddQuoteActivity.QUOTE_DATA_FOR_EDIT);
+        if (quoteTextId!= null) {
+            quoteIdFromIntent = Long.valueOf(quoteTextId.toString());
+        }
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,7 +84,15 @@ public class AddQuoteFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
         spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
 
+        quoteText = (EditText) rootView.findViewById(R.id.quote_text);
+        bookName = (EditText) rootView.findViewById(R.id.book_name);
+        authorName = (EditText) rootView.findViewById(R.id.author_name);
+        pageNumber = (EditText) rootView.findViewById(R.id.page_number);
+        yearNumber = (EditText) rootView.findViewById(R.id.year_number);
+        publishName = (EditText) rootView.findViewById(R.id.publish_name);
+
         quoteDataRepository = new QuoteDataRepository();
+
         RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
         quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
@@ -123,6 +161,35 @@ public class AddQuoteFragment extends Fragment {
             }
             public void onNothingSelected(AdapterView<?> parent) { }
         });
+
+        if (quoteIdFromIntent != null) {
+            RealmResults<QuoteText> quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteIdFromIntent);
+            quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+                @Override
+                public void onChange(RealmResults<QuoteText> element) {
+                    quoteTextObject = element.first();
+                    quoteText.setText(quoteTextObject.getQuoteText());
+                    BookName bookNameObject = quoteTextObject.getBookName();
+                    bookName.setText(bookNameObject.getBookName());
+                    RealmList<BookAuthor> bookAuthors = bookNameObject.getBookAuthors();
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bookAuthors.size(); i++) {
+                        if (i != bookAuthors.size() - 1) {
+                            builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
+                        } else {
+                            builder.append(bookAuthors.get(i).getBookAuthor());
+                        }
+                    }
+                    String currentAuthorName = builder.toString();
+                    authorName.setText(currentAuthorName);
+                    pageNumber.setText(quoteTextObject.getPage().getPageNumber());
+                    publishName.setText(bookNameObject.getPublisher().getPublisherName());
+                    yearNumber.setText(bookNameObject.getYear().getYearNumber());
+                    spinner.setSelection(spinnerAdapter.getPosition(quoteTextObject.getCategory().getCategory()));
+                }
+            });
+        }
+
         return rootView;
     }
 
@@ -162,10 +229,6 @@ public class AddQuoteFragment extends Fragment {
      * @return false if EditText not empty and true if else.
      */
     public boolean isEditTextEmpty() {
-        EditText quoteText = (EditText) rootView.findViewById(R.id.quote_text);
-        EditText bookName = (EditText) rootView.findViewById(R.id.book_name);
-        EditText authorName = (EditText) rootView.findViewById(R.id.author_name);
-
         currentQuoteText = quoteText.getText().toString();
         currentBookName = bookName.getText().toString();
         currentAuthorName = authorName.getText().toString();
@@ -189,10 +252,6 @@ public class AddQuoteFragment extends Fragment {
      * Method creates quote properties map for QuoteCreator class and pass map to it.
      */
     public void createMapOfQuoteProperties() {
-        EditText pageNumber = (EditText) rootView.findViewById(R.id.page_number);
-        EditText yearNumber = (EditText) rootView.findViewById(R.id.year_number);
-        EditText publishName = (EditText) rootView.findViewById(R.id.publish_name);
-
         final String currentPageNumber = pageNumber.getText().toString();
         final String currentYearNumber = yearNumber.getText().toString();
         final String currentPublishName = publishName.getText().toString();
@@ -212,6 +271,10 @@ public class AddQuoteFragment extends Fragment {
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, "MyQuote");
 
         quoteDataRepository.saveQuote(mapOfQuoteProperties);
+
+//        if (quoteIdFromIntent != null) {
+//            quoteDataRepository.saveChangedQuoteObject(quoteTextObject, mapOfQuoteProperties);
+//        }
     }
 
     @Override

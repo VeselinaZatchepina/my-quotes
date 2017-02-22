@@ -28,7 +28,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     }
 
     public void toDoWhenFabIsPressed() {
-        Intent intent = AddQuoteActivity.newIntent(this);
+        Intent intent = AddQuoteActivity.newIntent(this, null);
         startActivity(intent);
     }
 

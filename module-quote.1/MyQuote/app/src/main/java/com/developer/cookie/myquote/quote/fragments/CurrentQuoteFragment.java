@@ -22,13 +22,13 @@ import io.realm.RealmResults;
  * CurrentQuoteFragment is used for display information about quote.
  */
 public class CurrentQuoteFragment extends Fragment {
-    private static final String CURRENT_QUOTE_TEXT = "current_quote_text";
-    String currentQuoteText;
+    private static final String CURRENT_QUOTE_ID = "current_quote_text";
+    Long currentQuoteTextId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentQuoteText = getArguments().getString(CURRENT_QUOTE_TEXT);
+        currentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CurrentQuoteFragment extends Fragment {
         final TextView yearNumberView = (TextView) rootView.findViewById(R.id.current_year_number);
 
         QuoteDataRepository quoteDataRepository = new QuoteDataRepository();
-        RealmResults<QuoteText> currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteText(currentQuoteText);
+        RealmResults<QuoteText> currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
         currentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
@@ -70,9 +70,9 @@ public class CurrentQuoteFragment extends Fragment {
         return rootView;
     }
 
-    public static CurrentQuoteFragment newInstance(String currentQuoteText) {
+    public static CurrentQuoteFragment newInstance(Long currentQuoteTextId) {
         Bundle args = new Bundle();
-        args.putSerializable(CURRENT_QUOTE_TEXT, currentQuoteText);
+        args.putSerializable(CURRENT_QUOTE_ID, currentQuoteTextId);
         CurrentQuoteFragment fragment = new CurrentQuoteFragment();
         fragment.setArguments(args);
         return fragment;

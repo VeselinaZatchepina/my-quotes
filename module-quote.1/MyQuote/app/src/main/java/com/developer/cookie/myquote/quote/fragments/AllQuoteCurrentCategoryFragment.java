@@ -15,7 +15,7 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
-import com.developer.cookie.myquote.quote.activities.QuotePagerActivity;
+import com.developer.cookie.myquote.quote.activities.CurrentQuotePagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +31,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     View rootView;
     String categoryName;
     QuoteDataRepository quoteDataRepository;
+    ArrayList<Long> listOfQuotesId;
+    List<String> currentCategoryQuoteTextList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,13 +53,18 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
-                List<String> currentCategoryQuoteList = new ArrayList<String>();
+                currentCategoryQuoteTextList = new ArrayList<String>();
                 for (int i = 0; i < element.size(); i++) {
-                    currentCategoryQuoteList.add(element.get(i).getQuoteText());
+                    currentCategoryQuoteTextList.add(element.get(i).getQuoteText());
                 }
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteList));
+                recyclerView.setAdapter(new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteTextList));
+                // Create list of quote's id for data transfer to another fragment
+                listOfQuotesId = new ArrayList<Long>();
+                for(int i = 0; i < element.size(); i++) {
+                    listOfQuotesId.add(element.get(i).getId());
+                }
             }
         });
         return rootView;
@@ -88,8 +95,10 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent intent = QuotePagerActivity.newIntent(getActivity(),
-                        (ArrayList<String>) currentCategoryQuoteList);
+                long currentId = listOfQuotesId.get(currentCategoryQuoteTextList
+                        .indexOf(currentQuote.getText().toString()));
+                Intent intent = CurrentQuotePagerActivity.newIntent(getActivity(),
+                        listOfQuotesId, currentId);
                 startActivity(intent);
             }
         }

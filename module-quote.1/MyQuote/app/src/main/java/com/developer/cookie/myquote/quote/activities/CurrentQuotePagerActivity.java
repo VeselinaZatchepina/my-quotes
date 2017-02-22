@@ -18,44 +18,54 @@ import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 
 import java.util.ArrayList;
 
-public class QuotePagerActivity extends AppCompatActivity {
-    private static final String QUOTE_LIST = "com.developer.cookie.myquote.quote_list";
+public class CurrentQuotePagerActivity extends AppCompatActivity {
+    public static final String QUOTE_ID_LIST = "com.developer.cookie.myquote.quote_list";
+    public static final String CURRENT_ID = "com.developer.cookie.myquote.current_position";
     private ViewPager viewPager;
-    ArrayList<String> quoteList;
+    ArrayList<Long> quoteIdList;
+    long currentQuoteTextId;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_pager);
-        quoteList = getIntent().getStringArrayListExtra(QUOTE_LIST);
+        quoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
+        currentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
 
         viewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return CurrentQuoteFragment.newInstance(quoteList.get(position));
+                return CurrentQuoteFragment.newInstance(quoteIdList.get(position));
             }
-
             @Override
             public int getCount() {
-                return quoteList.size();
+                return quoteIdList.size();
             }
         });
+
+        // set viewPager on position of current clicked quote
+        for (int i = 0; i <quoteIdList.size(); i++) {
+            if (quoteIdList.get(i) == currentQuoteTextId) {
+                viewPager.setCurrentItem(i);
+            }
+        }
 
         FloatingActionButton editFab = (FloatingActionButton) findViewById(R.id.edit_fab);
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddQuoteActivity.newIntent(QuotePagerActivity.this);
+                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, currentQuoteTextId);
                 startActivity(intent);
             }
         });
     }
 
-    public static Intent newIntent(Context context, ArrayList<String> quoteList) {
-        Intent intent = new Intent(context, QuotePagerActivity.class);
-        intent.putStringArrayListExtra(QUOTE_LIST, quoteList);
+    public static Intent newIntent(Context context, ArrayList<Long> quoteList, long currentId) {
+        Intent intent = new Intent(context, CurrentQuotePagerActivity.class);
+        intent.putExtra(QUOTE_ID_LIST, quoteList);
+        intent.putExtra(CURRENT_ID, currentId);
         return intent;
     }
 }
