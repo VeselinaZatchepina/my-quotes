@@ -18,10 +18,7 @@ import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
-import com.developer.cookie.myquote.database.model.BookAuthor;
-import com.developer.cookie.myquote.database.model.BookName;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 
@@ -32,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import io.realm.RealmChangeListener;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 
@@ -63,16 +59,18 @@ public class AddQuoteFragment extends Fragment {
     EditText yearNumber;
     EditText publishName;
 
-    QuoteText quoteTextObject;
+    RealmResults<QuoteCategory> quoteCategoryList;
 
     public AddQuoteFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        quoteDataRepository = new QuoteDataRepository();
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
         Serializable quoteTextId = getActivity()
                 .getIntent()
-                .getSerializableExtra(AddQuoteActivity.QUOTE_DATA_FOR_EDIT);
+                .getSerializableExtra(AddQuoteActivity.QUOTE_TEXT_ID);
         if (quoteTextId!= null) {
             quoteIdFromIntent = Long.valueOf(quoteTextId.toString());
         }
@@ -81,114 +79,114 @@ public class AddQuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-        spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+            rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
+            spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
 
-        quoteText = (EditText) rootView.findViewById(R.id.quote_text);
-        bookName = (EditText) rootView.findViewById(R.id.book_name);
-        authorName = (EditText) rootView.findViewById(R.id.author_name);
-        pageNumber = (EditText) rootView.findViewById(R.id.page_number);
-        yearNumber = (EditText) rootView.findViewById(R.id.year_number);
-        publishName = (EditText) rootView.findViewById(R.id.publish_name);
+            quoteText = (EditText) rootView.findViewById(R.id.quote_text);
+            bookName = (EditText) rootView.findViewById(R.id.book_name);
+            authorName = (EditText) rootView.findViewById(R.id.author_name);
+            pageNumber = (EditText) rootView.findViewById(R.id.page_number);
+            yearNumber = (EditText) rootView.findViewById(R.id.year_number);
+            publishName = (EditText) rootView.findViewById(R.id.publish_name);
 
-        quoteDataRepository = new QuoteDataRepository();
-
-        RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
-        quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-            @Override
-            public void onChange(RealmResults<QuoteCategory> element) {
-                createQuoteCategoryListForSpinner(element);
-                // Set hint for spinner
-                spinnerAdapter = new ArrayAdapter<String>(getActivity(),
-                        android.R.layout.simple_spinner_dropdown_item) {
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        View v = super.getView(position, convertView, parent);
-                        if (position == getCount()) {
-                            ((TextView)v.findViewById(android.R.id.text1)).setText("");
-                            ((TextView)v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
-                        }
-                        return v;
-                    }
-
-                    @Override
-                    public int getCount() {
-                        return super.getCount()-1;
-                    }
-                };
-                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
-                spinnerAdapter.addAll(listOfAllCategories);
-                spinner.setAdapter(spinnerAdapter);
-                spinner.setSelection(spinnerAdapter.getCount());
-            }
-        });
-
-        //Add listener to spinner
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                final String selectedItem = parent.getItemAtPosition(position).toString();
-                if (selectedItem.equals(getString(R.string.spinner_add_category))) {
-                    // Create dialog for add category
-                    LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                    View dialogView = layoutInflater.inflate(R.layout.add_category_dialog, null);
-                    AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-                    mDialogBuilder.setView(dialogView);
-                    final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
-                    mDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton("OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            String currentUserInput = userInput.getText().toString();
-                                            listOfAllCategories.add(0, currentUserInput);
-                                            spinnerAdapter.clear();
-                                            spinnerAdapter.addAll(listOfAllCategories);
-                                            spinner.setSelection(0);
-                                            valueOfCategory = currentUserInput;
-                                        }
-                                    })
-                            .setNegativeButton("Отмена",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-                    AlertDialog alertDialog = mDialogBuilder.create();
-                    alertDialog.show();
-                } else {
-                    valueOfCategory = selectedItem;
-                }
-            }
-            public void onNothingSelected(AdapterView<?> parent) { }
-        });
-
-        if (quoteIdFromIntent != null) {
-            RealmResults<QuoteText> quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteIdFromIntent);
-            quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+            quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
                 @Override
-                public void onChange(RealmResults<QuoteText> element) {
-                    quoteTextObject = element.first();
-                    quoteText.setText(quoteTextObject.getQuoteText());
-                    BookName bookNameObject = quoteTextObject.getBookName();
-                    bookName.setText(bookNameObject.getBookName());
-                    RealmList<BookAuthor> bookAuthors = bookNameObject.getBookAuthors();
-                    StringBuilder builder = new StringBuilder();
-                    for (int i = 0; i < bookAuthors.size(); i++) {
-                        if (i != bookAuthors.size() - 1) {
-                            builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
-                        } else {
-                            builder.append(bookAuthors.get(i).getBookAuthor());
-                        }
+                public void onChange(RealmResults<QuoteCategory> element) {
+                    createQuoteCategoryListForSpinner(element);
+                    // Set hint for spinner
+                    if (isAdded()) {
+                        spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+                            @Override
+                            public View getView(int position, View convertView, ViewGroup parent) {
+                                View v = super.getView(position, convertView, parent);
+                                if (position == getCount()) {
+                                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
+                                }
+                                return v;
+                            }
+
+                            @Override
+                            public int getCount() {
+                                return super.getCount() - 1;
+                            }
+                        };
                     }
-                    String currentAuthorName = builder.toString();
-                    authorName.setText(currentAuthorName);
-                    pageNumber.setText(quoteTextObject.getPage().getPageNumber());
-                    publishName.setText(bookNameObject.getPublisher().getPublisherName());
-                    yearNumber.setText(bookNameObject.getYear().getYearNumber());
-                    spinner.setSelection(spinnerAdapter.getPosition(quoteTextObject.getCategory().getCategory()));
+                    //spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
+                    spinnerAdapter.addAll(listOfAllCategories);
+                    spinner.setAdapter(spinnerAdapter);
+                    spinner.setSelection(spinnerAdapter.getCount());
+
+//                if (quoteIdFromIntent != null) {
+//                    RealmResults<QuoteText> quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteIdFromIntent);
+//                    quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+//                        @Override
+//                        public void onChange(RealmResults<QuoteText> element) {
+//                            quoteTextObject = element.first();
+//                            quoteText.setText(quoteTextObject.getQuoteText());
+//                            BookName bookNameObject = quoteTextObject.getBookName();
+//                            bookName.setText(bookNameObject.getBookName());
+//                            RealmList<BookAuthor> bookAuthors = bookNameObject.getBookAuthors();
+//                            StringBuilder builder = new StringBuilder();
+//                            for (int i = 0; i < bookAuthors.size(); i++) {
+//                                if (i != bookAuthors.size() - 1) {
+//                                    builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
+//                                } else {
+//                                    builder.append(bookAuthors.get(i).getBookAuthor());
+//                                }
+//                            }
+//                            String currentAuthorName = builder.toString();
+//                            authorName.setText(currentAuthorName);
+//                            pageNumber.setText(quoteTextObject.getPage().getPageNumber());
+//                            publishName.setText(bookNameObject.getPublisher().getPublisherName());
+//                            yearNumber.setText(bookNameObject.getYear().getYearNumber());
+//                            spinner.setSelection(listOfAllCategories.indexOf(quoteTextObject.getCategory().getCategory()));
+//                        }
+//                    });
+//                }
                 }
             });
-        }
+
+            //Add listener to spinner
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    final String selectedItem = parent.getItemAtPosition(position).toString();
+                    if (selectedItem.equals(getString(R.string.spinner_add_category))) {
+                        // Create dialog for add category
+                        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                        View dialogView = layoutInflater.inflate(R.layout.add_category_dialog, null);
+                        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+                        mDialogBuilder.setView(dialogView);
+                        final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
+                        mDialogBuilder
+                                .setCancelable(false)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                String currentUserInput = userInput.getText().toString();
+                                                listOfAllCategories.add(0, currentUserInput);
+                                                spinnerAdapter.clear();
+                                                spinnerAdapter.addAll(listOfAllCategories);
+                                                spinner.setSelection(0);
+                                                valueOfCategory = currentUserInput;
+                                            }
+                                        })
+                                .setNegativeButton("Отмена",
+                                        new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int id) {
+                                                dialog.cancel();
+                                            }
+                                        });
+                        AlertDialog alertDialog = mDialogBuilder.create();
+                        alertDialog.show();
+                    } else {
+                        valueOfCategory = selectedItem;
+                    }
+                }
+
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
 
         return rootView;
     }
@@ -216,11 +214,15 @@ public class AddQuoteFragment extends Fragment {
                     listOfAllCategories.add(category);
                 }
             }
-            listOfAllCategories.add(getString(R.string.spinner_add_category));
-            listOfAllCategories.add(getString(R.string.spinner_hint));
+            if(isAdded()) {
+                listOfAllCategories.add(getString(R.string.spinner_add_category));
+                listOfAllCategories.add(getString(R.string.spinner_hint));
+            }
         } else {
-            listOfAllCategories.add(getString(R.string.spinner_add_category));
-            listOfAllCategories.add(getString(R.string.spinner_hint));
+            if(isAdded()) {
+                listOfAllCategories.add(getString(R.string.spinner_add_category));
+                listOfAllCategories.add(getString(R.string.spinner_hint));
+            }
         }
     }
 

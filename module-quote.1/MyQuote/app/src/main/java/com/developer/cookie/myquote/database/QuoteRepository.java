@@ -27,7 +27,6 @@ public interface QuoteRepository {
      */
     void saveQuote(HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
-    void saveChangedQuoteObject(QuoteText quoteText, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
     /**
      * Method requests QuoteText list from the database.
      * @return List<QuoteText>

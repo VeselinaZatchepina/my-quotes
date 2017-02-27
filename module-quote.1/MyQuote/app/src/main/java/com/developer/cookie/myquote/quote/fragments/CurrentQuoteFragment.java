@@ -24,11 +24,15 @@ import io.realm.RealmResults;
 public class CurrentQuoteFragment extends Fragment {
     private static final String CURRENT_QUOTE_ID = "current_quote_text";
     Long currentQuoteTextId;
+    QuoteDataRepository quoteDataRepository;
+    RealmResults<QuoteText> currentQuoteObjectList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         currentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
+        quoteDataRepository = new QuoteDataRepository();
+        currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
     }
 
     @Override
@@ -42,8 +46,6 @@ public class CurrentQuoteFragment extends Fragment {
         final TextView publisherNameTextView = (TextView) rootView.findViewById(R.id.current_publisher_name);
         final TextView yearNumberView = (TextView) rootView.findViewById(R.id.current_year_number);
 
-        QuoteDataRepository quoteDataRepository = new QuoteDataRepository();
-        RealmResults<QuoteText> currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
         currentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {

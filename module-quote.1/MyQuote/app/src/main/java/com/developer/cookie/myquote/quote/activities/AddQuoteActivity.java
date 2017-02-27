@@ -9,7 +9,7 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentActivity {
-    public static final String QUOTE_DATA_FOR_EDIT = "quote_data_for_edit";
+    public static final String QUOTE_TEXT_ID = "quote_text_id";
 
     @Override
     public Fragment createFragment() {
@@ -26,8 +26,7 @@ public class AddQuoteActivity extends SingleFragmentActivity {
         AddQuoteFragment addQuoteFragment =  ((AddQuoteFragment)currentFragment);
         if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint()) {
             addQuoteFragment.createMapOfQuoteProperties();
-            Intent intent = QuoteCategoryMainActivity.newIntent(this);
-            startActivity(intent);
+            this.finish();
         }
         if (addQuoteFragment.isSpinnerSelectedItemHint()) {
             Toast.makeText(this, "Choose category", Toast.LENGTH_LONG).show();
@@ -36,7 +35,7 @@ public class AddQuoteActivity extends SingleFragmentActivity {
 
     public static Intent newIntent(Context context, Long currentQuoteTextId) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_DATA_FOR_EDIT, currentQuoteTextId);
+        intent.putExtra(QUOTE_TEXT_ID, currentQuoteTextId);
         return intent;
     }
 }

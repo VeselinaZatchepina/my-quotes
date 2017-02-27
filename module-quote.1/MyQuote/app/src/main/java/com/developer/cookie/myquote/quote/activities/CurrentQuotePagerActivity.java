@@ -24,6 +24,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     private ViewPager viewPager;
     ArrayList<Long> quoteIdList;
     long currentQuoteTextId;
+    long quoteTextIdForIntent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
+                quoteTextIdForIntent = quoteIdList.get(position);
                 return CurrentQuoteFragment.newInstance(quoteIdList.get(position));
             }
             @Override
@@ -56,7 +58,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, currentQuoteTextId);
+                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, quoteTextIdForIntent);
                 startActivity(intent);
             }
         });

@@ -3,6 +3,7 @@ package com.developer.cookie.myquote.quote.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
@@ -38,24 +39,30 @@ public class QuoteCategoryFragment extends Fragment {
     Pair<List<String>,List<Integer>> pair;
 
     QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
+    RealmResults<QuoteCategory> quoteCategoryList;
 
     public QuoteCategoryFragment() { }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        quoteDataRepository = new QuoteDataRepository();
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
 
-        quoteDataRepository = new QuoteDataRepository();
-        RealmResults<QuoteCategory> quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
         quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
             public void onChange(RealmResults<QuoteCategory> element) {
                 createPairObject(element);
+                quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
                 // Create and set custom adapter for recyclerview
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
                 recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
             }
         });

@@ -34,6 +34,10 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     ArrayList<Long> listOfQuotesId;
     List<String> currentCategoryQuoteTextList;
 
+    AllQuoteCurrentCategoryRecyclerViewAdapter recyclerViewAdapter;
+
+    RealmResults<QuoteText> quoteTexts;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,14 +46,15 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 .getIntent()
                 .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
                 .toString();
+        quoteDataRepository = new QuoteDataRepository();
+        quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(categoryName);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-        quoteDataRepository = new QuoteDataRepository();
-        RealmResults<QuoteText> quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(categoryName);
+
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
@@ -59,7 +64,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 }
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteTextList));
+                recyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteTextList);
+                recyclerView.setAdapter(recyclerViewAdapter);
                 // Create list of quote's id for data transfer to another fragment
                 listOfQuotesId = new ArrayList<Long>();
                 for(int i = 0; i < element.size(); i++) {
