@@ -10,18 +10,17 @@ import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
-import com.developer.cookie.myquote.database.model.BookAuthor;
-import com.developer.cookie.myquote.database.model.BookName;
 import com.developer.cookie.myquote.database.model.QuoteText;
+import com.developer.cookie.myquote.utils.FillViewsWithCurrentQuoteDataHelper;
 
 import io.realm.RealmChangeListener;
-import io.realm.RealmList;
 import io.realm.RealmResults;
 
 /**
  * CurrentQuoteFragment is used for display information about quote.
  */
 public class CurrentQuoteFragment extends Fragment {
+    private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
     private static final String CURRENT_QUOTE_ID = "current_quote_text";
     Long currentQuoteTextId;
     QuoteDataRepository quoteDataRepository;
@@ -49,24 +48,8 @@ public class CurrentQuoteFragment extends Fragment {
         currentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
-                QuoteText quoteTextObject = element.first();
-                quoteTextView.setText(quoteTextObject.getQuoteText());
-                BookName bookName = quoteTextObject.getBookName();
-                bookNameView.setText(bookName.getBookName());
-                RealmList<BookAuthor> bookAuthors = bookName.getBookAuthors();
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bookAuthors.size(); i++) {
-                    if (i != bookAuthors.size() - 1) {
-                        builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
-                    } else {
-                        builder.append(bookAuthors.get(i).getBookAuthor());
-                    }
-                }
-                String authorName = builder.toString();
-                authorNameView.setText(authorName);
-                pageNumberView.setText(quoteTextObject.getPage().getPageNumber());
-                publisherNameTextView.setText(bookName.getPublisher().getPublisherName());
-                yearNumberView.setText(bookName.getYear().getYearNumber());
+                FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
+                        bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView);
             }
         });
         return rootView;

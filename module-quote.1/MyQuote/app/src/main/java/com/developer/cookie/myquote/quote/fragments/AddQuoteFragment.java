@@ -19,10 +19,11 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
+import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
+import com.developer.cookie.myquote.utils.FillViewsWithCurrentQuoteDataHelper;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,13 +34,12 @@ import io.realm.RealmResults;
 
 
 /**
- * AddQuoteFragment is used for input properties of the quote.
+ * AddQuoteFragment is used for input properties of the quote. It used for save and edit quotes.
  */
 public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
 
-    private View rootView;
     QuoteDataRepository quoteDataRepository;
     private List<String> listOfAllCategories;
     ArrayAdapter<String> spinnerAdapter;
@@ -50,8 +50,6 @@ public class AddQuoteFragment extends Fragment {
     String currentBookName;
     String currentAuthorName;
 
-    Long quoteIdFromIntent;
-
     EditText quoteText;
     EditText bookName;
     EditText authorName;
@@ -60,6 +58,10 @@ public class AddQuoteFragment extends Fragment {
     EditText publishName;
 
     RealmResults<QuoteCategory> quoteCategoryList;
+    RealmResults<QuoteText> quoteTexts;
+
+    Long quoteTextId;
+    String currentQuoteTextObjectCategory;
 
     public AddQuoteFragment() { }
 
@@ -67,19 +69,19 @@ public class AddQuoteFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         quoteDataRepository = new QuoteDataRepository();
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
-        Serializable quoteTextId = getActivity()
-                .getIntent()
-                .getSerializableExtra(AddQuoteActivity.QUOTE_TEXT_ID);
-        if (quoteTextId!= null) {
-            quoteIdFromIntent = Long.valueOf(quoteTextId.toString());
+        // Get quote id for edit
+        quoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
+        if (quoteTextId!= -1) {
+            quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteTextId);
         }
+        // Get all quote categories
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
             spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
 
             quoteText = (EditText) rootView.findViewById(R.id.quote_text);
@@ -89,6 +91,7 @@ public class AddQuoteFragment extends Fragment {
             yearNumber = (EditText) rootView.findViewById(R.id.year_number);
             publishName = (EditText) rootView.findViewById(R.id.publish_name);
 
+            // Work with spinner
             quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
                 @Override
                 public void onChange(RealmResults<QuoteCategory> element) {
@@ -112,38 +115,27 @@ public class AddQuoteFragment extends Fragment {
                             }
                         };
                     }
-                    //spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) ;
                     spinnerAdapter.addAll(listOfAllCategories);
                     spinner.setAdapter(spinnerAdapter);
                     spinner.setSelection(spinnerAdapter.getCount());
+                    // If we choose Quote for edit we set spinner to current quote category position.
+                    if (quoteTextId != -1) {
+                        spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                    }
+                }
+            });
 
-//                if (quoteIdFromIntent != null) {
-//                    RealmResults<QuoteText> quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteIdFromIntent);
-//                    quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
-//                        @Override
-//                        public void onChange(RealmResults<QuoteText> element) {
-//                            quoteTextObject = element.first();
-//                            quoteText.setText(quoteTextObject.getQuoteText());
-//                            BookName bookNameObject = quoteTextObject.getBookName();
-//                            bookName.setText(bookNameObject.getBookName());
-//                            RealmList<BookAuthor> bookAuthors = bookNameObject.getBookAuthors();
-//                            StringBuilder builder = new StringBuilder();
-//                            for (int i = 0; i < bookAuthors.size(); i++) {
-//                                if (i != bookAuthors.size() - 1) {
-//                                    builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
-//                                } else {
-//                                    builder.append(bookAuthors.get(i).getBookAuthor());
-//                                }
-//                            }
-//                            String currentAuthorName = builder.toString();
-//                            authorName.setText(currentAuthorName);
-//                            pageNumber.setText(quoteTextObject.getPage().getPageNumber());
-//                            publishName.setText(bookNameObject.getPublisher().getPublisherName());
-//                            yearNumber.setText(bookNameObject.getYear().getYearNumber());
-//                            spinner.setSelection(listOfAllCategories.indexOf(quoteTextObject.getCategory().getCategory()));
-//                        }
-//                    });
-//                }
+            // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
+            quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+                @Override
+                public void onChange(RealmResults<QuoteText> element) {
+                    FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
+                            quoteText, bookName, authorName, pageNumber, publishName, yearNumber);
+                    QuoteText quoteTextObject = element.first();
+                    currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
+                    if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
+                        spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                    }
                 }
             });
 
@@ -184,8 +176,7 @@ public class AddQuoteFragment extends Fragment {
                     }
                 }
 
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
+                public void onNothingSelected(AdapterView<?> parent) { }
             });
 
         return rootView;

@@ -19,6 +19,7 @@ import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import java.util.ArrayList;
 
 public class CurrentQuotePagerActivity extends AppCompatActivity {
+    private static final String LOG_TAG = CurrentQuotePagerActivity.class.getSimpleName();
     public static final String QUOTE_ID_LIST = "com.developer.cookie.myquote.quote_list";
     public static final String CURRENT_ID = "com.developer.cookie.myquote.current_position";
     private ViewPager viewPager;
@@ -38,7 +39,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                quoteTextIdForIntent = quoteIdList.get(position);
                 return CurrentQuoteFragment.newInstance(quoteIdList.get(position));
             }
             @Override
@@ -48,11 +48,25 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         });
 
         // set viewPager on position of current clicked quote
-        for (int i = 0; i <quoteIdList.size(); i++) {
+        for (int i = 0; i < quoteIdList.size(); i++) {
             if (quoteIdList.get(i) == currentQuoteTextId) {
                 viewPager.setCurrentItem(i);
+                quoteTextIdForIntent = quoteIdList.get(viewPager.getCurrentItem());
             }
         }
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+
+            @Override
+            public void onPageSelected(int position) {
+                quoteTextIdForIntent = quoteIdList.get(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
 
         FloatingActionButton editFab = (FloatingActionButton) findViewById(R.id.edit_fab);
         editFab.setOnClickListener(new View.OnClickListener() {
