@@ -62,6 +62,12 @@ public interface QuoteRepository {
     void saveChangedQuoteObject(long quoteTextId, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
     /**
+     * Method delete quote object from db
+     * @param currentQuoteTextId
+     */
+    void deleteQuoteTextObject(long currentQuoteTextId);
+
+    /**
      * Method closes realm connection.
      */
     void closeDbConnect();

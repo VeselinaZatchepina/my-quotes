@@ -17,4 +17,7 @@
     <!-- QuoteCategory recyclerView empty view -->
     <string name="title_empty_view">You have no quote</string>
 
+    <!-- Menu -->
+    <string name="delete_title">Delete quote</string>
+
 </resources>

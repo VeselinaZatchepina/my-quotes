@@ -58,6 +58,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
+                if (element.size() == 0) {
+                    getActivity().finish();
+                }
                 currentCategoryQuoteTextList = new ArrayList<String>();
                 for (int i = 0; i < element.size(); i++) {
                     currentCategoryQuoteTextList.add(element.get(i).getQuoteText());

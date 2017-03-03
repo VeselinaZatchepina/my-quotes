@@ -132,12 +132,14 @@ public class AddQuoteFragment extends Fragment {
             quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
                 @Override
                 public void onChange(RealmResults<QuoteText> element) {
-                    FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
-                            quoteText, bookName, authorName, pageNumber, publishName, yearNumber);
-                    quoteTextObject = element.first();
-                    currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
-                    if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
-                        spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                    if (element.size() > 0) {
+                        FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
+                                quoteText, bookName, authorName, pageNumber, publishName, yearNumber);
+                        quoteTextObject = element.first();
+                        currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
+                        if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
+                            spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                        }
                     }
                 }
             });

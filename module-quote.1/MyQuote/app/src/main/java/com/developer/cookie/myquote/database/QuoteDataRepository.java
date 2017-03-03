@@ -178,6 +178,29 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
+    public void deleteQuoteTextObject(final long currentQuoteTextId) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).equalTo("id", currentQuoteTextId).findAll();
+                QuoteText quoteText = quoteTexts.first();
+                quoteText.getBookName().getBookAuthors().deleteAllFromRealm();
+                quoteText.getBookName().getYear().deleteFromRealm();
+                quoteText.getBookName().getPublisher().deleteFromRealm();
+                quoteText.getBookName().deleteFromRealm();
+                quoteText.getDate().deleteFromRealm();
+                quoteText.getPage().deleteFromRealm();
+                QuoteCategory quoteCategory = quoteText.getCategory();
+                quoteCategory.setQuoteCountCurrentCategory(quoteCategory.getQuoteCountCurrentCategory() - 1);
+                if (quoteCategory.getQuoteCountCurrentCategory() == 0) {
+                    quoteText.getCategory().deleteFromRealm();
+                }
+                quoteText.deleteFromRealm();
+            }
+        });
+    }
+
+    @Override
     public void closeDbConnect() {
         realm.close();
     }

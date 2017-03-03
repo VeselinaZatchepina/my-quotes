@@ -4,6 +4,9 @@ package com.developer.cookie.myquote.quote.fragments;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,10 +28,12 @@ public class CurrentQuoteFragment extends Fragment {
     Long currentQuoteTextId;
     QuoteDataRepository quoteDataRepository;
     RealmResults<QuoteText> currentQuoteObjectList;
+    String currentCategory;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         currentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
         quoteDataRepository = new QuoteDataRepository();
         currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
@@ -48,8 +53,11 @@ public class CurrentQuoteFragment extends Fragment {
         currentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
-                FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
-                        bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView);
+                if (element.size() > 0) {
+                    currentCategory = element.first().getCategory().getCategory();
+                    FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
+                            bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView);
+                }
             }
         });
         return rootView;
@@ -61,5 +69,22 @@ public class CurrentQuoteFragment extends Fragment {
         CurrentQuoteFragment fragment = new CurrentQuoteFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.current_quote_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.delete_quote:
+                quoteDataRepository.deleteQuoteTextObject(currentQuoteTextId);
+                getActivity().finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
