@@ -63,6 +63,8 @@ public class AddQuoteFragment extends Fragment {
     Long quoteTextId;
     String currentQuoteTextObjectCategory;
 
+    QuoteText quoteTextObject;
+
     public AddQuoteFragment() { }
 
     @Override
@@ -126,18 +128,20 @@ public class AddQuoteFragment extends Fragment {
             });
 
             // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
+        if (quoteTextId != -1) {
             quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
                 @Override
                 public void onChange(RealmResults<QuoteText> element) {
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
                             quoteText, bookName, authorName, pageNumber, publishName, yearNumber);
-                    QuoteText quoteTextObject = element.first();
+                    quoteTextObject = element.first();
                     currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
                     if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
                         spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
                     }
                 }
             });
+        }
 
             //Add listener to spinner
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -250,7 +254,7 @@ public class AddQuoteFragment extends Fragment {
         final String currentPublishName = publishName.getText().toString();
 
         Calendar currentCreateDate = Calendar.getInstance();
-        long currentMillis = currentCreateDate.getTimeInMillis();
+        String currentDate = String.format("%1$td %1$tb %1$tY", currentCreateDate);
 
         HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, currentQuoteText);
@@ -260,14 +264,14 @@ public class AddQuoteFragment extends Fragment {
         mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);
         mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, currentYearNumber);
         mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, currentPublishName);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentMillis));
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentDate));
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, "MyQuote");
 
-        quoteDataRepository.saveQuote(mapOfQuoteProperties);
-
-//        if (quoteIdFromIntent != null) {
-//            quoteDataRepository.saveChangedQuoteObject(quoteTextObject, mapOfQuoteProperties);
-//        }
+        if (quoteTextId != -1) {
+            quoteDataRepository.saveChangedQuoteObject(quoteTextId, mapOfQuoteProperties);
+        } else {
+            quoteDataRepository.saveQuote(mapOfQuoteProperties);
+        }
     }
 
     @Override

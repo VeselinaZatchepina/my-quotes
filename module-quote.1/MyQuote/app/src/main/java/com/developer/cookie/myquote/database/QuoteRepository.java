@@ -55,6 +55,13 @@ public interface QuoteRepository {
     List<QuoteText> getQuoteTextObjectsByQuoteId(Long quoteTextId);
 
     /**
+     * Method saves edited quote
+     * @param quoteTextId id current quote
+     * @param mapOfQuoteProperties
+     */
+    void saveChangedQuoteObject(long quoteTextId, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
+
+    /**
      * Method closes realm connection.
      */
     void closeDbConnect();
