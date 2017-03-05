@@ -65,7 +65,13 @@ public interface QuoteRepository {
      * Method delete quote object from db
      * @param currentQuoteTextId
      */
-    void deleteQuoteTextObject(long currentQuoteTextId);
+    void deleteQuoteTextObjectById(long currentQuoteTextId);
+
+    /**
+     * Method delete all quotes with current category
+     * @param currentCategory
+     */
+    void deleteAllQuotesWithCurrentCategory(final String currentCategory);
 
     /**
      * Method closes realm connection.

@@ -81,7 +81,7 @@ public class CurrentQuoteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_quote:
-                quoteDataRepository.deleteQuoteTextObject(currentQuoteTextId);
+                quoteDataRepository.deleteQuoteTextObjectById(currentQuoteTextId);
                 getActivity().finish();
                 break;
         }

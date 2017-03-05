@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,10 +56,32 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
 
+        // Create callback for swipe to delete
+        final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                String currentQuoteText = recyclerViewAdapter.currentCategoryQuoteList.get(viewHolder.getAdapterPosition());
+                RealmResults<QuoteText> quoteTextRealmResults = quoteDataRepository.getQuoteTextObjectsByQuoteText(currentQuoteText);
+                quoteTextRealmResults.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+                    @Override
+                    public void onChange(RealmResults<QuoteText> element) {
+                        if (element.size() > 0) {
+                            quoteDataRepository.deleteQuoteTextObjectById(element.first().getId());
+                        }
+                    }
+                });
+            }
+        };
+
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
-                if (element.size() == 0) {
+                if (element.size() == 0 && getActivity() != null) {
                     getActivity().finish();
                 }
                 currentCategoryQuoteTextList = new ArrayList<String>();
@@ -74,6 +97,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 for(int i = 0; i < element.size(); i++) {
                     listOfQuotesId.add(element.get(i).getId());
                 }
+                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+                itemTouchHelper.attachToRecyclerView(recyclerView);
             }
         });
         return rootView;

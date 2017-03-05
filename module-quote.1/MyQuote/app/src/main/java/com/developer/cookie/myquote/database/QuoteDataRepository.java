@@ -178,24 +178,27 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public void deleteQuoteTextObject(final long currentQuoteTextId) {
+    public void deleteQuoteTextObjectById(final long currentQuoteTextId) {
         realm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class).equalTo("id", currentQuoteTextId).findAll();
                 QuoteText quoteText = quoteTexts.first();
-                quoteText.getBookName().getBookAuthors().deleteAllFromRealm();
-                quoteText.getBookName().getYear().deleteFromRealm();
-                quoteText.getBookName().getPublisher().deleteFromRealm();
-                quoteText.getBookName().deleteFromRealm();
-                quoteText.getDate().deleteFromRealm();
-                quoteText.getPage().deleteFromRealm();
-                QuoteCategory quoteCategory = quoteText.getCategory();
-                quoteCategory.setQuoteCountCurrentCategory(quoteCategory.getQuoteCountCurrentCategory() - 1);
-                if (quoteCategory.getQuoteCountCurrentCategory() == 0) {
-                    quoteText.getCategory().deleteFromRealm();
+                deleteQuoteTextObject(quoteText);
+            }
+        });
+    }
+
+    @Override
+    public void deleteAllQuotesWithCurrentCategory(final String currentCategory) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
+                        .equalTo("category.category", currentCategory).findAll();
+                for (QuoteText quoteText : quoteTexts) {
+                    deleteQuoteTextObject(quoteText);
                 }
-                quoteText.deleteFromRealm();
             }
         });
     }
@@ -231,5 +234,20 @@ public class QuoteDataRepository implements QuoteRepository {
             }
         }
         return categoryRealmObject;
+    }
+
+    private void deleteQuoteTextObject(QuoteText quoteText) {
+        quoteText.getBookName().getBookAuthors().deleteAllFromRealm();
+        quoteText.getBookName().getYear().deleteFromRealm();
+        quoteText.getBookName().getPublisher().deleteFromRealm();
+        quoteText.getBookName().deleteFromRealm();
+        quoteText.getDate().deleteFromRealm();
+        quoteText.getPage().deleteFromRealm();
+        QuoteCategory quoteCategory = quoteText.getCategory();
+        quoteCategory.setQuoteCountCurrentCategory(quoteCategory.getQuoteCountCurrentCategory() - 1);
+        if (quoteCategory.getQuoteCountCurrentCategory() == 0) {
+            quoteText.getCategory().deleteFromRealm();
+        }
+        quoteText.deleteFromRealm();
     }
 }
