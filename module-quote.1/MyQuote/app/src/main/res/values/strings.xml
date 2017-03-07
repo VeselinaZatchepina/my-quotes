@@ -19,5 +19,17 @@
 
     <!-- Menu -->
     <string name="delete_title">Delete quote</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Navigation Drawer -->
+    <string-array name="quote_type_list">
+        <item>Book quote</item>
+        <item>My quote</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="book_quote_type">Book quote</string>
+    <string name="my_quote_type">My quote</string>
+
 
 </resources>

@@ -9,16 +9,21 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".quote.activities.QuoteCategoryMainActivity">
+        <activity
+            android:name=".quote.activities.QuoteCategoryMainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".quote.activities.AddQuoteActivity"></activity>
-        <activity android:name=".quote.activities.AllQuoteCurrentCategoryActivity"></activity>
-        <activity android:name=".quote.activities.CurrentQuotePagerActivity"></activity>
+        <activity
+            android:name=".quote.activities.AddQuoteActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".quote.activities.AllQuoteCurrentCategoryActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".quote.activities.CurrentQuotePagerActivity" />
     </application>
 
 </manifest>

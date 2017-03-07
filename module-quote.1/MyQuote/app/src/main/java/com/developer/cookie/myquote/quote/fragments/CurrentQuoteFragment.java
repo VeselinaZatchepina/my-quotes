@@ -87,4 +87,5 @@ public class CurrentQuoteFragment extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
