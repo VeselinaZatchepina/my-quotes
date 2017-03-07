@@ -12,6 +12,7 @@ public class QuoteCategory extends RealmObject {
     private long id;
     private String category;
     private int quoteCountCurrentCategory = 0;
+    private QuoteType type;
 
     public long getId() {
         return id;
@@ -35,5 +36,12 @@ public class QuoteCategory extends RealmObject {
 
     public void setQuoteCountCurrentCategory(int quoteCountCurrentCategory) {
         this.quoteCountCurrentCategory = quoteCountCurrentCategory;
+    }
+    public QuoteType getType() {
+        return type;
+    }
+
+    public void setType(QuoteType type) {
+        this.type = type;
     }
 }

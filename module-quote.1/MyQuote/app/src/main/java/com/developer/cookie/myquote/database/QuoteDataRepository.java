@@ -32,8 +32,8 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public RealmResults<QuoteCategory> getListOfQuoteCategories() {
-        return realm.where(QuoteCategory.class).findAllSortedAsync("id");
+    public RealmResults<QuoteCategory> getListOfQuoteCategories(String quoteType) {
+        return realm.where(QuoteCategory.class).equalTo("type.type", quoteType).findAllSortedAsync("id");
     }
 
     @Override
@@ -70,6 +70,7 @@ public class QuoteDataRepository implements QuoteRepository {
                                               QuoteType type = realm.createObject(QuoteType.class);
                                               type.setId((getNextKey(type, realm)));
                                               type.setType(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE));
+                                              categoryRealmObject.setType(type);
                                               // Create quote creation date
                                               QuoteCreationDate quoteDate = realm.createObject(QuoteCreationDate.class);
                                               quoteDate.setId(getNextKey(quoteDate, realm));

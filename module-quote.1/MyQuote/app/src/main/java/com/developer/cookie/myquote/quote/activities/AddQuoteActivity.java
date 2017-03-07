@@ -10,9 +10,11 @@ import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentActivity {
     public static final String QUOTE_TEXT_ID = "quote_text_id";
+    public static final String ACTIVITY_TITLE = "activity_title";
 
     @Override
     public Fragment createFragment() {
+        setTitle(getIntent().getStringExtra(ACTIVITY_TITLE));
         return new AddQuoteFragment();
     }
 
@@ -36,6 +38,16 @@ public class AddQuoteActivity extends SingleFragmentActivity {
     public static Intent newIntent(Context context, Long currentQuoteTextId) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
         intent.putExtra(QUOTE_TEXT_ID, currentQuoteTextId);
+        return intent;
+    }
+
+    public static Intent newIntent(Context context) {
+        return new Intent(context, AddQuoteActivity.class);
+    }
+
+    public static Intent newIntent(Context context, String titleName) {
+        Intent intent = new Intent(context, AddQuoteActivity.class);
+        intent.putExtra(ACTIVITY_TITLE, titleName);
         return intent;
     }
 }

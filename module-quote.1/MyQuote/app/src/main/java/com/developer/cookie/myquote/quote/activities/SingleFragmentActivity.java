@@ -35,7 +35,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
     }
 
     public void toDoWhenFabIsPressed() {
-        Intent intent = AddQuoteActivity.newIntent(this, null);
+        Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
         startActivity(intent);
     }
 
@@ -91,9 +91,11 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_book_quote) {
-            QuoteCategoryMainActivity.newIntent(this);
+            Intent intent = QuoteCategoryMainActivity.newIntent(this, getString(R.string.book_quote_type));
+            startActivity(intent);
         } else if (id == R.id.nav_my_quote) {
-
+            Intent intent = QuoteCategoryMainActivity.newIntent(this, getString(R.string.my_quote_type));
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

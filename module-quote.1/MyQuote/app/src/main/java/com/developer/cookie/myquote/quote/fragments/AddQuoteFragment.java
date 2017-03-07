@@ -65,6 +65,8 @@ public class AddQuoteFragment extends Fragment {
 
     QuoteText quoteTextObject;
 
+    String activityTitle;
+
     public AddQuoteFragment() { }
 
     @Override
@@ -76,8 +78,9 @@ public class AddQuoteFragment extends Fragment {
         if (quoteTextId!= -1) {
             quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteTextId);
         }
+        activityTitle = getActivity().getTitle().toString();
         // Get all quote categories
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(activityTitle);
     }
 
     @Override
@@ -92,6 +95,17 @@ public class AddQuoteFragment extends Fragment {
             pageNumber = (EditText) rootView.findViewById(R.id.page_number);
             yearNumber = (EditText) rootView.findViewById(R.id.year_number);
             publishName = (EditText) rootView.findViewById(R.id.publish_name);
+
+        // Create view for "My quote" type
+        if (isAdded()) {
+            if (activityTitle.equals(getString(R.string.my_quote_type))) {
+                bookName.setVisibility(View.GONE);
+                authorName.setVisibility(View.GONE);
+                pageNumber.setVisibility(View.GONE);
+                yearNumber.setVisibility(View.GONE);
+                publishName.setVisibility(View.GONE);
+            }
+        }
 
             // Work with spinner
             quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
@@ -229,20 +243,24 @@ public class AddQuoteFragment extends Fragment {
      */
     public boolean isEditTextEmpty() {
         currentQuoteText = quoteText.getText().toString();
-        currentBookName = bookName.getText().toString();
-        currentAuthorName = authorName.getText().toString();
-
         if(TextUtils.isEmpty(currentQuoteText)) {
             quoteText.setError("Quote text cannot be empty");
             return true;
         }
-        if (TextUtils.isEmpty(currentBookName)) {
-            bookName.setError("Book name cannot be empty");
-            return true;
-        }
-        if (TextUtils.isEmpty(currentAuthorName)) {
-            authorName.setError("Author name cannot be empty");
-            return true;
+
+        if (isAdded()) {
+            if (!activityTitle.equals(getString(R.string.my_quote_type))) {
+                currentBookName = bookName.getText().toString();
+                currentAuthorName = authorName.getText().toString();
+                if (TextUtils.isEmpty(currentBookName)) {
+                    bookName.setError("Book name cannot be empty");
+                    return true;
+                }
+                if (TextUtils.isEmpty(currentAuthorName)) {
+                    authorName.setError("Author name cannot be empty");
+                    return true;
+                }
+            }
         }
         return false;
     }
@@ -251,24 +269,27 @@ public class AddQuoteFragment extends Fragment {
      * Method creates quote properties map for QuoteCreator class and pass map to it.
      */
     public void createMapOfQuoteProperties() {
-        final String currentPageNumber = pageNumber.getText().toString();
-        final String currentYearNumber = yearNumber.getText().toString();
-        final String currentPublishName = publishName.getText().toString();
-
         Calendar currentCreateDate = Calendar.getInstance();
         String currentDate = String.format("%1$td %1$tb %1$tY", currentCreateDate);
-
         HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, currentQuoteText);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, currentBookName);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, currentAuthorName);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, valueOfCategory);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, currentYearNumber);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, currentPublishName);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentDate));
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, "MyQuote");
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, activityTitle);
 
+        final String currentPageNumber;
+        final String currentYearNumber;
+        final String currentPublishName;
+        if (!activityTitle.equals(getString(R.string.my_quote_type))) {
+            currentPageNumber = pageNumber.getText().toString();
+            currentYearNumber = yearNumber.getText().toString();
+            currentPublishName = publishName.getText().toString();
+            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, currentBookName);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, currentAuthorName);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, currentYearNumber);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, currentPublishName);
+        }
         if (quoteTextId != -1) {
             quoteDataRepository.saveChangedQuoteObject(quoteTextId, mapOfQuoteProperties);
         } else {

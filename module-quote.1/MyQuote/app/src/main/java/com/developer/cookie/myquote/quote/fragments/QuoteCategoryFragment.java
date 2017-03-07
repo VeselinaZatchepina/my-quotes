@@ -48,7 +48,7 @@ public class QuoteCategoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         quoteDataRepository = new QuoteDataRepository();
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories();
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(getActivity().getTitle().toString());
     }
 
     @Override

@@ -18,7 +18,7 @@ public interface QuoteRepository {
      * Method requests QuoteCategory list from the database.
      * @return List<QuoteCategory>
      */
-    List<QuoteCategory> getListOfQuoteCategories();
+    List<QuoteCategory> getListOfQuoteCategories(String quoteType);
 
     /**
      * Method saves quotes.
