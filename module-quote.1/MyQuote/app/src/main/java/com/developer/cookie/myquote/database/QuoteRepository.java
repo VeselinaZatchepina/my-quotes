@@ -12,10 +12,11 @@ import java.util.List;
  * QuoteRepository interface for repository pattern.
  * It helps to abstract realm layer.
  */
-public interface QuoteRepository {
+interface QuoteRepository {
 
     /**
      * Method requests QuoteCategory list from the database.
+     * @param quoteType
      * @return List<QuoteCategory>
      */
     List<QuoteCategory> getListOfQuoteCategories(String quoteType);
@@ -28,24 +29,20 @@ public interface QuoteRepository {
     void saveQuote(HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
     /**
-     * Method requests QuoteText list from the database.
-     * @return List<QuoteText>
-     */
-    List<QuoteText> getListOfQuoteText();
-
-    /**
      * Method requests QuoteText list from the database by category.
      * @param category
+     * @param quoteType
      * @return List<QuoteText>
      */
-    List<QuoteText> getListOfQuoteTextByCategory(String category);
+    List<QuoteText> getListOfQuoteTextByCategory(String category, String quoteType);
 
     /**
      * Method requests QuoteText object from the database by quote text.
      * @param quoteText
+     * @param quoteType
      * @return QuoteText
      */
-    List<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText);
+    List<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText, String quoteType);
 
     /**
      * Method requests QuoteText object from the database by quote text id.
@@ -64,14 +61,16 @@ public interface QuoteRepository {
     /**
      * Method delete quote object from db
      * @param currentQuoteTextId
+     * @param quoteType
      */
-    void deleteQuoteTextObjectById(long currentQuoteTextId);
+    void deleteQuoteTextObjectById(long currentQuoteTextId, String quoteType);
 
     /**
      * Method delete all quotes with current category
      * @param currentCategory
+     * @param quoteType
      */
-    void deleteAllQuotesWithCurrentCategory(final String currentCategory);
+    void deleteAllQuotesWithCurrentCategory(final String currentCategory, String quoteType);
 
     /**
      * Method closes realm connection.

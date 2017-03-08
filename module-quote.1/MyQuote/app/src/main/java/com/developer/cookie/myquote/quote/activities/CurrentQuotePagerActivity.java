@@ -22,15 +22,19 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     private static final String LOG_TAG = CurrentQuotePagerActivity.class.getSimpleName();
     public static final String QUOTE_ID_LIST = "com.developer.cookie.myquote.quote_list";
     public static final String CURRENT_ID = "com.developer.cookie.myquote.current_position";
+    public static final String QUOTE_TYPE_PAGER = "com.developer.cookie.myquote.quote_type_pager";
     private ViewPager viewPager;
     ArrayList<Long> quoteIdList;
     long currentQuoteTextId;
     long quoteTextIdForIntent;
+    String quoteType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_pager);
+        quoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
+        setTitle(quoteType);
         quoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
         currentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
 
@@ -72,16 +76,17 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, quoteTextIdForIntent);
+                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, quoteTextIdForIntent, quoteType);
                 startActivity(intent);
             }
         });
     }
 
-    public static Intent newIntent(Context context, ArrayList<Long> quoteList, long currentId) {
+    public static Intent newIntent(Context context, ArrayList<Long> quoteList, long currentId, String quoteType) {
         Intent intent = new Intent(context, CurrentQuotePagerActivity.class);
         intent.putExtra(QUOTE_ID_LIST, quoteList);
         intent.putExtra(CURRENT_ID, currentId);
+        intent.putExtra(QUOTE_TYPE_PAGER, quoteType);
         return intent;
     }
 }

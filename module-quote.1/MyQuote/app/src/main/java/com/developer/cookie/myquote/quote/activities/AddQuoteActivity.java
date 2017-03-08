@@ -9,12 +9,12 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentActivity {
-    public static final String QUOTE_TEXT_ID = "quote_text_id";
-    public static final String ACTIVITY_TITLE = "activity_title";
+    public static final String QUOTE_TEXT_ID = "com.developer.cookie.myquote.quote_text_id";
+    public static final String QUOTE_TYPE_ADD_QUOTE = "com.developer.cookie.myquote.quote_type_add_quote";
 
     @Override
     public Fragment createFragment() {
-        setTitle(getIntent().getStringExtra(ACTIVITY_TITLE));
+        setTitle(getIntent().getStringExtra(QUOTE_TYPE_ADD_QUOTE));
         return new AddQuoteFragment();
     }
 
@@ -35,19 +35,16 @@ public class AddQuoteActivity extends SingleFragmentActivity {
         }
     }
 
-    public static Intent newIntent(Context context, Long currentQuoteTextId) {
+    public static Intent newIntent(Context context, Long currentQuoteTextId, String quoteType) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
         intent.putExtra(QUOTE_TEXT_ID, currentQuoteTextId);
+        intent.putExtra(QUOTE_TYPE_ADD_QUOTE, quoteType);
         return intent;
-    }
-
-    public static Intent newIntent(Context context) {
-        return new Intent(context, AddQuoteActivity.class);
     }
 
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(ACTIVITY_TITLE, titleName);
+        intent.putExtra(QUOTE_TYPE_ADD_QUOTE, titleName);
         return intent;
     }
 }

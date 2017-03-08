@@ -39,23 +39,25 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     RealmResults<QuoteText> quoteTexts;
 
+    String quoteType;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        quoteType = getActivity().getTitle().toString();
         // Get current clicked category name
         categoryName = getActivity()
                 .getIntent()
                 .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
                 .toString();
         quoteDataRepository = new QuoteDataRepository();
-        quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(categoryName);
+        quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(categoryName, quoteType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-
         // Create callback for swipe to delete
         final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -66,18 +68,17 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 String currentQuoteText = recyclerViewAdapter.currentCategoryQuoteList.get(viewHolder.getAdapterPosition());
-                RealmResults<QuoteText> quoteTextRealmResults = quoteDataRepository.getQuoteTextObjectsByQuoteText(currentQuoteText);
+                RealmResults<QuoteText> quoteTextRealmResults = quoteDataRepository.getQuoteTextObjectsByQuoteText(currentQuoteText, quoteType);
                 quoteTextRealmResults.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
                     @Override
                     public void onChange(RealmResults<QuoteText> element) {
                         if (element.size() > 0) {
-                            quoteDataRepository.deleteQuoteTextObjectById(element.first().getId());
+                            quoteDataRepository.deleteQuoteTextObjectById(element.first().getId(), quoteType);
                         }
                     }
                 });
             }
         };
-
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
@@ -132,7 +133,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 long currentId = listOfQuotesId.get(currentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
                 Intent intent = CurrentQuotePagerActivity.newIntent(getActivity(),
-                        listOfQuotesId, currentId);
+                        listOfQuotesId, currentId, quoteType);
                 startActivity(intent);
             }
         }

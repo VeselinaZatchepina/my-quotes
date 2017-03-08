@@ -42,20 +42,22 @@ public class QuoteCategoryFragment extends Fragment {
     QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter;
     RealmResults<QuoteCategory> quoteCategoryList;
 
+    String quoteType;
+
     public QuoteCategoryFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        quoteType = getActivity().getTitle().toString();
         quoteDataRepository = new QuoteDataRepository();
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(getActivity().getTitle().toString());
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(quoteType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-
         // Create callback for swipe to delete
         final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -66,7 +68,7 @@ public class QuoteCategoryFragment extends Fragment {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 String currentCategory = quoteCategoryRecyclerViewAdapter.listOfCategory.get(viewHolder.getAdapterPosition());
-                quoteDataRepository.deleteAllQuotesWithCurrentCategory(currentCategory);
+                quoteDataRepository.deleteAllQuotesWithCurrentCategory(currentCategory, quoteType);
             }
         };
 
@@ -135,7 +137,7 @@ public class QuoteCategoryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
-                        itemQuoteCategory.getText().toString());
+                        itemQuoteCategory.getText().toString(), quoteType);
                 startActivity(intent);
             }
         }

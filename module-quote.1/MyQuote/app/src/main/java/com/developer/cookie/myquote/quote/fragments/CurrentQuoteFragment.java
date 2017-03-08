@@ -29,11 +29,13 @@ public class CurrentQuoteFragment extends Fragment {
     QuoteDataRepository quoteDataRepository;
     RealmResults<QuoteText> currentQuoteObjectList;
     String currentCategory;
+    String quoteType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        quoteType = getActivity().getTitle().toString();
         currentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
         quoteDataRepository = new QuoteDataRepository();
         currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
@@ -56,7 +58,7 @@ public class CurrentQuoteFragment extends Fragment {
                 if (element.size() > 0) {
                     currentCategory = element.first().getCategory().getCategory();
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
-                            bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView);
+                            bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, quoteType);
                 }
             }
         });
@@ -81,7 +83,7 @@ public class CurrentQuoteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_quote:
-                quoteDataRepository.deleteQuoteTextObjectById(currentQuoteTextId);
+                quoteDataRepository.deleteQuoteTextObjectById(currentQuoteTextId, quoteType);
                 getActivity().finish();
                 break;
         }

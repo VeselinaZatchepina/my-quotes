@@ -65,7 +65,7 @@ public class AddQuoteFragment extends Fragment {
 
     QuoteText quoteTextObject;
 
-    String activityTitle;
+    String quoteType;
 
     public AddQuoteFragment() { }
 
@@ -78,9 +78,10 @@ public class AddQuoteFragment extends Fragment {
         if (quoteTextId!= -1) {
             quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteTextId);
         }
-        activityTitle = getActivity().getTitle().toString();
+        // Get quote type
+        quoteType = getActivity().getTitle().toString();
         // Get all quote categories
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(activityTitle);
+        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(quoteType);
     }
 
     @Override
@@ -88,17 +89,15 @@ public class AddQuoteFragment extends Fragment {
                              Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
             spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-
             quoteText = (EditText) rootView.findViewById(R.id.quote_text);
             bookName = (EditText) rootView.findViewById(R.id.book_name);
             authorName = (EditText) rootView.findViewById(R.id.author_name);
             pageNumber = (EditText) rootView.findViewById(R.id.page_number);
             yearNumber = (EditText) rootView.findViewById(R.id.year_number);
             publishName = (EditText) rootView.findViewById(R.id.publish_name);
-
         // Create view for "My quote" type
         if (isAdded()) {
-            if (activityTitle.equals(getString(R.string.my_quote_type))) {
+            if (quoteType.equals(getString(R.string.my_quote_type))) {
                 bookName.setVisibility(View.GONE);
                 authorName.setVisibility(View.GONE);
                 pageNumber.setVisibility(View.GONE);
@@ -106,7 +105,6 @@ public class AddQuoteFragment extends Fragment {
                 publishName.setVisibility(View.GONE);
             }
         }
-
             // Work with spinner
             quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
                 @Override
@@ -140,7 +138,6 @@ public class AddQuoteFragment extends Fragment {
                     }
                 }
             });
-
             // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
         if (quoteTextId != -1) {
             quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
@@ -148,7 +145,7 @@ public class AddQuoteFragment extends Fragment {
                 public void onChange(RealmResults<QuoteText> element) {
                     if (element.size() > 0) {
                         FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
-                                quoteText, bookName, authorName, pageNumber, publishName, yearNumber);
+                                quoteText, bookName, authorName, pageNumber, publishName, yearNumber, quoteType);
                         quoteTextObject = element.first();
                         currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
                         if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
@@ -158,7 +155,6 @@ public class AddQuoteFragment extends Fragment {
                 }
             });
         }
-
             //Add listener to spinner
             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -247,9 +243,8 @@ public class AddQuoteFragment extends Fragment {
             quoteText.setError("Quote text cannot be empty");
             return true;
         }
-
         if (isAdded()) {
-            if (!activityTitle.equals(getString(R.string.my_quote_type))) {
+            if (!quoteType.equals(getString(R.string.my_quote_type))) {
                 currentBookName = bookName.getText().toString();
                 currentAuthorName = authorName.getText().toString();
                 if (TextUtils.isEmpty(currentBookName)) {
@@ -275,12 +270,11 @@ public class AddQuoteFragment extends Fragment {
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, currentQuoteText);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, valueOfCategory);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentDate));
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, activityTitle);
-
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, quoteType);
         final String currentPageNumber;
         final String currentYearNumber;
         final String currentPublishName;
-        if (!activityTitle.equals(getString(R.string.my_quote_type))) {
+        if (!quoteType.equals(getString(R.string.my_quote_type))) {
             currentPageNumber = pageNumber.getText().toString();
             currentYearNumber = yearNumber.getText().toString();
             currentPublishName = publishName.getText().toString();
