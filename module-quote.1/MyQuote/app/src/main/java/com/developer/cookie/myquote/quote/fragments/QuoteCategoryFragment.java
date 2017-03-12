@@ -8,11 +8,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -44,6 +47,8 @@ public class QuoteCategoryFragment extends Fragment {
 
     String quoteType;
 
+    String categoryForDelete;
+
     public QuoteCategoryFragment() { }
 
     @Override
@@ -58,19 +63,6 @@ public class QuoteCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-        // Create callback for swipe to delete
-        final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                String currentCategory = quoteCategoryRecyclerViewAdapter.listOfCategory.get(viewHolder.getAdapterPosition());
-                quoteDataRepository.deleteAllQuotesWithCurrentCategory(currentCategory, quoteType);
-            }
-        };
 
         quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
@@ -79,10 +71,9 @@ public class QuoteCategoryFragment extends Fragment {
                 quoteCategoryRecyclerViewAdapter= new QuoteCategoryRecyclerViewAdapter(pair);
                 // Create and set custom adapter for recyclerview
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                registerForContextMenu(recyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                itemTouchHelper.attachToRecyclerView(recyclerView);
             }
         });
 
@@ -109,6 +100,27 @@ public class QuoteCategoryFragment extends Fragment {
             }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.recycler_view) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.context_menu_quote_category, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.delete:
+                quoteDataRepository.deleteAllQuotesWithCurrentCategory(categoryForDelete ,quoteType);
+                Toast.makeText(getActivity(), "Quote category " + categoryForDelete + " deleted", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         quoteDataRepository.closeDbConnect();
@@ -123,7 +135,7 @@ public class QuoteCategoryFragment extends Fragment {
         private List<String> listOfCategory;
         private List<Integer> quoteCountList;
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView itemQuoteCategory;
             TextView itemQuoteCount;
 
@@ -132,6 +144,7 @@ public class QuoteCategoryFragment extends Fragment {
                 itemQuoteCategory = (TextView) container.findViewById(R.id.item_quote_category);
                 itemQuoteCount = (TextView) container.findViewById(R.id.item_quote_count);
                 container.setOnClickListener(this);
+                container.setOnLongClickListener(this);
             }
 
             @Override
@@ -139,6 +152,13 @@ public class QuoteCategoryFragment extends Fragment {
                 Intent intent = AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
                         itemQuoteCategory.getText().toString(), quoteType);
                 startActivity(intent);
+            }
+
+            @Override
+            public boolean onLongClick(View view) {
+                categoryForDelete = itemQuoteCategory.getText().toString();
+                getActivity().openContextMenu(view);
+                return false;
             }
         }
 

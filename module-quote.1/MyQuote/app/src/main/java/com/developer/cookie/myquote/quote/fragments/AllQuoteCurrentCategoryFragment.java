@@ -6,11 +6,14 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -41,6 +44,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     String quoteType;
 
+    long currentId;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,27 +63,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-        // Create callback for swipe to delete
-        final ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                return false;
-            }
 
-            @Override
-            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                String currentQuoteText = recyclerViewAdapter.currentCategoryQuoteList.get(viewHolder.getAdapterPosition());
-                RealmResults<QuoteText> quoteTextRealmResults = quoteDataRepository.getQuoteTextObjectsByQuoteText(currentQuoteText, quoteType);
-                quoteTextRealmResults.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
-                    @Override
-                    public void onChange(RealmResults<QuoteText> element) {
-                        if (element.size() > 0) {
-                            quoteDataRepository.deleteQuoteTextObjectById(element.first().getId(), quoteType);
-                        }
-                    }
-                });
-            }
-        };
         quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
@@ -90,6 +75,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                     currentCategoryQuoteTextList.add(element.get(i).getQuoteText());
                 }
                 RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                registerForContextMenu(recyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 recyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteTextList);
                 recyclerView.setAdapter(recyclerViewAdapter);
@@ -98,11 +84,30 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 for(int i = 0; i < element.size(); i++) {
                     listOfQuotesId.add(element.get(i).getId());
                 }
-                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-                itemTouchHelper.attachToRecyclerView(recyclerView);
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId()==R.id.recycler_view) {
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.context_menu_quote_category, menu);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.delete:
+                quoteDataRepository.deleteQuoteTextObjectById(currentId,quoteType);
+                Toast.makeText(getActivity(), "Quote deleted", Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -119,22 +124,31 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             extends RecyclerView.Adapter<AllQuoteCurrentCategoryRecyclerViewAdapter.MyViewHolder> {
         private List<String> currentCategoryQuoteList;
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView currentQuote;
 
             MyViewHolder(View container) {
                 super(container);
                 currentQuote = (TextView) container.findViewById(R.id.current_quote);
                 container.setOnClickListener(this);
+                container.setOnLongClickListener(this);
             }
 
             @Override
             public void onClick(View view) {
-                long currentId = listOfQuotesId.get(currentCategoryQuoteTextList
+                currentId = listOfQuotesId.get(currentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
                 Intent intent = CurrentQuotePagerActivity.newIntent(getActivity(),
                         listOfQuotesId, currentId, quoteType);
                 startActivity(intent);
+            }
+
+            @Override
+            public boolean onLongClick(View view) {
+                currentId = listOfQuotesId.get(currentCategoryQuoteTextList
+                        .indexOf(currentQuote.getText().toString()));
+                getActivity().openContextMenu(view);
+                return false;
             }
         }
 
