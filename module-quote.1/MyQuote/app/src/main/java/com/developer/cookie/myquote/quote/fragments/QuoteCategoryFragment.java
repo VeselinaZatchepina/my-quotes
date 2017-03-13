@@ -4,6 +4,8 @@ package com.developer.cookie.myquote.quote.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -113,7 +114,9 @@ public class QuoteCategoryFragment extends Fragment {
         switch(item.getItemId()) {
             case R.id.delete:
                 quoteDataRepository.deleteAllQuotesWithCurrentCategory(categoryForDelete ,quoteType);
-                Toast.makeText(getActivity(), "Quote category " + categoryForDelete + " deleted", Toast.LENGTH_SHORT).show();
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + categoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
+                snackbarIsDeleted.show();
                 return true;
             default:
                 return super.onContextItemSelected(item);
