@@ -245,12 +245,7 @@ public class AddQuoteFragment extends Fragment {
         }
         if (isAdded()) {
             if (!quoteType.equals(getString(R.string.my_quote_type))) {
-                currentBookName = bookName.getText().toString();
                 currentAuthorName = authorName.getText().toString();
-                if (TextUtils.isEmpty(currentBookName)) {
-                    bookName.setError("Book name cannot be empty");
-                    return true;
-                }
                 if (TextUtils.isEmpty(currentAuthorName)) {
                     authorName.setError("Author name cannot be empty");
                     return true;
@@ -278,6 +273,7 @@ public class AddQuoteFragment extends Fragment {
             currentPageNumber = pageNumber.getText().toString();
             currentYearNumber = yearNumber.getText().toString();
             currentPublishName = publishName.getText().toString();
+            currentBookName = bookName.getText().toString();
             mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, currentBookName);
             mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, currentAuthorName);
             mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);

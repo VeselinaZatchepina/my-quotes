@@ -3,7 +3,6 @@ package com.developer.cookie.myquote.database.model;
 
 import io.realm.RealmList;
 import io.realm.RealmObject;
-import io.realm.annotations.Required;
 
 /**
  * Realm model class for table named "book_name".
@@ -12,7 +11,6 @@ import io.realm.annotations.Required;
  */
 public class BookName extends RealmObject {
     private long id;
-    @Required
     private String bookName;
     //Relationship one-to-many
     private BookPublisher publisher;

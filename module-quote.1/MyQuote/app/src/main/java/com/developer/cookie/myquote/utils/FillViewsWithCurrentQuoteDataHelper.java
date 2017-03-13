@@ -24,7 +24,6 @@ public class FillViewsWithCurrentQuoteDataHelper {
                                                      TextView yearNumberView, String quoteType) {
         QuoteText quoteTextObject = realmResults.first();
         quoteTextView.setText(quoteTextObject.getQuoteText());
-
         if (quoteType.equals("Book quote")) {
             BookName bookName = quoteTextObject.getBookName();
             bookNameView.setText(bookName.getBookName());
@@ -39,9 +38,13 @@ public class FillViewsWithCurrentQuoteDataHelper {
             }
             String authorName = builder.toString();
             authorNameView.setText(authorName);
-            pageNumberView.setText(quoteTextObject.getPage().getPageNumber());
-            publisherNameTextView.setText(bookName.getPublisher().getPublisherName());
-            yearNumberView.setText(bookName.getYear().getYearNumber());
+            String bookPage = quoteTextObject.getPage().getPageNumber();
+            pageNumberView.setText(bookPage);
+            String bookPublisher = bookName.getPublisher().getPublisherName();
+            publisherNameTextView.setText(bookPublisher);
+            String bookPublicationYear = bookName.getYear().getYearNumber();
+            yearNumberView.setText(bookPublicationYear);
+
         } else {
             bookNameView.setVisibility(View.GONE);
             authorNameView.setVisibility(View.GONE);
