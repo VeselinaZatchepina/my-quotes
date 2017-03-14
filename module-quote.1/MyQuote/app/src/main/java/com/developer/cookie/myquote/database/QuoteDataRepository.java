@@ -20,25 +20,25 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
- * QuoteDataRepository helps to abstract realm layer.
+ * QuoteDataRepository helps to abstract mRealm layer.
  */
 public class QuoteDataRepository implements QuoteRepository {
 
     private static final String LOG_TAG = QuoteDataRepository.class.getSimpleName();
-    private final Realm realm;
+    private final Realm mRealm;
 
     public QuoteDataRepository() {
-        realm = Realm.getDefaultInstance();
+        mRealm = Realm.getDefaultInstance();
     }
 
     @Override
     public RealmResults<QuoteCategory> getListOfQuoteCategories(String quoteType) {
-        return realm.where(QuoteCategory.class).equalTo("type.type", quoteType).findAllSortedAsync("id");
+        return mRealm.where(QuoteCategory.class).equalTo("type.type", quoteType).findAllSortedAsync("id");
     }
 
     @Override
     public void saveQuote(final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
                                           @Override
                                           public void execute(Realm realm) {
                                               String quoteType = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE);
@@ -59,7 +59,6 @@ public class QuoteDataRepository implements QuoteRepository {
                                               quoteTextRealmObject.setCategory(categoryRealmObject);
                                               quoteTextRealmObject.setType(type);
                                               quoteTextRealmObject.setDate(quoteDate);
-
                                               if (quoteType.equals("Book quote")) {
                                                   // Create book publisher
                                                   BookPublisher publisherRealmObject = realm.createObject(BookPublisher.class);
@@ -109,7 +108,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category, String type) {
-        return realm.where(QuoteText.class)
+        return mRealm.where(QuoteText.class)
                 .equalTo("type.type", type)
                 .equalTo("category.category", category)
                 .findAllAsync();
@@ -117,7 +116,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public RealmResults<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText, String quoteType) {
-        return realm.where(QuoteText.class)
+        return mRealm.where(QuoteText.class)
                 .equalTo("quoteText", quoteText)
                 .equalTo("type.type", quoteType)
                 .findAllAsync();
@@ -125,12 +124,12 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public RealmResults<QuoteText> getQuoteTextObjectsByQuoteId(Long quoteTextId) {
-        return realm.where(QuoteText.class).equalTo("id", quoteTextId).findAllAsync();
+        return mRealm.where(QuoteText.class).equalTo("id", quoteTextId).findAllAsync();
     }
 
     @Override
     public void saveChangedQuoteObject(final long quoteTextId, final HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 String quoteType = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE);
@@ -186,7 +185,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public void deleteQuoteTextObjectById(final long currentQuoteTextId, final String quoteType) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
@@ -200,7 +199,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public void deleteAllQuotesWithCurrentCategory(final String currentCategory, final String quoteType) {
-        realm.executeTransactionAsync(new Realm.Transaction() {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<QuoteText> quoteTexts = realm.where(QuoteText.class)
@@ -216,7 +215,7 @@ public class QuoteDataRepository implements QuoteRepository {
 
     @Override
     public void closeDbConnect() {
-        realm.close();
+        mRealm.close();
     }
 
     /**

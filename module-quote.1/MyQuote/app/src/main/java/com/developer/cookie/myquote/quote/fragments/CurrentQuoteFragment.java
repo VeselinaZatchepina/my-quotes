@@ -25,20 +25,20 @@ import io.realm.RealmResults;
 public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
     private static final String CURRENT_QUOTE_ID = "current_quote_text";
-    Long currentQuoteTextId;
-    QuoteDataRepository quoteDataRepository;
-    RealmResults<QuoteText> currentQuoteObjectList;
-    String currentCategory;
-    String quoteType;
+    Long mCurrentQuoteTextId;
+    QuoteDataRepository mQuoteDataRepository;
+    RealmResults<QuoteText> mCurrentQuoteObjectList;
+    String mCurrentCategory;
+    String mQuoteType;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        quoteType = getActivity().getTitle().toString();
-        currentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
-        quoteDataRepository = new QuoteDataRepository();
-        currentQuoteObjectList = quoteDataRepository.getQuoteTextObjectsByQuoteId(currentQuoteTextId);
+        mQuoteType = getActivity().getTitle().toString();
+        mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
+        mQuoteDataRepository = new QuoteDataRepository();
+        mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
     }
 
     @Override
@@ -52,13 +52,13 @@ public class CurrentQuoteFragment extends Fragment {
         final TextView publisherNameTextView = (TextView) rootView.findViewById(R.id.current_publisher_name);
         final TextView yearNumberView = (TextView) rootView.findViewById(R.id.current_year_number);
 
-        currentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+        mCurrentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
                 if (element.size() > 0) {
-                    currentCategory = element.first().getCategory().getCategory();
+                    mCurrentCategory = element.first().getCategory().getCategory();
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
-                            bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, quoteType);
+                            bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
                 }
             }
         });
@@ -83,7 +83,7 @@ public class CurrentQuoteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_quote:
-                quoteDataRepository.deleteQuoteTextObjectById(currentQuoteTextId, quoteType);
+                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentQuoteTextId, mQuoteType);
                 getActivity().finish();
                 break;
         }

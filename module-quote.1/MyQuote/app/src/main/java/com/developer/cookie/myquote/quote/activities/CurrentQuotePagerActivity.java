@@ -23,49 +23,49 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     public static final String QUOTE_ID_LIST = "com.developer.cookie.myquote.quote_list";
     public static final String CURRENT_ID = "com.developer.cookie.myquote.current_position";
     public static final String QUOTE_TYPE_PAGER = "com.developer.cookie.myquote.quote_type_pager";
-    private ViewPager viewPager;
-    ArrayList<Long> quoteIdList;
-    long currentQuoteTextId;
-    long quoteTextIdForIntent;
-    String quoteType;
+    private ViewPager mViewPager;
+    ArrayList<Long> mQuoteIdList;
+    long mCurrentQuoteTextId;
+    long mQuoteTextIdForIntent;
+    String mQuoteType;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_pager);
-        quoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
-        setTitle(quoteType);
-        quoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
-        currentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
+        mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
+        setTitle(mQuoteType);
+        mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
+        mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
 
-        viewPager = (ViewPager) findViewById(R.id.quote_pager);
+        mViewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                return CurrentQuoteFragment.newInstance(quoteIdList.get(position));
+                return CurrentQuoteFragment.newInstance(mQuoteIdList.get(position));
             }
             @Override
             public int getCount() {
-                return quoteIdList.size();
+                return mQuoteIdList.size();
             }
         });
 
-        // set viewPager on position of current clicked quote
-        for (int i = 0; i < quoteIdList.size(); i++) {
-            if (quoteIdList.get(i) == currentQuoteTextId) {
-                viewPager.setCurrentItem(i);
-                quoteTextIdForIntent = quoteIdList.get(viewPager.getCurrentItem());
+        // set mViewPager on position of current clicked quote
+        for (int i = 0; i < mQuoteIdList.size(); i++) {
+            if (mQuoteIdList.get(i) == mCurrentQuoteTextId) {
+                mViewPager.setCurrentItem(i);
+                mQuoteTextIdForIntent = mQuoteIdList.get(mViewPager.getCurrentItem());
             }
         }
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
 
             @Override
             public void onPageSelected(int position) {
-                quoteTextIdForIntent = quoteIdList.get(position);
+                mQuoteTextIdForIntent = mQuoteIdList.get(position);
             }
 
             @Override
@@ -76,7 +76,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, quoteTextIdForIntent, quoteType);
+                Intent intent = AddQuoteActivity.newIntent(CurrentQuotePagerActivity.this, mQuoteTextIdForIntent, mQuoteType);
                 startActivity(intent);
             }
         });

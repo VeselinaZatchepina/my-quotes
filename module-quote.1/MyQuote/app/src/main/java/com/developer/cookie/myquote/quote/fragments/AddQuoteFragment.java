@@ -40,79 +40,79 @@ public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
 
-    QuoteDataRepository quoteDataRepository;
-    private List<String> listOfAllCategories;
-    ArrayAdapter<String> spinnerAdapter;
-    private String valueOfCategory;
-    Spinner spinner;
+    QuoteDataRepository mQuoteDataRepository;
+    private List<String> mListOfAllCategories;
+    ArrayAdapter<String> mSpinnerAdapter;
+    private String mValueOfCategory;
+    Spinner mSpinner;
 
-    String currentQuoteText;
-    String currentBookName;
-    String currentAuthorName;
+    String mCurrentQuoteText;
+    String mCurrentBookName;
+    String mCurrentAuthorName;
 
-    EditText quoteText;
-    EditText bookName;
-    EditText authorName;
-    EditText pageNumber;
-    EditText yearNumber;
-    EditText publishName;
+    EditText mQuoteText;
+    EditText mBookName;
+    EditText mAuthorName;
+    EditText mPageNumber;
+    EditText mYearNumber;
+    EditText mPublishName;
 
-    RealmResults<QuoteCategory> quoteCategoryList;
-    RealmResults<QuoteText> quoteTexts;
+    RealmResults<QuoteCategory> mQuoteCategoryList;
+    RealmResults<QuoteText> mQuoteTexts;
 
-    Long quoteTextId;
-    String currentQuoteTextObjectCategory;
+    Long mQuoteTextId;
+    String mCurrentQuoteTextObjectCategory;
 
-    QuoteText quoteTextObject;
+    QuoteText mQuoteTextObject;
 
-    String quoteType;
+    String mQuoteType;
 
     public AddQuoteFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        quoteDataRepository = new QuoteDataRepository();
+        mQuoteDataRepository = new QuoteDataRepository();
         // Get quote id for edit
-        quoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
-        if (quoteTextId!= -1) {
-            quoteTexts = quoteDataRepository.getQuoteTextObjectsByQuoteId(quoteTextId);
+        mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
+        if (mQuoteTextId != -1) {
+            mQuoteTexts = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mQuoteTextId);
         }
         // Get quote type
-        quoteType = getActivity().getTitle().toString();
+        mQuoteType = getActivity().getTitle().toString();
         // Get all quote categories
-        quoteCategoryList = quoteDataRepository.getListOfQuoteCategories(quoteType);
+        mQuoteCategoryList = mQuoteDataRepository.getListOfQuoteCategories(mQuoteType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-            spinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-            quoteText = (EditText) rootView.findViewById(R.id.quote_text);
-            bookName = (EditText) rootView.findViewById(R.id.book_name);
-            authorName = (EditText) rootView.findViewById(R.id.author_name);
-            pageNumber = (EditText) rootView.findViewById(R.id.page_number);
-            yearNumber = (EditText) rootView.findViewById(R.id.year_number);
-            publishName = (EditText) rootView.findViewById(R.id.publish_name);
+            mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+            mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
+            mBookName = (EditText) rootView.findViewById(R.id.book_name);
+            mAuthorName = (EditText) rootView.findViewById(R.id.author_name);
+            mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
+            mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
+            mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
         // Create view for "My quote" type
         if (isAdded()) {
-            if (quoteType.equals(getString(R.string.my_quote_type))) {
-                bookName.setVisibility(View.GONE);
-                authorName.setVisibility(View.GONE);
-                pageNumber.setVisibility(View.GONE);
-                yearNumber.setVisibility(View.GONE);
-                publishName.setVisibility(View.GONE);
+            if (mQuoteType.equals(getString(R.string.my_quote_type))) {
+                mBookName.setVisibility(View.GONE);
+                mAuthorName.setVisibility(View.GONE);
+                mPageNumber.setVisibility(View.GONE);
+                mYearNumber.setVisibility(View.GONE);
+                mPublishName.setVisibility(View.GONE);
             }
         }
-            // Work with spinner
-            quoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
+            // Work with mSpinner
+            mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
                 @Override
                 public void onChange(RealmResults<QuoteCategory> element) {
                     createQuoteCategoryListForSpinner(element);
-                    // Set hint for spinner
+                    // Set hint for mSpinner
                     if (isAdded()) {
-                        spinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+                        mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
                             @Override
                             public View getView(int position, View convertView, ViewGroup parent) {
                                 View v = super.getView(position, convertView, parent);
@@ -129,34 +129,34 @@ public class AddQuoteFragment extends Fragment {
                             }
                         };
                     }
-                    spinnerAdapter.addAll(listOfAllCategories);
-                    spinner.setAdapter(spinnerAdapter);
-                    spinner.setSelection(spinnerAdapter.getCount());
-                    // If we choose Quote for edit we set spinner to current quote category position.
-                    if (quoteTextId != -1) {
-                        spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                    mSpinnerAdapter.addAll(mListOfAllCategories);
+                    mSpinner.setAdapter(mSpinnerAdapter);
+                    mSpinner.setSelection(mSpinnerAdapter.getCount());
+                    // If we choose Quote for edit we set mSpinner to current quote category position.
+                    if (mQuoteTextId != -1) {
+                        mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
                     }
                 }
             });
             // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
-        if (quoteTextId != -1) {
-            quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+        if (mQuoteTextId != -1) {
+            mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
                 @Override
                 public void onChange(RealmResults<QuoteText> element) {
                     if (element.size() > 0) {
                         FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
-                                quoteText, bookName, authorName, pageNumber, publishName, yearNumber, quoteType);
-                        quoteTextObject = element.first();
-                        currentQuoteTextObjectCategory = quoteTextObject.getCategory().getCategory();
-                        if (listOfAllCategories != null && !listOfAllCategories.isEmpty()) {
-                            spinner.setSelection(listOfAllCategories.indexOf(currentQuoteTextObjectCategory));
+                                mQuoteText, mBookName, mAuthorName, mPageNumber, mPublishName, mYearNumber, mQuoteType);
+                        mQuoteTextObject = element.first();
+                        mCurrentQuoteTextObjectCategory = mQuoteTextObject.getCategory().getCategory();
+                        if (mListOfAllCategories != null && !mListOfAllCategories.isEmpty()) {
+                            mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
                         }
                     }
                 }
             });
         }
-            //Add listener to spinner
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            //Add listener to mSpinner
+            mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     final String selectedItem = parent.getItemAtPosition(position).toString();
                     if (selectedItem.equals(getString(R.string.spinner_add_category))) {
@@ -172,11 +172,11 @@ public class AddQuoteFragment extends Fragment {
                                         new DialogInterface.OnClickListener() {
                                             public void onClick(DialogInterface dialog, int id) {
                                                 String currentUserInput = userInput.getText().toString();
-                                                listOfAllCategories.add(0, currentUserInput);
-                                                spinnerAdapter.clear();
-                                                spinnerAdapter.addAll(listOfAllCategories);
-                                                spinner.setSelection(0);
-                                                valueOfCategory = currentUserInput;
+                                                mListOfAllCategories.add(0, currentUserInput);
+                                                mSpinnerAdapter.clear();
+                                                mSpinnerAdapter.addAll(mListOfAllCategories);
+                                                mSpinner.setSelection(0);
+                                                mValueOfCategory = currentUserInput;
                                             }
                                         })
                                 .setNegativeButton("Отмена",
@@ -188,7 +188,7 @@ public class AddQuoteFragment extends Fragment {
                         AlertDialog alertDialog = mDialogBuilder.create();
                         alertDialog.show();
                     } else {
-                        valueOfCategory = selectedItem;
+                        mValueOfCategory = selectedItem;
                     }
                 }
 
@@ -199,36 +199,36 @@ public class AddQuoteFragment extends Fragment {
     }
 
     /**
-     * Method checks if user choose hint in spinner.
+     * Method checks if user choose hint in mSpinner.
      * @return true if user choose hint and false else if.
      */
     public boolean isSpinnerSelectedItemHint() {
-        return valueOfCategory.equals(getString(R.string.spinner_hint));
+        return mValueOfCategory.equals(getString(R.string.spinner_hint));
     }
 
     /**
-     * Method creates list of categories for spinnerAdapter.
+     * Method creates list of categories for mSpinnerAdapter.
      * @param quoteCategoryList list of all quotes category from db.
      */
     private void createQuoteCategoryListForSpinner(List<QuoteCategory> quoteCategoryList) {
-        listOfAllCategories = new ArrayList<>();
-        // Create list of categories for spinnerAdapter
+        mListOfAllCategories = new ArrayList<>();
+        // Create list of categories for mSpinnerAdapter
         if (quoteCategoryList != null || !quoteCategoryList.isEmpty()) {
             for (int i = 0; i < quoteCategoryList.size(); i++) {
                 QuoteCategory currentCategory = quoteCategoryList.get(i);
                 if (currentCategory != null) {
                     String category = currentCategory.getCategory();
-                    listOfAllCategories.add(category);
+                    mListOfAllCategories.add(category);
                 }
             }
             if(isAdded()) {
-                listOfAllCategories.add(getString(R.string.spinner_add_category));
-                listOfAllCategories.add(getString(R.string.spinner_hint));
+                mListOfAllCategories.add(getString(R.string.spinner_add_category));
+                mListOfAllCategories.add(getString(R.string.spinner_hint));
             }
         } else {
             if(isAdded()) {
-                listOfAllCategories.add(getString(R.string.spinner_add_category));
-                listOfAllCategories.add(getString(R.string.spinner_hint));
+                mListOfAllCategories.add(getString(R.string.spinner_add_category));
+                mListOfAllCategories.add(getString(R.string.spinner_hint));
             }
         }
     }
@@ -238,16 +238,16 @@ public class AddQuoteFragment extends Fragment {
      * @return false if EditText not empty and true if else.
      */
     public boolean isEditTextEmpty() {
-        currentQuoteText = quoteText.getText().toString();
-        if(TextUtils.isEmpty(currentQuoteText)) {
-            quoteText.setError("Quote text cannot be empty");
+        mCurrentQuoteText = mQuoteText.getText().toString();
+        if(TextUtils.isEmpty(mCurrentQuoteText)) {
+            mQuoteText.setError("Quote text cannot be empty");
             return true;
         }
         if (isAdded()) {
-            if (!quoteType.equals(getString(R.string.my_quote_type))) {
-                currentAuthorName = authorName.getText().toString();
-                if (TextUtils.isEmpty(currentAuthorName)) {
-                    authorName.setError("Author name cannot be empty");
+            if (!mQuoteType.equals(getString(R.string.my_quote_type))) {
+                mCurrentAuthorName = mAuthorName.getText().toString();
+                if (TextUtils.isEmpty(mCurrentAuthorName)) {
+                    mAuthorName.setError("Author name cannot be empty");
                     return true;
                 }
             }
@@ -262,34 +262,34 @@ public class AddQuoteFragment extends Fragment {
         Calendar currentCreateDate = Calendar.getInstance();
         String currentDate = String.format("%1$td %1$tb %1$tY", currentCreateDate);
         HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, currentQuoteText);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, valueOfCategory);
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, mCurrentQuoteText);
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, mValueOfCategory);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentDate));
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, quoteType);
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, mQuoteType);
         final String currentPageNumber;
         final String currentYearNumber;
         final String currentPublishName;
-        if (!quoteType.equals(getString(R.string.my_quote_type))) {
-            currentPageNumber = pageNumber.getText().toString();
-            currentYearNumber = yearNumber.getText().toString();
-            currentPublishName = publishName.getText().toString();
-            currentBookName = bookName.getText().toString();
-            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, currentBookName);
-            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, currentAuthorName);
+        if (!mQuoteType.equals(getString(R.string.my_quote_type))) {
+            currentPageNumber = mPageNumber.getText().toString();
+            currentYearNumber = mYearNumber.getText().toString();
+            currentPublishName = mPublishName.getText().toString();
+            mCurrentBookName = mBookName.getText().toString();
+            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, mCurrentBookName);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, mCurrentAuthorName);
             mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);
             mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, currentYearNumber);
             mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, currentPublishName);
         }
-        if (quoteTextId != -1) {
-            quoteDataRepository.saveChangedQuoteObject(quoteTextId, mapOfQuoteProperties);
+        if (mQuoteTextId != -1) {
+            mQuoteDataRepository.saveChangedQuoteObject(mQuoteTextId, mapOfQuoteProperties);
         } else {
-            quoteDataRepository.saveQuote(mapOfQuoteProperties);
+            mQuoteDataRepository.saveQuote(mapOfQuoteProperties);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        quoteDataRepository.closeDbConnect();
+        mQuoteDataRepository.closeDbConnect();
     }
 }

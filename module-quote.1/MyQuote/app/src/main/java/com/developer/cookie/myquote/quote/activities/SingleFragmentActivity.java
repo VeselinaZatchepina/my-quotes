@@ -25,7 +25,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     public Fragment currentFragment;
-    FloatingActionButton fab;
+    FloatingActionButton mFab;
     public int fabImageResourceId = setFabImageResourceId();
 
     public abstract Fragment createFragment();
@@ -62,13 +62,13 @@ public abstract class SingleFragmentActivity extends AppCompatActivity
                     .add(R.id.container, currentFragment)
                     .commit();
         }
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
+            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
         } else {
-            fab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
+            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
         }
-        fab.setOnClickListener(new View.OnClickListener() {
+        mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toDoWhenFabIsPressed();

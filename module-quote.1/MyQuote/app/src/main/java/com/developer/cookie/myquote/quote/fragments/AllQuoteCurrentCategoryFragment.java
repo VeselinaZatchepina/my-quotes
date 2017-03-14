@@ -33,61 +33,61 @@ import io.realm.RealmResults;
  */
 public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String LOG_TAG = AllQuoteCurrentCategoryFragment.class.getSimpleName();
-    View rootView;
-    String categoryName;
-    QuoteDataRepository quoteDataRepository;
-    ArrayList<Long> listOfQuotesId;
-    List<String> currentCategoryQuoteTextList;
+    View mRootView;
+    String mCategoryName;
+    QuoteDataRepository mQuoteDataRepository;
+    ArrayList<Long> mListOfQuotesId;
+    List<String> mCurrentCategoryQuoteTextList;
 
-    AllQuoteCurrentCategoryRecyclerViewAdapter recyclerViewAdapter;
+    AllQuoteCurrentCategoryRecyclerViewAdapter mRecyclerViewAdapter;
 
-    RealmResults<QuoteText> quoteTexts;
+    RealmResults<QuoteText> mQuoteTexts;
 
-    String quoteType;
+    String mQuoteType;
 
-    long currentId;
+    long mCurrentId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        quoteType = getActivity().getTitle().toString();
+        mQuoteType = getActivity().getTitle().toString();
         // Get current clicked category name
-        categoryName = getActivity()
+        mCategoryName = getActivity()
                 .getIntent()
                 .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
                 .toString();
-        quoteDataRepository = new QuoteDataRepository();
-        quoteTexts = quoteDataRepository.getListOfQuoteTextByCategory(categoryName, quoteType);
+        mQuoteDataRepository = new QuoteDataRepository();
+        mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
+        mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
 
-        quoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+        mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
                 if (element.size() == 0 && getActivity() != null) {
                     getActivity().finish();
                 }
-                currentCategoryQuoteTextList = new ArrayList<String>();
+                mCurrentCategoryQuoteTextList = new ArrayList<String>();
                 for (int i = 0; i < element.size(); i++) {
-                    currentCategoryQuoteTextList.add(element.get(i).getQuoteText());
+                    mCurrentCategoryQuoteTextList.add(element.get(i).getQuoteText());
                 }
-                RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+                RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
                 registerForContextMenu(recyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(currentCategoryQuoteTextList);
-                recyclerView.setAdapter(recyclerViewAdapter);
+                mRecyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(mCurrentCategoryQuoteTextList);
+                recyclerView.setAdapter(mRecyclerViewAdapter);
                 // Create list of quote's id for data transfer to another fragment
-                listOfQuotesId = new ArrayList<Long>();
+                mListOfQuotesId = new ArrayList<Long>();
                 for(int i = 0; i < element.size(); i++) {
-                    listOfQuotesId.add(element.get(i).getId());
+                    mListOfQuotesId.add(element.get(i).getId());
                 }
             }
         });
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -103,7 +103,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.delete:
-                quoteDataRepository.deleteQuoteTextObjectById(currentId,quoteType);
+                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
                 final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
                 Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);
                 snackbarIsDeleted.show();
@@ -116,7 +116,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        quoteDataRepository.closeDbConnect();
+        mQuoteDataRepository.closeDbConnect();
     }
 
     /**
@@ -139,16 +139,16 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                currentId = listOfQuotesId.get(currentCategoryQuoteTextList
+                mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
                 Intent intent = CurrentQuotePagerActivity.newIntent(getActivity(),
-                        listOfQuotesId, currentId, quoteType);
+                        mListOfQuotesId, mCurrentId, mQuoteType);
                 startActivity(intent);
             }
 
             @Override
             public boolean onLongClick(View view) {
-                currentId = listOfQuotesId.get(currentCategoryQuoteTextList
+                mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
                 getActivity().openContextMenu(view);
                 return false;
