@@ -1,6 +1,7 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -33,6 +34,9 @@ import io.realm.RealmResults;
  */
 public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String LOG_TAG = AllQuoteCurrentCategoryFragment.class.getSimpleName();
+    private static final String QUOTE_TYPE = "quote type";
+    private static final String QUOTE_CATEGORY = "quote category";
+
     View mRootView;
     String mCategoryName;
     QuoteDataRepository mQuoteDataRepository;
@@ -47,17 +51,31 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     long mCurrentId;
 
+    AllQuoteCurrentCategoryActivity mActivity;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mQuoteType = getActivity().getTitle().toString();
-        // Get current clicked category name
-        mCategoryName = getActivity()
-                .getIntent()
-                .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
-                .toString();
-        mQuoteDataRepository = new QuoteDataRepository();
-        mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
+            if (savedInstanceState != null) {
+                mQuoteType = savedInstanceState.getString(QUOTE_TYPE);
+                mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY);
+            } else {
+                // Get current clicked category name
+                mCategoryName = mActivity
+                        .getIntent()
+                        .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
+                        .toString();
+                mQuoteType = mActivity.getTitle().toString();
+            }
+            mQuoteDataRepository = new QuoteDataRepository();
+            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(QUOTE_TYPE, mQuoteType);
+        outState.putString(QUOTE_CATEGORY, mCategoryName);
     }
 
     @Override
@@ -110,6 +128,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 return true;
             default:
                 return super.onContextItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof AllQuoteCurrentCategoryActivity) {
+            mActivity = (AllQuoteCurrentCategoryActivity) context;
         }
     }
 

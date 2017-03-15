@@ -33,6 +33,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_pager);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
         setTitle(mQuoteType);
         mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);

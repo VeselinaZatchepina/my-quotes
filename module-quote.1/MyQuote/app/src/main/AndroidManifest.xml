@@ -19,11 +19,16 @@
         </activity>
         <activity
             android:name=".quote.activities.AddQuoteActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".quote.activities.QuoteCategoryMainActivity"/>
         <activity
             android:name=".quote.activities.AllQuoteCurrentCategoryActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".quote.activities.CurrentQuotePagerActivity" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"
+            android:parentActivityName=".quote.activities.QuoteCategoryMainActivity"/>
+        <activity
+            android:name=".quote.activities.CurrentQuotePagerActivity"
+            android:parentActivityName=".quote.activities.AllQuoteCurrentCategoryActivity"/>
     </application>
 
 </manifest>
