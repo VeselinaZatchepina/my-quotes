@@ -75,7 +75,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-
         mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {

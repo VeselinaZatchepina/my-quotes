@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 
@@ -55,4 +56,14 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
         setTitle(mQuoteTypeAllQuoteCategory);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = QuoteCategoryMainActivity.newIntent(this, getTitle().toString());
+                startActivity(upIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
