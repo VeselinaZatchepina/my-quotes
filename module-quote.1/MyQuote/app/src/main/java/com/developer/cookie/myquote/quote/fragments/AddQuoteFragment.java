@@ -39,6 +39,8 @@ import io.realm.RealmResults;
 public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
+    public static final String QUOTE_TYPE_AQA_F = "com.developer.cookie.myquote.quote.fragments.quote_type_aqa_f";
+    public static final String QUOTE_ID_AQA_F = "com.developer.cookie.myquote.quote.fragments.quote_id_aqa_f";
 
     QuoteDataRepository mQuoteDataRepository;
     private List<String> mListOfAllCategories;
@@ -73,13 +75,18 @@ public class AddQuoteFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
-        // Get quote id for edit
-        mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
+        if (savedInstanceState != null) {
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_AQA_F);
+            mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_AQA_F);
+        } else {
+            // Get quote id for edit
+            mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
+            // Get quote type
+            mQuoteType = getActivity().getTitle().toString();
+        }
         if (mQuoteTextId != -1) {
             mQuoteTexts = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mQuoteTextId);
         }
-        // Get quote type
-        mQuoteType = getActivity().getTitle().toString();
         // Get all quote categories
         mQuoteCategoryList = mQuoteDataRepository.getListOfQuoteCategories(mQuoteType);
     }
@@ -285,6 +292,13 @@ public class AddQuoteFragment extends Fragment {
         } else {
             mQuoteDataRepository.saveQuote(mapOfQuoteProperties);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(QUOTE_TYPE_AQA_F, mQuoteType);
+        outState.putLong(QUOTE_ID_AQA_F, mQuoteTextId);
     }
 
     @Override

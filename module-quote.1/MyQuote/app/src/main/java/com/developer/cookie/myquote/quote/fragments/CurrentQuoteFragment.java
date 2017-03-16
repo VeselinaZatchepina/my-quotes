@@ -3,6 +3,7 @@ package com.developer.cookie.myquote.quote.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -25,6 +26,8 @@ import io.realm.RealmResults;
 public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
     private static final String CURRENT_QUOTE_ID = "current_quote_text";
+    public static final String QUOTE_TYPE_PAGER_FOR_SAVE_F = "com.developer.cookie.myquote.quote_type_pager_for_save_f";
+    public static final String QUOTE_ID_FOR_SAVE_F = "com.developer.cookie.myquote.quote_id_for_save_f";
     Long mCurrentQuoteTextId;
     QuoteDataRepository mQuoteDataRepository;
     RealmResults<QuoteText> mCurrentQuoteObjectList;
@@ -35,10 +38,17 @@ public class CurrentQuoteFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        mQuoteType = getActivity().getTitle().toString();
-        mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
+        if (savedInstanceState != null) {
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_F);
+            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_F);
+            Log.v(LOG_TAG, mQuoteType);
+        } else {
+            mQuoteType = getActivity().getTitle().toString();
+            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
+        }
         mQuoteDataRepository = new QuoteDataRepository();
         mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
+        Log.v(LOG_TAG, mQuoteType);
     }
 
     @Override
@@ -88,6 +98,13 @@ public class CurrentQuoteFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_F, mQuoteType);
+        outState.putLong(QUOTE_ID_FOR_SAVE_F, mCurrentQuoteTextId);
     }
 
 }

@@ -72,13 +72,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE, mQuoteType);
-        outState.putString(QUOTE_CATEGORY, mCategoryName);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
@@ -129,6 +122,13 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(QUOTE_TYPE, mQuoteType);
+        outState.putString(QUOTE_CATEGORY, mCategoryName);
     }
 
     @Override

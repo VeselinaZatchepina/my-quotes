@@ -20,7 +20,13 @@ import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 public class QuoteCategoryMainActivity extends SingleFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     public static final String QUOTE_TYPE_QUOTE_CATEGORY = "com.developer.cookie.myquote.quote_type_quote_category";
+    public static final String CURRENT_FRAGMENT_TAG_MA = "com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment";
+    public static final String QUOTE_TYPE_MA = "com.developer.cookie.myquote.quote_type_ma";
+
+    Fragment mCurrentFragment;
+    String mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,13 +42,6 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        String title = getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY);
-        if (title != null) {
-            setTitle(title);
-        } else {
-            setTitle(getString(R.string.book_quote_type));
-        }
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -60,7 +59,8 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
 
     @Override
     public Fragment createFragment() {
-        return new QuoteCategoryFragment();
+        mCurrentFragment = new QuoteCategoryFragment();
+        return mCurrentFragment;
     }
 
     @Override
@@ -93,5 +93,33 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         Intent intent = new Intent(context, QuoteCategoryMainActivity.class);
         intent.putExtra(QUOTE_TYPE_QUOTE_CATEGORY, titleName);
         return intent;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_MA, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_MA, mTitle);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_MA);
+        mTitle = savedInstanceState.getString(QUOTE_TYPE_MA);
+    }
+
+    @Override
+    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
+        super.getAndSetDataFromSaveInstanceState(saveInstanceState);
+        if (saveInstanceState != null) {
+            mTitle = saveInstanceState.getString(QUOTE_TYPE_MA);
+        }
+        if (getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY) != null) {
+            mTitle = getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY);
+            setTitle(mTitle);
+        } else {
+            setTitle(getString(R.string.book_quote_type));
+        }
     }
 }
