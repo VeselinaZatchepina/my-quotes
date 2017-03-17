@@ -78,10 +78,10 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.nav_book_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, getString(R.string.book_quote_type));
+            Intent intent = QuoteCategoryMainActivity.newIntent(this, "Book quote");
             startActivity(intent);
         } else if (id == R.id.nav_my_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, getString(R.string.my_quote_type));
+            Intent intent = QuoteCategoryMainActivity.newIntent(this, "My quote");
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -114,12 +114,13 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
             mTitle = saveInstanceState.getString(QUOTE_TYPE_MA);
-        }
-        if (getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY) != null) {
+            setTitle(mTitle);
+            return;
+        } else if (getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY) != null) {
             mTitle = getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY);
             setTitle(mTitle);
-        } else {
-            setTitle(getString(R.string.book_quote_type));
+            return;
         }
+        setTitle(getString(R.string.book_quote_type));
     }
 }

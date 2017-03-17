@@ -72,10 +72,8 @@ public class AddQuoteActivity extends SingleFragmentActivity {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
             mQuoteType = saveInstanceState.getString(QUOTE_TYPE_AQA);
-        }
-        if (getIntent().getSerializableExtra(QUOTE_TYPE_ADD_QUOTE) != null) {
+        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_ADD_QUOTE) != null) {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_ADD_QUOTE);
-            setTitle(mQuoteType);
         }
         setTitle(mQuoteType);
     }

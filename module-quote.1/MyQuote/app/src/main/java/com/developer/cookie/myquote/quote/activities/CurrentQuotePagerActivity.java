@@ -44,12 +44,12 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE);
             mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE);
             mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE);
+        } else {
+            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
+            mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
+            mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
         }
-        mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
         setTitle(mQuoteType);
-        mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
-        mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
-
         mViewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {

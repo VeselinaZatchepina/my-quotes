@@ -49,8 +49,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
             mQuoteTypeAllQuoteCategory = saveInstanceState.getString(QUOTE_TYPE_ALL_QUOTE_CURRENT);
-        }
-        if (getIntent().getSerializableExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT) != null) {
+        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT) != null) {
             mQuoteTypeAllQuoteCategory = getIntent().getStringExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT);
         }
         setTitle(mQuoteTypeAllQuoteCategory);
