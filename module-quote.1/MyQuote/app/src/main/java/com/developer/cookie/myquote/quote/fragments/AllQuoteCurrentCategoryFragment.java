@@ -7,15 +7,19 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -56,6 +60,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
             if (savedInstanceState != null) {
                 mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
                 mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
@@ -97,6 +102,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 }
             }
         });
+
         return mRootView;
     }
 
@@ -121,6 +127,52 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.filter_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.filter_quote:
+                ActionMenuItemView imageButton = (ActionMenuItemView) getActivity().findViewById(R.id.filter_quote);
+                showPopup(imageButton);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showPopup(View v) {
+        PopupMenu popup = new PopupMenu(getActivity(), v);
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.filter_by_author:
+                        // read the listItemPosition here
+                        Toast.makeText(getActivity(), LOG_TAG, Toast.LENGTH_LONG).show();
+                        return true;
+                    case R.id.filter_by_book_name:
+                        // read the listItemPosition here
+                        return true;
+                    case R.id.filter_by_year:
+                        // read the listItemPosition here
+                        return true;
+                    case R.id.filter_by_publisher:
+                        // read the listItemPosition here
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.filter_popup_menu, popup.getMenu());
+        popup.show();
     }
 
     @Override

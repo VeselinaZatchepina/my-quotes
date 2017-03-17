@@ -27,7 +27,7 @@ public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
     private static final String CURRENT_QUOTE_ID_ARG_CQF = "com.developer.cookie.myquote.current_quote_id_arg_cqf";
     public static final String QUOTE_TYPE_BUNDLE_CQF = "com.developer.cookie.myquote.quote_type_bundle_cqf";
-    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_bundle_cqf";
+    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_for_save_f";
     Long mCurrentQuoteTextId;
     QuoteDataRepository mQuoteDataRepository;
     RealmResults<QuoteText> mCurrentQuoteObjectList;

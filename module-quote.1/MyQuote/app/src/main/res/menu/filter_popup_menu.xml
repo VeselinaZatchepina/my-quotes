@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/filter_by_author"
+        app:showAsAction="ifRoom"
+        android:title="@string/sort_by_author">
+    </item>
+    <item
+        android:id="@+id/filter_by_book_name"
+        app:showAsAction="ifRoom"
+        android:title="@string/sort_by_book_name">
+    </item>
+    <item
+        android:id="@+id/filter_by_year"
+        app:showAsAction="ifRoom"
+        android:title="@string/sort_by_year">
+    </item>
+    <item
+        android:id="@+id/filter_by_publisher"
+        app:showAsAction="ifRoom"
+        android:title="@string/sort_by_publisher">
+    </item>
+</menu>
