@@ -36,7 +36,7 @@ import io.realm.RealmResults;
 public class QuoteCategoryFragment extends Fragment {
 
     private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
-    public static final String QUOTE_TYPE_MA_F = "com.developer.cookie.myquote.quote_type_ma_f";
+    public static final String QUOTE_TYPE_BUNDLE_QCF = "com.developer.cookie.myquote.quote_type_bundle_qcf";
     View mRootView;
     QuoteDataRepository mQuoteDataRepository;
 
@@ -57,7 +57,7 @@ public class QuoteCategoryFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_MA_F);
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_QCF);
         } else {
             mQuoteType = getActivity().getTitle().toString();
         }
@@ -131,7 +131,7 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE_MA_F, mQuoteType);
+        outState.putString(QUOTE_TYPE_BUNDLE_QCF, mQuoteType);
     }
 
     @Override

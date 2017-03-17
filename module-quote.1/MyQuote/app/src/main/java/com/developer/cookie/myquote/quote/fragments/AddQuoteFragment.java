@@ -39,8 +39,8 @@ import io.realm.RealmResults;
 public class AddQuoteFragment extends Fragment {
 
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
-    public static final String QUOTE_TYPE_AQA_F = "com.developer.cookie.myquote.quote.fragments.quote_type_aqa_f";
-    public static final String QUOTE_ID_AQA_F = "com.developer.cookie.myquote.quote.fragments.quote_id_aqa_f";
+    public static final String QUOTE_TYPE_BUNDLE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_type_bundle_aqf";
+    public static final String QUOTE_ID_BUNDLE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_bundle_aqf";
 
     QuoteDataRepository mQuoteDataRepository;
     private List<String> mListOfAllCategories;
@@ -76,11 +76,11 @@ public class AddQuoteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
         if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_AQA_F);
-            mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_AQA_F);
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQF);
+            mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_AQF);
         } else {
             // Get quote id for edit
-            mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID, -1);
+            mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID_INTENT_AQA, -1);
             // Get quote type
             mQuoteType = getActivity().getTitle().toString();
         }
@@ -297,8 +297,8 @@ public class AddQuoteFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE_AQA_F, mQuoteType);
-        outState.putLong(QUOTE_ID_AQA_F, mQuoteTextId);
+        outState.putString(QUOTE_TYPE_BUNDLE_AQF, mQuoteType);
+        outState.putLong(QUOTE_ID_BUNDLE_AQF, mQuoteTextId);
     }
 
     @Override

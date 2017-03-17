@@ -10,10 +10,10 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentActivity {
-    public static final String QUOTE_TEXT_ID = "com.developer.cookie.myquote.quote_text_id";
-    public static final String QUOTE_TYPE_ADD_QUOTE = "com.developer.cookie.myquote.quote_type_add_quote";
-    public static final String CURRENT_FRAGMENT_TAG_AQA = "com.developer.cookie.myquote.quote.fragments.current_fragment_tag_aqa";
-    public static final String QUOTE_TYPE_AQA = "com.developer.cookie.myquote.quote.fragments.quote_type_aqa";
+    public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
+    public static final String QUOTE_TYPE_INTENT_AQA = "com.developer.cookie.myquote.quote_type_intent_aqa";
+    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqa";
+    public static final String QUOTE_TYPE_BUNDLE_AQA = "com.developer.cookie.myquote.fragments.quote_type_bundle_aqa";
     Fragment mCurrentFragment;
     String mQuoteType;
 
@@ -42,38 +42,38 @@ public class AddQuoteActivity extends SingleFragmentActivity {
 
     public static Intent newIntent(Context context, Long currentQuoteTextId, String quoteType) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TEXT_ID, currentQuoteTextId);
-        intent.putExtra(QUOTE_TYPE_ADD_QUOTE, quoteType);
+        intent.putExtra(QUOTE_TEXT_ID_INTENT_AQA, currentQuoteTextId);
+        intent.putExtra(QUOTE_TYPE_INTENT_AQA, quoteType);
         return intent;
     }
 
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TYPE_ADD_QUOTE, titleName);
+        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_AQA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_AQA, mQuoteType);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_BUNDLE_AQA, mQuoteType);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_AQA);
-        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_AQA);
+        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
+        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
     }
 
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
-            mQuoteType = saveInstanceState.getString(QUOTE_TYPE_AQA);
-        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_ADD_QUOTE) != null) {
-            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_ADD_QUOTE);
+            mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
+        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQA) != null) {
+            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
         }
         setTitle(mQuoteType);
     }

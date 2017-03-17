@@ -20,13 +20,13 @@ import java.util.ArrayList;
 
 public class CurrentQuotePagerActivity extends AppCompatActivity {
     private static final String LOG_TAG = CurrentQuotePagerActivity.class.getSimpleName();
-    public static final String QUOTE_ID_LIST = "com.developer.cookie.myquote.quote_list";
-    public static final String CURRENT_ID = "com.developer.cookie.myquote.current_position";
-    public static final String QUOTE_TYPE_PAGER = "com.developer.cookie.myquote.quote_type_pager";
-    public static final String CURRENT_FRAGMENT_TAG_PA = "com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment";
-    public static final String QUOTE_TYPE_PAGER_FOR_SAVE = "com.developer.cookie.myquote.quote_type_pager_for_save";
-    public static final String QUOTE_ID_LIST_FOR_SAVE = "com.developer.cookie.myquote.quote_id_list_for_save";
-    public static final String QUOTE_ID_FOR_SAVE = "com.developer.cookie.myquote.quote_id_for_save";
+    public static final String QUOTE_ID_LIST_INTENT_CQPA = "com.developer.cookie.myquote.quote_id_list_intent_cqpa";
+    public static final String CURRENT_ID_INTENT_CQPA = "com.developer.cookie.myquote.current_id_intent_cqpa";
+    public static final String QUOTE_TYPE_INTENT_CQPA = "com.developer.cookie.myquote.quote_type_intent_cqpa";
+    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_CQPA = "com.developer.cookie.myquote.current_fragmet_tag_bundle_cqpa";
+    public static final String QUOTE_TYPE_PAGER_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_type_pager_for_save_cqpa";
+    public static final String QUOTE_ID_LIST_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_id_list_for_save_cqpa";
+    public static final String QUOTE_ID_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_id_for_save_cqpa";
     private ViewPager mViewPager;
     ArrayList<Long> mQuoteIdList;
     long mCurrentQuoteTextId;
@@ -41,13 +41,13 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quote_pager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE);
-            mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE);
-            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE);
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA);
+            mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA);
+            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_CQPA);
         } else {
-            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_PAGER);
-            mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST);
-            mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID);
+            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_CQPA);
+            mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST_INTENT_CQPA);
+            mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT_CQPA);
         }
         setTitle(mQuoteType);
         mViewPager = (ViewPager) findViewById(R.id.quote_pager);
@@ -97,27 +97,27 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
 
     public static Intent newIntent(Context context, ArrayList<Long> quoteList, long currentId, String quoteType) {
         Intent intent = new Intent(context, CurrentQuotePagerActivity.class);
-        intent.putExtra(QUOTE_ID_LIST, quoteList);
-        intent.putExtra(CURRENT_ID, currentId);
-        intent.putExtra(QUOTE_TYPE_PAGER, quoteType);
+        intent.putExtra(QUOTE_ID_LIST_INTENT_CQPA, quoteList);
+        intent.putExtra(CURRENT_ID_INTENT_CQPA, currentId);
+        intent.putExtra(QUOTE_TYPE_INTENT_CQPA, quoteType);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_PA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE, mQuoteType);
-        outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE, mQuoteIdList);
-        outState.putLong(QUOTE_ID_FOR_SAVE, mCurrentQuoteTextId);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA, mQuoteType);
+        outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA, mQuoteIdList);
+        outState.putLong(QUOTE_ID_FOR_SAVE_CQPA, mCurrentQuoteTextId);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_PA);
-        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE);
-        mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE);
-        mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE);
+        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA);
+        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA);
+        mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA);
+        mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_CQPA);
     }
 }

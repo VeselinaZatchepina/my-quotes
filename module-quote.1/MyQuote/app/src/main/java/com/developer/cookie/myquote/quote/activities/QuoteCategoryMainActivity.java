@@ -21,9 +21,9 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
-    public static final String QUOTE_TYPE_QUOTE_CATEGORY = "com.developer.cookie.myquote.quote_type_quote_category";
-    public static final String CURRENT_FRAGMENT_TAG_MA = "com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment";
-    public static final String QUOTE_TYPE_MA = "com.developer.cookie.myquote.quote_type_ma";
+    public static final String QUOTE_TYPE_INTENT_QCMA = "com.developer.cookie.myquote.quote_type_quote_category_qcma";
+    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.current_fragment_tag_bundle_qcma";
+    public static final String QUOTE_TYPE_BUNDLE_QCMA = "com.developer.cookie.myquote.quote_type_bundle_qcma";
 
     Fragment mCurrentFragment;
     String mTitle;
@@ -91,33 +91,33 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
 
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, QuoteCategoryMainActivity.class);
-        intent.putExtra(QUOTE_TYPE_QUOTE_CATEGORY, titleName);
+        intent.putExtra(QUOTE_TYPE_INTENT_QCMA, titleName);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_MA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_MA, mTitle);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_BUNDLE_QCMA, mTitle);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_MA);
-        mTitle = savedInstanceState.getString(QUOTE_TYPE_MA);
+        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA);
+        mTitle = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
     }
 
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
-            mTitle = saveInstanceState.getString(QUOTE_TYPE_MA);
+            mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
             setTitle(mTitle);
             return;
-        } else if (getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY) != null) {
-            mTitle = getIntent().getStringExtra(QUOTE_TYPE_QUOTE_CATEGORY);
+        } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA) != null) {
+            mTitle = getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA);
             setTitle(mTitle);
             return;
         }

@@ -34,8 +34,8 @@ import io.realm.RealmResults;
  */
 public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String LOG_TAG = AllQuoteCurrentCategoryFragment.class.getSimpleName();
-    private static final String QUOTE_TYPE = "quote type";
-    private static final String QUOTE_CATEGORY = "quote category";
+    private static final String QUOTE_TYPE_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_type_bundle_aqccf";
+    private static final String QUOTE_CATEGORY_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_category_bundle_aqccf";
 
     View mRootView;
     String mCategoryName;
@@ -57,13 +57,13 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
             if (savedInstanceState != null) {
-                mQuoteType = savedInstanceState.getString(QUOTE_TYPE);
-                mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY);
+                mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
+                mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
             } else {
                 // Get current clicked category name
                 mCategoryName = mActivity
                         .getIntent()
-                        .getSerializableExtra(AllQuoteCurrentCategoryActivity.CATEGORY_NAME)
+                        .getSerializableExtra(AllQuoteCurrentCategoryActivity.QUOTE_CATEGORY_INTENT_AQCCA)
                         .toString();
                 mQuoteType = mActivity.getTitle().toString();
             }
@@ -126,8 +126,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE, mQuoteType);
-        outState.putString(QUOTE_CATEGORY, mCategoryName);
+        outState.putString(QUOTE_TYPE_BUNDLE_AQCCF, mQuoteType);
+        outState.putString(QUOTE_CATEGORY_BUNDLE_AQCCF, mCategoryName);
     }
 
     @Override

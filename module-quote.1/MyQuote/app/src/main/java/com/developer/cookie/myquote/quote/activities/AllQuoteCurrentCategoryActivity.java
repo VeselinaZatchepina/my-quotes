@@ -10,9 +10,9 @@ import android.view.MenuItem;
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 
 public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
-    public static final String CATEGORY_NAME = "com.developer.cookie.myquote.category_name";
-    public static final String QUOTE_TYPE_ALL_QUOTE_CURRENT = "com.developer.cookie.myquote.quote_type_all_quote_current";
-    public static final String CURRENT_FRAGMENT_TAG = "com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment";
+    public static final String QUOTE_CATEGORY_INTENT_AQCCA = "com.developer.cookie.myquote.quote_category_intent_aqcca";
+    public static final String QUOTE_TYPE_INTENT_AQCCA = "com.developer.cookie.myquote.quote_type_intent_aqcca";
+    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqcca";
 
     private Fragment mCurrentFragment;
     private String mQuoteTypeAllQuoteCategory;
@@ -25,32 +25,32 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
 
     public static Intent newIntent(Context context, String categoryName, String quoteType) {
         Intent intent = new Intent(context, AllQuoteCurrentCategoryActivity.class);
-        intent.putExtra(CATEGORY_NAME, categoryName);
-        intent.putExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT, quoteType);
+        intent.putExtra(QUOTE_CATEGORY_INTENT_AQCCA, categoryName);
+        intent.putExtra(QUOTE_TYPE_INTENT_AQCCA, quoteType);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_ALL_QUOTE_CURRENT, mQuoteTypeAllQuoteCategory);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_INTENT_AQCCA, mQuoteTypeAllQuoteCategory);
     }
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG);
-        mQuoteTypeAllQuoteCategory = savedInstanceState.getString(QUOTE_TYPE_ALL_QUOTE_CURRENT);
+        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA);
+        mQuoteTypeAllQuoteCategory = savedInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
     }
 
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
-            mQuoteTypeAllQuoteCategory = saveInstanceState.getString(QUOTE_TYPE_ALL_QUOTE_CURRENT);
-        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT) != null) {
-            mQuoteTypeAllQuoteCategory = getIntent().getStringExtra(QUOTE_TYPE_ALL_QUOTE_CURRENT);
+            mQuoteTypeAllQuoteCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
+        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
+            mQuoteTypeAllQuoteCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
         }
         setTitle(mQuoteTypeAllQuoteCategory);
     }

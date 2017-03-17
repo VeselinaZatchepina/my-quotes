@@ -25,9 +25,9 @@ import io.realm.RealmResults;
  */
 public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
-    private static final String CURRENT_QUOTE_ID = "current_quote_text";
-    public static final String QUOTE_TYPE_PAGER_FOR_SAVE_F = "com.developer.cookie.myquote.quote_type_pager_for_save_f";
-    public static final String QUOTE_ID_FOR_SAVE_F = "com.developer.cookie.myquote.quote_id_for_save_f";
+    private static final String CURRENT_QUOTE_ID_ARG_CQF = "com.developer.cookie.myquote.current_quote_id_arg_cqf";
+    public static final String QUOTE_TYPE_BUNDLE_CQF = "com.developer.cookie.myquote.quote_type_bundle_cqf";
+    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_bundle_cqf";
     Long mCurrentQuoteTextId;
     QuoteDataRepository mQuoteDataRepository;
     RealmResults<QuoteText> mCurrentQuoteObjectList;
@@ -39,12 +39,12 @@ public class CurrentQuoteFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_F);
-            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_F);
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_CQF);
+            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_CQF);
             Log.v(LOG_TAG, mQuoteType);
         } else {
             mQuoteType = getActivity().getTitle().toString();
-            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID);
+            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_ARG_CQF);
         }
         mQuoteDataRepository = new QuoteDataRepository();
         mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
@@ -77,7 +77,7 @@ public class CurrentQuoteFragment extends Fragment {
 
     public static CurrentQuoteFragment newInstance(Long currentQuoteTextId) {
         Bundle args = new Bundle();
-        args.putSerializable(CURRENT_QUOTE_ID, currentQuoteTextId);
+        args.putSerializable(CURRENT_QUOTE_ID_ARG_CQF, currentQuoteTextId);
         CurrentQuoteFragment fragment = new CurrentQuoteFragment();
         fragment.setArguments(args);
         return fragment;
@@ -103,8 +103,8 @@ public class CurrentQuoteFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_F, mQuoteType);
-        outState.putLong(QUOTE_ID_FOR_SAVE_F, mCurrentQuoteTextId);
+        outState.putString(QUOTE_TYPE_BUNDLE_CQF, mQuoteType);
+        outState.putLong(QUOTE_ID_BUNDLE_CQF, mCurrentQuoteTextId);
     }
 
 }
