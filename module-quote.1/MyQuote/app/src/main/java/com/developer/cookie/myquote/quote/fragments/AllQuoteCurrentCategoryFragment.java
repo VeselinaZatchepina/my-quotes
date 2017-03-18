@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -40,6 +41,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String LOG_TAG = AllQuoteCurrentCategoryFragment.class.getSimpleName();
     private static final String QUOTE_TYPE_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_type_bundle_aqccf";
     private static final String QUOTE_CATEGORY_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_category_bundle_aqccf";
+    private static final String QUOTE_SORTED_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_sorted_bundle_aqccf";
 
     View mRootView;
     String mCategoryName;
@@ -52,18 +54,25 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     RealmResults<QuoteText> mQuoteTexts;
 
     String mQuoteType;
-
+    String mSortedBy = "date";
     long mCurrentId;
 
     AllQuoteCurrentCategoryActivity mActivity;
+
+    Fragment currentFragment = this;
+
+    boolean isReload = false;
+
+    public AllQuoteCurrentCategoryFragment() {
+        super();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
             if (savedInstanceState != null) {
-                mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
-                mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
+                setDataFromSavedInstanceState(savedInstanceState);
             } else {
                 // Get current clicked category name
                 mCategoryName = mActivity
@@ -73,12 +82,16 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 mQuoteType = mActivity.getTitle().toString();
             }
             mQuoteDataRepository = new QuoteDataRepository();
-            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
+            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType, mSortedBy);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        if (isReload) {
+            onCreate(savedInstanceState);
+            Toast.makeText(getActivity(), LOG_TAG, Toast.LENGTH_LONG).show();
+        }
         mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
         mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
@@ -104,6 +117,12 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         });
 
         return mRootView;
+    }
+
+    private void setDataFromSavedInstanceState(Bundle savedInstanceState) {
+        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
+        mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
+        mSortedBy = savedInstanceState.getString(QUOTE_SORTED_BUNDLE_AQCCF);
     }
 
     @Override
@@ -139,8 +158,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.filter_quote:
-                ActionMenuItemView imageButton = (ActionMenuItemView) getActivity().findViewById(R.id.filter_quote);
-                showPopup(imageButton);
+                ActionMenuItemView view = (ActionMenuItemView) getActivity().findViewById(R.id.filter_quote);
+                showPopup(view);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -153,17 +172,20 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.filter_by_author:
-                        // read the listItemPosition here
-                        Toast.makeText(getActivity(), LOG_TAG, Toast.LENGTH_LONG).show();
+                        mSortedBy = "author";
+                        reloadFragment();
                         return true;
                     case R.id.filter_by_book_name:
-                        // read the listItemPosition here
+                        mSortedBy = "book_name";
+                        reloadFragment();
                         return true;
                     case R.id.filter_by_year:
-                        // read the listItemPosition here
+                        mSortedBy = "year";
+                        reloadFragment();
                         return true;
                     case R.id.filter_by_publisher:
-                        // read the listItemPosition here
+                        mSortedBy = "publisher";
+                        reloadFragment();
                         return true;
                     default:
                         return false;
@@ -175,11 +197,19 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         popup.show();
     }
 
+    private void reloadFragment() {
+        //TODO why isReload saved in fragment?
+        isReload = true;
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.detach(currentFragment).attach(currentFragment).commit();
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(QUOTE_TYPE_BUNDLE_AQCCF, mQuoteType);
         outState.putString(QUOTE_CATEGORY_BUNDLE_AQCCF, mCategoryName);
+        outState.putString(QUOTE_SORTED_BUNDLE_AQCCF, mSortedBy);
     }
 
     @Override

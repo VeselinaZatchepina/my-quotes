@@ -34,7 +34,7 @@ interface QuoteRepository {
      * @param quoteType
      * @return List<QuoteText>
      */
-    List<QuoteText> getListOfQuoteTextByCategory(String category, String quoteType);
+    List<QuoteText> getListOfQuoteTextByCategory(String category, String quoteType, String sortedBy);
 
     /**
      * Method requests QuoteText object from the database by quote text.

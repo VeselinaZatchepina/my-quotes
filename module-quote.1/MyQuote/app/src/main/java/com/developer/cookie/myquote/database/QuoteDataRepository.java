@@ -18,6 +18,7 @@ import io.realm.Realm;
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.RealmResults;
+import io.realm.Sort;
 
 /**
  * QuoteDataRepository helps to abstract mRealm layer.
@@ -107,11 +108,39 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category, String type) {
-        return mRealm.where(QuoteText.class)
-                .equalTo("type.type", type)
-                .equalTo("category.category", category)
-                .findAllAsync();
+    public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category, String type, String sortedBy) {
+        RealmResults<QuoteText> realmResults;
+        switch (sortedBy) {
+            case "author":
+                //TODO sort by author
+                realmResults = null;
+                return realmResults;
+            case "book_name":
+                realmResults = mRealm.where(QuoteText.class)
+                        .equalTo("type.type", type)
+                        .equalTo("category.category", category)
+                        .findAllSortedAsync("bookName.bookName");
+                return realmResults;
+            case "year":
+                realmResults = mRealm.where(QuoteText.class)
+                        .equalTo("type.type", type)
+                        .equalTo("category.category", category)
+                        .findAllSortedAsync("bookName.year.yearNumber");
+                return realmResults;
+            case "publisher":
+                realmResults = mRealm.where(QuoteText.class)
+                        .equalTo("type.type", type)
+                        .equalTo("category.category", category)
+                        .findAllSortedAsync("bookName.publisher.publisherName");
+                return realmResults;
+            case "date":
+                realmResults = mRealm.where(QuoteText.class)
+                        .equalTo("type.type", type)
+                        .equalTo("category.category", category)
+                        .findAllSortedAsync("date.quoteDate");
+                return realmResults;
+        }
+        return null;
     }
 
     @Override
@@ -290,5 +319,12 @@ public class QuoteDataRepository implements QuoteRepository {
             quoteTypeObject = results.first();
         }
         return quoteTypeObject;
+    }
+
+    public RealmResults<QuoteText> getQuoteSortedByBookName(String quoteType, String category) {
+        return mRealm.where(QuoteText.class)
+                .equalTo("type.type", quoteType)
+                .equalTo("category.category", category)
+                .findAllSortedAsync("bookName.bookName", Sort.DESCENDING);
     }
 }
