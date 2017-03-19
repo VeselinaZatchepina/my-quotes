@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -63,6 +61,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     boolean isReload = false;
 
+    RecyclerView mRecyclerView;
+
     public AllQuoteCurrentCategoryFragment() {
         super();
     }
@@ -88,10 +88,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (isReload) {
-            onCreate(savedInstanceState);
-            Toast.makeText(getActivity(), LOG_TAG, Toast.LENGTH_LONG).show();
-        }
         mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
         mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
@@ -99,15 +95,12 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 if (element.size() == 0 && getActivity() != null) {
                     getActivity().finish();
                 }
-                mCurrentCategoryQuoteTextList = new ArrayList<String>();
-                for (int i = 0; i < element.size(); i++) {
-                    mCurrentCategoryQuoteTextList.add(element.get(i).getQuoteText());
-                }
-                RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-                registerForContextMenu(recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                mCurrentCategoryQuoteTextList = getListOfQuoteText(element);
+                mRecyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+                registerForContextMenu(mRecyclerView);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 mRecyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(mCurrentCategoryQuoteTextList);
-                recyclerView.setAdapter(mRecyclerViewAdapter);
+                mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 // Create list of quote's id for data transfer to another fragment
                 mListOfQuotesId = new ArrayList<Long>();
                 for(int i = 0; i < element.size(); i++) {
@@ -115,7 +108,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 }
             }
         });
-
         return mRootView;
     }
 
@@ -173,19 +165,19 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 switch (item.getItemId()) {
                     case R.id.filter_by_author:
                         mSortedBy = "author";
-                        reloadFragment();
+                        sortAndUpdateRecyclerView(mSortedBy);
                         return true;
                     case R.id.filter_by_book_name:
-                        mSortedBy = "book_name";
-                        reloadFragment();
+                        mSortedBy = "bookName.bookName";
+                        sortAndUpdateRecyclerView(mSortedBy);
                         return true;
                     case R.id.filter_by_year:
-                        mSortedBy = "year";
-                        reloadFragment();
+                        mSortedBy = "bookName.year.yearNumber";
+                        sortAndUpdateRecyclerView(mSortedBy);
                         return true;
                     case R.id.filter_by_publisher:
-                        mSortedBy = "publisher";
-                        reloadFragment();
+                        mSortedBy = "bookName.publisher.publisherName";
+                        sortAndUpdateRecyclerView(mSortedBy);
                         return true;
                     default:
                         return false;
@@ -197,11 +189,18 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         popup.show();
     }
 
-    private void reloadFragment() {
-        //TODO why isReload saved in fragment?
-        isReload = true;
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.detach(currentFragment).attach(currentFragment).commit();
+    private void sortAndUpdateRecyclerView(String mSortedBy) {
+        mQuoteTexts = mQuoteTexts.sort(mSortedBy);
+        List<String> quoteTextList = getListOfQuoteText(mQuoteTexts);
+        mRecyclerViewAdapter.changeDate(quoteTextList);
+    }
+
+    private List<String> getListOfQuoteText(RealmResults<QuoteText> realmResults) {
+        List<String> quoteTextList = new ArrayList<String>();
+        for (int i = 0; i < realmResults.size(); i++) {
+            quoteTextList.add(realmResults.get(i).getQuoteText());
+        }
+        return quoteTextList;
     }
 
     @Override
