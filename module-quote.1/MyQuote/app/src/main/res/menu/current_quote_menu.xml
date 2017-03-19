@@ -2,9 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_item_share"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_share_white_24dp"
+        android:title="@string/share"
+        app:actionProviderClass=
+            "android.support.v7.widget.ShareActionProvider" />
+    <item
         android:id="@+id/delete_quote"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_delete_white_24dp"
-        android:title="@string/delete_title">
-    </item>
+        android:title="@string/delete_title"/>
 </menu>

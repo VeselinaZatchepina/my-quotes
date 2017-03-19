@@ -1,8 +1,11 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.ShareActionProvider;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -33,6 +36,7 @@ public class CurrentQuoteFragment extends Fragment {
     RealmResults<QuoteText> mCurrentQuoteObjectList;
     String mCurrentCategory;
     String mQuoteType;
+    ShareActionProvider mShareActionProvider;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,6 +90,17 @@ public class CurrentQuoteFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.current_quote_menu, menu);
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        Intent sharingIntent = new Intent();
+        sharingIntent.setAction(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String quoteTextForShareBody = mCurrentQuoteObjectList.first().getQuoteText();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(sharingIntent);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
