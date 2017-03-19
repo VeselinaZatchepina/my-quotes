@@ -163,10 +163,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
-                    case R.id.filter_by_author:
-                        mSortedBy = "author";
-                        sortAndUpdateRecyclerView(mSortedBy);
-                        return true;
                     case R.id.filter_by_book_name:
                         mSortedBy = "bookName.bookName";
                         sortAndUpdateRecyclerView(mSortedBy);
