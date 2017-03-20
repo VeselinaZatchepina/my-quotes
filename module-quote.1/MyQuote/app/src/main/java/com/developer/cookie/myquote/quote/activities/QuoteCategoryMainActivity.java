@@ -31,7 +31,7 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.nav_drawer_activity);
+        setContentView(getLayoutResId());
         // Work with Navigation Drawer
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,6 +55,11 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
                 toDoWhenFabIsPressed();
             }
         });
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_masterdetail;
     }
 
     @Override

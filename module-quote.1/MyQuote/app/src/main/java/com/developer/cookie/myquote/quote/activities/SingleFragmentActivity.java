@@ -4,6 +4,7 @@ package com.developer.cookie.myquote.quote.activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -37,7 +38,7 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAndSetDataFromSaveInstanceState(savedInstanceState);
-        setContentView(R.layout.activity_single_fragment);
+        setContentView(getLayoutResId());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -65,4 +66,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
         });
     }
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) { }
+
+    @LayoutRes
+    protected int getLayoutResId() {
+        return R.layout.activity_single_fragment;
+    }
 }
