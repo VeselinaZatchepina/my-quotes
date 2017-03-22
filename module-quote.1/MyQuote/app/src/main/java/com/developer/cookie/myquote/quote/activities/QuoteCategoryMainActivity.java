@@ -15,17 +15,25 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
+import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 
+import java.util.ArrayList;
+
 public class QuoteCategoryMainActivity extends SingleFragmentActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, QuoteCategoryFragment.Callbacks,
+                    AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     public static final String QUOTE_TYPE_INTENT_QCMA = "com.developer.cookie.myquote.quote_type_quote_category_qcma";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.current_fragment_tag_bundle_qcma";
+    public static final String TABLET_FRAGMENT_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.tablet_fragment_tag_bundle_qcma";
     public static final String QUOTE_TYPE_BUNDLE_QCMA = "com.developer.cookie.myquote.quote_type_bundle_qcma";
 
     Fragment mCurrentFragment;
+    //Fragment to tablet
+    Fragment newCurrentQuoteFragment;
     String mTitle;
 
     @Override
@@ -44,11 +52,7 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
-        } else {
-            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
-        }
+        setFabBackgroundImage(fabImageResourceId);
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,5 +131,45 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
             return;
         }
         setTitle(getString(R.string.book_quote_type));
+    }
+
+    @Override
+    public void onCategorySelected(String quoteCategory, String quoteType) {
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,
+                    quoteCategory, quoteType);
+            startActivity(intent);
+        } else {
+            Fragment newAllQuoteCurrentCategoryFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detail_fragment_container, newAllQuoteCurrentCategoryFragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId, final String quoteType) {
+        setFabBackgroundImage(R.drawable.ic_create_white_24dp);
+        mFab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = AddQuoteActivity.newIntent(QuoteCategoryMainActivity.this, currentId, quoteType);
+                    startActivity(intent);
+                }
+            });
+        newCurrentQuoteFragment = CurrentQuoteFragment.newInstance(currentId);
+        getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detail_fragment_container, newCurrentQuoteFragment)
+                    .commit();
+    }
+
+    private void setFabBackgroundImage(int imageResourceId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            mFab.setImageDrawable(getResources().getDrawable(imageResourceId, getTheme()));
+        } else {
+            mFab.setImageDrawable(getResources().getDrawable(imageResourceId));
+        }
     }
 }

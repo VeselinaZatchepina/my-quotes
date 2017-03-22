@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.ShareActionProvider;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,7 +29,8 @@ public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
     private static final String CURRENT_QUOTE_ID_ARG_CQF = "com.developer.cookie.myquote.current_quote_id_arg_cqf";
     public static final String QUOTE_TYPE_BUNDLE_CQF = "com.developer.cookie.myquote.quote_type_bundle_cqf";
-    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_for_save_f";
+    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_bundle_cqf";
+
     Long mCurrentQuoteTextId;
     QuoteDataRepository mQuoteDataRepository;
     RealmResults<QuoteText> mCurrentQuoteObjectList;
@@ -45,14 +45,12 @@ public class CurrentQuoteFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_CQF);
             mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_CQF);
-            Log.v(LOG_TAG, mQuoteType);
         } else {
             mQuoteType = getActivity().getTitle().toString();
             mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_ARG_CQF);
         }
         mQuoteDataRepository = new QuoteDataRepository();
         mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
-        Log.v(LOG_TAG, mQuoteType);
     }
 
     @Override
@@ -121,5 +119,4 @@ public class CurrentQuoteFragment extends Fragment {
         outState.putString(QUOTE_TYPE_BUNDLE_CQF, mQuoteType);
         outState.putLong(QUOTE_ID_BUNDLE_CQF, mCurrentQuoteTextId);
     }
-
 }

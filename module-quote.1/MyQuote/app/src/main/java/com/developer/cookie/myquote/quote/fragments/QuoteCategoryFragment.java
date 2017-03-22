@@ -1,7 +1,7 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +49,8 @@ public class QuoteCategoryFragment extends Fragment {
     String mQuoteType;
 
     String mCategoryForDelete;
+
+    private Callbacks mCallbacks;
 
     public QuoteCategoryFragment() { }
 
@@ -135,6 +136,18 @@ public class QuoteCategoryFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mCallbacks = (Callbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mQuoteDataRepository.closeDbConnect();
@@ -163,9 +176,7 @@ public class QuoteCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                Intent intent = AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
-                        itemQuoteCategory.getText().toString(), mQuoteType);
-                startActivity(intent);
+                mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
             }
 
             @Override
@@ -213,5 +224,9 @@ public class QuoteCategoryFragment extends Fragment {
             quoteCountList = pair.second;
             notifyDataSetChanged();
         }
+    }
+
+    public interface Callbacks {
+        void onCategorySelected(String quoteCategory, String quoteType);
     }
 }

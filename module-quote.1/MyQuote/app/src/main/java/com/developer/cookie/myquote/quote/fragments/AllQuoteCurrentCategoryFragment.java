@@ -2,7 +2,6 @@ package com.developer.cookie.myquote.quote.fragments;
 
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
@@ -24,7 +23,6 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
-import com.developer.cookie.myquote.quote.activities.CurrentQuotePagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String QUOTE_CATEGORY_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_category_bundle_aqccf";
     private static final String QUOTE_SORTED_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_sorted_bundle_aqccf";
 
+    private static final String QUOTE_CURRENT_CATEGORY_NEW_INSTANCE = "com.developer.cookie.myquote.quote_current_id_new_instance_aqccf";
+    private static final String QUOTE_TYPE_NEW_INSTANCE = "com.developer.cookie.myquote.quote_type_new_instance_aqccf";
+
     View mRootView;
     String mCategoryName;
     QuoteDataRepository mQuoteDataRepository;
@@ -55,13 +56,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     String mSortedBy = "date";
     long mCurrentId;
 
-    AllQuoteCurrentCategoryActivity mActivity;
-
-    Fragment currentFragment = this;
-
-    boolean isReload = false;
-
     RecyclerView mRecyclerView;
+
+    private AllQuoteCurrentCategoryCallbacks mCallbacks;
 
     public AllQuoteCurrentCategoryFragment() {
         super();
@@ -73,13 +70,16 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         setHasOptionsMenu(true);
             if (savedInstanceState != null) {
                 setDataFromSavedInstanceState(savedInstanceState);
+            } else if (getArguments() != null) {
+                mCategoryName = getArguments().getString(QUOTE_CURRENT_CATEGORY_NEW_INSTANCE);
+                mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
             } else {
                 // Get current clicked category name
-                mCategoryName = mActivity
+                mCategoryName = getActivity()
                         .getIntent()
                         .getSerializableExtra(AllQuoteCurrentCategoryActivity.QUOTE_CATEGORY_INTENT_AQCCA)
                         .toString();
-                mQuoteType = mActivity.getTitle().toString();
+                mQuoteType = getActivity().getTitle().toString();
             }
             mQuoteDataRepository = new QuoteDataRepository();
             mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType, mSortedBy);
@@ -199,6 +199,15 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         return quoteTextList;
     }
 
+    public static AllQuoteCurrentCategoryFragment newInstance(String quoteCategory, String quoteType) {
+        Bundle args = new Bundle();
+        args.putString(QUOTE_CURRENT_CATEGORY_NEW_INSTANCE, quoteCategory);
+        args.putString(QUOTE_TYPE_NEW_INSTANCE, quoteType);
+        AllQuoteCurrentCategoryFragment fragment = new AllQuoteCurrentCategoryFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -210,9 +219,13 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof AllQuoteCurrentCategoryActivity) {
-            mActivity = (AllQuoteCurrentCategoryActivity) context;
-        }
+        mCallbacks = (AllQuoteCurrentCategoryCallbacks) context;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -243,9 +256,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             public void onClick(View view) {
                 mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
-                Intent intent = CurrentQuotePagerActivity.newIntent(getActivity(),
-                        mListOfQuotesId, mCurrentId, mQuoteType);
-                startActivity(intent);
+                mCallbacks.onQuoteSelected(mListOfQuotesId, mCurrentId, mQuoteType);
             }
 
             @Override
@@ -290,5 +301,8 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             currentCategoryQuoteList = listOfQuoteText;
             notifyDataSetChanged();
         }
+    }
+    public interface AllQuoteCurrentCategoryCallbacks {
+        void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId, String quoteType);
     }
 }

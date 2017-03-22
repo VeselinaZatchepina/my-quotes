@@ -9,7 +9,10 @@ import android.view.MenuItem;
 
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 
-public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
+import java.util.ArrayList;
+
+public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks
+{
     public static final String QUOTE_CATEGORY_INTENT_AQCCA = "com.developer.cookie.myquote.quote_category_intent_aqcca";
     public static final String QUOTE_TYPE_INTENT_AQCCA = "com.developer.cookie.myquote.quote_type_intent_aqcca";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqcca";
@@ -64,5 +67,11 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId, String quoteType) {
+        Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, quoteType);
+        startActivity(intent);
     }
 }

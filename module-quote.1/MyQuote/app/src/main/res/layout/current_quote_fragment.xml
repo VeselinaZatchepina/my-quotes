@@ -5,7 +5,8 @@
     android:orientation="vertical"
     android:layout_margin="35dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingTop="?attr/actionBarSize">
 
     <TextView
         android:id="@+id/current_quote_text"
