@@ -122,14 +122,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         if (v.getId()==R.id.recycler_view) {
             MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.context_menu_quote_category, menu);
+            inflater.inflate(R.menu.context_menu_all_quotes, menu);
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.delete:
+            case R.id.delete_current_quote:
                 mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
                 final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
                 Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);

@@ -11,6 +11,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -161,6 +162,8 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
                     quoteCategory, quoteType);
             startActivity(intent);
         } else {
+            setFabBackgroundImage(fabImageResourceId);
+            mFab.setOnClickListener(mAddFabListener);
             detailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
             getSupportFragmentManager()
                     .beginTransaction()
@@ -174,6 +177,7 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         setFabBackgroundImage(R.drawable.ic_create_white_24dp);
         mFabListenerTag = -1;
         mCurrentId = currentId;
+        Log.v(LOG_TAG, "" + mCurrentId);
         mFab.setOnClickListener(mEditFabListener);
         detailFragment = CurrentQuoteFragment.newInstance(currentId);
         getSupportFragmentManager()
