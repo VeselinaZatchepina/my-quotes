@@ -61,16 +61,10 @@ public class AddQuoteActivity extends SingleFragmentActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
-        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
-    }
-
-    @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
+            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
             mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQA) != null) {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);

@@ -256,7 +256,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             public void onClick(View view) {
                 mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
-                mCallbacks.onQuoteSelected(mListOfQuotesId, mCurrentId, mQuoteType);
+                mCallbacks.onQuoteSelected(mListOfQuotesId, mCurrentId);
             }
 
             @Override
@@ -303,6 +303,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         }
     }
     public interface AllQuoteCurrentCategoryCallbacks {
-        void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId, String quoteType);
+        void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId);
     }
 }

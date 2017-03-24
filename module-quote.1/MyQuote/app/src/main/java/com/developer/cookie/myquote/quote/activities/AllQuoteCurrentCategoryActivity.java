@@ -18,7 +18,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity impl
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqcca";
 
     private Fragment mCurrentFragment;
-    private String mQuoteTypeAllQuoteCategory;
+    private String mQuoteTypeAllQuotesCategory;
 
     @Override
     public Fragment createFragment() {
@@ -37,25 +37,19 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity impl
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_INTENT_AQCCA, mQuoteTypeAllQuoteCategory);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA);
-        mQuoteTypeAllQuoteCategory = savedInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
+        outState.putString(QUOTE_TYPE_INTENT_AQCCA, mQuoteTypeAllQuotesCategory);
     }
 
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
-            mQuoteTypeAllQuoteCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
+            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA);
+            mQuoteTypeAllQuotesCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
-            mQuoteTypeAllQuoteCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
+            mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
         }
-        setTitle(mQuoteTypeAllQuoteCategory);
+        setTitle(mQuoteTypeAllQuotesCategory);
     }
 
     @Override
@@ -70,8 +64,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity impl
     }
 
     @Override
-    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId, String quoteType) {
-        Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, quoteType);
+    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId) {
+        Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, mQuoteTypeAllQuotesCategory);
         startActivity(intent);
     }
 }

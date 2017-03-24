@@ -32,7 +32,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     long mCurrentQuoteTextId;
     long mQuoteTextIdForIntent;
     String mQuoteType;
-
     Fragment mCurrentFragment;
 
     @Override
@@ -41,6 +40,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quote_pager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState != null) {
+            mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA);
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA);
             mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA);
             mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_CQPA);
@@ -63,7 +63,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
                 return mQuoteIdList.size();
             }
         });
-
         // set mViewPager on position of current clicked quote
         for (int i = 0; i < mQuoteIdList.size(); i++) {
             if (mQuoteIdList.get(i) == mCurrentQuoteTextId) {
@@ -71,7 +70,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
                 mQuoteTextIdForIntent = mQuoteIdList.get(mViewPager.getCurrentItem());
             }
         }
-
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
@@ -84,7 +82,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) { }
         });
-
         FloatingActionButton editFab = (FloatingActionButton) findViewById(R.id.edit_fab);
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,14 +107,5 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA, mQuoteType);
         outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA, mQuoteIdList);
         outState.putLong(QUOTE_ID_FOR_SAVE_CQPA, mCurrentQuoteTextId);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA);
-        mQuoteType = savedInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA);
-        mQuoteIdList = (ArrayList<Long>) savedInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA);
-        mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_FOR_SAVE_CQPA);
     }
 }
