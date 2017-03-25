@@ -107,7 +107,7 @@ public class QuoteDataRepository implements QuoteRepository {
     }
 
     @Override
-    public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category, String type, String sortedBy) {
+    public RealmResults<QuoteText> getListOfQuoteTextByCategory(String category, String type) {
         return mRealm.where(QuoteText.class)
                         .equalTo("type.type", type)
                         .equalTo("category.category", category)

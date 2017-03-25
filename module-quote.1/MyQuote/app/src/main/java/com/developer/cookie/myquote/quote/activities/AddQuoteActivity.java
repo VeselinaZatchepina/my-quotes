@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
@@ -70,5 +71,16 @@ public class AddQuoteActivity extends SingleFragmentActivity {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
         }
         setTitle(mQuoteType);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent upIntent = QuoteCategoryMainActivity.newIntent(this, getTitle().toString());
+                startActivity(upIntent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

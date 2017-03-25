@@ -82,7 +82,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 mQuoteType = getActivity().getTitle().toString();
             }
             mQuoteDataRepository = new QuoteDataRepository();
-            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType, mSortedBy);
+            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
     }
 
     @Override
