@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class QuoteCategoryMainActivity extends SingleFragmentActivity
         implements NavigationView.OnNavigationItemSelectedListener, QuoteCategoryFragment.Callbacks,
-                    AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
+        AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     public static final String QUOTE_TYPE_INTENT_QCMA = "com.developer.cookie.myquote.quote_type_quote_category_qcma";
@@ -35,12 +35,14 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     public static final String CURRENT_ID_BUNDLE_QCMA = "com.developer.cookie.myquote.current_id_bundle_qcma";
     Fragment mCurrentFragment;
     //Fragment to tablet
-    Fragment detailFragment;
+    Fragment mDetailFragment;
     String mTitle;
     View.OnClickListener mAddFabListener;
     View.OnClickListener mEditFabListener;
     int mFabListenerTag = 0;
     long mCurrentId;
+
+    String mQuoteCategoryFirstTabletLunch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,8 +130,8 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA, mCurrentFragment);
-        if (findViewById(R.id.detail_fragment_container) != null && detailFragment != null) {
-            getSupportFragmentManager().putFragment(outState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA, detailFragment);
+        if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
+            getSupportFragmentManager().putFragment(outState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA, mDetailFragment);
         }
         outState.putString(QUOTE_TYPE_BUNDLE_QCMA, mTitle);
         outState.putInt(FAB_TAG_BUNDLE_QCMA, mFabListenerTag);
@@ -141,8 +143,8 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         super.getAndSetDataFromSaveInstanceState(saveInstanceState);
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA);
-            if (findViewById(R.id.detail_fragment_container) != null && detailFragment != null) {
-                detailFragment = getSupportFragmentManager().getFragment(saveInstanceState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA);
+            if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
+                mDetailFragment = getSupportFragmentManager().getFragment(saveInstanceState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA);
             }
             mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
             mFabListenerTag = saveInstanceState.getInt(FAB_TAG_BUNDLE_QCMA);
@@ -164,10 +166,10 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         } else {
             setFabBackgroundImage(fabImageResourceId);
             mFab.setOnClickListener(mAddFabListener);
-            detailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
+            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.detail_fragment_container, detailFragment)
+                    .replace(R.id.detail_fragment_container, mDetailFragment)
                     .commit();
         }
     }
@@ -179,11 +181,25 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         mCurrentId = currentId;
         Log.v(LOG_TAG, "" + mCurrentId);
         mFab.setOnClickListener(mEditFabListener);
-        detailFragment = CurrentQuoteFragment.newInstance(currentId);
+        mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
         getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.detail_fragment_container, mDetailFragment)
+                .commit();
+    }
+
+    @Override
+    public String setFirstCategory(String category) {
+        mQuoteCategoryFirstTabletLunch = category;
+        if (findViewById(R.id.detail_fragment_container) != null
+                && mDetailFragment == null) {
+            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(mQuoteCategoryFirstTabletLunch, getTitle().toString());
+            getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.detail_fragment_container, detailFragment)
+                    .replace(R.id.detail_fragment_container, mDetailFragment)
                     .commit();
+        }
+        return mQuoteCategoryFirstTabletLunch;
     }
 
     private void setFabBackgroundImage(int imageResourceId) {

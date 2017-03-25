@@ -11,8 +11,7 @@ import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragm
 
 import java.util.ArrayList;
 
-public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks
-{
+public class AllQuoteCurrentCategoryActivity extends SingleFragmentActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
     public static final String QUOTE_CATEGORY_INTENT_AQCCA = "com.developer.cookie.myquote.quote_category_intent_aqcca";
     public static final String QUOTE_TYPE_INTENT_AQCCA = "com.developer.cookie.myquote.quote_type_intent_aqcca";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqcca";

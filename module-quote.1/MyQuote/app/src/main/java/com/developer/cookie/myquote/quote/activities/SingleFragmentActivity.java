@@ -65,7 +65,9 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
             }
         });
     }
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) { }
+
+    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
+    }
 
     @LayoutRes
     protected int getLayoutResId() {

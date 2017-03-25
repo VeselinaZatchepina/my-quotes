@@ -50,6 +50,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT_CQPA);
         }
         setTitle(mQuoteType);
+        //Work with ViewPager
         mViewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
@@ -58,6 +59,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
                 mCurrentFragment = CurrentQuoteFragment.newInstance(mQuoteIdList.get(position));
                 return mCurrentFragment;
             }
+
             @Override
             public int getCount() {
                 return mQuoteIdList.size();
@@ -72,7 +74,8 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         }
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) { }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
 
             @Override
             public void onPageSelected(int position) {
@@ -80,7 +83,8 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) { }
+            public void onPageScrollStateChanged(int state) {
+            }
         });
         FloatingActionButton editFab = (FloatingActionButton) findViewById(R.id.edit_fab);
         editFab.setOnClickListener(new View.OnClickListener() {

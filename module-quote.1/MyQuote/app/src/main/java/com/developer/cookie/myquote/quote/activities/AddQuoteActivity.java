@@ -31,7 +31,7 @@ public class AddQuoteActivity extends SingleFragmentActivity {
 
     @Override
     public void toDoWhenFabIsPressed() {
-        AddQuoteFragment addQuoteFragment =  ((AddQuoteFragment)currentFragment);
+        AddQuoteFragment addQuoteFragment = ((AddQuoteFragment) currentFragment);
         if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint()) {
             addQuoteFragment.createMapOfQuoteProperties();
             this.finish();

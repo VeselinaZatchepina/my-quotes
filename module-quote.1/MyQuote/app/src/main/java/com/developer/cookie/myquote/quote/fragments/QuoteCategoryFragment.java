@@ -41,7 +41,7 @@ public class QuoteCategoryFragment extends Fragment {
 
     List<Integer> mQuoteCountListOfEveryCategory;
     List<String> mListOfCategories;
-    Pair<List<String>,List<Integer>> mPair;
+    Pair<List<String>, List<Integer>> mPair;
 
     QuoteCategoryRecyclerViewAdapter mQuoteCategoryRecyclerViewAdapter;
     RealmResults<QuoteCategory> mQuoteCategoryList;
@@ -52,7 +52,10 @@ public class QuoteCategoryFragment extends Fragment {
 
     private Callbacks mCallbacks;
 
-    public QuoteCategoryFragment() { }
+    public String quoteCategoryFirstTabletLunch;
+
+    public QuoteCategoryFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,26 +93,31 @@ public class QuoteCategoryFragment extends Fragment {
     /**
      * Method create Pair object for custom adapter. First parameter is name list of category,
      * second is quote count list of this categories.
+     *
      * @param element list of quote category realm object.
      */
     private void createPairObject(List<QuoteCategory> element) {
-                // Create parameters for mPair object
-                mQuoteCountListOfEveryCategory = new ArrayList<Integer>();
-                for (int i = 0; i < element.size(); i++) {
-                    mQuoteCountListOfEveryCategory.add(element.get(i).getQuoteCountCurrentCategory());
-                }
-                mListOfCategories = new ArrayList<>();
-                for (int i = 0; i<element.size(); i++) {
-                    String currentCategory = element.get(i).getCategory();
-                    mListOfCategories.add(currentCategory);
-                }
-                mPair = new Pair<>(mListOfCategories, mQuoteCountListOfEveryCategory);
-            }
+        // Create parameters for mPair object
+        mQuoteCountListOfEveryCategory = new ArrayList<Integer>();
+        for (int i = 0; i < element.size(); i++) {
+            mQuoteCountListOfEveryCategory.add(element.get(i).getQuoteCountCurrentCategory());
+        }
+        mListOfCategories = new ArrayList<>();
+        for (int i = 0; i < element.size(); i++) {
+            String currentCategory = element.get(i).getCategory();
+            mListOfCategories.add(currentCategory);
+        }
+        mPair = new Pair<>(mListOfCategories, mQuoteCountListOfEveryCategory);
+        if (mListOfCategories != null && !mListOfCategories.isEmpty()) {
+            quoteCategoryFirstTabletLunch = mListOfCategories.get(0);
+            mCallbacks.setFirstCategory(quoteCategoryFirstTabletLunch);
+        }
+    }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.recycler_view) {
+        if (v.getId() == R.id.recycler_view) {
             MenuInflater inflater = getActivity().getMenuInflater();
             inflater.inflate(R.menu.context_menu_quote_category, menu);
         }
@@ -117,7 +125,7 @@ public class QuoteCategoryFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.delete:
                 mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
                 final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
@@ -189,10 +197,11 @@ public class QuoteCategoryFragment extends Fragment {
 
         /**
          * Method create custom adapter.
+         *
          * @param pair object with two field List<String> and List<Integer>. First field is for list of category.
          *             Second field is for list of quote count.
          */
-        public QuoteCategoryRecyclerViewAdapter (Pair<List<String>,List<Integer>> pair) {
+        public QuoteCategoryRecyclerViewAdapter(Pair<List<String>, List<Integer>> pair) {
             listOfCategory = pair.first;
             quoteCountList = pair.second;
         }
@@ -217,9 +226,10 @@ public class QuoteCategoryFragment extends Fragment {
 
         /**
          * When adapter data is changed this method helps set new data for adapter.
+         *
          * @param pair
          */
-        public void changeDate(Pair<List<String>,List<Integer>> pair) {
+        public void changeDate(Pair<List<String>, List<Integer>> pair) {
             listOfCategory = pair.first;
             quoteCountList = pair.second;
             notifyDataSetChanged();
@@ -227,6 +237,20 @@ public class QuoteCategoryFragment extends Fragment {
     }
 
     public interface Callbacks {
+        /**
+         * Method add AllQuoteCurrentCategoryFragment as detail fragment
+         *
+         * @param quoteCategory current quote category
+         * @param quoteType     current quote type
+         */
         void onCategorySelected(String quoteCategory, String quoteType);
+
+        /**
+         * Method add detail fragment by default (as example: for first lunch)
+         *
+         * @param category current quote category
+         * @return current quote category
+         */
+        String setFirstCategory(String category);
     }
 }

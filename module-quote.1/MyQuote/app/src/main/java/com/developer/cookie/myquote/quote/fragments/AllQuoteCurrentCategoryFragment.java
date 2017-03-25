@@ -53,7 +53,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     RealmResults<QuoteText> mQuoteTexts;
 
     String mQuoteType;
-    String mSortedBy = "date";
+    String mSortedBy;
     long mCurrentId;
 
     RecyclerView mRecyclerView;
@@ -68,21 +68,21 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-            if (savedInstanceState != null) {
-                setDataFromSavedInstanceState(savedInstanceState);
-            } else if (getArguments() != null) {
-                mCategoryName = getArguments().getString(QUOTE_CURRENT_CATEGORY_NEW_INSTANCE);
-                mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
-            } else {
-                // Get current clicked category name
-                mCategoryName = getActivity()
-                        .getIntent()
-                        .getSerializableExtra(AllQuoteCurrentCategoryActivity.QUOTE_CATEGORY_INTENT_AQCCA)
-                        .toString();
-                mQuoteType = getActivity().getTitle().toString();
-            }
-            mQuoteDataRepository = new QuoteDataRepository();
-            mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
+        if (savedInstanceState != null) {
+            setDataFromSavedInstanceState(savedInstanceState);
+        } else if (getArguments() != null) {
+            mCategoryName = getArguments().getString(QUOTE_CURRENT_CATEGORY_NEW_INSTANCE);
+            mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
+        } else {
+            // Get current clicked category name
+            mCategoryName = getActivity()
+                    .getIntent()
+                    .getSerializableExtra(AllQuoteCurrentCategoryActivity.QUOTE_CATEGORY_INTENT_AQCCA)
+                    .toString();
+            mQuoteType = getActivity().getTitle().toString();
+        }
+        mQuoteDataRepository = new QuoteDataRepository();
+        mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
     }
 
     @Override
@@ -103,7 +103,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 mRecyclerView.setAdapter(mRecyclerViewAdapter);
                 // Create list of quote's id for data transfer to another fragment
                 mListOfQuotesId = new ArrayList<Long>();
-                for(int i = 0; i < element.size(); i++) {
+                for (int i = 0; i < element.size(); i++) {
                     mListOfQuotesId.add(element.get(i).getId());
                 }
             }
@@ -120,7 +120,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId()==R.id.recycler_view) {
+        if (v.getId() == R.id.recycler_view) {
             MenuInflater inflater = getActivity().getMenuInflater();
             inflater.inflate(R.menu.context_menu_all_quotes, menu);
         }
@@ -128,7 +128,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
+        switch (item.getItemId()) {
             case R.id.delete_current_quote:
                 mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
                 final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
@@ -270,9 +270,10 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
         /**
          * Method create custom adapter.
+         *
          * @param listOfQuoteText
          */
-        public AllQuoteCurrentCategoryRecyclerViewAdapter (List<String> listOfQuoteText) {
+        public AllQuoteCurrentCategoryRecyclerViewAdapter(List<String> listOfQuoteText) {
             currentCategoryQuoteList = listOfQuoteText;
         }
 
@@ -295,6 +296,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
         /**
          * When adapter data is changed this method helps set new data for adapter.
+         *
          * @param listOfQuoteText
          */
         public void changeDate(List<String> listOfQuoteText) {
@@ -302,7 +304,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             notifyDataSetChanged();
         }
     }
+
     public interface AllQuoteCurrentCategoryCallbacks {
+        /**
+         * Method add CurrentQuoteFragment as detail fragment
+         *
+         * @param listOfQuotesId
+         * @param currentId
+         */
         void onQuoteSelected(ArrayList<Long> listOfQuotesId, Long currentId);
     }
 }

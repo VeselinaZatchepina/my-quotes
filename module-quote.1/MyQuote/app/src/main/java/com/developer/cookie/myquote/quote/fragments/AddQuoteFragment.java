@@ -69,7 +69,8 @@ public class AddQuoteFragment extends Fragment {
 
     String mQuoteType;
 
-    public AddQuoteFragment() { }
+    public AddQuoteFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,14 +95,14 @@ public class AddQuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-            mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-            mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
-            mBookName = (EditText) rootView.findViewById(R.id.book_name);
-            mAuthorName = (EditText) rootView.findViewById(R.id.author_name);
-            mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
-            mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
-            mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
+        View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
+        mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+        mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
+        mBookName = (EditText) rootView.findViewById(R.id.book_name);
+        mAuthorName = (EditText) rootView.findViewById(R.id.author_name);
+        mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
+        mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
+        mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
         // Create view for "My quote" type
         if (isAdded()) {
             if (mQuoteType.equals(getString(R.string.my_quote_type))) {
@@ -112,40 +113,40 @@ public class AddQuoteFragment extends Fragment {
                 mPublishName.setVisibility(View.GONE);
             }
         }
-            // Work with mSpinner
-            mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-                @Override
-                public void onChange(RealmResults<QuoteCategory> element) {
-                    createQuoteCategoryListForSpinner(element);
-                    // Set hint for mSpinner
-                    if (isAdded()) {
-                        mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
-                            @Override
-                            public View getView(int position, View convertView, ViewGroup parent) {
-                                View v = super.getView(position, convertView, parent);
-                                if (position == getCount()) {
-                                    ((TextView) v.findViewById(android.R.id.text1)).setText("");
-                                    ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
-                                }
-                                return v;
+        // Work with mSpinner
+        mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
+            @Override
+            public void onChange(RealmResults<QuoteCategory> element) {
+                createQuoteCategoryListForSpinner(element);
+                // Set hint for mSpinner
+                if (isAdded()) {
+                    mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+                            View v = super.getView(position, convertView, parent);
+                            if (position == getCount()) {
+                                ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                                ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
                             }
+                            return v;
+                        }
 
-                            @Override
-                            public int getCount() {
-                                return super.getCount() - 1;
-                            }
-                        };
-                    }
-                    mSpinnerAdapter.addAll(mListOfAllCategories);
-                    mSpinner.setAdapter(mSpinnerAdapter);
-                    mSpinner.setSelection(mSpinnerAdapter.getCount());
-                    // If we choose Quote for edit we set mSpinner to current quote category position.
-                    if (mQuoteTextId != -1) {
-                        mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
-                    }
+                        @Override
+                        public int getCount() {
+                            return super.getCount() - 1;
+                        }
+                    };
                 }
-            });
-            // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
+                mSpinnerAdapter.addAll(mListOfAllCategories);
+                mSpinner.setAdapter(mSpinnerAdapter);
+                mSpinner.setSelection(mSpinnerAdapter.getCount());
+                // If we choose Quote for edit we set mSpinner to current quote category position.
+                if (mQuoteTextId != -1) {
+                    mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
+                }
+            }
+        });
+        // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
         if (mQuoteTextId != -1) {
             mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
                 @Override
@@ -162,51 +163,53 @@ public class AddQuoteFragment extends Fragment {
                 }
             });
         }
-            //Add listener to mSpinner
-            mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    final String selectedItem = parent.getItemAtPosition(position).toString();
-                    if (selectedItem.equals(getString(R.string.spinner_add_category))) {
-                        // Create dialog for add category
-                        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                        View dialogView = layoutInflater.inflate(R.layout.add_category_dialog, null);
-                        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-                        mDialogBuilder.setView(dialogView);
-                        final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
-                        mDialogBuilder
-                                .setCancelable(false)
-                                .setPositiveButton("OK",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                String currentUserInput = userInput.getText().toString();
-                                                mListOfAllCategories.add(0, currentUserInput);
-                                                mSpinnerAdapter.clear();
-                                                mSpinnerAdapter.addAll(mListOfAllCategories);
-                                                mSpinner.setSelection(0);
-                                                mValueOfCategory = currentUserInput;
-                                            }
-                                        })
-                                .setNegativeButton("Отмена",
-                                        new DialogInterface.OnClickListener() {
-                                            public void onClick(DialogInterface dialog, int id) {
-                                                dialog.cancel();
-                                            }
-                                        });
-                        AlertDialog alertDialog = mDialogBuilder.create();
-                        alertDialog.show();
-                    } else {
-                        mValueOfCategory = selectedItem;
-                    }
+        //Add listener to mSpinner
+        mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                final String selectedItem = parent.getItemAtPosition(position).toString();
+                if (selectedItem.equals(getString(R.string.spinner_add_category))) {
+                    // Create dialog for add category
+                    LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                    View dialogView = layoutInflater.inflate(R.layout.add_category_dialog, null);
+                    AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+                    mDialogBuilder.setView(dialogView);
+                    final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
+                    mDialogBuilder
+                            .setCancelable(false)
+                            .setPositiveButton("OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            String currentUserInput = userInput.getText().toString();
+                                            mListOfAllCategories.add(0, currentUserInput);
+                                            mSpinnerAdapter.clear();
+                                            mSpinnerAdapter.addAll(mListOfAllCategories);
+                                            mSpinner.setSelection(0);
+                                            mValueOfCategory = currentUserInput;
+                                        }
+                                    })
+                            .setNegativeButton("Отмена",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alertDialog = mDialogBuilder.create();
+                    alertDialog.show();
+                } else {
+                    mValueOfCategory = selectedItem;
                 }
+            }
 
-                public void onNothingSelected(AdapterView<?> parent) { }
-            });
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         return rootView;
     }
 
     /**
      * Method checks if user choose hint in mSpinner.
+     *
      * @return true if user choose hint and false else if.
      */
     public boolean isSpinnerSelectedItemHint() {
@@ -215,6 +218,7 @@ public class AddQuoteFragment extends Fragment {
 
     /**
      * Method creates list of categories for mSpinnerAdapter.
+     *
      * @param quoteCategoryList list of all quotes category from db.
      */
     private void createQuoteCategoryListForSpinner(List<QuoteCategory> quoteCategoryList) {
@@ -228,12 +232,12 @@ public class AddQuoteFragment extends Fragment {
                     mListOfAllCategories.add(category);
                 }
             }
-            if(isAdded()) {
+            if (isAdded()) {
                 mListOfAllCategories.add(getString(R.string.spinner_add_category));
                 mListOfAllCategories.add(getString(R.string.spinner_hint));
             }
         } else {
-            if(isAdded()) {
+            if (isAdded()) {
                 mListOfAllCategories.add(getString(R.string.spinner_add_category));
                 mListOfAllCategories.add(getString(R.string.spinner_hint));
             }
@@ -242,11 +246,12 @@ public class AddQuoteFragment extends Fragment {
 
     /**
      * Method checks if main EditText is empty or not.
+     *
      * @return false if EditText not empty and true if else.
      */
     public boolean isEditTextEmpty() {
         mCurrentQuoteText = mQuoteText.getText().toString();
-        if(TextUtils.isEmpty(mCurrentQuoteText)) {
+        if (TextUtils.isEmpty(mCurrentQuoteText)) {
             mQuoteText.setError("Quote text cannot be empty");
             return true;
         }
