@@ -1,4 +1,4 @@
-package com.developer.cookie.myquote.quote.activities;
+package com.developer.cookie.myquote.quote.abstract_class;
 
 
 import android.content.Intent;
@@ -13,25 +13,19 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 
 /**
- * SingleFragmentActivity helps avoid boilerplate code.
+ * SingleFragmentAbstractActivity helps avoid boilerplate code.
  */
-public abstract class SingleFragmentActivity extends AppCompatActivity {
+public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
 
     public Fragment currentFragment;
     FloatingActionButton mFab;
     public int fabImageResourceId = setFabImageResourceId();
 
-    public abstract Fragment createFragment();
-
     public int setFabImageResourceId() {
         return R.drawable.ic_add_white_24dp;
-    }
-
-    public void toDoWhenFabIsPressed() {
-        Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
-        startActivity(intent);
     }
 
     @Override
@@ -72,5 +66,12 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @LayoutRes
     protected int getLayoutResId() {
         return R.layout.activity_single_fragment;
+    }
+
+    public abstract Fragment createFragment();
+
+    public void toDoWhenFabIsPressed() {
+        Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
+        startActivity(intent);
     }
 }

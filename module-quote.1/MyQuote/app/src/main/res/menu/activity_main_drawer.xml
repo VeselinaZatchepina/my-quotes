@@ -9,5 +9,9 @@
             android:id="@+id/nav_my_quote"
             android:icon="@drawable/ic_face_black_24dp"
             android:title="@string/my_quote_type" />
+        <item
+            android:id="@+id/nav_get_idea"
+            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
+            android:title="@string/get_idea" />
     </group>
 </menu>

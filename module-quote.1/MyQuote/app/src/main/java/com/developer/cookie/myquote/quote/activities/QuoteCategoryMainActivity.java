@@ -2,28 +2,23 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 
 import java.util.ArrayList;
 
-public class QuoteCategoryMainActivity extends SingleFragmentActivity
-        implements NavigationView.OnNavigationItemSelectedListener, QuoteCategoryFragment.Callbacks,
+public class QuoteCategoryMainActivity extends NavigationAbstractActivity
+        implements QuoteCategoryFragment.Callbacks,
         AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
@@ -34,6 +29,8 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     public static final String FAB_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.fab_tag_bundle_qcma";
     public static final String CURRENT_ID_BUNDLE_QCMA = "com.developer.cookie.myquote.current_id_bundle_qcma";
     Fragment mCurrentFragment;
+    FloatingActionButton mFab;
+    int fabImageResourceId = setFabImageResourceId();
     //Fragment to tablet
     Fragment mDetailFragment;
     String mTitle;
@@ -45,23 +42,44 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     String mQuoteCategoryFirstTabletLunch;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        getAndSetDataFromSaveInstanceState(savedInstanceState);
-        setContentView(getLayoutResId());
-        // Work with Navigation Drawer
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        //Work with fab
+    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
+        if (saveInstanceState != null) {
+            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA);
+            if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
+                mDetailFragment = getSupportFragmentManager().getFragment(saveInstanceState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA);
+            }
+            mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
+            mFabListenerTag = saveInstanceState.getInt(FAB_TAG_BUNDLE_QCMA);
+            mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE_QCMA);
+        } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA) != null) {
+            mTitle = getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA);
+        } else {
+            mTitle = getString(R.string.book_quote_type);
+        }
+        setTitle(mTitle);
+    }
+
+    @Override
+    public int getLayoutResId() {
+        return R.layout.activity_masterdetail;
+    }
+
+    @Override
+    public void workWithFragment() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
+        if (mCurrentFragment == null) {
+            mCurrentFragment = new QuoteCategoryFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.container, mCurrentFragment)
+                    .commit();
+        }
+    }
+
+    @Override
+    public void workWithFab() {
         mFab = (FloatingActionButton) findViewById(R.id.fab);
-        setFabBackgroundImage(fabImageResourceId);
+        setFabBackgroundImage(mFab, fabImageResourceId);
         mAddFabListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,46 +96,9 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
         if (mFabListenerTag == 0) {
             mFab.setOnClickListener(mAddFabListener);
         } else {
-            setFabBackgroundImage(R.drawable.ic_create_white_24dp);
+            setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
             mFab.setOnClickListener(mEditFabListener);
         }
-    }
-
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_masterdetail;
-    }
-
-    @Override
-    public Fragment createFragment() {
-        mCurrentFragment = new QuoteCategoryFragment();
-        return mCurrentFragment;
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_book_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, "Book quote");
-            startActivity(intent);
-        } else if (id == R.id.nav_my_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, "My quote");
-            startActivity(intent);
-        }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     public static Intent newIntent(Context context, String titleName) {
@@ -139,32 +120,13 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
     }
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
-        super.getAndSetDataFromSaveInstanceState(saveInstanceState);
-        if (saveInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA);
-            if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
-                mDetailFragment = getSupportFragmentManager().getFragment(saveInstanceState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA);
-            }
-            mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
-            mFabListenerTag = saveInstanceState.getInt(FAB_TAG_BUNDLE_QCMA);
-            mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE_QCMA);
-        } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA) != null) {
-            mTitle = getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA);
-        } else {
-            mTitle = getString(R.string.book_quote_type);
-        }
-        setTitle(mTitle);
-    }
-
-    @Override
     public void onCategorySelected(String quoteCategory, String quoteType) {
         if (findViewById(R.id.detail_fragment_container) == null) {
             Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,
                     quoteCategory, quoteType);
             startActivity(intent);
         } else {
-            setFabBackgroundImage(fabImageResourceId);
+            setFabBackgroundImage(mFab, fabImageResourceId);
             mFab.setOnClickListener(mAddFabListener);
             mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
             getSupportFragmentManager()
@@ -176,7 +138,7 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
 
     @Override
     public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
-        setFabBackgroundImage(R.drawable.ic_create_white_24dp);
+        setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
         mFabListenerTag = -1;
         mCurrentId = currentId;
         Log.v(LOG_TAG, "" + mCurrentId);
@@ -200,13 +162,5 @@ public class QuoteCategoryMainActivity extends SingleFragmentActivity
                     .commit();
         }
         return mQuoteCategoryFirstTabletLunch;
-    }
-
-    private void setFabBackgroundImage(int imageResourceId) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFab.setImageDrawable(getResources().getDrawable(imageResourceId, getTheme()));
-        } else {
-            mFab.setImageDrawable(getResources().getDrawable(imageResourceId));
-        }
     }
 }

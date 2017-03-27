@@ -8,9 +8,10 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
-public class AddQuoteActivity extends SingleFragmentActivity {
+public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
     public static final String QUOTE_TYPE_INTENT_AQA = "com.developer.cookie.myquote.quote_type_intent_aqa";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqa";
