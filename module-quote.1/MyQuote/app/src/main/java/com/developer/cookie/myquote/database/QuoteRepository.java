@@ -8,6 +8,8 @@ import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
 import java.util.HashMap;
 import java.util.List;
 
+import io.realm.RealmResults;
+
 /**
  * QuoteRepository interface for repository pattern.
  * It helps to abstract realm layer.
@@ -16,6 +18,7 @@ interface QuoteRepository {
 
     /**
      * Method requests QuoteCategory list from the database.
+     *
      * @param quoteType
      * @return List<QuoteCategory>
      */
@@ -23,13 +26,15 @@ interface QuoteRepository {
 
     /**
      * Method saves quotes.
+     *
      * @param mapOfQuoteProperties key is field of quote properties (from QuotePropertiesEnum class),
-     *                            value is current value (from user input).
+     *                             value is current value (from user input).
      */
     void saveQuote(HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
     /**
      * Method requests QuoteText list from the database by category.
+     *
      * @param category
      * @param quoteType
      * @return List<QuoteText>
@@ -38,6 +43,7 @@ interface QuoteRepository {
 
     /**
      * Method requests QuoteText object from the database by quote text.
+     *
      * @param quoteText
      * @param quoteType
      * @return QuoteText
@@ -46,6 +52,7 @@ interface QuoteRepository {
 
     /**
      * Method requests QuoteText object from the database by quote text id.
+     *
      * @param quoteTextId
      * @return QuoteText
      */
@@ -53,13 +60,15 @@ interface QuoteRepository {
 
     /**
      * Method saves edited quote
-     * @param quoteTextId id current quote
+     *
+     * @param quoteTextId          id current quote
      * @param mapOfQuoteProperties
      */
     void saveChangedQuoteObject(long quoteTextId, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
     /**
      * Method delete quote object from db
+     *
      * @param currentQuoteTextId
      * @param quoteType
      */
@@ -67,10 +76,18 @@ interface QuoteRepository {
 
     /**
      * Method delete all quotes with current category
+     *
      * @param currentCategory
      * @param quoteType
      */
     void deleteAllQuotesWithCurrentCategory(final String currentCategory, String quoteType);
+
+    /**
+     * Method requests all QuoteText object from the database.
+     *
+     * @return list of quote text
+     */
+    RealmResults<QuoteText> getAllQuoteText();
 
     /**
      * Method closes realm connection.

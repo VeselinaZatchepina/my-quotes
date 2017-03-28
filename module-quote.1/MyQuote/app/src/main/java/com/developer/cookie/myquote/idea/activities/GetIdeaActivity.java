@@ -34,6 +34,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity {
 
     @Override
     public void workWithFragment() {
+        setTitle(getString(R.string.idea_title));
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
         if (mCurrentFragment == null) {

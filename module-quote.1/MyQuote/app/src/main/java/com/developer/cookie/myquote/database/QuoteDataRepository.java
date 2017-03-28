@@ -291,4 +291,10 @@ public class QuoteDataRepository implements QuoteRepository {
         }
         return quoteTypeObject;
     }
+
+    @Override
+    public RealmResults<QuoteText> getAllQuoteText() {
+        return mRealm.where(QuoteText.class)
+                .findAllAsync();
+    }
 }
