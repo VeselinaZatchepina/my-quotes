@@ -32,7 +32,11 @@
             android:parentActivityName=".quote.activities.AllQuoteCurrentCategoryActivity" />
         <activity
             android:name=".idea.activities.GetIdeaActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".idea.activities.IdeaCoincideQuoteTextActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".quote.activities.QuoteCategoryMainActivity"/>
     </application>
 
 </manifest>

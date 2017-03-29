@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
@@ -141,7 +140,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
         setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
         mFabListenerTag = -1;
         mCurrentId = currentId;
-        Log.v(LOG_TAG, "" + mCurrentId);
         mFab.setOnClickListener(mEditFabListener);
         mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
         getSupportFragmentManager()

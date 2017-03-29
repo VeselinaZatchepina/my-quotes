@@ -10,11 +10,15 @@ import android.view.View;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.GetIdeaFragment;
+import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
 
-public class GetIdeaActivity extends NavigationAbstractActivity {
+import java.util.ArrayList;
+
+public class GetIdeaActivity extends NavigationAbstractActivity implements GetIdeaFragment.GetIdeaCallbacks {
 
     Fragment mCurrentFragment;
+    Fragment mDetailFragment;
 
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) {
@@ -47,5 +51,18 @@ public class GetIdeaActivity extends NavigationAbstractActivity {
 
     public static Intent newIntent(Context context) {
         return new Intent(context, GetIdeaActivity.class);
+    }
+
+    @Override
+    public void generateIdea(ArrayList<String> listOfQuoteText) {
+        if (findViewById(R.id.detail_fragment_container) != null) {
+            mDetailFragment = IdeaCoincideQuoteTextFragment.newInstance(listOfQuoteText);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.detail_fragment_container, mDetailFragment)
+                    .commit();
+        } else {
+            startActivity(IdeaCoincideQuoteTextActivity.newIntent(this, listOfQuoteText));
+        }
     }
 }

@@ -21,7 +21,7 @@ import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
 
     public Fragment currentFragment;
-    FloatingActionButton mFab;
+    public FloatingActionButton fab;
     public int fabImageResourceId = setFabImageResourceId();
 
     public int setFabImageResourceId() {
@@ -46,13 +46,13 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
                     .add(R.id.container, currentFragment)
                     .commit();
         }
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
+            fab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
         } else {
-            mFab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
+            fab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
         }
-        mFab.setOnClickListener(new View.OnClickListener() {
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 toDoWhenFabIsPressed();
