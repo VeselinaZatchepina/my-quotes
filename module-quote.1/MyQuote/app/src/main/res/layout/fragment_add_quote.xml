@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginEnd="@dimen/linearlayout_marginend"
         android:layout_marginStart="@dimen/linearlayout_marginstart"
-        android:layout_marginEnd="@dimen/linearlayout_marginend">
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/quote_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="textMultiLine"
-            android:hint="@string/hint_quote_text">
-        </EditText>
+            android:hint="@string/hint_quote_text"
+            android:inputType="textMultiLine"></EditText>
 
 
         <EditText
@@ -29,48 +27,47 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="textMultiLine"
-            android:hint="@string/hint_book_name"/>
+            android:hint="@string/hint_book_name"
+            android:inputType="textMultiLine" />
 
         <EditText
             android:id="@+id/author_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="textMultiLine"
-            android:hint="@string/hint_author_name"/>
+            android:hint="@string/hint_author_name"
+            android:inputType="textMultiLine" />
 
         <Spinner
             android:id="@+id/category_spinner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </Spinner>
+            android:layout_height="wrap_content"></Spinner>
 
         <EditText
             android:id="@+id/page_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="number"
-            android:hint="@string/hint_page_number"/>
+            android:hint="@string/hint_page_number"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/year_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="number"
-            android:hint="@string/hint_year_number"/>
+            android:hint="@string/hint_year_number"
+            android:inputType="number" />
 
         <EditText
             android:id="@+id/publish_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:inputType="textMultiLine"
-            android:hint="@string/hint_publish_name"/>
+            android:hint="@string/hint_publish_name"
+            android:inputType="textMultiLine" />
 
     </LinearLayout>
 
-    </ScrollView>
+</ScrollView>
 

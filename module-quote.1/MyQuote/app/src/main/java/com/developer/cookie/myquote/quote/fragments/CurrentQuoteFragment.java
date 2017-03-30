@@ -56,7 +56,7 @@ public class CurrentQuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.current_quote_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_current_quote, container, false);
         final TextView quoteTextView = (TextView) rootView.findViewById(R.id.current_quote_text);
         final TextView bookNameView = (TextView) rootView.findViewById(R.id.current_book_name);
         final TextView authorNameView = (TextView) rootView.findViewById(R.id.current_author_name);

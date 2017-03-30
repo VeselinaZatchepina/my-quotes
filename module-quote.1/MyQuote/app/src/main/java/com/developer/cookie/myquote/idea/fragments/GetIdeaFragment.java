@@ -31,7 +31,6 @@ public class GetIdeaFragment extends Fragment {
     ArrayList<String> mListOfCoincideQuoteText;
     View mRootView;
     List<Integer> mRandomList;
-
     GetIdeaCallbacks mCallbacks;
 
     public GetIdeaFragment() { }
@@ -58,6 +57,7 @@ public class GetIdeaFragment extends Fragment {
     }
 
     //TODO сделать более эффективный запрос в бд (чтобы получать не все записи сразу)
+
     /**
      * Method creates list of quote text which coincide with user subject input.
      */

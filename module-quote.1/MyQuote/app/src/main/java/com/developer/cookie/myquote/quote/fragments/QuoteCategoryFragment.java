@@ -72,7 +72,7 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
+        mRootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
 
         mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override

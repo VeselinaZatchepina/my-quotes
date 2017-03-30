@@ -13,5 +13,5 @@ public class MyQuoteApplication extends Application {
         super.onCreate();
         // Initialize Realm. Should only be done once when the application starts.
         Realm.init(this);
-        }
     }
+}

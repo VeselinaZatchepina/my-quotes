@@ -11,7 +11,9 @@ import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractA
 
 import java.util.ArrayList;
 
-
+/**
+ * IdeaCoincideQuoteTextActivity helps to show all quotes from GetIdeaActivity
+ */
 public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivity {
 
     public static final String LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA = "com.developer.cookie.myquote.list_coincide_quote_text_intent_icqta";
@@ -28,7 +30,6 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
-        //fab.setVisibility(View.GONE);
         return new IdeaCoincideQuoteTextFragment();
     }
 

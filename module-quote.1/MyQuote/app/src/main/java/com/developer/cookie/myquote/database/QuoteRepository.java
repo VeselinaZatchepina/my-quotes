@@ -12,7 +12,7 @@ import io.realm.RealmResults;
 
 /**
  * QuoteRepository interface for repository pattern.
- * It helps to abstract realm layer.
+ * It helps to work with realm db.
  */
 interface QuoteRepository {
 

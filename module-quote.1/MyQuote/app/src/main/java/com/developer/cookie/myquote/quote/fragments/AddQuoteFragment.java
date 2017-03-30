@@ -69,8 +69,7 @@ public class AddQuoteFragment extends Fragment {
 
     String mQuoteType;
 
-    public AddQuoteFragment() {
-    }
+    public AddQuoteFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

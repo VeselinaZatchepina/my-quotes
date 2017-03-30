@@ -19,7 +19,9 @@ import com.developer.cookie.myquote.idea.activities.GetIdeaActivity;
 import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 import com.developer.cookie.myquote.quote.activities.QuoteCategoryMainActivity;
 
-
+/**
+ * NavigationAbstractActivity helps avoid boilerplate code.
+ */
 public abstract class NavigationAbstractActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -15,15 +15,16 @@ import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActiv
 
 import java.util.ArrayList;
 
+/**
+ * GetIdeaActivity helps to generate random quotes from db or show quotes by input subject
+ */
 public class GetIdeaActivity extends NavigationAbstractActivity implements GetIdeaFragment.GetIdeaCallbacks {
 
     Fragment mCurrentFragment;
     Fragment mDetailFragment;
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) {
-
-    }
+    public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) { }
 
     @Override
     public int getLayoutResId() {

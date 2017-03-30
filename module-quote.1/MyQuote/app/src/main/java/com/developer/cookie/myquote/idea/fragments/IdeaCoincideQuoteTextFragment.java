@@ -41,13 +41,11 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recyclerview_fragment, container, false);
-
+        View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         mRecyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mListOfCoicideQuoteText);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-
         return rootView;
     }
 
@@ -81,7 +79,9 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
             public void onClick(View view) { }
 
             @Override
-            public boolean onLongClick(View view) { return true; }
+            public boolean onLongClick(View view) {
+                return true;
+            }
         }
 
         /**
