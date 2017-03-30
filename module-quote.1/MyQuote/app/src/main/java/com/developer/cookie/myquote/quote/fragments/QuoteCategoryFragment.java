@@ -86,7 +86,6 @@ public class QuoteCategoryFragment extends Fragment {
                 recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
             }
         });
-
         return mRootView;
     }
 
@@ -108,10 +107,6 @@ public class QuoteCategoryFragment extends Fragment {
             mListOfCategories.add(currentCategory);
         }
         mPair = new Pair<>(mListOfCategories, mQuoteCountListOfEveryCategory);
-        if (mListOfCategories != null && !mListOfCategories.isEmpty()) {
-            quoteCategoryFirstTabletLunch = mListOfCategories.get(0);
-            mCallbacks.setFirstCategory(quoteCategoryFirstTabletLunch);
-        }
     }
 
     @Override
@@ -139,8 +134,8 @@ public class QuoteCategoryFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         outState.putString(QUOTE_TYPE_BUNDLE_QCF, mQuoteType);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -224,6 +219,7 @@ public class QuoteCategoryFragment extends Fragment {
             return listOfCategory.size();
         }
 
+
         /**
          * When adapter data is changed this method helps set new data for adapter.
          *
@@ -244,13 +240,5 @@ public class QuoteCategoryFragment extends Fragment {
          * @param quoteType     current quote type
          */
         void onCategorySelected(String quoteCategory, String quoteType);
-
-        /**
-         * Method add detail fragment by default (as example: for first lunch)
-         *
-         * @param category current quote category
-         * @return current quote category
-         */
-        String setFirstCategory(String category);
     }
 }

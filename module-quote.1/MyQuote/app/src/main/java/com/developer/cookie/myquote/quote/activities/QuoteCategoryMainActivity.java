@@ -108,7 +108,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA, mCurrentFragment);
         if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
             getSupportFragmentManager().putFragment(outState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA, mDetailFragment);
@@ -116,6 +115,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
         outState.putString(QUOTE_TYPE_BUNDLE_QCMA, mTitle);
         outState.putInt(FAB_TAG_BUNDLE_QCMA, mFabListenerTag);
         outState.putLong(CURRENT_ID_BUNDLE_QCMA, mCurrentId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -146,19 +146,5 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
                 .beginTransaction()
                 .replace(R.id.detail_fragment_container, mDetailFragment)
                 .commit();
-    }
-
-    @Override
-    public String setFirstCategory(String category) {
-        mQuoteCategoryFirstTabletLunch = category;
-        if (findViewById(R.id.detail_fragment_container) != null
-                && mDetailFragment == null) {
-            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(mQuoteCategoryFirstTabletLunch, getTitle().toString());
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.detail_fragment_container, mDetailFragment)
-                    .commit();
-        }
-        return mQuoteCategoryFirstTabletLunch;
     }
 }
