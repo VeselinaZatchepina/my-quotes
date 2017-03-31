@@ -63,6 +63,8 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
      */
     private class IdeaCoincideRecyclerViewAdapter
             extends RecyclerView.Adapter<IdeaCoincideQuoteTextFragment.IdeaCoincideRecyclerViewAdapter.MyViewHolder> {
+        private static final int EMPTY_LIST = 0;
+        private static final int NOT_EMPTY_LIST = 1;
         private List<String> currentQuoteList;
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -95,19 +97,41 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.all_quote_current_category_item, parent, false);
-            return new MyViewHolder(itemView);
+            switch (viewType) {
+                case EMPTY_LIST:
+                    View itemViewEmpty = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.fragment_empty_recycler_view, parent, false);
+                    return new MyViewHolder(itemViewEmpty);
+                case NOT_EMPTY_LIST:
+                    View itemView = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.all_quote_current_category_item, parent, false);
+                    return new MyViewHolder(itemView);
+            }
+            return null;
         }
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.currentQuote.setText(currentQuoteList.get(position));
+            if (currentQuoteList.size() != 0) {
+                holder.currentQuote.setText(currentQuoteList.get(position));
+            }
         }
 
         @Override
         public int getItemCount() {
+            if (currentQuoteList.size() == 0) {
+                return 1;
+            }
             return currentQuoteList.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (currentQuoteList.size() == 0) {
+                return EMPTY_LIST;
+            } else {
+                return NOT_EMPTY_LIST;
+            }
         }
 
         /**

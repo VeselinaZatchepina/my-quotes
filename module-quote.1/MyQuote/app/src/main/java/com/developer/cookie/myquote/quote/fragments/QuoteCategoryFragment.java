@@ -77,13 +77,13 @@ public class QuoteCategoryFragment extends Fragment {
         mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
             public void onChange(RealmResults<QuoteCategory> element) {
-                createPairObject(element);
-                mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(mPair);
-                // Create and set custom adapter for recyclerview
-                RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-                registerForContextMenu(recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
+                    createPairObject(element);
+                    mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(mPair);
+                    // Create and set custom adapter for recyclerview
+                    RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+                    registerForContextMenu(recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                    recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
             }
         });
         return mRootView;
@@ -162,6 +162,9 @@ public class QuoteCategoryFragment extends Fragment {
      */
     private class QuoteCategoryRecyclerViewAdapter
             extends RecyclerView.Adapter<QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
+        private static final int EMPTY_LIST = 0;
+        private static final int NOT_EMPTY_LIST = 1;
+
         private List<String> listOfCategory;
         private List<Integer> quoteCountList;
 
@@ -203,22 +206,43 @@ public class QuoteCategoryFragment extends Fragment {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.quote_category_recycler_view_item, parent, false);
-            return new MyViewHolder(itemView);
+            switch (viewType) {
+                case EMPTY_LIST:
+                    View itemViewEmpty = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.fragment_empty_recycler_view, parent, false);
+                    return new MyViewHolder(itemViewEmpty);
+                case NOT_EMPTY_LIST:
+                    View itemView = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.quote_category_recycler_view_item, parent, false);
+                    return new MyViewHolder(itemView);
+            }
+            return null;
         }
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.itemQuoteCategory.setText(listOfCategory.get(position));
-            holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
+            if (listOfCategory.size() != 0) {
+                holder.itemQuoteCategory.setText(listOfCategory.get(position));
+                holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
+            }
         }
 
         @Override
         public int getItemCount() {
+            if (listOfCategory.size() == 0) {
+                return 1;
+            }
             return listOfCategory.size();
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            if (listOfCategory.size() == 0) {
+                return EMPTY_LIST;
+            } else {
+                return NOT_EMPTY_LIST;
+            }
+        }
 
         /**
          * When adapter data is changed this method helps set new data for adapter.

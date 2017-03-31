@@ -38,8 +38,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
     int mFabListenerTag = 0;
     long mCurrentId;
 
-    String mQuoteCategoryFirstTabletLunch;
-
     @Override
     public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
         if (saveInstanceState != null) {

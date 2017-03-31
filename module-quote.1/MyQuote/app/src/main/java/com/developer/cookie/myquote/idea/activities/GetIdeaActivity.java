@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
+import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.GetIdeaFragment;
@@ -63,7 +64,11 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
                     .replace(R.id.detail_fragment_container, mDetailFragment)
                     .commit();
         } else {
-            startActivity(IdeaCoincideQuoteTextActivity.newIntent(this, listOfQuoteText));
+            if (listOfQuoteText.size() != 0) {
+                startActivity(IdeaCoincideQuoteTextActivity.newIntent(this, listOfQuoteText));
+            } else {
+                Toast.makeText(this, "You have no quote with this subject", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

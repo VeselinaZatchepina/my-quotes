@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -87,11 +86,7 @@ public class GetIdeaFragment extends Fragment {
                     }
                 }
             }
-            if (!mListOfCoincideQuoteText.isEmpty()) {
                 mCallbacks.generateIdea(mListOfCoincideQuoteText);
-            } else {
-                Toast.makeText(getActivity(), "You have no quote with this subject", Toast.LENGTH_LONG).show();
-            }
         }
     }
 
