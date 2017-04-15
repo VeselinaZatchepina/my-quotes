@@ -10,6 +10,9 @@
     <dimen name="card_view_horizontal_margin">16dp</dimen>
     <dimen name="image_view_horizontal_margin">32dp</dimen>
 
+    <!-- Toolbar size for mobile -->
+    <dimen name="toolbar_height_mobile">232dp</dimen>
+
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="horizontal_margin">16dp</dimen>
