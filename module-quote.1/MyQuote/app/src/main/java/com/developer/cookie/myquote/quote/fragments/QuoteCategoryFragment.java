@@ -174,8 +174,8 @@ public class QuoteCategoryFragment extends Fragment {
 
             MyViewHolder(View container) {
                 super(container);
-                itemQuoteCategory = (TextView) container.findViewById(R.id.item_quote_category);
-                itemQuoteCount = (TextView) container.findViewById(R.id.item_quote_count);
+                itemQuoteCategory = (TextView) container.findViewById(R.id.quote_category_name);
+                itemQuoteCount = (TextView) container.findViewById(R.id.quote_count);
                 container.setOnClickListener(this);
                 container.setOnLongClickListener(this);
             }

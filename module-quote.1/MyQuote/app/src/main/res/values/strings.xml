@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">MyQuote</string>
 
+    <!-- Quote category recycler view item -->
+    <string name="image_content_description">Icon of current category</string>
+
     <!-- AddQuoteFragment-->
     <string name="hint_quote_text">Enter the quote text</string>
     <string name="hint_book_name">Enter the book name</string>
@@ -43,8 +46,5 @@
     <string name="other_action">or just push the button</string>
     <string name="idea_button_text">Generate idea!</string>
     <string name="idea_title">Get idea</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

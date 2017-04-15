@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:context="com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="?attr/actionBarSize"
+        android:layout_marginTop="@dimen/recycler_view_vertical_margin"
+        android:layout_marginBottom="@dimen/recycler_view_vertical_margin"
+        android:layout_marginLeft="@dimen/recycler_view_horizontal_margin"
+        android:layout_marginRight="@dimen/recycler_view_horizontal_margin"
         android:scrollbars="vertical" />
 
 </LinearLayout>
