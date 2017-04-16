@@ -12,6 +12,7 @@
 
     <!-- Toolbar size for mobile -->
     <dimen name="toolbar_height_mobile">232dp</dimen>
+    <dimen name="toolbar_text_margin_bottom">24dp</dimen>
 
 
     <!-- Default screen margins, per the Android Design guidelines. -->
