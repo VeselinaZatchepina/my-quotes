@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
@@ -112,7 +114,18 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
         super.onSaveInstanceState(outState);
     }
 
-//    @Override
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.activity_quote_category, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return super.onOptionsItemSelected(item);
+    }
+
+    //    @Override
 //    public void onCategorySelected(String quoteCategory, String quoteType) {
 //        if (findViewById(R.id.detail_fragment_container) == null) {
 //            Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,

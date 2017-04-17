@@ -3,8 +3,8 @@
     <!-- QuoteCategoryFragment colors -->
     <color name="card_background">#00A99D</color>
 
-    <!-- Toolbar opacity -->
-    <color name="toolbar_opacity">#00000000</color>
+    <!-- Status bar opacity -->
+    <color name="status_bar_opacity">#00000000</color>
 
 
     <color name="colorPrimary">#3F51B5</color>
