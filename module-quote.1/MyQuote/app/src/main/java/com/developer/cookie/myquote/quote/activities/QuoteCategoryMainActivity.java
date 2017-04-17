@@ -10,15 +10,11 @@ import android.view.View;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
-import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
-import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 
-import java.util.ArrayList;
-
 public class QuoteCategoryMainActivity extends NavigationAbstractActivity
-        implements QuoteCategoryFragment.Callbacks,
-        AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
+        /** implements QuoteCategoryFragment.Callbacks,
+        AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks */ {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     public static final String QUOTE_TYPE_INTENT_QCMA = "com.developer.cookie.myquote.quote_type_quote_category_qcma";
@@ -58,7 +54,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
 
     @Override
     public int getLayoutResId() {
-        return R.layout.activity_masterdetail;
+        return R.layout.nav_drawer_activity;
     }
 
     @Override
@@ -116,33 +112,33 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onCategorySelected(String quoteCategory, String quoteType) {
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,
-                    quoteCategory, quoteType);
-            startActivity(intent);
-        } else {
-            setFabBackgroundImage(mFab, fabImageResourceId);
-            mFab.setOnClickListener(mAddFabListener);
-            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.detail_fragment_container, mDetailFragment)
-                    .commit();
-        }
-    }
-
-    @Override
-    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
-        setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
-        mFabListenerTag = -1;
-        mCurrentId = currentId;
-        mFab.setOnClickListener(mEditFabListener);
-        mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.detail_fragment_container, mDetailFragment)
-                .commit();
-    }
+//    @Override
+//    public void onCategorySelected(String quoteCategory, String quoteType) {
+//        if (findViewById(R.id.detail_fragment_container) == null) {
+//            Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,
+//                    quoteCategory, quoteType);
+//            startActivity(intent);
+//        } else {
+//            setFabBackgroundImage(mFab, fabImageResourceId);
+//            mFab.setOnClickListener(mAddFabListener);
+//            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
+//            getSupportFragmentManager()
+//                    .beginTransaction()
+//                    .replace(R.id.detail_fragment_container, mDetailFragment)
+//                    .commit();
+//        }
+//    }
+//
+//    @Override
+//    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
+//        setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
+//        mFabListenerTag = -1;
+//        mCurrentId = currentId;
+//        mFab.setOnClickListener(mEditFabListener);
+//        mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
+//        getSupportFragmentManager()
+//                .beginTransaction()
+//                .replace(R.id.detail_fragment_container, mDetailFragment)
+//                .commit();
+//    }
 }

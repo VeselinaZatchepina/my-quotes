@@ -141,7 +141,7 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        mCallbacks = (Callbacks) context;
+        //mCallbacks = (Callbacks) context;
     }
 
     @Override
@@ -182,7 +182,7 @@ public class QuoteCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
+                //mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
             }
 
             @Override
