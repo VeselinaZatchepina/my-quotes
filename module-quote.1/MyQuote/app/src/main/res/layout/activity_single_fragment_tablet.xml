@@ -9,32 +9,78 @@
     tools:context="com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity">
 
     <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/toolbar_height_tablet"
         android:fitsSystemWindows="true"
         android:background="@drawable/toolbar_gradient"
         app:theme="@style/TransparentToolbar">
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:titleEnabled="false"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+
+        </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
-        android:id="@+id/container"
+    <View
+        android:id="@+id/for_fab_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_height_tablet"
+        android:background="@color/status_bar_opacity"
+        android:fitsSystemWindows="true"/>
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_anchor="@id/for_fab_view"
+        app:layout_anchorGravity="bottom"
+        android:background="@android:color/black" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        app:layout_anchor="@id/appbar_layout"
+        app:layout_anchorGravity="bottom"
+        android:background="@color/fab_divider" />
+
+
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:behavior_overlapTop="?attr/actionBarSize">
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="@dimen/fragment_width_tablet"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal" />
+
+    </android.support.v4.widget.NestedScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
+        app:layout_anchor="@id/for_fab_view"
+        app:layout_anchorGravity="bottom|right|end"
+        android:layout_marginEnd="@dimen/fab_horizontal_margin"
         android:src="@drawable/ic_add_white_24dp" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -11,8 +11,11 @@
     <dimen name="image_view_horizontal_margin">32dp</dimen>
 
     <!-- Toolbar size for mobile -->
-    <dimen name="toolbar_height_mobile">232dp</dimen>
+    <dimen name="toolbar_height_mobile">223dp</dimen>
+    <dimen name="toolbar_height_tablet">208dp</dimen>
     <dimen name="toolbar_text_margin_bottom">24dp</dimen>
+    <dimen name="fragment_marginTop_tablet">72dp</dimen>
+    <dimen name="fragment_width_tablet">656dp</dimen>
 
 
     <!-- Default screen margins, per the Android Design guidelines. -->
