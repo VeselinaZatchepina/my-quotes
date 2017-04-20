@@ -5,12 +5,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
@@ -27,6 +29,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     public static final String QUOTE_TYPE_PAGER_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_type_pager_for_save_cqpa";
     public static final String QUOTE_ID_LIST_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_id_list_for_save_cqpa";
     public static final String QUOTE_ID_FOR_SAVE_CQPA = "com.developer.cookie.myquote.quote_id_for_save_cqpa";
+
     private ViewPager mViewPager;
     ArrayList<Long> mQuoteIdList;
     long mCurrentQuoteTextId;
@@ -38,8 +41,14 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quote_pager);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.setExpanded(false);
         }
         if (savedInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA);

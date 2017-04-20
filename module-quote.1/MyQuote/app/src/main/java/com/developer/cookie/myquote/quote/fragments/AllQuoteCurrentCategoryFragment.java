@@ -34,6 +34,7 @@ import io.realm.RealmResults;
  * AllQuoteCurrentCategoryFragment is used for presentation list of all quotes of current category.
  */
 public class AllQuoteCurrentCategoryFragment extends Fragment {
+
     private static final String LOG_TAG = AllQuoteCurrentCategoryFragment.class.getSimpleName();
     private static final String QUOTE_TYPE_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_type_bundle_aqccf";
     private static final String QUOTE_CATEGORY_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_category_bundle_aqccf";
@@ -143,6 +144,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.filter_menu, menu);
+        if (mQuoteType.equals("My quote")) {
+            menu.findItem(R.id.filter_quote).setVisible(false);
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 

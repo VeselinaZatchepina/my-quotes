@@ -24,4 +24,9 @@
         <item name="windowActionBarOverlay">true</item>
     </style>
 
+    <!-- CurrentQuotePagerActivity text style -->
+    <style name="TextStyle" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

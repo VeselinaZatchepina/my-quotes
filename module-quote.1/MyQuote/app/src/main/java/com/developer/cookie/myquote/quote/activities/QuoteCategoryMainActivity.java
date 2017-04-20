@@ -14,16 +14,13 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 
-public class QuoteCategoryMainActivity extends NavigationAbstractActivity
-        /** implements QuoteCategoryFragment.Callbacks,
-        AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks */ {
+public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
 
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     public static final String QUOTE_TYPE_INTENT_QCMA = "com.developer.cookie.myquote.quote_type_quote_category_qcma";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.current_fragment_tag_bundle_qcma";
     public static final String TABLET_FRAGMENT_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.tablet_fragment_tag_bundle_qcma";
     public static final String QUOTE_TYPE_BUNDLE_QCMA = "com.developer.cookie.myquote.quote_type_bundle_qcma";
-    public static final String FAB_TAG_BUNDLE_QCMA = "com.developer.cookie.myquote.fab_tag_bundle_qcma";
     public static final String CURRENT_ID_BUNDLE_QCMA = "com.developer.cookie.myquote.current_id_bundle_qcma";
     Fragment mCurrentFragment;
     FloatingActionButton mFab;
@@ -32,8 +29,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
     Fragment mDetailFragment;
     String mTitle;
     View.OnClickListener mAddFabListener;
-    View.OnClickListener mEditFabListener;
-    int mFabListenerTag = 0;
     long mCurrentId;
 
     @Override
@@ -44,7 +39,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
                 mDetailFragment = getSupportFragmentManager().getFragment(saveInstanceState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA);
             }
             mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_QCMA);
-            mFabListenerTag = saveInstanceState.getInt(FAB_TAG_BUNDLE_QCMA);
             mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE_QCMA);
         } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA) != null) {
             mTitle = getIntent().getStringExtra(QUOTE_TYPE_INTENT_QCMA);
@@ -81,19 +75,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
                 toDoWhenFabIsPressed();
             }
         };
-        mEditFabListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = AddQuoteActivity.newIntent(QuoteCategoryMainActivity.this, mCurrentId, mTitle);
-                startActivity(intent);
-            }
-        };
-        if (mFabListenerTag == 0) {
-            mFab.setOnClickListener(mAddFabListener);
-        } else {
-            setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
-            mFab.setOnClickListener(mEditFabListener);
-        }
+        mFab.setOnClickListener(mAddFabListener);
     }
 
     public static Intent newIntent(Context context, String titleName) {
@@ -109,7 +91,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
             getSupportFragmentManager().putFragment(outState, TABLET_FRAGMENT_TAG_BUNDLE_QCMA, mDetailFragment);
         }
         outState.putString(QUOTE_TYPE_BUNDLE_QCMA, mTitle);
-        outState.putInt(FAB_TAG_BUNDLE_QCMA, mFabListenerTag);
         outState.putLong(CURRENT_ID_BUNDLE_QCMA, mCurrentId);
         super.onSaveInstanceState(outState);
     }
@@ -124,34 +105,4 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
-
-    //    @Override
-//    public void onCategorySelected(String quoteCategory, String quoteType) {
-//        if (findViewById(R.id.detail_fragment_container) == null) {
-//            Intent intent = AllQuoteCurrentCategoryActivity.newIntent(this,
-//                    quoteCategory, quoteType);
-//            startActivity(intent);
-//        } else {
-//            setFabBackgroundImage(mFab, fabImageResourceId);
-//            mFab.setOnClickListener(mAddFabListener);
-//            mDetailFragment = AllQuoteCurrentCategoryFragment.newInstance(quoteCategory, quoteType);
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.detail_fragment_container, mDetailFragment)
-//                    .commit();
-//        }
-//    }
-//
-//    @Override
-//    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
-//        setFabBackgroundImage(mFab, R.drawable.ic_create_white_24dp);
-//        mFabListenerTag = -1;
-//        mCurrentId = currentId;
-//        mFab.setOnClickListener(mEditFabListener);
-//        mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.detail_fragment_container, mDetailFragment)
-//                .commit();
-//    }
 }

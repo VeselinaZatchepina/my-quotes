@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
+import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +50,6 @@ public class QuoteCategoryFragment extends Fragment {
     String mQuoteType;
 
     String mCategoryForDelete;
-
-    private Callbacks mCallbacks;
-
-    public String quoteCategoryFirstTabletLunch;
 
     public QuoteCategoryFragment() {
     }
@@ -141,13 +138,11 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //mCallbacks = (Callbacks) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mCallbacks = null;
     }
 
     @Override
@@ -182,7 +177,8 @@ public class QuoteCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                //mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
+                startActivity(AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
+                        itemQuoteCategory.getText().toString(), mQuoteType));
             }
 
             @Override
@@ -254,15 +250,5 @@ public class QuoteCategoryFragment extends Fragment {
             quoteCountList = pair.second;
             notifyDataSetChanged();
         }
-    }
-
-    public interface Callbacks {
-        /**
-         * Method add AllQuoteCurrentCategoryFragment as detail fragment
-         *
-         * @param quoteCategory current quote category
-         * @param quoteType     current quote type
-         */
-        void onCategorySelected(String quoteCategory, String quoteType);
     }
 }

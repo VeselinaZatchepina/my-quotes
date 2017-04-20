@@ -44,6 +44,15 @@
     <string name="my_quote_type">My quote</string>
     <string name="get_idea">Get idea</string>
 
+    <!-- CurrentQuotePagerActivity -->
+    <string name="quote_author_title">Quote author:</string>
+    <string name="book_name_title">Book name:</string>
+    <string name="publisher_name_title">Book publisher:</string>
+    <string name="year_number_title">Year:</string>
+    <string name="page_number_title">Page:</string>
+    <string name="quote_creation_date_title">Quote creation date:</string>
+    <string name="default_value"> - </string>
+
     <!-- GetIdeaActivity -->
     <string name="type_word">Enter the idea subject</string>
     <string name="enter_text">Enter text here</string>

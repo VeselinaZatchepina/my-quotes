@@ -30,8 +30,12 @@
     <!-- AddQuoteFragment -->
     <dimen name="linearlayout_marginstart">32dp</dimen>
     <dimen name="linearlayout_marginend">32dp</dimen>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="nav_header_vertical_spacing">16dp</dimen>
-    <dimen name="nav_header_height">160dp</dimen>
+
+    <!-- CurrentQuotePagerActivity -->
+    <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+    <dimen name="divider_current_quote">1dp</dimen>
+    <dimen name="divider_current_quote_margin_Top">16dp</dimen>
+
+
 
 </resources>
