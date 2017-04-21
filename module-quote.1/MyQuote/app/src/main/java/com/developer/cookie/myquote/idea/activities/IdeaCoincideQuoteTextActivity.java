@@ -3,9 +3,13 @@ package com.developer.cookie.myquote.idea.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+import android.view.View;
 
+import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 
@@ -30,6 +34,13 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
+        setTitle(getString(R.string.idea_title));
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.setExpanded(false);
+        }
         return new IdeaCoincideQuoteTextFragment();
     }
 

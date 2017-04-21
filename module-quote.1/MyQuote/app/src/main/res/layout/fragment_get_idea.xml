@@ -43,7 +43,7 @@
             android:layout_width="250dp"
             android:layout_height="70dp"
             android:layout_gravity="center"
-            android:background="@color/colorAccent"
+            android:background="@drawable/get_idea_button_shape"
             android:text="@string/idea_button_text"
             android:textColor="@android:color/white" />
 
