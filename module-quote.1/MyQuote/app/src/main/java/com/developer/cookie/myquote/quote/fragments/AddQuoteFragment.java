@@ -94,7 +94,7 @@ public class AddQuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
         mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
         mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
         mBookName = (EditText) rootView.findViewById(R.id.book_name);
@@ -165,6 +165,10 @@ public class AddQuoteFragment extends Fragment {
         //Add listener to mSpinner
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (mSpinner.isPressed()) {
+                    TextView spinnerHint = (TextView) rootView.findViewById(R.id.spinner_hint);
+                    spinnerHint.setTextColor(getResources().getColor(R.color.card_background));
+                }
                 final String selectedItem = parent.getItemAtPosition(position).toString();
                 if (selectedItem.equals(getString(R.string.spinner_add_category))) {
                     // Create dialog for add category
@@ -200,8 +204,10 @@ public class AddQuoteFragment extends Fragment {
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
+
 
         return rootView;
     }

@@ -30,6 +30,10 @@
     <!-- AddQuoteFragment -->
     <dimen name="linearlayout_marginstart">32dp</dimen>
     <dimen name="linearlayout_marginend">32dp</dimen>
+    <dimen name="edit_text_marginTop">16dp</dimen>
+    <dimen name="divider_add_quote">1dp</dimen>
+    <dimen name="divider_add_quote_margin_Top">8dp</dimen>
+
 
     <!-- CurrentQuotePagerActivity -->
     <dimen name="linear_layout_current_quote_margin">16dp</dimen>

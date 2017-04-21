@@ -3,6 +3,7 @@ package com.developer.cookie.myquote.quote.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -21,6 +22,10 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public Fragment createFragment() {
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.setExpanded(false);
+        }
         mCurrentFragment = new AddQuoteFragment();
         return mCurrentFragment;
     }
