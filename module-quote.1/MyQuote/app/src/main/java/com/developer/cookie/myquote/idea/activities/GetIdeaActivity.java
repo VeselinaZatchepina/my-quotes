@@ -3,6 +3,7 @@ package com.developer.cookie.myquote.idea.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -29,7 +30,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
 
     @Override
     public int getLayoutResId() {
-        return R.layout.activity_masterdetail;
+        return R.layout.activity_masterdetail_get_idea;
     }
 
     @Override
@@ -41,6 +42,10 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     @Override
     public void workWithFragment() {
         setTitle(getString(R.string.idea_title));
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            appBarLayout.setExpanded(false);
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
         if (mCurrentFragment == null) {
