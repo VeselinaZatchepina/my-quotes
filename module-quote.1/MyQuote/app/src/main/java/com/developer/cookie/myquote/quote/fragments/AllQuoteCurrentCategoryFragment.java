@@ -143,7 +143,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.filter_menu, menu);
+        inflater.inflate(R.menu.menu_current_category_quotes, menu);
         if (mQuoteType.equals("My quote")) {
             menu.findItem(R.id.filter_quote).setVisible(false);
         }

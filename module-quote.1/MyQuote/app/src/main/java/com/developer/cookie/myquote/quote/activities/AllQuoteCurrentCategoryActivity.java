@@ -3,9 +3,12 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -15,8 +18,10 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
+import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
 
@@ -29,8 +34,6 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
 
     Fragment mDetailFragment;
 
-    String mTitle;
-
     @Override
     public int getLayoutResId() {
         return R.layout.activity_masterdetail;
@@ -40,7 +43,15 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     public Fragment createFragment() {
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            appBarLayout.setExpanded(false);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            appBarLayout.setExpanded(false, false);
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                layoutParams.height = (int) getResources().getDimension(R.dimen.toolbar_height_normal_portrait);
+            } else {
+                layoutParams.height = (int) getResources().getDimension(R.dimen.toolbar_height_normal_landscape);
+            }
+            collapsingToolbarLayout.setTitleEnabled(false);
         }
         mCurrentFragment = new AllQuoteCurrentCategoryFragment();
         return mCurrentFragment;
@@ -69,7 +80,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
             mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
         }
-        setTitle(mQuoteTypeAllQuotesCategory);
+        String localeLanguage = Locale.getDefault().getLanguage();
+        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteTypeAllQuotesCategory, localeLanguage, this));
     }
 
     @Override

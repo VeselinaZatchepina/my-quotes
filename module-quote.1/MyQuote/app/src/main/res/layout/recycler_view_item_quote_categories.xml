@@ -7,7 +7,7 @@
     android:layout_marginBottom="@dimen/category_vertical_margin"
     card_view:cardBackgroundColor="@color/card_background"
     card_view:cardCornerRadius="@dimen/corner_radius"
-    card_view:cardElevation="2dp"
+    card_view:cardElevation="@dimen/cardview_corner_radius"
     card_view:cardUseCompatPadding="true">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

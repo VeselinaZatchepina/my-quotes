@@ -209,7 +209,7 @@ public class QuoteCategoryFragment extends Fragment {
                     return new MyViewHolder(itemViewEmpty);
                 case NOT_EMPTY_LIST:
                     View itemView = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.quote_category_recycler_view_item, parent, false);
+                            .inflate(R.layout.recycler_view_item_quote_categories, parent, false);
                     return new MyViewHolder(itemView);
             }
             return null;

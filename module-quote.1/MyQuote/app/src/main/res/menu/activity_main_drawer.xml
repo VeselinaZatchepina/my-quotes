@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_book_quote"
             android:icon="@drawable/ic_delete_white_24dp"
-            android:title="@string/book_quote_type"/>
+            android:title="@string/book_quote_type" />
         <item
             android:id="@+id/nav_my_quote"
             android:icon="@drawable/ic_delete_white_24dp"
@@ -14,4 +15,5 @@
             android:icon="@drawable/ic_delete_white_24dp"
             android:title="@string/get_idea" />
     </group>
+
 </menu>

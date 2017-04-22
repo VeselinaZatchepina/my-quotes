@@ -97,7 +97,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_quote_category, menu);
+        getMenuInflater().inflate(R.menu.menu_quote_categories, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
