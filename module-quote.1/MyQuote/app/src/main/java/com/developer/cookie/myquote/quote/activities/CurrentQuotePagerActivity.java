@@ -52,6 +52,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        // Set AppBarLayout not expandable
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
@@ -69,6 +70,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST_INTENT_CQPA);
             mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT_CQPA);
         }
+        //Create title with new style
         String localeLanguage = Locale.getDefault().getLanguage();
         setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
         //Work with ViewPager

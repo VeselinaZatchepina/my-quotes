@@ -38,6 +38,8 @@ public class CurrentQuoteFragment extends Fragment {
     String mQuoteType;
     ShareActionProvider mShareActionProvider;
 
+    Intent sharingIntent;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,11 +89,11 @@ public class CurrentQuoteFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.current_quote_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_current_quote, menu);
         MenuItem item = menu.findItem(R.id.menu_item_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        Intent sharingIntent = new Intent();
-        sharingIntent.setAction(Intent.ACTION_SEND);
+        sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         String quoteTextForShareBody = mCurrentQuoteObjectList.first().getQuoteText();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!");
@@ -99,7 +101,6 @@ public class CurrentQuoteFragment extends Fragment {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(sharingIntent);
         }
-        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
@@ -108,6 +109,9 @@ public class CurrentQuoteFragment extends Fragment {
             case R.id.delete_quote:
                 mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentQuoteTextId, mQuoteType);
                 getActivity().finish();
+                break;
+            case R.id.menu_item_share:
+                startActivity(Intent.createChooser(sharingIntent, "Select conversation"));
                 break;
         }
         return super.onOptionsItemSelected(item);

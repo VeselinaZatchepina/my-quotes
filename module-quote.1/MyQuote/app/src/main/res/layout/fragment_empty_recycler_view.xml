@@ -9,7 +9,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ic_face_black_24dp"
+        android:drawableTop="@drawable/ic_face_white_24dp"
         android:text="@string/title_empty_view"
         tools:text="You have no quotes" />
 
