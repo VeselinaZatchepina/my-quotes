@@ -18,6 +18,7 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
+import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
 import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
@@ -45,13 +46,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            appBarLayout.setExpanded(false, false);
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-                layoutParams.height = (int) getResources().getDimension(R.dimen.toolbar_height_normal_portrait);
-            } else {
-                layoutParams.height = (int) getResources().getDimension(R.dimen.toolbar_height_normal_landscape);
-            }
-            collapsingToolbarLayout.setTitleEnabled(false);
+            Configuration configuration = getResources().getConfiguration();
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
         mCurrentFragment = new AllQuoteCurrentCategoryFragment();
         return mCurrentFragment;

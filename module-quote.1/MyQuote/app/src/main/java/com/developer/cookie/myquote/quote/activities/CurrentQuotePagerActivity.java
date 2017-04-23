@@ -3,9 +3,12 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,8 +20,11 @@ import android.view.View;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
+import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
+import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class CurrentQuotePagerActivity extends AppCompatActivity {
     private static final String LOG_TAG = CurrentQuotePagerActivity.class.getSimpleName();
@@ -48,7 +54,10 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         }
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            appBarLayout.setExpanded(false);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            Configuration configuration = getResources().getConfiguration();
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
         if (savedInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(savedInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_CQPA);
@@ -60,7 +69,8 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST_INTENT_CQPA);
             mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT_CQPA);
         }
-        setTitle(mQuoteType);
+        String localeLanguage = Locale.getDefault().getLanguage();
+        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
         //Work with ViewPager
         mViewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();

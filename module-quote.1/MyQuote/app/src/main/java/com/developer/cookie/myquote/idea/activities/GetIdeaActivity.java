@@ -3,7 +3,6 @@ package com.developer.cookie.myquote.idea.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,8 +13,10 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.GetIdeaFragment;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
+import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * GetIdeaActivity helps to generate random quotes from db or show quotes by input subject
@@ -41,10 +42,11 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
 
     @Override
     public void workWithFragment() {
-        setTitle(getString(R.string.idea_title));
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            appBarLayout.setExpanded(false);
+        if (findViewById(R.id.detail_fragment_container) != null) {
+            String localeLanguage = Locale.getDefault().getLanguage();
+            setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));
+        } else {
+            setTitle(getString(R.string.idea_title));
         }
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCurrentFragment = fragmentManager.findFragmentById(R.id.container);

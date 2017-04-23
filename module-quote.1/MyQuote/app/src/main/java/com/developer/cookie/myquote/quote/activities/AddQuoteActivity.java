@@ -2,8 +2,11 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -11,6 +14,10 @@ import android.widget.Toast;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
+import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
+import com.developer.cookie.myquote.utils.ColorationTextChar;
+
+import java.util.Locale;
 
 public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
@@ -24,7 +31,10 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public Fragment createFragment() {
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            appBarLayout.setExpanded(false);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            Configuration configuration = getResources().getConfiguration();
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
         mCurrentFragment = new AddQuoteFragment();
         return mCurrentFragment;
@@ -76,7 +86,8 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQA) != null) {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
         }
-        setTitle(mQuoteType);
+        String localeLanguage = Locale.getDefault().getLanguage();
+        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
     }
 
     @Override
