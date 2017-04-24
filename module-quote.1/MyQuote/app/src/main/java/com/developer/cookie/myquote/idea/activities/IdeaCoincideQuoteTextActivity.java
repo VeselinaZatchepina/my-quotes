@@ -40,6 +40,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
+        //Set AppBarLayout not expended
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
@@ -47,6 +48,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
+        //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
         setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));
         fab = (FloatingActionButton) findViewById(R.id.fab);

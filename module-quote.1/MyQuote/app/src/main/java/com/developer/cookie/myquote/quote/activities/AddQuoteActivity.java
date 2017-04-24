@@ -29,6 +29,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public Fragment createFragment() {
+        // Set AppBarLayout not expandable
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
@@ -86,6 +87,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQA) != null) {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
         }
+        //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
         setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
     }

@@ -9,6 +9,10 @@ import android.support.design.widget.CoordinatorLayout;
 
 import com.developer.cookie.myquote.R;
 
+
+/**
+ * Class helps set AppBarLayout not expandable
+ */
 public class AppBarLayoutExpended {
 
     public static void setAppBarLayoutExpended(Context context, AppBarLayout appBarLayout, CoordinatorLayout.LayoutParams layoutParams,

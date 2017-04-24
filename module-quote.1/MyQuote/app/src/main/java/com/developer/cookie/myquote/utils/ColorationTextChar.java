@@ -10,6 +10,9 @@ import com.developer.cookie.myquote.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class helps set specific color first vowel in title
+ */
 public class ColorationTextChar {
 
     public static Spannable setFirstVowelColor(String text, String language, Context context) {
@@ -26,6 +29,13 @@ public class ColorationTextChar {
         return newText;
     }
 
+    /**
+     * Method returns index of first vowel in title (for english and russian languages)
+     *
+     * @param text current text
+     * @param language current language
+     * @return index of first vowel
+     */
     private static int getFirstVowelIndex(String text, String language) {
 
         String patternString;
@@ -41,7 +51,6 @@ public class ColorationTextChar {
 
         return -1;
     }
-
 
     private static int getIndex(String patternString, String text) {
         Pattern p = Pattern.compile(patternString);

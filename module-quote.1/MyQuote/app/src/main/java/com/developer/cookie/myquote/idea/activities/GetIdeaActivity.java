@@ -42,6 +42,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
 
     @Override
     public void workWithFragment() {
+        // Set new style for toolbar title
         if (findViewById(R.id.detail_fragment_container) != null) {
             String localeLanguage = Locale.getDefault().getLanguage();
             setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));

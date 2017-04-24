@@ -42,6 +42,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
 
     @Override
     public Fragment createFragment() {
+        // Set AppBarLayout not expandable
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
@@ -76,6 +77,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
             mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
         }
+        //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
         setTitle(ColorationTextChar.setFirstVowelColor(mQuoteTypeAllQuotesCategory, localeLanguage, this));
     }

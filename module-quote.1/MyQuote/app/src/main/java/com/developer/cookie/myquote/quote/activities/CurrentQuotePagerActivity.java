@@ -70,7 +70,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             mQuoteIdList = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST_INTENT_CQPA);
             mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT_CQPA);
         }
-        //Create title with new style
+        //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
         setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
         //Work with ViewPager
