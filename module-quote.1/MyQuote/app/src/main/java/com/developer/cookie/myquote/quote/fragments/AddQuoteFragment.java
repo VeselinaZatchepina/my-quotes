@@ -173,7 +173,7 @@ public class AddQuoteFragment extends Fragment {
                 if (selectedItem.equals(getString(R.string.spinner_add_category))) {
                     // Create dialog for add category
                     LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-                    View dialogView = layoutInflater.inflate(R.layout.add_category_dialog, null);
+                    View dialogView = layoutInflater.inflate(R.layout.dialog_add_category, null);
                     AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
                     mDialogBuilder.setView(dialogView);
                     final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);

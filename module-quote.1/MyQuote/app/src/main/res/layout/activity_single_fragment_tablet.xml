@@ -11,7 +11,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height_tablet"
+        android:layout_height="@dimen/toolbar_height"
         android:background="@drawable/toolbar_gradient"
         android:fitsSystemWindows="true"
         app:theme="@style/TransparentToolbar">
@@ -38,7 +38,7 @@
     <View
         android:id="@+id/view_for_fab_state"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_height_tablet"
+        android:layout_height="@dimen/toolbar_height"
         android:background="@color/status_bar_opacity"
         android:fitsSystemWindows="true" />
 

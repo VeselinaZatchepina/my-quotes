@@ -12,15 +12,13 @@
     <dimen name="card_view_horizontal_margin">16dp</dimen>
     <dimen name="image_view_horizontal_margin">32dp</dimen>
 
-    <!-- Toolbar size for mobile -->
-    <dimen name="toolbar_height_mobile">223dp</dimen>
+    <!-- Toolbar size -->
+    <dimen name="toolbar_height">223dp</dimen>
     <dimen name="toolbar_height_normal_portrait">80dp</dimen>
     <dimen name="toolbar_height_normal_landscape">72dp</dimen>
-    <dimen name="toolbar_height_tablet">208dp</dimen>
     <dimen name="toolbar_text_margin_bottom">24dp</dimen>
-    <dimen name="fragment_marginTop_tablet">72dp</dimen>
-    <dimen name="fragment_width_tablet">656dp</dimen>
-
+    <dimen name="expanded_title_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_start">69dp</dimen>
 
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="horizontal_margin">16dp</dimen>
@@ -38,6 +36,10 @@
     <dimen name="edit_text_marginTop">16dp</dimen>
     <dimen name="divider_add_quote">1dp</dimen>
     <dimen name="divider_add_quote_margin_Top">8dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="text_input_layout_margin_top">16dp</dimen>
+    <dimen name="text_input_layout_margin_bottom">8dp</dimen>
+
 
     <!-- CurrentQuotePagerActivity -->
     <dimen name="linear_layout_current_quote_margin_top">16dp</dimen>
@@ -48,9 +50,18 @@
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
     <dimen name="linear_layout_current_quote_margin">16dp</dimen>
 
-
     <!-- Empty category view -->
     <dimen name="root_view_padding_top">86dp</dimen>
     <dimen name="text_view_margin_top">20dp</dimen>
+
+    <!-- GetIdeaActivity -->
+    <dimen name="linear_layout_margin">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_top">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_bottom">16dp</dimen>
+    <dimen name="button_height">250dp</dimen>
+    <dimen name="button_width">70dp</dimen>
+
+    <!-- NavHeader -->
+    <dimen name="nav_header_height">160dp</dimen>
 
 </resources>

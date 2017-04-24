@@ -12,17 +12,17 @@
         android:layout_margin="@dimen/cardview_margin"
         card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="@dimen/corner_radius"
-        card_view:cardElevation="2dp"
+        card_view:cardElevation="@dimen/card_elevation"
         card_view:cardUseCompatPadding="true">
 
         <LinearLayout
             android:id="@+id/linear_layout_add_quote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/linear_layout_current_quote_margin_top"
             android:layout_marginBottom="@dimen/linear_layout_current_quote_margin_bottom"
-            android:layout_marginStart="@dimen/linear_layout_current_quote_margin_start"
             android:layout_marginEnd="@dimen/linear_layout_current_quote_margin_end"
+            android:layout_marginStart="@dimen/linear_layout_current_quote_margin_start"
+            android:layout_marginTop="@dimen/linear_layout_current_quote_margin_top"
             android:orientation="vertical">
 
             <android.support.design.widget.TextInputLayout
@@ -41,7 +41,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/text_input_layout_margin_top">
 
                 <EditText
                     android:id="@+id/book_name"
@@ -55,7 +55,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/text_input_layout_margin_top">
 
                 <EditText
                     android:id="@+id/author_name"
@@ -70,8 +70,8 @@
                 android:id="@+id/spinner_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginBottom="@dimen/text_input_layout_margin_bottom"
+                android:layout_marginTop="@dimen/text_input_layout_margin_top"
                 android:text="@string/spinner_label" />
 
             <Spinner
@@ -89,7 +89,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/text_input_layout_margin_top">
 
                 <EditText
                     android:id="@+id/publish_name"
@@ -103,7 +103,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/text_input_layout_margin_top">
 
                 <EditText
                     android:id="@+id/year_number"
@@ -117,7 +117,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp">
+                android:layout_marginTop="@dimen/text_input_layout_margin_top">
 
                 <EditText
                     android:id="@+id/page_number"

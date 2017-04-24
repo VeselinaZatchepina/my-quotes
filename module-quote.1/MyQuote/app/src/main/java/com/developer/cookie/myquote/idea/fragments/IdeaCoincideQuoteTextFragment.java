@@ -104,7 +104,7 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
                     return new MyViewHolder(itemViewEmpty);
                 case NOT_EMPTY_LIST:
                     View itemView = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.all_quote_current_category_item, parent, false);
+                            .inflate(R.layout.all_quote_current_category_recycler_view_item, parent, false);
                     return new MyViewHolder(itemView);
             }
             return null;

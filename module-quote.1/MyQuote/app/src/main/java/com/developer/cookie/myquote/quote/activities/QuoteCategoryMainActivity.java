@@ -50,7 +50,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
 
     @Override
     public int getLayoutResId() {
-        return R.layout.nav_drawer_activity;
+        return R.layout.activity_nav_drawer;
     }
 
     @Override

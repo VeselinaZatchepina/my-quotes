@@ -143,7 +143,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_current_category_quotes, menu);
+        inflater.inflate(R.menu.menu_current_all_quotes, menu);
         if (mQuoteType.equals("My quote")) {
             menu.findItem(R.id.filter_quote).setVisible(false);
         }
@@ -185,7 +185,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             }
         });
         MenuInflater inflater = popup.getMenuInflater();
-        inflater.inflate(R.menu.filter_popup_menu, popup.getMenu());
+        inflater.inflate(R.menu.menu_popup_all_quotes, popup.getMenu());
         popup.show();
     }
 
@@ -284,7 +284,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.all_quote_current_category_item, parent, false);
+                    .inflate(R.layout.all_quote_current_category_recycler_view_item, parent, false);
             return new MyViewHolder(itemView);
         }
 

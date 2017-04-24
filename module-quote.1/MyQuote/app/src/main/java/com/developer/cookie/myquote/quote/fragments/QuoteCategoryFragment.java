@@ -111,7 +111,7 @@ public class QuoteCategoryFragment extends Fragment {
         super.onCreateContextMenu(menu, v, menuInfo);
         if (v.getId() == R.id.recycler_view) {
             MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.context_menu_quote_category, menu);
+            inflater.inflate(R.menu.context_menu_current_quote, menu);
         }
     }
 
@@ -209,7 +209,7 @@ public class QuoteCategoryFragment extends Fragment {
                     return new MyViewHolder(itemViewEmpty);
                 case NOT_EMPTY_LIST:
                     View itemView = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.recycler_view_item_quote_categories, parent, false);
+                            .inflate(R.layout.quote_categories_recycler_view_item, parent, false);
                     return new MyViewHolder(itemView);
             }
             return null;

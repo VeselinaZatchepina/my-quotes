@@ -4,17 +4,17 @@
     <item
         android:id="@+id/filter_by_author"
         android:title="@string/sort_by_author"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/filter_by_book_name"
         android:title="@string/sort_by_book_name"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/filter_by_year"
         android:title="@string/sort_by_year"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/filter_by_publisher"
         android:title="@string/sort_by_publisher"
-        app:showAsAction="ifRoom"></item>
+        app:showAsAction="ifRoom" />
 </menu>

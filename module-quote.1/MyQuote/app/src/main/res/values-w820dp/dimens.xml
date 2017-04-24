@@ -14,4 +14,8 @@
     <dimen name="linear_layout_current_quote_margin_start">152dp</dimen>
     <dimen name="linear_layout_current_quote_margin_end">152dp</dimen>
 
+    <!-- Toolbar size -->
+    <dimen name="toolbar_height">208dp</dimen>
+    <dimen name="fragment_marginTop_tablet">72dp</dimen>
+    <dimen name="fragment_width_tablet">656dp</dimen>
 </resources>
