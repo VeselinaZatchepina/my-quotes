@@ -6,10 +6,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/title"
+        android:id="@+id/dialog_add_category_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/title"
+        android:text="@string/dialog_add_category_title"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
