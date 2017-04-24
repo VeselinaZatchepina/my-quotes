@@ -40,9 +40,14 @@
     <dimen name="divider_add_quote_margin_Top">8dp</dimen>
 
     <!-- CurrentQuotePagerActivity -->
-    <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_top">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_bottom">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_start">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_end">16dp</dimen>
     <dimen name="divider_current_quote">1dp</dimen>
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+
 
     <!-- Empty category view -->
     <dimen name="root_view_padding_top">86dp</dimen>
