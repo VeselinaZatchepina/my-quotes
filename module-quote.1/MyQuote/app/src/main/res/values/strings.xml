@@ -5,7 +5,9 @@
     <string name="image_content_description">Icon of current category</string>
 
     <!-- QuoteCategory recyclerView empty view -->
-    <string name="title_empty_view">You have no quote</string>
+    <string name="title_empty_view">You have no quotes</string>
+    <string name="title_empty_view_push">Push</string>
+    <string name="title_empty_view_button">button</string>
 
     <!-- AddQuoteFragment-->
     <string name="hint_quote_text">Quote text</string>

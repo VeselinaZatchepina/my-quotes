@@ -44,6 +44,8 @@
     <dimen name="divider_current_quote">1dp</dimen>
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
 
-
+    <!-- Empty category view -->
+    <dimen name="root_view_padding_top">86dp</dimen>
+    <dimen name="text_view_margin_top">20dp</dimen>
 
 </resources>
