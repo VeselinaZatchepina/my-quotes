@@ -168,7 +168,7 @@ public class QuoteCategoryFragment extends Fragment {
         private void openDeleteQuoteCategoryDialog() {
             // Create dialog for delete current category
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View dialogView = layoutInflater.inflate(R.layout.dialog_delete_quote_category, null);
+            View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
             AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
             mDialogBuilder.setView(dialogView);
             mDialogBuilder

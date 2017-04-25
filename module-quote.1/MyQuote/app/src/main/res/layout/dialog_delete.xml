@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/dialog_delete_category_title"
+        android:id="@+id/dialog_delete_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/delete_category_dialog_title_margin"

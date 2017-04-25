@@ -25,6 +25,7 @@
 
     <!-- Delete quote category dialog -->
     <string name="dialog_delete_category_title">Delete current category?</string>
+    <string name="dialog_delete_current_quote_title">Delete current quote?</string>
     <string name="dialog_ok_button">DELETE</string>
     <string name="dialog_cancel_button">CANCEL</string>
 

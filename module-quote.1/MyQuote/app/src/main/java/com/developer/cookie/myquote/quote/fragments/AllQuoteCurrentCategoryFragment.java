@@ -2,15 +2,16 @@ package com.developer.cookie.myquote.quote.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -116,29 +117,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
         mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
         mSortedBy = savedInstanceState.getString(QUOTE_SORTED_BUNDLE_AQCCF);
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.recycler_view) {
-            MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.context_menu_all_quotes, menu);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete_current_quote:
-                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
-                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);
-                snackbarIsDeleted.show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
     }
 
     @Override
@@ -267,9 +245,38 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             public boolean onLongClick(View view) {
                 mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
-                getActivity().openContextMenu(view);
+                openDeleteQuoteCategoryDialog();
                 return false;
             }
+        }
+
+        private void openDeleteQuoteCategoryDialog() {
+            // Create dialog for delete current quote
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
+            TextView deleteDialogTitle = (TextView) dialogView.findViewById(R.id.dialog_delete_title);
+            deleteDialogTitle.setText(getResources().getString(R.string.dialog_delete_current_quote_title));
+            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+            mDialogBuilder.setView(dialogView);
+            mDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
+                                    final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+                                    Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);
+                                    snackbarIsDeleted.show();
+                                }
+                            })
+                    .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alertDialog = mDialogBuilder.create();
+            alertDialog.show();
         }
 
         /**
