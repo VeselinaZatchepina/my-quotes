@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
@@ -61,7 +62,7 @@ public class CurrentQuoteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_current_quote, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_current_quote, container, false);
         final TextView quoteTextView = (TextView) rootView.findViewById(R.id.current_quote_text);
         final TextView bookNameView = (TextView) rootView.findViewById(R.id.current_book_name);
         final TextView authorNameView = (TextView) rootView.findViewById(R.id.current_author_name);
@@ -78,6 +79,18 @@ public class CurrentQuoteFragment extends Fragment {
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
                     quoteCreationDate.setText(element.first().getDate().getQuoteDate());
+                    if (mQuoteType.equals("My quote")) {
+                        LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);
+                        LinearLayout bookNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_book_name_title);
+                        LinearLayout publisherNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_publisher_name_title);
+                        LinearLayout yearNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_year_number_title);
+                        LinearLayout pageNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_page_number_title);
+                        quoteAuthorTitle.setVisibility(View.GONE);
+                        bookNameTitle.setVisibility(View.GONE);
+                        publisherNameTitle.setVisibility(View.GONE);
+                        yearNumberTitle.setVisibility(View.GONE);
+                        pageNumberTitle.setVisibility(View.GONE);
+                    }
                 }
             }
         });

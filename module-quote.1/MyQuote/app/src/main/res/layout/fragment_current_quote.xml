@@ -37,6 +37,7 @@
                 android:background="@color/card_background" />
 
             <LinearLayout
+                android:id="@+id/linear_layout_quote_author_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
@@ -60,6 +61,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_layout_book_name_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
@@ -83,6 +85,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_layout_publisher_name_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
@@ -106,6 +109,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_layout_year_number_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
@@ -129,6 +133,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_layout_page_number_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
