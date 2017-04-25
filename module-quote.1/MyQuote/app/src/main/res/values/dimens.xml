@@ -64,4 +64,7 @@
     <!-- NavHeader -->
     <dimen name="nav_header_height">160dp</dimen>
 
+    <!-- Delete current category dialog -->
+    <dimen name="delete_category_dialog_title_margin">24dp</dimen>
+
 </resources>

@@ -2,18 +2,17 @@ package com.developer.cookie.myquote.quote.fragments;
 
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.util.Pair;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -107,29 +106,6 @@ public class QuoteCategoryFragment extends Fragment {
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        if (v.getId() == R.id.recycler_view) {
-            MenuInflater inflater = getActivity().getMenuInflater();
-            inflater.inflate(R.menu.context_menu_current_quote, menu);
-        }
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.delete:
-                mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
-                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + mCategoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
-                snackbarIsDeleted.show();
-                return true;
-            default:
-                return super.onContextItemSelected(item);
-        }
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putString(QUOTE_TYPE_BUNDLE_QCF, mQuoteType);
         super.onSaveInstanceState(outState);
@@ -184,10 +160,37 @@ public class QuoteCategoryFragment extends Fragment {
             @Override
             public boolean onLongClick(View view) {
                 mCategoryForDelete = itemQuoteCategory.getText().toString();
-                getActivity().openContextMenu(view);
+                openDeleteQuoteCategoryDialog();
                 return false;
             }
         }
+
+        private void openDeleteQuoteCategoryDialog() {
+            // Create dialog for delete current category
+            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+            View dialogView = layoutInflater.inflate(R.layout.dialog_delete_quote_category, null);
+            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+            mDialogBuilder.setView(dialogView);
+            mDialogBuilder
+                    .setCancelable(false)
+                    .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
+                                    final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+                                    Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + mCategoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
+                                    snackbarIsDeleted.show();
+                                }
+                            })
+                    .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alertDialog = mDialogBuilder.create();
+            alertDialog.show();
+}
 
         /**
          * Method create custom adapter.
