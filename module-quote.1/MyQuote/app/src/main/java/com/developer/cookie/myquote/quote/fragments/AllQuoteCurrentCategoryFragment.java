@@ -245,12 +245,12 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             public boolean onLongClick(View view) {
                 mCurrentId = mListOfQuotesId.get(mCurrentCategoryQuoteTextList
                         .indexOf(currentQuote.getText().toString()));
-                openDeleteQuoteCategoryDialog();
+                openDeleteQuoteDialog();
                 return false;
             }
         }
 
-        private void openDeleteQuoteCategoryDialog() {
+        private void openDeleteQuoteDialog() {
             // Create dialog for delete current quote
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
             View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);

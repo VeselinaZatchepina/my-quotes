@@ -1,10 +1,12 @@
 package com.developer.cookie.myquote.quote.fragments;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -109,14 +111,40 @@ public class CurrentQuoteFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.delete_quote:
-                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentQuoteTextId, mQuoteType);
-                getActivity().finish();
+                openDeleteQuoteDialog();
                 break;
             case R.id.menu_item_share:
                 startActivity(Intent.createChooser(sharingIntent, "Select conversation"));
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDeleteQuoteDialog() {
+        // Create dialog for delete current quote
+        LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+        View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
+        TextView deleteDialogTitle = (TextView) dialogView.findViewById(R.id.dialog_delete_title);
+        deleteDialogTitle.setText(getResources().getString(R.string.dialog_delete_current_quote_title));
+        AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+        mDialogBuilder.setView(dialogView);
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentQuoteTextId, mQuoteType);
+                                getActivity().finish();
+                            }
+                        })
+                .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alertDialog = mDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
