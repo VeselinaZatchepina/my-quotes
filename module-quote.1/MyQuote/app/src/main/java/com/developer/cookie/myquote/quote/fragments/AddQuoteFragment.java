@@ -4,6 +4,7 @@ package com.developer.cookie.myquote.quote.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
@@ -106,11 +107,16 @@ public class AddQuoteFragment extends Fragment {
         // Create view for "My quote" type
         if (isAdded()) {
             if (mQuoteType.equals(getString(R.string.my_quote_type))) {
-                mBookName.setVisibility(View.GONE);
-                mAuthorName.setVisibility(View.GONE);
-                mPageNumber.setVisibility(View.GONE);
-                mYearNumber.setVisibility(View.GONE);
-                mPublishName.setVisibility(View.GONE);
+                TextInputLayout bookNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.book_name_input_layout);
+                TextInputLayout authorNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.author_name_input_layout);
+                TextInputLayout pageNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.page_number_input_layout);
+                TextInputLayout yearNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.year_number_input_layout);
+                TextInputLayout publisherNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.publisher_name_input_layout);
+                bookNameInputLayout.setVisibility(View.GONE);
+                authorNameInputLayout.setVisibility(View.GONE);
+                pageNumberInputLayout.setVisibility(View.GONE);
+                yearNumberInputLayout.setVisibility(View.GONE);
+                publisherNameInputLayout.setVisibility(View.GONE);
             }
         }
         // Work with mSpinner
@@ -208,8 +214,6 @@ public class AddQuoteFragment extends Fragment {
 
             }
         });
-
-
         return rootView;
     }
 

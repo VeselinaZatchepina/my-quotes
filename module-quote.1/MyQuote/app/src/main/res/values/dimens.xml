@@ -43,7 +43,7 @@
 
     <!-- CurrentQuotePagerActivity -->
     <dimen name="linear_layout_current_quote_margin_top">16dp</dimen>
-    <dimen name="linear_layout_current_quote_margin_bottom">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_bottom">54dp</dimen>
     <dimen name="linear_layout_current_quote_margin_start">16dp</dimen>
     <dimen name="linear_layout_current_quote_margin_end">16dp</dimen>
     <dimen name="divider_current_quote">1dp</dimen>
