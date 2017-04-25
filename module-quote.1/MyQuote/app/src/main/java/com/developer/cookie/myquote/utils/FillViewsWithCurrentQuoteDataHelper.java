@@ -21,7 +21,8 @@ public class FillViewsWithCurrentQuoteDataHelper {
                                                      TextView quoteTextView, TextView bookNameView,
                                                      TextView authorNameView, TextView pageNumberView,
                                                      TextView publisherNameTextView,
-                                                     TextView yearNumberView, String quoteType) {
+                                                     TextView yearNumberView,
+                                                     String quoteType) {
         QuoteText quoteTextObject = realmResults.first();
         quoteTextView.setText(quoteTextObject.getQuoteText());
         if (quoteType.equals("Book quote")) {

@@ -102,6 +102,7 @@ public class AddQuoteFragment extends Fragment {
         mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
         mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
         mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
+
         // Create view for "My quote" type
         if (isAdded()) {
             if (mQuoteType.equals(getString(R.string.my_quote_type))) {
@@ -281,7 +282,7 @@ public class AddQuoteFragment extends Fragment {
         HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, mCurrentQuoteText);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, mValueOfCategory);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, String.valueOf(currentDate));
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, currentDate);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, mQuoteType);
         final String currentPageNumber;
         final String currentYearNumber;
@@ -291,17 +292,30 @@ public class AddQuoteFragment extends Fragment {
             currentYearNumber = mYearNumber.getText().toString();
             currentPublishName = mPublishName.getText().toString();
             mCurrentBookName = mBookName.getText().toString();
-            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, mCurrentBookName);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_NAME, emptyTextCheck(mCurrentBookName));
             mapOfQuoteProperties.put(QuotePropertiesEnum.BOOK_AUTHOR, mCurrentAuthorName);
-            mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, currentPageNumber);
-            mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, currentYearNumber);
-            mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, currentPublishName);
+            mapOfQuoteProperties.put(QuotePropertiesEnum.PAGE_NUMBER, emptyTextCheck(currentPageNumber));
+            mapOfQuoteProperties.put(QuotePropertiesEnum.YEAR_NUMBER, emptyTextCheck(currentYearNumber));
+            mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, emptyTextCheck(currentPublishName));
         }
         if (mQuoteTextId != -1) {
             mQuoteDataRepository.saveChangedQuoteObject(mQuoteTextId, mapOfQuoteProperties);
         } else {
             mQuoteDataRepository.saveQuote(mapOfQuoteProperties);
         }
+    }
+
+    /**
+     * Method checks is current value empty or equals "" and set "-" if it is.
+     *
+     * @param currentValue
+     * @return current value
+     */
+    private String emptyTextCheck(String currentValue) {
+        if (currentValue.isEmpty() || currentValue.equals("")) {
+            currentValue = "-";
+        }
+        return currentValue;
     }
 
     @Override
