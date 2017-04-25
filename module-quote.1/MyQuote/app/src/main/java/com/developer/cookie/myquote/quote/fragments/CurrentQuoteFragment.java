@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.ShareActionProvider;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -104,6 +105,11 @@ public class CurrentQuoteFragment extends Fragment {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(sharingIntent);
+        }
+        if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
+            Log.v(LOG_TAG, "DELETE");
+            MenuItem itemDeleteQuote = menu.findItem(R.id.delete_quote);
+            itemDeleteQuote.setVisible(false);
         }
     }
 
