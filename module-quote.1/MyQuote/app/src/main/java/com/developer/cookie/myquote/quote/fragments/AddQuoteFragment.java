@@ -150,6 +150,13 @@ public class AddQuoteFragment extends Fragment {
                 if (mQuoteTextId != -1) {
                     mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
                 }
+                //Set spinner selection on current category
+                String currentCategory = getActivity()
+                        .getIntent()
+                        .getStringExtra(AddQuoteActivity.QUOTE_CATEGORY_INTENT_AQA);
+                if (currentCategory != null && !currentCategory.equals("")) {
+                    mSpinner.setSelection(mListOfAllCategories.indexOf(currentCategory));
+                }
             }
         });
         // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
@@ -169,6 +176,7 @@ public class AddQuoteFragment extends Fragment {
                 }
             });
         }
+
         //Add listener to mSpinner
         mSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

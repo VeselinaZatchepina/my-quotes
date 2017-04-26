@@ -35,6 +35,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
 
     Fragment mDetailFragment;
 
+    String mCategoryName;
+
     @Override
     public int getLayoutResId() {
         return R.layout.activity_masterdetail;
@@ -91,6 +93,16 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void toDoWhenFabIsPressed() {
+        mCategoryName = getIntent()
+                .getStringExtra(QUOTE_CATEGORY_INTENT_AQCCA);
+        if (mCategoryName != null && !mCategoryName.equals("")) {
+            Intent intent = AddQuoteActivity.newIntent(this, mQuoteTypeAllQuotesCategory, mCategoryName);
+            startActivity(intent);
+        }
     }
 
     @Override

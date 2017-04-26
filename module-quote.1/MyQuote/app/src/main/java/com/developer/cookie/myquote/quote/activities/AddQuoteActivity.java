@@ -24,6 +24,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_TYPE_INTENT_AQA = "com.developer.cookie.myquote.quote_type_intent_aqa";
     public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqa";
     public static final String QUOTE_TYPE_BUNDLE_AQA = "com.developer.cookie.myquote.fragments.quote_type_bundle_aqa";
+    public static final String QUOTE_CATEGORY_INTENT_AQA = "com.developer.cookie.myquote.fragments.quote_category_intent_aqa";
     Fragment mCurrentFragment;
     String mQuoteType;
 
@@ -68,6 +69,13 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
         intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
+        return intent;
+    }
+
+    public static Intent newIntent(Context context, String titleName, String currentCategory) {
+        Intent intent = new Intent(context, AddQuoteActivity.class);
+        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
+        intent.putExtra(QUOTE_CATEGORY_INTENT_AQA, currentCategory);
         return intent;
     }
 
