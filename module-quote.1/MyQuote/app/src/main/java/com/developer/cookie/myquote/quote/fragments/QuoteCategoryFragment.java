@@ -36,6 +36,7 @@ public class QuoteCategoryFragment extends Fragment {
 
     private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
     public static final String QUOTE_TYPE_BUNDLE_QCF = "com.developer.cookie.myquote.quote_type_bundle_qcf";
+    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE_QCF = "com.developer.cookie.myquote.current_quote_type_new_instance_qcf";
     View mRootView;
     QuoteDataRepository mQuoteDataRepository;
 
@@ -58,7 +59,7 @@ public class QuoteCategoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_QCF);
-        } else {
+        } else if (getArguments() != null) {
             mQuoteType = getActivity().getTitle().toString();
         }
         mQuoteDataRepository = new QuoteDataRepository();
@@ -125,6 +126,14 @@ public class QuoteCategoryFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mQuoteDataRepository.closeDbConnect();
+    }
+
+    public static QuoteCategoryFragment newInstance(String quoteType) {
+        Bundle args = new Bundle();
+        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE_QCF, quoteType);
+        QuoteCategoryFragment fragment = new QuoteCategoryFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     /**

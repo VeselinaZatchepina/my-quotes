@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteText;
-import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +74,6 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         } else if (getArguments() != null) {
             mCategoryName = getArguments().getString(QUOTE_CURRENT_CATEGORY_NEW_INSTANCE);
             mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
-        } else {
-            // Get current clicked category name
-            mCategoryName = getActivity()
-                    .getIntent()
-                    .getSerializableExtra(AllQuoteCurrentCategoryActivity.QUOTE_CATEGORY_INTENT_AQCCA)
-                    .toString();
-            mQuoteType = getActivity().getTitle().toString();
         }
         mQuoteDataRepository = new QuoteDataRepository();
         mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);

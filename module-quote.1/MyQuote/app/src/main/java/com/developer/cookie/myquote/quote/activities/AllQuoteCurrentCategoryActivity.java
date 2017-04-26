@@ -52,7 +52,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
-        mCurrentFragment = new AllQuoteCurrentCategoryFragment();
+        mCurrentFragment = AllQuoteCurrentCategoryFragment.newInstance(mCategoryName, mQuoteTypeAllQuotesCategory);
         return mCurrentFragment;
     }
 
@@ -78,6 +78,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             mQuoteTypeAllQuotesCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
             mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
+            mCategoryName = getIntent()
+                    .getStringExtra(QUOTE_CATEGORY_INTENT_AQCCA);
         }
         //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
@@ -97,8 +99,6 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
 
     @Override
     public void toDoWhenFabIsPressed() {
-        mCategoryName = getIntent()
-                .getStringExtra(QUOTE_CATEGORY_INTENT_AQCCA);
         if (mCategoryName != null && !mCategoryName.equals("")) {
             Intent intent = AddQuoteActivity.newIntent(this, mQuoteTypeAllQuotesCategory, mCategoryName);
             startActivity(intent);
@@ -121,7 +121,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             };
             setFabBackgroundImage(fab, R.drawable.ic_create_white_24dp);
             fab.setOnClickListener(editFabListener);
-            mDetailFragment = CurrentQuoteFragment.newInstance(currentId);
+            mDetailFragment = CurrentQuoteFragment.newInstance(currentId, mQuoteTypeAllQuotesCategory);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.detail_fragment_container, mDetailFragment)

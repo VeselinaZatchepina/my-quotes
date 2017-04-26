@@ -31,7 +31,8 @@ import io.realm.RealmResults;
  */
 public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
-    private static final String CURRENT_QUOTE_ID_ARG_CQF = "com.developer.cookie.myquote.current_quote_id_arg_cqf";
+    private static final String CURRENT_QUOTE_ID_NEW_INSTANCE_CQF = "com.developer.cookie.myquote.current_quote_id_new_instance_cqf";
+    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF = "com.developer.cookie.myquote.current_quote_type_new_instance_cqf";
     public static final String QUOTE_TYPE_BUNDLE_CQF = "com.developer.cookie.myquote.quote_type_bundle_cqf";
     public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_bundle_cqf";
 
@@ -51,9 +52,9 @@ public class CurrentQuoteFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_CQF);
             mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_CQF);
-        } else {
-            mQuoteType = getActivity().getTitle().toString();
-            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_ARG_CQF);
+        } else if (getArguments() != null){
+            mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF);
+            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF);
         }
         mQuoteDataRepository = new QuoteDataRepository();
         mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
@@ -97,9 +98,10 @@ public class CurrentQuoteFragment extends Fragment {
         return rootView;
     }
 
-    public static CurrentQuoteFragment newInstance(Long currentQuoteTextId) {
+    public static CurrentQuoteFragment newInstance(Long currentQuoteTextId, String quoteType) {
         Bundle args = new Bundle();
-        args.putSerializable(CURRENT_QUOTE_ID_ARG_CQF, currentQuoteTextId);
+        args.putSerializable(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF, currentQuoteTextId);
+        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF, quoteType);
         CurrentQuoteFragment fragment = new CurrentQuoteFragment();
         fragment.setArguments(args);
         return fragment;

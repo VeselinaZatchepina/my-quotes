@@ -58,7 +58,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
         if (mCurrentFragment == null) {
-            mCurrentFragment = new QuoteCategoryFragment();
+            mCurrentFragment = QuoteCategoryFragment.newInstance(getTitle().toString());
             fragmentManager.beginTransaction()
                     .add(R.id.container, mCurrentFragment)
                     .commit();

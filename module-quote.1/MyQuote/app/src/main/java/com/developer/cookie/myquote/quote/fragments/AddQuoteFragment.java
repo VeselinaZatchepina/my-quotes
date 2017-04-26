@@ -42,6 +42,8 @@ public class AddQuoteFragment extends Fragment {
     private static final String LOG_TAG = AddQuoteFragment.class.getSimpleName();
     public static final String QUOTE_TYPE_BUNDLE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_type_bundle_aqf";
     public static final String QUOTE_ID_BUNDLE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_bundle_aqf";
+    public static final String QUOTE_ID_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_new_instance_aqf";
+    public static final String QUOTE_TYPE_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_type_new_instance_aqf";
 
     QuoteDataRepository mQuoteDataRepository;
     private List<String> mListOfAllCategories;
@@ -79,11 +81,11 @@ public class AddQuoteFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQF);
             mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_AQF);
-        } else {
+        } else if (getArguments() != null){
             // Get quote id for edit
-            mQuoteTextId = getActivity().getIntent().getLongExtra(AddQuoteActivity.QUOTE_TEXT_ID_INTENT_AQA, -1);
+            mQuoteTextId = getArguments().getLong(QUOTE_ID_NEW_INSTANCE_AQF, -1);
             // Get quote type
-            mQuoteType = getActivity().getTitle().toString();
+            mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE_AQF);
         }
         if (mQuoteTextId != -1) {
             mQuoteTexts = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mQuoteTextId);
@@ -342,4 +344,14 @@ public class AddQuoteFragment extends Fragment {
         super.onDestroy();
         mQuoteDataRepository.closeDbConnect();
     }
+
+    public static AddQuoteFragment newInstance(Long currentQuoteTextId, String quoteType) {
+        Bundle args = new Bundle();
+        args.putSerializable(QUOTE_ID_NEW_INSTANCE_AQF, currentQuoteTextId);
+        args.putSerializable(QUOTE_TYPE_NEW_INSTANCE_AQF, quoteType);
+        AddQuoteFragment fragment = new AddQuoteFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
 }

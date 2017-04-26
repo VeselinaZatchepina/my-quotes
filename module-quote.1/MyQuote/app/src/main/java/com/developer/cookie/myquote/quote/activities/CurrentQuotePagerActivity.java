@@ -79,7 +79,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                mCurrentFragment = CurrentQuoteFragment.newInstance(mQuoteIdList.get(position));
+                mCurrentFragment = CurrentQuoteFragment.newInstance(mQuoteIdList.get(position), mQuoteType);
                 return mCurrentFragment;
             }
 

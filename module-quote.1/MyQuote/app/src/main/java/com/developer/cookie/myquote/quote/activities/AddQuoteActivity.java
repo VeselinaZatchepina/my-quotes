@@ -27,6 +27,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_CATEGORY_INTENT_AQA = "com.developer.cookie.myquote.fragments.quote_category_intent_aqa";
     Fragment mCurrentFragment;
     String mQuoteType;
+    Long mCurrentId;
 
     @Override
     public Fragment createFragment() {
@@ -38,7 +39,8 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
-        mCurrentFragment = new AddQuoteFragment();
+        mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
+        mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuoteType);
         return mCurrentFragment;
     }
 
