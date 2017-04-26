@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
-import com.developer.cookie.myquote.idea.activities.IdeaCoincideQuoteTextActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,8 +32,6 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mListOfCoicideQuoteText = getArguments().getStringArrayList(QUOTE_TEXT_LIST_NEW_INSTANCE);
-        } else {
-            mListOfCoicideQuoteText = getActivity().getIntent().getStringArrayListExtra(IdeaCoincideQuoteTextActivity.LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA);
         }
     }
 

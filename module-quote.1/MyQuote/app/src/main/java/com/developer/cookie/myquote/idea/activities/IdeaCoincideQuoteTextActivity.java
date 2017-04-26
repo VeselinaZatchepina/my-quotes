@@ -53,7 +53,8 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
         setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
-        return new IdeaCoincideQuoteTextFragment();
+        ArrayList<String> listOfCoicideQuoteText = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA);
+        return IdeaCoincideQuoteTextFragment.newInstance(listOfCoicideQuoteText);
     }
 
     @Override
