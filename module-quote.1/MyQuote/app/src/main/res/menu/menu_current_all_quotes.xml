@@ -6,7 +6,8 @@
         android:id="@+id/search_quote"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="@string/search"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <item
         android:id="@+id/filter_quote"

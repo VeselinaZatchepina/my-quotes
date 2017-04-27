@@ -7,17 +7,21 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.view.menu.ActionMenuItemView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
@@ -122,6 +126,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         if (mQuoteType.equals("My quote")) {
             menu.findItem(R.id.filter_quote).setVisible(false);
         }
+        MenuItem search = menu.findItem(R.id.search_quote);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
+        search(searchView);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -134,6 +141,21 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void search(SearchView searchView) {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mRecyclerViewAdapter.getFilter().filter(newText);
+                return true;
+            }
+        });
     }
 
     private void showPopup(View v) {
@@ -218,8 +240,10 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
      * It helps to show list of all quotes of current category.
      */
     private class AllQuoteCurrentCategoryRecyclerViewAdapter
-            extends RecyclerView.Adapter<AllQuoteCurrentCategoryRecyclerViewAdapter.MyViewHolder> {
+            extends RecyclerView.Adapter<AllQuoteCurrentCategoryRecyclerViewAdapter.MyViewHolder>
+            implements Filterable {
         private List<String> currentCategoryQuoteList;
+        private List<String> filteredQuoteTextList;
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView currentQuote;
@@ -245,6 +269,37 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 openDeleteQuoteDialog();
                 return false;
             }
+        }
+
+        //For searchView
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence charSequence) {
+                    String charString = charSequence.toString();
+                    if (charString.isEmpty()) {
+                        filteredQuoteTextList = currentCategoryQuoteList;
+                    } else {
+                        List<String> filteredList = new ArrayList<>();
+                        for (String currentQuoteText : currentCategoryQuoteList) {
+                            if (currentQuoteText.toLowerCase().contains(charString)) {
+                                filteredList.add(currentQuoteText);
+                            }
+                        }
+                        filteredQuoteTextList = filteredList;
+                    }
+                    FilterResults filterResults = new FilterResults();
+                    filterResults.values = filteredQuoteTextList;
+                    return filterResults;
+                }
+
+                @Override
+                protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                    filteredQuoteTextList = (ArrayList<String>) filterResults.values;
+                    notifyDataSetChanged();
+                }
+            };
         }
 
         private void openDeleteQuoteDialog() {
@@ -283,6 +338,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
          */
         public AllQuoteCurrentCategoryRecyclerViewAdapter(List<String> listOfQuoteText) {
             currentCategoryQuoteList = listOfQuoteText;
+            filteredQuoteTextList = listOfQuoteText;
         }
 
         @Override
@@ -294,12 +350,12 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.currentQuote.setText(currentCategoryQuoteList.get(position));
+            holder.currentQuote.setText(filteredQuoteTextList.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return currentCategoryQuoteList.size();
+            return filteredQuoteTextList.size();
         }
 
         /**

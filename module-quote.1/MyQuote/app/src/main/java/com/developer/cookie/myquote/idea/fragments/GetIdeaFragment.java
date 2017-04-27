@@ -62,7 +62,7 @@ public class GetIdeaFragment extends Fragment {
      */
     private void getListOfCoincideQuoteText() {
         final EditText subjectEditText = (EditText) mRootView.findViewById(R.id.subject_text);
-        String currentSubject = subjectEditText.getText().toString();
+        String currentSubject = subjectEditText.getText().toString().toLowerCase();
         mListOfCoincideQuoteText = new ArrayList<String>();
         if (mQuoteTextList.load()) {
             createRandomNumbers(mQuoteTextList.size());
@@ -80,7 +80,7 @@ public class GetIdeaFragment extends Fragment {
                         countOfCoincideQuoteText++;
                     }
                 } else {
-                    if (currentQuoteText.contains(currentSubject) && !mListOfCoincideQuoteText.contains(currentQuoteText)) {
+                    if (currentQuoteText.toLowerCase().contains(currentSubject) && !mListOfCoincideQuoteText.contains(currentQuoteText)) {
                         mListOfCoincideQuoteText.add(currentQuoteText);
                         countOfCoincideQuoteText++;
                     }
