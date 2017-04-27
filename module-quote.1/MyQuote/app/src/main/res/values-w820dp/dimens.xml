@@ -18,4 +18,7 @@
     <dimen name="toolbar_height">208dp</dimen>
     <dimen name="fragment_marginTop_tablet">72dp</dimen>
     <dimen name="fragment_width_tablet">656dp</dimen>
+
+    <!-- CardView dimensions -->
+    <dimen name="cardview_margin_top">50dp</dimen>
 </resources>
