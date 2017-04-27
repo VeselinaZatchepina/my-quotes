@@ -109,6 +109,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 for (int i = 0; i < element.size(); i++) {
                     mListOfQuotesId.add(element.get(i).getId());
                 }
+                if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
+                    mCallbacks.onQuoteSelected(mListOfQuotesId, element.first().getId());
+                }
             }
         });
         return mRootView;

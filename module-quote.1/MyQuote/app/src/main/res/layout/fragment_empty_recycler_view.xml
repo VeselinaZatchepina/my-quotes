@@ -14,12 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/text_view_margin_top"
         android:text="@string/title_empty_view"
+        android:textColor="@color/card_background"
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_empty_view_push"
+        android:textColor="@color/card_background"
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView
@@ -27,6 +29,7 @@
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/ic_add_circle_outline_white_48dp"
         android:text="@string/title_empty_view_button"
+        android:textColor="@color/card_background"
         android:textAppearance="?android:textAppearanceMedium" />
 
 </LinearLayout>
