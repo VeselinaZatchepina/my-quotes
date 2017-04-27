@@ -81,6 +81,7 @@ public class CurrentQuoteFragment extends Fragment {
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
                     currentCategory.setText(element.first().getCategory().getCategory());
+                    currentCategory.setAllCaps(true);
                     quoteCreationDate.setText(element.first().getDate().getQuoteDate());
                     if (mQuoteType.equals("My quote")) {
                         LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);

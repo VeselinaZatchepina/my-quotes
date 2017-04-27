@@ -234,6 +234,7 @@ public class QuoteCategoryFragment extends Fragment {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             if (listOfCategory.size() != 0) {
                 holder.itemQuoteCategory.setText(listOfCategory.get(position));
+                holder.itemQuoteCategory.setAllCaps(true);
                 holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
             }
         }

@@ -29,7 +29,6 @@
     <string name="dialog_ok_button">DELETE</string>
     <string name="dialog_cancel_button">CANCEL</string>
 
-
     <!-- Menu -->
     <string name="delete_title">Delete quote</string>
     <string name="action_settings">Settings</string>

@@ -2,6 +2,10 @@
     <!-- Recycler view -->
     <dimen name="recycler_view_vertical_margin">8dp</dimen>
     <dimen name="recycler_view_horizontal_margin">8dp</dimen>
+    <dimen name="recycler_view_text_view_margin_top">16dp</dimen>
+    <dimen name="recycler_view_text_view_margin_bottom">8dp</dimen>
+    <dimen name="recycler_view_text_view_margin_start">16dp</dimen>
+    <dimen name="recycler_view_text_view_margin_end">16dp</dimen>
 
     <dimen name="app_bar_divider">1dp</dimen>
 

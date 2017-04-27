@@ -86,6 +86,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
         TextView currentCategory = (TextView) mRootView.findViewById(R.id.current_category);
         currentCategory.setText(mCategoryName);
+        currentCategory.setAllCaps(true);
 
         mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
