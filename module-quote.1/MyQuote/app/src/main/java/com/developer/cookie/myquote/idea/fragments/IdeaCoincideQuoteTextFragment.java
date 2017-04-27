@@ -75,7 +75,9 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
             }
 
             @Override
-            public void onClick(View view) { }
+            public void onClick(View view) {
+
+            }
 
             @Override
             public boolean onLongClick(View view) {

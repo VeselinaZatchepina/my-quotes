@@ -22,7 +22,6 @@ import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
 import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.QuotePropertiesEnum;
-import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 import com.developer.cookie.myquote.utils.FillViewsWithCurrentQuoteDataHelper;
 
 import java.util.ArrayList;
@@ -44,6 +43,7 @@ public class AddQuoteFragment extends Fragment {
     public static final String QUOTE_ID_BUNDLE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_bundle_aqf";
     public static final String QUOTE_ID_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_new_instance_aqf";
     public static final String QUOTE_TYPE_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_type_new_instance_aqf";
+    public static final String QUOTE_CATEGORY_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_category_new_instance_aqf";
 
     QuoteDataRepository mQuoteDataRepository;
     private List<String> mListOfAllCategories;
@@ -54,6 +54,7 @@ public class AddQuoteFragment extends Fragment {
     String mCurrentQuoteText;
     String mCurrentBookName;
     String mCurrentAuthorName;
+    String mCurrentCategory;
 
     EditText mQuoteText;
     EditText mBookName;
@@ -86,6 +87,7 @@ public class AddQuoteFragment extends Fragment {
             mQuoteTextId = getArguments().getLong(QUOTE_ID_NEW_INSTANCE_AQF, -1);
             // Get quote type
             mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE_AQF);
+            mCurrentCategory = getArguments().getString(QUOTE_CATEGORY_NEW_INSTANCE_AQF);
         }
         if (mQuoteTextId != -1) {
             mQuoteTexts = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mQuoteTextId);
@@ -148,16 +150,9 @@ public class AddQuoteFragment extends Fragment {
                 mSpinnerAdapter.addAll(mListOfAllCategories);
                 mSpinner.setAdapter(mSpinnerAdapter);
                 mSpinner.setSelection(mSpinnerAdapter.getCount());
-                // If we choose Quote for edit we set mSpinner to current quote category position.
-                if (mQuoteTextId != -1) {
-                    mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
-                }
                 //Set spinner selection on current category
-                String currentCategory = getActivity()
-                        .getIntent()
-                        .getStringExtra(AddQuoteActivity.QUOTE_CATEGORY_INTENT_AQA);
-                if (currentCategory != null && !currentCategory.equals("")) {
-                    mSpinner.setSelection(mListOfAllCategories.indexOf(currentCategory));
+                if (mCurrentCategory != null && !mCurrentCategory.equals("")) {
+                    mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentCategory));
                 }
             }
         });
@@ -345,10 +340,11 @@ public class AddQuoteFragment extends Fragment {
         mQuoteDataRepository.closeDbConnect();
     }
 
-    public static AddQuoteFragment newInstance(Long currentQuoteTextId, String quoteType) {
+    public static AddQuoteFragment newInstance(Long currentQuoteTextId, String quoteType, String currentCategory) {
         Bundle args = new Bundle();
         args.putSerializable(QUOTE_ID_NEW_INSTANCE_AQF, currentQuoteTextId);
         args.putSerializable(QUOTE_TYPE_NEW_INSTANCE_AQF, quoteType);
+        args.putSerializable(QUOTE_CATEGORY_NEW_INSTANCE_AQF, currentCategory);
         AddQuoteFragment fragment = new AddQuoteFragment();
         fragment.setArguments(args);
         return fragment;

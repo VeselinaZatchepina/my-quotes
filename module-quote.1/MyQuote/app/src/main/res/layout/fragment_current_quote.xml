@@ -85,6 +85,30 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linear_layout_category_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/category_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/current_category_title" />
+
+                <TextView
+                    android:id="@+id/current_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/default_value"
+                    android:theme="@style/TextStyleBlack"
+                    tools:text="current category" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linear_layout_publisher_name_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

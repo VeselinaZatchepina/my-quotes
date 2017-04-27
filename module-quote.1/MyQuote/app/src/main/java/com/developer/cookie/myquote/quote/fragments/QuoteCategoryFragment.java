@@ -71,6 +71,9 @@ public class QuoteCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
 
+        TextView currentCategory = (TextView) mRootView.findViewById(R.id.current_category);
+        currentCategory.setVisibility(View.GONE);
+
         mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
             public void onChange(RealmResults<QuoteCategory> element) {

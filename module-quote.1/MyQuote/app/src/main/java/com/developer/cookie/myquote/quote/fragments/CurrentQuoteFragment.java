@@ -71,6 +71,7 @@ public class CurrentQuoteFragment extends Fragment {
         final TextView publisherNameTextView = (TextView) rootView.findViewById(R.id.current_publisher_name);
         final TextView yearNumberView = (TextView) rootView.findViewById(R.id.current_year_number);
         final TextView quoteCreationDate = (TextView) rootView.findViewById(R.id.quote_creation_date);
+        final TextView currentCategory = (TextView) rootView.findViewById(R.id.current_category);
 
         mCurrentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
@@ -79,6 +80,7 @@ public class CurrentQuoteFragment extends Fragment {
                     mCurrentCategory = element.first().getCategory().getCategory();
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
+                    currentCategory.setText(element.first().getCategory().getCategory());
                     quoteCreationDate.setText(element.first().getDate().getQuoteDate());
                     if (mQuoteType.equals("My quote")) {
                         LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);
