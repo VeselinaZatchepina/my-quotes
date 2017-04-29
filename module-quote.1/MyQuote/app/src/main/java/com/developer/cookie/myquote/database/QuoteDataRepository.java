@@ -43,7 +43,7 @@ public class QuoteDataRepository implements QuoteRepository {
             public void execute(Realm realm) {
                 String quoteType = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_TYPE);
                 // Create quote category
-                String valueOfCategory = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CATEGORY);
+                String valueOfCategory = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CATEGORY).toLowerCase();
                 QuoteCategory categoryRealmObject = checkAndGetCurrentCategory(realm, valueOfCategory, quoteType, 1);
                 //Create quote type
                 QuoteType type = checkAndGetCurrentType(realm, quoteType);

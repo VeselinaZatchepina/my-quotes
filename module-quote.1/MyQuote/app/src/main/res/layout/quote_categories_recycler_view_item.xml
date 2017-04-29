@@ -26,7 +26,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/image_view_horizontal_margin"
             android:contentDescription="@string/image_content_description"
-            android:src="@drawable/ic_delete_white_24dp" />
+            android:src="@drawable/ic_format_quote_white_24dp" />
 
         <TextView
             android:id="@+id/quote_category_name"

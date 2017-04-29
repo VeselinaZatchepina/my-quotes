@@ -44,4 +44,5 @@ public class QuoteCategory extends RealmObject {
     public void setType(QuoteType type) {
         this.type = type;
     }
+
 }

@@ -44,6 +44,13 @@ public class AddQuoteFragment extends Fragment {
     public static final String QUOTE_ID_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_id_new_instance_aqf";
     public static final String QUOTE_TYPE_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_type_new_instance_aqf";
     public static final String QUOTE_CATEGORY_NEW_INSTANCE_AQF = "com.developer.cookie.myquote.quote.fragments.quote_category_new_instance_aqf";
+    public static final String QUOTE_TEXT_SAVE_INSTANCE_AQF = "quote_text_save_instance_aqf";
+    public static final String QUOTE_BOOK_NAME_SAVE_INSTANCE_AQF = "quote_book_name_save_instance_aqf";
+    public static final String QUOTE_BOOK_AUTHOR_SAVE_INSTANCE_AQF = "quote_book_author_save_instance_aqf";
+    public static final String QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF = "quote_publisher_name_save_instance_aqf";
+    public static final String QUOTE_YEAR_SAVE_INSTANCE_AQF = "quote_year_save_instance_aqf";
+    public static final String QUOTE_PAGE_SAVE_INSTANCE_AQF = "quote_page_save_instance_aqf";
+
 
     QuoteDataRepository mQuoteDataRepository;
     private List<String> mListOfAllCategories;
@@ -82,6 +89,8 @@ public class AddQuoteFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQF);
             mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_AQF);
+            mCurrentCategory = savedInstanceState.getString(QUOTE_CATEGORY_NEW_INSTANCE_AQF);
+            mValueOfCategory = savedInstanceState.getString("cat");
         } else if (getArguments() != null){
             // Get quote id for edit
             mQuoteTextId = getArguments().getLong(QUOTE_ID_NEW_INSTANCE_AQF, -1);
@@ -98,7 +107,7 @@ public class AddQuoteFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
         mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
         mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
@@ -128,34 +137,28 @@ public class AddQuoteFragment extends Fragment {
             @Override
             public void onChange(RealmResults<QuoteCategory> element) {
                 createQuoteCategoryListForSpinner(element);
-                // Set hint for mSpinner
-                if (isAdded()) {
-                    mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
-                        @Override
-                        public View getView(int position, View convertView, ViewGroup parent) {
-                            View v = super.getView(position, convertView, parent);
-                            if (position == getCount()) {
-                                ((TextView) v.findViewById(android.R.id.text1)).setText("");
-                                ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
-                            }
-                            return v;
-                        }
-
-                        @Override
-                        public int getCount() {
-                            return super.getCount() - 1;
-                        }
-                    };
-                }
-                mSpinnerAdapter.addAll(mListOfAllCategories);
-                mSpinner.setAdapter(mSpinnerAdapter);
-                mSpinner.setSelection(mSpinnerAdapter.getCount());
                 //Set spinner selection on current category
-                if (mCurrentCategory != null && !mCurrentCategory.equals("")) {
-                    mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentCategory));
+                if (mValueOfCategory == null) {
+                    createSpinnerAdapter();
+                    if (mCurrentCategory != null) {
+                        mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory));
+                    }
+                } else {
+                    if (!mListOfAllCategories.contains(mValueOfCategory)) {
+                        mListOfAllCategories.add(0, mValueOfCategory);
+                    }
+                    createSpinnerAdapter();
+                    createSpinnerAdapter();
+                    if (isAdded()) {
+                        if (!mValueOfCategory.equals(getString(R.string.spinner_hint))) {
+                            mSpinner.setSelection(mSpinnerAdapter.getPosition(mValueOfCategory));
+                        }
+                    }
+
                 }
             }
         });
+
         // AddQuoteFragment for Quote edit. We fill all Views in fragment with current quote data.
         if (mQuoteTextId != -1) {
             mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
@@ -169,6 +172,14 @@ public class AddQuoteFragment extends Fragment {
                         if (mListOfAllCategories != null && !mListOfAllCategories.isEmpty()) {
                             mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
                         }
+                    }
+                    if (savedInstanceState != null) {
+                        mQuoteText.setText(savedInstanceState.getString(QUOTE_TEXT_SAVE_INSTANCE_AQF));
+                        mBookName.setText(savedInstanceState.getString(QUOTE_BOOK_NAME_SAVE_INSTANCE_AQF));
+                        mAuthorName.setText(savedInstanceState.getString(QUOTE_BOOK_AUTHOR_SAVE_INSTANCE_AQF));
+                        mPageNumber.setText(savedInstanceState.getString(QUOTE_PAGE_SAVE_INSTANCE_AQF));
+                        mYearNumber.setText(savedInstanceState.getString(QUOTE_YEAR_SAVE_INSTANCE_AQF));
+                        mPublishName.setText(savedInstanceState.getString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF));
                     }
                 }
             });
@@ -222,6 +233,31 @@ public class AddQuoteFragment extends Fragment {
         return rootView;
     }
 
+    private void createSpinnerAdapter() {
+        if (isAdded()) {
+            // Set hint for mSpinner
+            mSpinnerAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View v = super.getView(position, convertView, parent);
+                    if (position == getCount()) {
+                        ((TextView) v.findViewById(android.R.id.text1)).setText("");
+                        ((TextView) v.findViewById(android.R.id.text1)).setHint(getItem(getCount()));
+                    }
+                    return v;
+                }
+
+                @Override
+                public int getCount() {
+                    return super.getCount() - 1;
+                }
+            };
+        }
+        mSpinnerAdapter.addAll(mListOfAllCategories);
+        mSpinner.setAdapter(mSpinnerAdapter);
+        mSpinner.setSelection(mSpinnerAdapter.getCount());
+    }
+
     /**
      * Method checks if user choose hint in mSpinner.
      *
@@ -239,12 +275,12 @@ public class AddQuoteFragment extends Fragment {
     private void createQuoteCategoryListForSpinner(List<QuoteCategory> quoteCategoryList) {
         mListOfAllCategories = new ArrayList<>();
         // Create list of categories for mSpinnerAdapter
-        if (quoteCategoryList != null || !quoteCategoryList.isEmpty()) {
+        if (quoteCategoryList != null && !quoteCategoryList.isEmpty()) {
             for (int i = 0; i < quoteCategoryList.size(); i++) {
                 QuoteCategory currentCategory = quoteCategoryList.get(i);
                 if (currentCategory != null) {
                     String category = currentCategory.getCategory();
-                    mListOfAllCategories.add(category);
+                    mListOfAllCategories.add(category.toUpperCase());
                 }
             }
             if (isAdded()) {
@@ -332,6 +368,14 @@ public class AddQuoteFragment extends Fragment {
         super.onSaveInstanceState(outState);
         outState.putString(QUOTE_TYPE_BUNDLE_AQF, mQuoteType);
         outState.putLong(QUOTE_ID_BUNDLE_AQF, mQuoteTextId);
+        outState.putString(QUOTE_CATEGORY_NEW_INSTANCE_AQF, mCurrentCategory);
+        outState.putString(QUOTE_TEXT_SAVE_INSTANCE_AQF, mQuoteText.getText().toString());
+        outState.putString(QUOTE_BOOK_NAME_SAVE_INSTANCE_AQF, mBookName.getText().toString());
+        outState.putString(QUOTE_BOOK_AUTHOR_SAVE_INSTANCE_AQF, mAuthorName.getText().toString());
+        outState.putString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF, mPublishName.getText().toString());
+        outState.putString(QUOTE_YEAR_SAVE_INSTANCE_AQF, mYearNumber.getText().toString());
+        outState.putString(QUOTE_PAGE_SAVE_INSTANCE_AQF, mPageNumber.getText().toString());
+        outState.putString("cat", mValueOfCategory);
     }
 
     @Override

@@ -14,6 +14,6 @@
         android:actionViewClass="android.widget.ImageButton"
         android:icon="@drawable/ic_filter_list_white_24dp"
         android:title="@string/filter_quote"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 
 </menu>

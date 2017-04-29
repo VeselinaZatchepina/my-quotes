@@ -43,15 +43,14 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     }
 
     @Override
-    public Fragment createFragment() {
+    public void otherAction() {
+        super.otherAction();
         // Set AppBarLayout not expandable
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
-        }
+        setAppBarNotExpandable();
+    }
+
+    @Override
+    public Fragment createFragment() {
         mCurrentFragment = AllQuoteCurrentCategoryFragment.newInstance(mCategoryName, mQuoteTypeAllQuotesCategory);
         return mCurrentFragment;
     }
@@ -68,6 +67,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA, mCurrentFragment);
         outState.putString(QUOTE_TYPE_INTENT_AQCCA, mQuoteTypeAllQuotesCategory);
+        outState.putString(QUOTE_CATEGORY_INTENT_AQCCA, mCategoryName);
     }
 
     @Override
@@ -76,6 +76,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA);
             mQuoteTypeAllQuotesCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
+            mCategoryName = saveInstanceState.getString(QUOTE_CATEGORY_INTENT_AQCCA);
         } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
             mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
             mCategoryName = getIntent()
@@ -134,6 +135,16 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             fab.setImageDrawable(getResources().getDrawable(imageResourceId, getTheme()));
         } else {
             fab.setImageDrawable(getResources().getDrawable(imageResourceId));
+        }
+    }
+
+    private void setAppBarNotExpandable() {
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            Configuration configuration = getResources().getConfiguration();
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
     }
 }

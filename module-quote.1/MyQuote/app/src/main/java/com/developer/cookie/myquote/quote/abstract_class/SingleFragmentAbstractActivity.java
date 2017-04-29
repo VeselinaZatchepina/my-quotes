@@ -38,6 +38,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        otherAction();
         FragmentManager fragmentManager = getSupportFragmentManager();
         currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment == null) {
@@ -73,5 +74,9 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     public void toDoWhenFabIsPressed() {
         Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
         startActivity(intent);
+    }
+
+    public void otherAction() {
+
     }
 }

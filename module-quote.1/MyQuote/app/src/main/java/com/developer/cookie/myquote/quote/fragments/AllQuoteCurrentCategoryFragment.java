@@ -46,6 +46,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
     private static final String QUOTE_CURRENT_CATEGORY_NEW_INSTANCE = "com.developer.cookie.myquote.quote_current_id_new_instance_aqccf";
     private static final String QUOTE_TYPE_NEW_INSTANCE = "com.developer.cookie.myquote.quote_type_new_instance_aqccf";
+    private static final String QUOTE_SEARCH_BUNDLE_AQCCF = "com.developer.cookie.myquote.quote_search_bundle_aqccf";
 
     View mRootView;
     String mCategoryName;
@@ -64,6 +65,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     RecyclerView mRecyclerView;
 
     private AllQuoteCurrentCategoryCallbacks mCallbacks;
+
+    SearchView mSearchView;
+    String mSearchText;
 
     public AllQuoteCurrentCategoryFragment() {
         super();
@@ -109,11 +113,17 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                 for (int i = 0; i < element.size(); i++) {
                     mListOfQuotesId.add(element.get(i).getId());
                 }
-                if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
-                    mCallbacks.onQuoteSelected(mListOfQuotesId, element.first().getId());
+                if (isAdded()) {
+                    if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
+                        mCallbacks.onQuoteSelected(mListOfQuotesId, element.first().getId());
+                    }
+                }
+                if (mSortedBy != null) {
+                    sortAndUpdateRecyclerView(mSortedBy);
                 }
             }
         });
+
         return mRootView;
     }
 
@@ -121,6 +131,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQCCF);
         mCategoryName = savedInstanceState.getString(QUOTE_CATEGORY_BUNDLE_AQCCF);
         mSortedBy = savedInstanceState.getString(QUOTE_SORTED_BUNDLE_AQCCF);
+        mSearchText = savedInstanceState.getString(QUOTE_SEARCH_BUNDLE_AQCCF);
     }
 
     @Override
@@ -130,8 +141,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             menu.findItem(R.id.filter_quote).setVisible(false);
         }
         MenuItem search = menu.findItem(R.id.search_quote);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(search);
-        search(searchView);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(search);
+        search(mSearchView);
+        //focus the SearchView
+        if (mSearchText != null && !mSearchText.isEmpty()) {
+            search.expandActionView();
+            mSearchView.setQuery(mSearchText, true);
+            mSearchView.clearFocus();
+        }
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -218,6 +235,9 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         outState.putString(QUOTE_TYPE_BUNDLE_AQCCF, mQuoteType);
         outState.putString(QUOTE_CATEGORY_BUNDLE_AQCCF, mCategoryName);
         outState.putString(QUOTE_SORTED_BUNDLE_AQCCF, mSortedBy);
+        mSearchText = mSearchView.getQuery().toString();
+        outState.putString(QUOTE_SEARCH_BUNDLE_AQCCF, mSearchText);
+
     }
 
     @Override
@@ -367,7 +387,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
          * @param listOfQuoteText
          */
         public void changeDate(List<String> listOfQuoteText) {
-            currentCategoryQuoteList = listOfQuoteText;
+            filteredQuoteTextList = listOfQuoteText;
             notifyDataSetChanged();
         }
     }

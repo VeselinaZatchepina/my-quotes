@@ -31,15 +31,14 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     Long mCurrentId;
 
     @Override
-    public Fragment createFragment() {
+    public void otherAction() {
+        super.otherAction();
         // Set AppBarLayout not expandable
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
-        }
+        setAppBarNotExpandable();
+    }
+
+    @Override
+    public Fragment createFragment() {
         mCurrentCategory = getIntent()
                     .getStringExtra(AddQuoteActivity.QUOTE_CATEGORY_INTENT_AQA);
         mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
@@ -114,5 +113,15 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setAppBarNotExpandable() {
+        if (findViewById(R.id.detail_fragment_container) == null) {
+            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+            Configuration configuration = getResources().getConfiguration();
+            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
+        }
     }
 }

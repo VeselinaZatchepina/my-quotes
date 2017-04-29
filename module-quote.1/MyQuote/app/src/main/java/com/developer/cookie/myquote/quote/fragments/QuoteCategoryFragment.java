@@ -165,14 +165,18 @@ public class QuoteCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                startActivity(AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
-                        itemQuoteCategory.getText().toString(), mQuoteType));
+                if (listOfCategory.size() != 0) {
+                    startActivity(AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
+                            itemQuoteCategory.getText().toString(), mQuoteType));
+                }
             }
 
             @Override
             public boolean onLongClick(View view) {
-                mCategoryForDelete = itemQuoteCategory.getText().toString();
-                openDeleteQuoteCategoryDialog();
+                if (listOfCategory.size() != 0) {
+                    mCategoryForDelete = itemQuoteCategory.getText().toString();
+                    openDeleteQuoteCategoryDialog();
+                }
                 return false;
             }
         }
