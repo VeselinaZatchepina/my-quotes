@@ -39,9 +39,6 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
 
     @Override
     public Fragment createFragment() {
-        mCurrentCategory = getIntent()
-                    .getStringExtra(AddQuoteActivity.QUOTE_CATEGORY_INTENT_AQA);
-        mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
         mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuoteType, mCurrentCategory);
         return mCurrentFragment;
     }
@@ -96,8 +93,11 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
             mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
-        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQA) != null) {
+        } else {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
+            mCurrentCategory = getIntent()
+                    .getStringExtra(QUOTE_CATEGORY_INTENT_AQA);
+            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
         }
         //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
@@ -123,5 +123,10 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

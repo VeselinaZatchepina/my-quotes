@@ -125,7 +125,6 @@ public class CurrentQuoteFragment extends Fragment {
             mShareActionProvider.setShareIntent(sharingIntent);
         }
         if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
-            Log.v(LOG_TAG, "DELETE");
             MenuItem itemDeleteQuote = menu.findItem(R.id.delete_quote);
             itemDeleteQuote.setVisible(false);
         }

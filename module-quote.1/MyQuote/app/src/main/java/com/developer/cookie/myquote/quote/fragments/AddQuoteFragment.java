@@ -73,6 +73,8 @@ public class AddQuoteFragment extends Fragment {
     RealmResults<QuoteCategory> mQuoteCategoryList;
     RealmResults<QuoteText> mQuoteTexts;
 
+    public AlertDialog mAlertDialog;
+
     Long mQuoteTextId;
     String mCurrentQuoteTextObjectCategory;
 
@@ -80,7 +82,10 @@ public class AddQuoteFragment extends Fragment {
 
     String mQuoteType;
 
-    public AddQuoteFragment() { }
+    AdapterView.OnItemSelectedListener mSpinnerListener;
+
+    public AddQuoteFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +96,7 @@ public class AddQuoteFragment extends Fragment {
             mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_AQF);
             mCurrentCategory = savedInstanceState.getString(QUOTE_CATEGORY_NEW_INSTANCE_AQF);
             mValueOfCategory = savedInstanceState.getString("cat");
-        } else if (getArguments() != null){
+        } else if (getArguments() != null) {
             // Get quote id for edit
             mQuoteTextId = getArguments().getLong(QUOTE_ID_NEW_INSTANCE_AQF, -1);
             // Get quote type
@@ -141,7 +146,7 @@ public class AddQuoteFragment extends Fragment {
                 if (mValueOfCategory == null) {
                     createSpinnerAdapter();
                     if (mCurrentCategory != null) {
-                        mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory));
+                        mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
                     }
                 } else {
                     if (!mListOfAllCategories.contains(mValueOfCategory)) {
@@ -169,8 +174,10 @@ public class AddQuoteFragment extends Fragment {
                                 mQuoteText, mBookName, mAuthorName, mPageNumber, mPublishName, mYearNumber, mQuoteType);
                         mQuoteTextObject = element.first();
                         mCurrentQuoteTextObjectCategory = mQuoteTextObject.getCategory().getCategory();
+                        createQuoteCategoryListForSpinnerEdit(element);
+                        createSpinnerAdapter();
                         if (mListOfAllCategories != null && !mListOfAllCategories.isEmpty()) {
-                            mSpinner.setSelection(mListOfAllCategories.indexOf(mCurrentQuoteTextObjectCategory));
+                            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentQuoteTextObjectCategory.toUpperCase()));
                         }
                     }
                     if (savedInstanceState != null) {
@@ -180,6 +187,12 @@ public class AddQuoteFragment extends Fragment {
                         mPageNumber.setText(savedInstanceState.getString(QUOTE_PAGE_SAVE_INSTANCE_AQF));
                         mYearNumber.setText(savedInstanceState.getString(QUOTE_YEAR_SAVE_INSTANCE_AQF));
                         mPublishName.setText(savedInstanceState.getString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF));
+                        if (mValueOfCategory != null) {
+                            mSpinner.setSelection(mSpinnerAdapter.getPosition(mValueOfCategory));
+                        }
+                        if (mCurrentCategory != null) {
+                            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
+                        }
                     }
                 }
             });
@@ -230,6 +243,7 @@ public class AddQuoteFragment extends Fragment {
 
             }
         });
+
         return rootView;
     }
 
@@ -278,6 +292,29 @@ public class AddQuoteFragment extends Fragment {
         if (quoteCategoryList != null && !quoteCategoryList.isEmpty()) {
             for (int i = 0; i < quoteCategoryList.size(); i++) {
                 QuoteCategory currentCategory = quoteCategoryList.get(i);
+                if (currentCategory != null) {
+                    String category = currentCategory.getCategory();
+                    mListOfAllCategories.add(category.toUpperCase());
+                }
+            }
+            if (isAdded()) {
+                mListOfAllCategories.add(getString(R.string.spinner_add_category));
+                mListOfAllCategories.add(getString(R.string.spinner_hint));
+            }
+        } else {
+            if (isAdded()) {
+                mListOfAllCategories.add(getString(R.string.spinner_add_category));
+                mListOfAllCategories.add(getString(R.string.spinner_hint));
+            }
+        }
+    }
+
+    private void createQuoteCategoryListForSpinnerEdit(List<QuoteText> quoteTextList) {
+        mListOfAllCategories = new ArrayList<>();
+        // Create list of categories for mSpinnerAdapter
+        if (quoteTextList != null && !quoteTextList.isEmpty()) {
+            for (int i = 0; i < quoteTextList.size(); i++) {
+                QuoteCategory currentCategory = quoteTextList.get(i).getCategory();
                 if (currentCategory != null) {
                     String category = currentCategory.getCategory();
                     mListOfAllCategories.add(category.toUpperCase());
@@ -376,6 +413,15 @@ public class AddQuoteFragment extends Fragment {
         outState.putString(QUOTE_YEAR_SAVE_INSTANCE_AQF, mYearNumber.getText().toString());
         outState.putString(QUOTE_PAGE_SAVE_INSTANCE_AQF, mPageNumber.getText().toString());
         outState.putString("cat", mValueOfCategory);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mAlertDialog != null && mAlertDialog.isShowing()) {
+            mAlertDialog.dismiss();
+            mAlertDialog = null;
+        }
     }
 
     @Override

@@ -9,7 +9,7 @@
     tools:context="com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
+        android:id="@+id/appbar_layout_tablet"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@drawable/toolbar_gradient"
@@ -45,7 +45,7 @@
     <View
         android:id="@+id/divider_dark"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
+        android:layout_height="@dimen/divider_height_tablet"
         android:background="@android:color/black"
         app:layout_anchor="@id/view_for_fab_state"
         app:layout_anchorGravity="bottom" />
@@ -53,9 +53,9 @@
     <View
         android:id="@+id/divider_light"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/divider_height"
+        android:layout_height="@dimen/divider_height_tablet"
         android:background="@color/fab_divider"
-        app:layout_anchor="@id/appbar_layout"
+        app:layout_anchor="@id/appbar_layout_tablet"
         app:layout_anchorGravity="bottom" />
 
 
