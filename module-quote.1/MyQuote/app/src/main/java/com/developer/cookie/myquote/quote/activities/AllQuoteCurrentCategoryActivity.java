@@ -122,11 +122,14 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             };
             setFabBackgroundImage(fab, R.drawable.ic_create_white_24dp);
             fab.setOnClickListener(editFabListener);
-            mDetailFragment = CurrentQuoteFragment.newInstance(currentId, mQuoteTypeAllQuotesCategory);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.detail_fragment_container, mDetailFragment)
-                    .commit();
+
+            if (!isFinishing()) {
+                mDetailFragment = CurrentQuoteFragment.newInstance(currentId, mQuoteTypeAllQuotesCategory);
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.detail_fragment_container, mDetailFragment)
+                        .commitAllowingStateLoss();
+            }
         }
     }
 

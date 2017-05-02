@@ -82,8 +82,6 @@ public class AddQuoteFragment extends Fragment {
 
     String mQuoteType;
 
-    AdapterView.OnItemSelectedListener mSpinnerListener;
-
     public AddQuoteFragment() {
     }
 
@@ -174,8 +172,6 @@ public class AddQuoteFragment extends Fragment {
                                 mQuoteText, mBookName, mAuthorName, mPageNumber, mPublishName, mYearNumber, mQuoteType);
                         mQuoteTextObject = element.first();
                         mCurrentQuoteTextObjectCategory = mQuoteTextObject.getCategory().getCategory();
-                        createQuoteCategoryListForSpinnerEdit(element);
-                        createSpinnerAdapter();
                         if (mListOfAllCategories != null && !mListOfAllCategories.isEmpty()) {
                             mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentQuoteTextObjectCategory.toUpperCase()));
                         }
@@ -188,7 +184,13 @@ public class AddQuoteFragment extends Fragment {
                         mYearNumber.setText(savedInstanceState.getString(QUOTE_YEAR_SAVE_INSTANCE_AQF));
                         mPublishName.setText(savedInstanceState.getString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF));
                         if (mValueOfCategory != null) {
-                            mSpinner.setSelection(mSpinnerAdapter.getPosition(mValueOfCategory));
+                            if (!mListOfAllCategories.contains(mValueOfCategory)) {
+                                mListOfAllCategories.add(0, mValueOfCategory);
+                            }
+                            createSpinnerAdapter();
+                            if (!mValueOfCategory.equals(getString(R.string.spinner_hint))) {
+                                mSpinner.setSelection(mSpinnerAdapter.getPosition(mValueOfCategory));
+                            }
                         }
                         if (mCurrentCategory != null) {
                             mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentCategory.toUpperCase()));
@@ -292,29 +294,6 @@ public class AddQuoteFragment extends Fragment {
         if (quoteCategoryList != null && !quoteCategoryList.isEmpty()) {
             for (int i = 0; i < quoteCategoryList.size(); i++) {
                 QuoteCategory currentCategory = quoteCategoryList.get(i);
-                if (currentCategory != null) {
-                    String category = currentCategory.getCategory();
-                    mListOfAllCategories.add(category.toUpperCase());
-                }
-            }
-            if (isAdded()) {
-                mListOfAllCategories.add(getString(R.string.spinner_add_category));
-                mListOfAllCategories.add(getString(R.string.spinner_hint));
-            }
-        } else {
-            if (isAdded()) {
-                mListOfAllCategories.add(getString(R.string.spinner_add_category));
-                mListOfAllCategories.add(getString(R.string.spinner_hint));
-            }
-        }
-    }
-
-    private void createQuoteCategoryListForSpinnerEdit(List<QuoteText> quoteTextList) {
-        mListOfAllCategories = new ArrayList<>();
-        // Create list of categories for mSpinnerAdapter
-        if (quoteTextList != null && !quoteTextList.isEmpty()) {
-            for (int i = 0; i < quoteTextList.size(); i++) {
-                QuoteCategory currentCategory = quoteTextList.get(i).getCategory();
                 if (currentCategory != null) {
                     String category = currentCategory.getCategory();
                     mListOfAllCategories.add(category.toUpperCase());

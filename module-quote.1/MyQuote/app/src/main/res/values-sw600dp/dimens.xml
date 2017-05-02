@@ -21,4 +21,8 @@
 
     <!-- CardView dimensions -->
     <dimen name="cardview_margin_top">50dp</dimen>
+    <dimen name="cardview_margin_bottom">8dp</dimen>
+    <dimen name="cardview_margin_start">8dp</dimen>
+    <dimen name="cardview_margin_end">8dp</dimen>
+
 </resources>

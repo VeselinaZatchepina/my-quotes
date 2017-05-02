@@ -16,6 +16,9 @@
     <dimen name="card_view_horizontal_margin">16dp</dimen>
     <dimen name="image_view_horizontal_margin">32dp</dimen>
 
+    <!-- All quote recycler view item -->
+    <dimen name="quote_text_margin">16dp</dimen>
+
     <!-- Toolbar size -->
     <dimen name="toolbar_height">223dp</dimen>
     <dimen name="toolbar_height_normal_portrait">80dp</dimen>
