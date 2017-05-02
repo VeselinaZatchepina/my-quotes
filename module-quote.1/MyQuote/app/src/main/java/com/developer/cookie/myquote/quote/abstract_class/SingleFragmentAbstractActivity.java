@@ -32,6 +32,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAndSetDataFromSaveInstanceState(savedInstanceState);
+        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
         setContentView(getLayoutResId());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,5 +79,11 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
 
     public void otherAction() {
 
+    }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(R.anim.hold, R.anim.push_out_to_bottom);
+        super.onPause();
     }
 }

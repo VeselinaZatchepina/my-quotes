@@ -29,6 +29,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAndSetDataFromSaveInstanceState(savedInstanceState);
+        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
         setContentView(getLayoutResId());
         // Work with Navigation Drawer
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -102,5 +103,11 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(R.anim.hold, R.anim.push_out_to_bottom);
+        super.onPause();
     }
 }

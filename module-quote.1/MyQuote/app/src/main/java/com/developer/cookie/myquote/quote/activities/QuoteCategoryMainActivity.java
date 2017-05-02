@@ -134,4 +134,9 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
         outState.putLong(CURRENT_ID_BUNDLE_QCMA, mCurrentId);
         super.onSaveInstanceState(outState);
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 }
