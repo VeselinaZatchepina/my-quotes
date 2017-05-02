@@ -98,8 +98,14 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
                 case EMPTY_LIST:
-                    View itemViewEmpty = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.fragment_empty_recycler_view, parent, false);
+                    View itemViewEmpty;
+                    if (getActivity().findViewById(R.id.detail_fragment_container) == null) {
+                        itemViewEmpty = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.fragment_empty_recycler_view, parent, false);
+                    } else {
+                        itemViewEmpty = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.fragment_empty_recycler_view_get_idea_tablet, parent, false);
+                    }
                     return new MyViewHolder(itemViewEmpty);
                 case NOT_EMPTY_LIST:
                     View itemView = LayoutInflater.from(parent.getContext())

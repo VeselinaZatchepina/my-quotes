@@ -114,7 +114,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                     mListOfQuotesId.add(element.get(i).getId());
                 }
                 if (isAdded()) {
-                    if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
+                    if (getActivity().findViewById(R.id.detail_fragment_container) != null && !element.isEmpty()) {
                         mCallbacks.onQuoteSelected(mListOfQuotesId, element.first().getId());
                     }
                 }
