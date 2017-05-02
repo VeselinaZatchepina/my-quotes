@@ -228,7 +228,7 @@ public class AddQuoteFragment extends Fragment {
                                             mValueOfCategory = currentUserInput;
                                         }
                                     })
-                            .setNegativeButton("Отмена",
+                            .setNegativeButton("CANCEL",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int id) {
                                             dialog.cancel();

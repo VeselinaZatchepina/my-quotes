@@ -75,4 +75,7 @@
     <!-- Delete current category dialog -->
     <dimen name="delete_category_dialog_title_margin">24dp</dimen>
 
+    <!-- Add category dialog -->
+    <dimen name="add_category_dialog_title_margin">24dp</dimen>
+
 </resources>

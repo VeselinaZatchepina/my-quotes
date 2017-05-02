@@ -3,6 +3,7 @@
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/add_category_dialog_title_margin"
     android:orientation="vertical">
 
     <TextView
@@ -15,7 +16,9 @@
     <EditText
         android:id="@+id/input_text"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:maxLength="20">
 
         <requestFocus />
 
