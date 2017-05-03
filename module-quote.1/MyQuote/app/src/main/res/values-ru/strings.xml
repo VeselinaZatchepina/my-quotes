@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">Мои цитаты</string>
+
+    <!-- Quote category recycler view item -->
+    <string name="image_content_description">Изображение для текущей категории</string>
+
+    <!-- QuoteCategory recyclerView empty view -->
+    <string name="title_empty_view">У Вас нет цитат</string>
+    <string name="title_empty_view_push">Нажмите</string>
+    <string name="title_empty_view_button">кнопку</string>
+
+    <!-- AddQuoteFragment-->
+    <string name="hint_quote_text">Текст цитаты</string>
+    <string name="hint_book_name">Название книги</string>
+    <string name="hint_author_name">Автор книги</string>
+    <string name="hint_page_number">Номер страницы</string>
+    <string name="hint_year_number">Год издания</string>
+    <string name="hint_publish_name">Издательство</string>
+    <string name="spinner_add_category">+ добавить категорию</string>
+    <string name="spinner_hint">Выберите категорию</string>
+    <string name="spinner_label">Категория</string>
+
+    <!-- Add category dialog -->
+    <string name="dialog_add_category_title">Введите название категории</string>
+
+    <!-- Delete quote category dialog -->
+    <string name="dialog_delete_category_title">Удалить выбранную категорию?</string>
+    <string name="dialog_delete_current_quote_title">Удалить выбранную цитату?</string>
+    <string name="dialog_ok_button">DELETE</string>
+    <string name="dialog_cancel_button">CANCEL</string>
+
+    <!-- Menu -->
+    <string name="delete_title">Delete quote</string>
+    <string name="action_settings">Settings</string>
+    <string name="delete_quote_category">Delete quote category</string>
+    <string name="delete_current_quote">Delete quote</string>
+    <string name="filter_quote">Filter quote</string>
+    <string name="share">Share</string>
+    <string name="search">Search quote</string>
+    <string name="settings">Settings</string>
+
+    <!-- Popup menu -->
+    <string name="sort_by_book_name">Название книги</string>
+    <string name="sort_by_year">Год</string>
+    <string name="sort_by_publisher">Издательство</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="book_quote_type">Book quote</string>
+    <string name="my_quote_type">My quote</string>
+    <string name="get_idea">Get idea</string>
+
+    <!-- CurrentQuotePagerActivity -->
+    <string name="quote_author_title">Автор цитаты:</string>
+    <string name="book_name_title">Название книги:</string>
+    <string name="publisher_name_title">Издательство:</string>
+    <string name="year_number_title">Год:</string>
+    <string name="page_number_title">Страница:</string>
+    <string name="current_category_title">Категория:</string>
+    <string name="quote_creation_date_title">Дата создания цитаты:</string>
+    <string name="default_value"> - </string>
+
+    <!-- GetIdeaActivity -->
+    <string name="type_word">Введите тему идеи</string>
+    <string name="enter_text">Введите текст тут</string>
+    <string name="other_action">или просто нажмите кнопку</string>
+    <string name="idea_button_text">Получить идею!</string>
+    <string name="idea_title">Get idea</string>
+
+</resources>
