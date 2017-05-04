@@ -14,15 +14,32 @@
     <dimen name="linear_layout_current_quote_margin_start">152dp</dimen>
     <dimen name="linear_layout_current_quote_margin_end">152dp</dimen>
 
+    <!-- AddQuoteFragment -->
+    <dimen name="linear_layout_margin_start_add_quote">152dp</dimen>
+    <dimen name="linear_layout_margin_end_add_quote">152dp</dimen>
+
     <!-- Toolbar size -->
     <dimen name="toolbar_height">208dp</dimen>
     <dimen name="fragment_marginTop_tablet">72dp</dimen>
     <dimen name="fragment_width_tablet">656dp</dimen>
 
     <!-- CardView dimensions -->
-    <dimen name="cardview_margin_top">50dp</dimen>
-    <dimen name="cardview_margin_bottom">8dp</dimen>
-    <dimen name="cardview_margin_start">8dp</dimen>
-    <dimen name="cardview_margin_end">8dp</dimen>
+    <dimen name="cardview_margin_top_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_add_quote">100dp</dimen>
+    <dimen name="cardview_margin_end_add_quote">100dp</dimen>
+
+    <dimen name="cardview_margin_top_current_quote">50dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_current_quote">20dp</dimen>
+    <dimen name="cardview_margin_end_current_quote">20dp</dimen>
+
+    <dimen name="cardview_margin_top_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_bottom_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_start_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_end_get_idea">8dp</dimen>
+
+    <!-- Recycler view -->
+    <dimen name="recycler_view_horizontal_margin">8dp</dimen>
 
 </resources>

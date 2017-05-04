@@ -40,6 +40,8 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        TextView currentCategoryTextView = (TextView) rootView.findViewById(R.id.current_category);
+        currentCategoryTextView.setVisibility(View.GONE);
         mRecyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mListOfCoicideQuoteText);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
