@@ -1,6 +1,6 @@
 <h1>MyQuote</h1>
 
-<p> Приложение позволяет хранить цитаты, как выписанные из книг, так и собственные мысли пользователя. Все цитаты делятся по категорям. Название категории вводится в соответствующем поле экрана "добавить цитату". </p>
+<p> Приложение предназначено для людей, которые много читают и часто выписывают нужную информацию (личный цитатник). Функциональность позволяет хранить цитаты, как выписанные из книг, так и собственные мысли пользователя. Все цитаты делятся по категорям. Название категории вводится в соответствующем поле экрана "добавить цитату". </p>
 
 <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/main.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/all_quotes.png" width="250px" hspace="15"/> <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/current_quote.png" width="250px" hspace="15"/> 
 
