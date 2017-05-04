@@ -1,4 +1,4 @@
-# MyQuote
+<img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/icon.png" width="100px" hspace="15"/><h1>MyQuote</h1>
 
 <p> Приложение позволяет хранить цитаты, как выписанные из книг, так и собственные мысли пользователя. Все цитаты делятся по категорям. Название категории вводится в соответствующем поле экрана "добавить цитату". </p>
 
