@@ -77,13 +77,13 @@ public class QuoteCategoryFragment extends Fragment {
         mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
             public void onChange(RealmResults<QuoteCategory> element) {
-                    createPairObject(element);
-                    mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(mPair);
-                    // Create and set custom adapter for recyclerview
-                    RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-                    registerForContextMenu(recyclerView);
-                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                    recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
+                createPairObject(element);
+                mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(mPair);
+                // Create and set custom adapter for recyclerview
+                RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
+                registerForContextMenu(recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+                recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
             }
         });
         return mRootView;
@@ -206,7 +206,7 @@ public class QuoteCategoryFragment extends Fragment {
                             });
             AlertDialog alertDialog = mDialogBuilder.create();
             alertDialog.show();
-}
+        }
 
         /**
          * Method create custom adapter.

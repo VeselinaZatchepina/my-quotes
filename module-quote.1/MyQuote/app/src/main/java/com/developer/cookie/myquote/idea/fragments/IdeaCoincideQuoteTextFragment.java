@@ -25,7 +25,8 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     RecyclerView mRecyclerView;
     IdeaCoincideRecyclerViewAdapter mRecyclerViewAdapter;
 
-    public IdeaCoincideQuoteTextFragment() { }
+    public IdeaCoincideQuoteTextFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

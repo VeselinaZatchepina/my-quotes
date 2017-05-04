@@ -20,7 +20,7 @@ import io.realm.RealmObject;
 import io.realm.RealmResults;
 
 /**
- * QuoteDataRepository helps to abstract mRealm layer.
+ * QuoteDataRepository helps to group methods to Realm.
  */
 public class QuoteDataRepository implements QuoteRepository {
 

@@ -51,7 +51,7 @@ public class CurrentQuoteFragment extends Fragment {
         if (savedInstanceState != null) {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_CQF);
             mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_CQF);
-        } else if (getArguments() != null){
+        } else if (getArguments() != null) {
             mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF);
             mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF);
         }

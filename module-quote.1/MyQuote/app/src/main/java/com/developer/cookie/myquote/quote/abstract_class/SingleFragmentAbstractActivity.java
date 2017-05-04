@@ -39,6 +39,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        //Method for style action (change text color and etc.)
         otherAction();
         FragmentManager fragmentManager = getSupportFragmentManager();
         currentFragment = fragmentManager.findFragmentById(R.id.container);

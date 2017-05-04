@@ -32,7 +32,7 @@ public class ColorationTextChar {
     /**
      * Method returns index of first vowel in title (for english and russian languages)
      *
-     * @param text current text
+     * @param text     current text
      * @param language current language
      * @return index of first vowel
      */
@@ -44,7 +44,8 @@ public class ColorationTextChar {
             patternString = "(?i:[aeiouy]).*";
             return getIndex(patternString, text);
 
-        } if (language.equals("ru")) {
+        }
+        if (language.equals("ru")) {
             patternString = "(?ui:[аеёиоуыэюя]).*";
             return getIndex(patternString, text);
         }

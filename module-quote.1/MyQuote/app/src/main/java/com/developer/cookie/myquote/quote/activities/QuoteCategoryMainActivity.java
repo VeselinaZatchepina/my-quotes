@@ -78,7 +78,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
      * @param context
      * @return screen orientation as string
      */
-    public String getScreenOrientation(Context context){
+    public String getScreenOrientation(Context context) {
         final int screenOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
         switch (screenOrientation) {
             case Surface.ROTATION_0:
@@ -95,7 +95,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
     }
 
     private void setAppBarNotExpandable() {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
+        AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
         if (appBarLayout != null) {
             CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);

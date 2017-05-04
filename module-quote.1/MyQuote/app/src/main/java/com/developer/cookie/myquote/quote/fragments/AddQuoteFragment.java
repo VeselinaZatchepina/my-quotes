@@ -50,6 +50,7 @@ public class AddQuoteFragment extends Fragment {
     public static final String QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF = "quote_publisher_name_save_instance_aqf";
     public static final String QUOTE_YEAR_SAVE_INSTANCE_AQF = "quote_year_save_instance_aqf";
     public static final String QUOTE_PAGE_SAVE_INSTANCE_AQF = "quote_page_save_instance_aqf";
+    public static final String QUOTE_CATEGORY_VALUE_SAVE_INSTANCE_AQF = "quote_category_value_save_instance_aqf";
 
 
     QuoteDataRepository mQuoteDataRepository;
@@ -93,7 +94,7 @@ public class AddQuoteFragment extends Fragment {
             mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_AQF);
             mQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_AQF);
             mCurrentCategory = savedInstanceState.getString(QUOTE_CATEGORY_NEW_INSTANCE_AQF);
-            mValueOfCategory = savedInstanceState.getString("cat");
+            mValueOfCategory = savedInstanceState.getString(QUOTE_CATEGORY_VALUE_SAVE_INSTANCE_AQF);
         } else if (getArguments() != null) {
             // Get quote id for edit
             mQuoteTextId = getArguments().getLong(QUOTE_ID_NEW_INSTANCE_AQF, -1);
@@ -391,7 +392,7 @@ public class AddQuoteFragment extends Fragment {
         outState.putString(QUOTE_PUBLISHER_NAME_SAVE_INSTANCE_AQF, mPublishName.getText().toString());
         outState.putString(QUOTE_YEAR_SAVE_INSTANCE_AQF, mYearNumber.getText().toString());
         outState.putString(QUOTE_PAGE_SAVE_INSTANCE_AQF, mPageNumber.getText().toString());
-        outState.putString("cat", mValueOfCategory);
+        outState.putString(QUOTE_CATEGORY_VALUE_SAVE_INSTANCE_AQF, mValueOfCategory);
     }
 
     @Override

@@ -85,7 +85,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
     private void setAppBarNotExpandable() {
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);

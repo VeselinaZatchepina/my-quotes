@@ -32,7 +32,8 @@ public class GetIdeaFragment extends Fragment {
     List<Integer> mRandomList;
     GetIdeaCallbacks mCallbacks;
 
-    public GetIdeaFragment() { }
+    public GetIdeaFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +87,7 @@ public class GetIdeaFragment extends Fragment {
                     }
                 }
             }
-                mCallbacks.generateIdea(mListOfCoincideQuoteText);
+            mCallbacks.generateIdea(mListOfCoincideQuoteText);
         }
     }
 

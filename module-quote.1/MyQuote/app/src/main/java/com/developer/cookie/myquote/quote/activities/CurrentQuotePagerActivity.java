@@ -46,6 +46,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
         setContentView(R.layout.activity_quote_pager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -55,7 +56,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         // Set AppBarLayout not expandable
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
@@ -134,5 +135,11 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA, mQuoteType);
         outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA, mQuoteIdList);
         outState.putLong(QUOTE_ID_FOR_SAVE_CQPA, mCurrentQuoteTextId);
+    }
+
+    @Override
+    protected void onPause() {
+        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
+        super.onPause();
     }
 }

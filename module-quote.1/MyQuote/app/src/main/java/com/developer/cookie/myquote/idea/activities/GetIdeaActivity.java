@@ -34,17 +34,12 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     Fragment mDetailFragment;
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) { }
+    public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) {
+    }
 
     @Override
     public int getLayoutResId() {
         return R.layout.activity_masterdetail_get_idea;
-    }
-
-    @Override
-    public void workWithFab() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
     }
 
     @Override
@@ -67,6 +62,12 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
         }
     }
 
+    @Override
+    public void workWithFab() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
+    }
+
     /**
      * Method checks screen orientation. And if it on landscape or reverse landscape we set
      * AppBarLayout not expandable
@@ -74,7 +75,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
      * @param context
      * @return screen orientation as string
      */
-    public String getScreenOrientation(Context context){
+    public String getScreenOrientation(Context context) {
         final int screenOrientation = ((WindowManager) context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
         switch (screenOrientation) {
             case Surface.ROTATION_0:
@@ -114,7 +115,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     private void setAppBarNotExpandable() {
         if (findViewById(R.id.detail_fragment_container) == null) {
             AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams)appBarLayout.getLayoutParams();
+            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
             CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
             Configuration configuration = getResources().getConfiguration();
             AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
