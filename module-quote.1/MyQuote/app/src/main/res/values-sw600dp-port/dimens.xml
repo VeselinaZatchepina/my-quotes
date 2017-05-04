@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Toolbar size -->
+    <dimen name="fragment_marginTop_tablet">72dp</dimen>
+    <dimen name="fragment_width_tablet">400dp</dimen>
+</resources>

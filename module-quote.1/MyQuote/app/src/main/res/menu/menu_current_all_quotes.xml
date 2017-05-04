@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/search_quote"
+        android:icon="@drawable/ic_search_white_24dp"
+        android:title="@string/search"
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <item
+        android:id="@+id/filter_quote"
+        android:actionViewClass="android.widget.ImageButton"
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:title="@string/filter_quote"
+        app:showAsAction="always" />
+
+</menu>

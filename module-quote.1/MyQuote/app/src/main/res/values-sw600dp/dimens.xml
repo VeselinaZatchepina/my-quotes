@@ -1,0 +1,28 @@
+<resources>
+    <!-- Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively). -->
+    <dimen name="fab_horizontal_margin">24dp</dimen>
+    <dimen name="divider_height_tablet">1dp</dimen>
+
+    <!-- Empty category view -->
+    <dimen name="root_view_padding_top">142dp</dimen>
+
+    <!-- CurrentQuotePagerActivity -->
+    <dimen name="linear_layout_current_quote_margin_top">60dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_bottom">152dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_start">152dp</dimen>
+    <dimen name="linear_layout_current_quote_margin_end">152dp</dimen>
+
+    <!-- Toolbar size -->
+    <dimen name="toolbar_height">208dp</dimen>
+    <dimen name="fragment_marginTop_tablet">72dp</dimen>
+    <dimen name="fragment_width_tablet">656dp</dimen>
+
+    <!-- CardView dimensions -->
+    <dimen name="cardview_margin_top">50dp</dimen>
+    <dimen name="cardview_margin_bottom">8dp</dimen>
+    <dimen name="cardview_margin_start">8dp</dimen>
+    <dimen name="cardview_margin_end">8dp</dimen>
+
+</resources>
