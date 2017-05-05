@@ -46,7 +46,6 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
         setContentView(R.layout.activity_quote_pager);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -135,11 +134,5 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE_CQPA, mQuoteType);
         outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE_CQPA, mQuoteIdList);
         outState.putLong(QUOTE_ID_FOR_SAVE_CQPA, mCurrentQuoteTextId);
-    }
-
-    @Override
-    protected void onPause() {
-        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
-        super.onPause();
     }
 }

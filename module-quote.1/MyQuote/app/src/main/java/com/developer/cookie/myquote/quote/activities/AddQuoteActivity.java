@@ -31,8 +31,8 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     Long mCurrentId;
 
     @Override
-    public void otherAction() {
-        super.otherAction();
+    public void otherStyleAction() {
+        super.otherStyleAction();
         // Set AppBarLayout not expandable
         setAppBarNotExpandable();
     }

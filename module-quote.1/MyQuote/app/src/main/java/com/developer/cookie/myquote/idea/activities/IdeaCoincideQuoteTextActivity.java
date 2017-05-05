@@ -47,8 +47,8 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
     }
 
     @Override
-    public void otherAction() {
-        super.otherAction();
+    public void otherStyleAction() {
+        super.otherStyleAction();
         setAppBarNotExpandable();
         //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Recycler view -->
+    <dimen name="recycler_view_horizontal_margin">80dp</dimen>
+
+    <!-- CardView dimensions -->
+    <dimen name="cardview_margin_top_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_add_quote">80dp</dimen>
+    <dimen name="cardview_margin_end_add_quote">80dp</dimen>
+
+    <dimen name="cardview_margin_top_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_current_quote">80dp</dimen>
+    <dimen name="cardview_margin_end_current_quote">80dp</dimen>
+
+    <dimen name="cardview_margin_top_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_bottom_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_start_get_idea">80dp</dimen>
+    <dimen name="cardview_margin_end_get_idea">80dp</dimen>
+
+</resources>

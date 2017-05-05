@@ -33,18 +33,26 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- CardView dimensions -->
-    <dimen name="cardview_height">50dp</dimen>
-    <dimen name="cardview_margin_bottom">8dp</dimen>
-    <dimen name="cardview_margin_top">8dp</dimen>
-    <dimen name="cardview_margin_start">8dp</dimen>
-    <dimen name="cardview_margin_end">8dp</dimen>
-    <dimen name="cardview_corner_radius">2dp</dimen>
-    <dimen name="cardview_margin_all">2dp</dimen>
+    <dimen name="cardview_margin_top_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_end_add_quote">8dp</dimen>
 
+    <dimen name="cardview_margin_top_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_end_current_quote">8dp</dimen>
+
+    <dimen name="cardview_margin_top_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_bottom_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_start_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_end_get_idea">8dp</dimen>
+
+    <dimen name="cardview_corner_radius">2dp</dimen>
 
     <!-- AddQuoteFragment -->
-    <dimen name="linearlayout_marginstart">32dp</dimen>
-    <dimen name="linearlayout_marginend">32dp</dimen>
+    <dimen name="linear_layout_margin_start_add_quote">16dp</dimen>
+    <dimen name="linear_layout_margin_end_add_quote">16dp</dimen>
     <dimen name="edit_text_marginTop">16dp</dimen>
     <dimen name="divider_add_quote">1dp</dimen>
     <dimen name="divider_add_quote_margin_Top">8dp</dimen>

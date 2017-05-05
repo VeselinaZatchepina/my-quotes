@@ -3,4 +3,12 @@
     <!-- Toolbar size -->
     <dimen name="fragment_marginTop_tablet">72dp</dimen>
     <dimen name="fragment_width_tablet">400dp</dimen>
+
+    <!-- CardView dimensions -->
+    <dimen name="cardview_margin_start_add_quote">8dp</dimen>
+    <dimen name="cardview_margin_end_add_quote">8dp</dimen>
+
+    <!-- AddQuoteFragment -->
+    <dimen name="linear_layout_margin_start_add_quote">40dp</dimen>
+    <dimen name="linear_layout_margin_end_add_quote">40dp</dimen>
 </resources>

@@ -43,8 +43,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     }
 
     @Override
-    public void otherAction() {
-        super.otherAction();
+    public void otherStyleAction() {
+        super.otherStyleAction();
         // Set AppBarLayout not expandable
         setAppBarNotExpandable();
     }
