@@ -11,7 +11,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
@@ -48,8 +47,8 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
     }
 
     @Override
-    public void otherAction() {
-        super.otherAction();
+    public void otherStyleAction() {
+        super.otherStyleAction();
         setAppBarNotExpandable();
         //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();

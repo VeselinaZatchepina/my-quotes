@@ -32,7 +32,6 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAndSetDataFromSaveInstanceState(savedInstanceState);
-        overridePendingTransition(R.anim.pull_in_from_bottom, R.anim.hold);
         setContentView(getLayoutResId());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -40,7 +39,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         //Method for style action (change text color and etc.)
-        otherAction();
+        otherStyleAction();
         FragmentManager fragmentManager = getSupportFragmentManager();
         currentFragment = fragmentManager.findFragmentById(R.id.container);
         if (currentFragment == null) {
@@ -78,13 +77,5 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void otherAction() {
-
-    }
-
-    @Override
-    protected void onPause() {
-        overridePendingTransition(R.anim.hold, R.anim.push_out_to_bottom);
-        super.onPause();
-    }
+    public void otherStyleAction() { }
 }
