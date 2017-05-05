@@ -172,7 +172,7 @@ public class AddQuoteFragment extends Fragment {
                         FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element,
                                 mQuoteText, mBookName, mAuthorName, mPageNumber, mPublishName, mYearNumber, mQuoteType);
                         mQuoteTextObject = element.first();
-                        mCurrentQuoteTextObjectCategory = mQuoteTextObject.getCategory().getCategory();
+                        mCurrentQuoteTextObjectCategory = mQuoteTextObject.getCategory().getCategoryName();
                         if (mListOfAllCategories != null && !mListOfAllCategories.isEmpty()) {
                             mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentQuoteTextObjectCategory.toUpperCase()));
                         }
@@ -296,7 +296,7 @@ public class AddQuoteFragment extends Fragment {
             for (int i = 0; i < quoteCategoryList.size(); i++) {
                 QuoteCategory currentCategory = quoteCategoryList.get(i);
                 if (currentCategory != null) {
-                    String category = currentCategory.getCategory();
+                    String category = currentCategory.getCategoryName();
                     mListOfAllCategories.add(category.toUpperCase());
                 }
             }

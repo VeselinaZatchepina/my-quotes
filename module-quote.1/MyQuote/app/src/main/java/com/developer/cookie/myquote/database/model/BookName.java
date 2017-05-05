@@ -27,11 +27,11 @@ public class BookName extends RealmObject {
         this.id = id;
     }
 
-    public String getBookName() {
+    public String getBookNameValue() {
         return bookName;
     }
 
-    public void setBookName(String bookName) {
+    public void setBookNameValue(String bookName) {
         this.bookName = bookName;
     }
 

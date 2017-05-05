@@ -76,12 +76,12 @@ public class CurrentQuoteFragment extends Fragment {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
                 if (element.size() > 0) {
-                    mCurrentCategory = element.first().getCategory().getCategory();
+                    mCurrentCategory = element.first().getCategory().getCategoryName();
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
-                    currentCategory.setText(element.first().getCategory().getCategory());
+                    currentCategory.setText(element.first().getCategory().getCategoryName());
                     currentCategory.setAllCaps(true);
-                    quoteCreationDate.setText(element.first().getDate().getQuoteDate());
+                    quoteCreationDate.setText(element.first().getDate().getQuoteDateValue());
                     if (mQuoteType.equals("My quote")) {
                         LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);
                         LinearLayout bookNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_book_name_title);

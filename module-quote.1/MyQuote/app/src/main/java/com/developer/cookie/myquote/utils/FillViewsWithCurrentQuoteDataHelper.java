@@ -27,14 +27,14 @@ public class FillViewsWithCurrentQuoteDataHelper {
         quoteTextView.setText(quoteTextObject.getQuoteText());
         if (quoteType.equals("Book quote")) {
             BookName bookName = quoteTextObject.getBookName();
-            bookNameView.setText(bookName.getBookName());
+            bookNameView.setText(bookName.getBookNameValue());
             RealmList<BookAuthor> bookAuthors = bookName.getBookAuthors();
             StringBuilder builder = new StringBuilder();
             for (int i = 0; i < bookAuthors.size(); i++) {
                 if (i != bookAuthors.size() - 1) {
-                    builder.append(bookAuthors.get(i).getBookAuthor()).append(", ");
+                    builder.append(bookAuthors.get(i).getBookAuthorName()).append(", ");
                 } else {
-                    builder.append(bookAuthors.get(i).getBookAuthor());
+                    builder.append(bookAuthors.get(i).getBookAuthorName());
                 }
             }
             String authorName = builder.toString();

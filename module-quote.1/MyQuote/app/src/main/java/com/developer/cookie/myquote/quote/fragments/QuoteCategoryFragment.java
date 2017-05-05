@@ -103,7 +103,7 @@ public class QuoteCategoryFragment extends Fragment {
         }
         mListOfCategories = new ArrayList<>();
         for (int i = 0; i < element.size(); i++) {
-            String currentCategory = element.get(i).getCategory();
+            String currentCategory = element.get(i).getCategoryName();
             mListOfCategories.add(currentCategory);
         }
         mPair = new Pair<>(mListOfCategories, mQuoteCountListOfEveryCategory);

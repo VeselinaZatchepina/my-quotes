@@ -51,7 +51,7 @@ public class QuoteDataRepository implements QuoteRepository {
                 // Create quote creation date
                 QuoteCreationDate quoteDate = realm.createObject(QuoteCreationDate.class);
                 quoteDate.setId(getNextKey(quoteDate, realm));
-                quoteDate.setQuoteDate(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
+                quoteDate.setQuoteDateValue(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
                 // Create quote text
                 QuoteText quoteTextRealmObject = realm.createObject(QuoteText.class);
                 quoteTextRealmObject.setId(getNextKey(quoteTextRealmObject, realm));
@@ -71,11 +71,11 @@ public class QuoteDataRepository implements QuoteRepository {
                     // Create book authors
                     BookAuthor bookAuthorRealmObject = realm.createObject(BookAuthor.class);
                     bookAuthorRealmObject.setId(getNextKey(bookAuthorRealmObject, realm));
-                    bookAuthorRealmObject.setBookAuthor(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_AUTHOR));
+                    bookAuthorRealmObject.setBookAuthorName(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_AUTHOR));
                     // Create book name
                     BookName bookNameRealmObject = realm.createObject(BookName.class);
                     bookNameRealmObject.setId(getNextKey(bookNameRealmObject, realm));
-                    bookNameRealmObject.setBookName(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_NAME));
+                    bookNameRealmObject.setBookNameValue(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_NAME));
                     bookNameRealmObject.setPublisher(publisherRealmObject);
                     bookNameRealmObject.setYear(yearRealmObject);
                     bookNameRealmObject.getBookAuthors().add(bookAuthorRealmObject);
@@ -141,7 +141,7 @@ public class QuoteDataRepository implements QuoteRepository {
                 if (quoteType.equals("Book quote")) {
                     // Set book name
                     BookName bookName = quoteTextObject.getBookName();
-                    bookName.setBookName(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_NAME));
+                    bookName.setBookNameValue(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_NAME));
                     // Set book publisher
                     BookPublisher bookPublisher = bookName.getPublisher();
                     bookPublisher.setPublisherName(mapOfQuoteProperties.get(QuotePropertiesEnum.PUBLISHER_NAME));
@@ -151,7 +151,7 @@ public class QuoteDataRepository implements QuoteRepository {
                     // Set book authors
                     BookAuthor bookAuthorRealmObject = realm.createObject(BookAuthor.class);
                     bookAuthorRealmObject.setId(getNextKey(bookAuthorRealmObject, realm));
-                    bookAuthorRealmObject.setBookAuthor(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_AUTHOR));
+                    bookAuthorRealmObject.setBookAuthorName(mapOfQuoteProperties.get(QuotePropertiesEnum.BOOK_AUTHOR));
                     RealmList<BookAuthor> bookAuthorRealmList = bookName.getBookAuthors();
                     bookAuthorRealmList.deleteAllFromRealm();
                     bookAuthorRealmList.add(bookAuthorRealmObject);
@@ -162,7 +162,7 @@ public class QuoteDataRepository implements QuoteRepository {
                 // Set category
                 String valueOfCategory = mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CATEGORY);
                 int flag;
-                if (valueOfCategory.equals(quoteTextObject.getCategory().getCategory())) {
+                if (valueOfCategory.equals(quoteTextObject.getCategory().getCategoryName())) {
                     flag = 0;
                 } else {
                     flag = 1;
@@ -178,7 +178,7 @@ public class QuoteDataRepository implements QuoteRepository {
                 quoteTextObject.setCategory(categoryRealmObject);
                 // Set date
                 QuoteCreationDate date = quoteTextObject.getDate();
-                date.setQuoteDate(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
+                date.setQuoteDateValue(mapOfQuoteProperties.get(QuotePropertiesEnum.QUOTE_CREATE_DATE));
                 quoteTextObject.setDate(date);
             }
         });
@@ -237,7 +237,7 @@ public class QuoteDataRepository implements QuoteRepository {
         if (results == null || results.isEmpty()) {
             categoryRealmObject = realm.createObject(QuoteCategory.class);
             categoryRealmObject.setId(getNextKey(categoryRealmObject, realm));
-            categoryRealmObject.setCategory(valueOfCategory);
+            categoryRealmObject.setCategoryName(valueOfCategory);
             categoryRealmObject.setQuoteCountCurrentCategory(
                     categoryRealmObject.getQuoteCountCurrentCategory() + 1);
             categoryRealmObject.setType(checkAndGetCurrentType(realm, quoteType));
@@ -289,7 +289,7 @@ public class QuoteDataRepository implements QuoteRepository {
         if (results == null || results.isEmpty()) {
             quoteTypeObject = realm.createObject(QuoteType.class);
             quoteTypeObject.setId(getNextKey(quoteTypeObject, realm));
-            quoteTypeObject.setType(quoteType);
+            quoteTypeObject.setTypeValue(quoteType);
         } else {
             quoteTypeObject = results.first();
         }
