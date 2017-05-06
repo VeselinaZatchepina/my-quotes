@@ -17,7 +17,7 @@ public enum QuotePropertiesEnum {
     PAGE_NUMBER,
     YEAR_NUMBER,
     PUBLISHER_NAME,
-    QUOTE_CREATE_DATE,
+    QUOTE_CREATION_DATE,
     QUOTE_TYPE,
     CATEGORY_ICON
 }

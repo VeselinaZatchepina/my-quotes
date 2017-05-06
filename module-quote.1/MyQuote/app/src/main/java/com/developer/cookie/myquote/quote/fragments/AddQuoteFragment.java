@@ -103,7 +103,7 @@ public class AddQuoteFragment extends Fragment {
             mCurrentCategory = getArguments().getString(QUOTE_CATEGORY_NEW_INSTANCE_AQF);
         }
         if (mQuoteTextId != -1) {
-            mQuoteTexts = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mQuoteTextId);
+            mQuoteTexts = mQuoteDataRepository.getQuoteByQuoteId(mQuoteTextId);
         }
         // Get all quote categories
         mQuoteCategoryList = mQuoteDataRepository.getListOfQuoteCategories(mQuoteType);
@@ -344,7 +344,7 @@ public class AddQuoteFragment extends Fragment {
         HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties = new HashMap<>();
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TEXT, mCurrentQuoteText);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CATEGORY, mValueOfCategory);
-        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATE_DATE, currentDate);
+        mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_CREATION_DATE, currentDate);
         mapOfQuoteProperties.put(QuotePropertiesEnum.QUOTE_TYPE, mQuoteType);
         final String currentPageNumber;
         final String currentYearNumber;
@@ -361,7 +361,7 @@ public class AddQuoteFragment extends Fragment {
             mapOfQuoteProperties.put(QuotePropertiesEnum.PUBLISHER_NAME, emptyTextCheck(currentPublishName));
         }
         if (mQuoteTextId != -1) {
-            mQuoteDataRepository.saveChangedQuoteObject(mQuoteTextId, mapOfQuoteProperties);
+            mQuoteDataRepository.saveChangedQuote(mQuoteTextId, mapOfQuoteProperties);
         } else {
             mQuoteDataRepository.saveQuote(mapOfQuoteProperties);
         }

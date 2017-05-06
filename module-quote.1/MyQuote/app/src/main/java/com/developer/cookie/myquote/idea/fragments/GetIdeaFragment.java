@@ -39,7 +39,7 @@ public class GetIdeaFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
-        mQuoteTextList = mQuoteDataRepository.getAllQuoteText();
+        mQuoteTextList = mQuoteDataRepository.getAllQuote();
     }
 
     @Override

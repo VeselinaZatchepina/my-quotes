@@ -84,7 +84,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             mQuoteType = getArguments().getString(QUOTE_TYPE_NEW_INSTANCE);
         }
         mQuoteDataRepository = new QuoteDataRepository();
-        mQuoteTexts = mQuoteDataRepository.getListOfQuoteTextByCategory(mCategoryName, mQuoteType);
+        mQuoteTexts = mQuoteDataRepository.getListOfQuotesByCategory(mCategoryName, mQuoteType);
     }
 
     @Override
@@ -338,7 +338,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                     .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentId, mQuoteType);
+                                    mQuoteDataRepository.deleteQuoteByIdFromDb(mCurrentId, mQuoteType);
                                     final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
                                     Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);
                                     snackbarIsDeleted.show();

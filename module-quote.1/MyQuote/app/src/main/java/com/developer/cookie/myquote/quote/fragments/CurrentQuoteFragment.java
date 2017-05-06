@@ -56,7 +56,7 @@ public class CurrentQuoteFragment extends Fragment {
             mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF);
         }
         mQuoteDataRepository = new QuoteDataRepository();
-        mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteTextObjectsByQuoteId(mCurrentQuoteTextId);
+        mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteByQuoteId(mCurrentQuoteTextId);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class CurrentQuoteFragment extends Fragment {
                 .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mQuoteDataRepository.deleteQuoteTextObjectById(mCurrentQuoteTextId, mQuoteType);
+                                mQuoteDataRepository.deleteQuoteByIdFromDb(mCurrentQuoteTextId, mQuoteType);
                                 getActivity().finish();
                             }
                         })
