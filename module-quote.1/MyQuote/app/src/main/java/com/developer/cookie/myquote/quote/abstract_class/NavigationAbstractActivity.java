@@ -28,9 +28,19 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getAndSetDataFromSaveInstanceState(savedInstanceState);
+        defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
-        // Work with Navigation Drawer
+        defineNavigationDrawer();
+        defineFragment();
+        defineFab();
+    }
+
+    public abstract void defineInputData(Bundle savedInstanceState);
+
+    @LayoutRes
+    public abstract int getLayoutResId();
+
+    private void defineNavigationDrawer() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
@@ -43,20 +53,11 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //Create fragment
-        workWithFragment();
-        //Work with fab
-        workWithFab();
     }
 
-    @LayoutRes
-    public abstract int getLayoutResId();
+    public abstract void defineFragment();
 
-    public abstract void workWithFragment();
-
-    public abstract void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState);
-
-    public abstract void workWithFab();
+    public abstract void defineFab();
 
     public int setFabImageResourceId() {
         return R.drawable.ic_add_white_24dp;
@@ -70,7 +71,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         }
     }
 
-    public void toDoWhenFabIsPressed() {
+    public void defineActionWhenFabIsPressed() {
         Intent intent = AddQuoteActivity.newIntent(this, getTitle().toString());
         startActivity(intent);
     }

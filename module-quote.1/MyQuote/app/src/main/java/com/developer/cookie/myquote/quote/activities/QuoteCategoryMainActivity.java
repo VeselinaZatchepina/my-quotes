@@ -37,7 +37,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
     long mCurrentId;
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
+    public void defineInputData(Bundle saveInstanceState) {
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_QCMA);
             if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
@@ -59,7 +59,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
     }
 
     @Override
-    public void workWithFragment() {
+    public void defineFragment() {
         getScreenOrientation(this);
         FragmentManager fragmentManager = getSupportFragmentManager();
         mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
@@ -106,13 +106,13 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
     }
 
     @Override
-    public void workWithFab() {
+    public void defineFab() {
         mFab = (FloatingActionButton) findViewById(R.id.fab);
         setFabBackgroundImage(mFab, fabImageResourceId);
         mAddFabListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                toDoWhenFabIsPressed();
+                defineActionWhenFabIsPressed();
             }
         };
         mFab.setOnClickListener(mAddFabListener);

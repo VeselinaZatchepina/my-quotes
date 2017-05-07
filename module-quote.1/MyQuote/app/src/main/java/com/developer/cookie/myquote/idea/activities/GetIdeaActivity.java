@@ -34,7 +34,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     Fragment mDetailFragment;
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle savedInstanceState) {
+    public void defineInputData(Bundle savedInstanceState) {
     }
 
     @Override
@@ -43,7 +43,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     }
 
     @Override
-    public void workWithFragment() {
+    public void defineFragment() {
         getScreenOrientation(this);
         // Set new style for toolbar title
         if (findViewById(R.id.detail_fragment_container) != null) {
@@ -63,7 +63,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     }
 
     @Override
-    public void workWithFab() {
+    public void defineFab() {
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
     }
