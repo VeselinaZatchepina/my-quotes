@@ -11,10 +11,8 @@ import android.view.View;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
-import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * IdeaCoincideQuoteTextActivity helps to show all quotes from GetIdeaActivity
@@ -35,8 +33,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
-        String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));
+        mQuotesType = getString(R.string.idea_title);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.GONE);
         ArrayList<String> listOfCoicideQuoteText = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA);

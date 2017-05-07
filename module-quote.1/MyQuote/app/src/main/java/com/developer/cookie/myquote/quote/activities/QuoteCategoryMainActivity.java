@@ -18,11 +18,9 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     private static final String QUOTE_TYPE_INTENT = "quote_category_main_activity_quote_type_intent";
     private static final String MAIN_FRAGMENT_TAG_BUNDLE = "quote_category_main_activity_main_fragment_tag_bundle";
-    private static final String DETAIL_FRAGMENT_TAG_BUNDLE = "quote_category_main_activity_detail_fragment_tag_bundle";
     private static final String QUOTE_TYPE_BUNDLE = "quote_category_main_activity_main_quote type_bundle";
     private static final String CURRENT_ID_BUNDLE = "quote_category_main_activity_main_current_id_bundle";
     Fragment mMainFragment;
-    Fragment mDetailFragment;
     FloatingActionButton mFab;
     int fabImageResourceId = setFabImageResourceId();
     String mTitle;
@@ -33,9 +31,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
     public void defineInputData(Bundle saveInstanceState) {
         if (saveInstanceState != null) {
             mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, MAIN_FRAGMENT_TAG_BUNDLE);
-            if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
-                mDetailFragment = getSupportFragmentManager().getFragment(saveInstanceState, DETAIL_FRAGMENT_TAG_BUNDLE);
-            }
+
             mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
             mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE);
         } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT) != null) {
@@ -93,9 +89,6 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         getSupportFragmentManager().putFragment(outState, MAIN_FRAGMENT_TAG_BUNDLE, mMainFragment);
-        if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
-            getSupportFragmentManager().putFragment(outState, DETAIL_FRAGMENT_TAG_BUNDLE, mDetailFragment);
-        }
         outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
         outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
         super.onSaveInstanceState(outState);

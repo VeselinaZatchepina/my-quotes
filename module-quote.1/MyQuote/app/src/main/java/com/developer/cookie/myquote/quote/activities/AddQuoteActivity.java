@@ -10,9 +10,6 @@ import android.widget.Toast;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
-import com.developer.cookie.myquote.utils.ColorationTextChar;
-
-import java.util.Locale;
 
 public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
@@ -21,13 +18,12 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     public static final String QUOTE_TYPE_BUNDLE_AQA = "com.developer.cookie.myquote.fragments.quote_type_bundle_aqa";
     public static final String QUOTE_CATEGORY_INTENT_AQA = "com.developer.cookie.myquote.fragments.quote_category_intent_aqa";
     Fragment mCurrentFragment;
-    String mQuoteType;
     String mCurrentCategory;
     Long mCurrentId;
 
     @Override
     public Fragment createFragment() {
-        mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuoteType, mCurrentCategory);
+        mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuotesType, mCurrentCategory);
         return mCurrentFragment;
     }
 
@@ -72,7 +68,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_BUNDLE_AQA, mQuoteType);
+        outState.putString(QUOTE_TYPE_BUNDLE_AQA, mQuotesType);
     }
 
     @Override
@@ -80,16 +76,13 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
         super.defineInputData(saveInstanceState);
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
-            mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
+            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
         } else {
-            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
+            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
             mCurrentCategory = getIntent()
                     .getStringExtra(QUOTE_CATEGORY_INTENT_AQA);
             mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
         }
-        //Set new text style for toolbar title
-        String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
     }
 
     @Override
