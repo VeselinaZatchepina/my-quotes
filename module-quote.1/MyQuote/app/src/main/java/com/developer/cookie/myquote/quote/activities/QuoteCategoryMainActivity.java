@@ -13,7 +13,8 @@ import com.developer.cookie.myquote.quote.Types;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.QuoteCategoryFragment;
 
-public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
+public class QuoteCategoryMainActivity extends NavigationAbstractActivity implements
+                                        QuoteCategoryFragment.QuoteCategoryCallbacks {
     private static final String LOG_TAG = QuoteCategoryMainActivity.class.getSimpleName();
     private static final String QUOTE_TYPE_INTENT = "quote_category_main_activity_quote_type_intent";
     private static final String MAIN_FRAGMENT_TAG_BUNDLE = "quote_category_main_activity_main_fragment_tag_bundle";
@@ -26,6 +27,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
     int fabImageResourceId = setFabImageResourceId();
     String mTitle;
     long mCurrentId;
+    String mQuoteType;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
@@ -42,6 +44,15 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
             mTitle = Types.BOOK_QUOTE;
         }
         setTitle(mTitle);
+        defineQuoteType();
+    }
+
+    private void defineQuoteType() {
+        if (mTitle.equals(Types.BOOK_QUOTE)) {
+            mQuoteType = Types.BOOK_QUOTE;
+        } else {
+            mQuoteType = Types.MY_QUOTE;
+        }
     }
 
     @Override
@@ -54,7 +65,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         mMainFragment = fragmentManager.findFragmentById(R.id.container);
         if (mMainFragment == null) {
-            mMainFragment = QuoteCategoryFragment.newInstance(getTitle().toString());
+            mMainFragment = QuoteCategoryFragment.newInstance(mQuoteType);
             fragmentManager.beginTransaction()
                     .add(R.id.container, mMainFragment)
                     .commit();
@@ -88,5 +99,10 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity {
         outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
         outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCategorySelected(String currentCategory, String quoteType) {
+        startActivity(AllQuoteCurrentCategoryActivity.newIntent(this, currentCategory, quoteType));
     }
 }
