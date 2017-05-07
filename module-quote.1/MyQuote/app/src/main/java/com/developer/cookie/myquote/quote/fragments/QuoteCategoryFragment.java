@@ -30,7 +30,6 @@ import io.realm.RealmResults;
  * count of the quotes for every this category.
  */
 public class QuoteCategoryFragment extends Fragment {
-
     private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
     private static final String QUOTE_TYPE_BUNDLE = "quote_category_fragment_quote_type_bundle";
     private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE = "quote_category_fragment_current_quote_type_new_instance";

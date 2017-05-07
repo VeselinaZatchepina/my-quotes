@@ -3,12 +3,8 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
@@ -18,23 +14,18 @@ import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
-import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
 import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
-
-    public static final String QUOTE_CATEGORY_INTENT_AQCCA = "com.developer.cookie.myquote.quote_category_intent_aqcca";
-    public static final String QUOTE_TYPE_INTENT_AQCCA = "com.developer.cookie.myquote.quote_type_intent_aqcca";
-    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqcca";
-
-    private Fragment mCurrentFragment;
-    private String mQuoteTypeAllQuotesCategory;
-
+    private static final String QUOTE_CATEGORY_INTENT = "all_quote_current_category_activity_quote_category_intent";
+    private static final String QUOTE_TYPE_INTENT = "all_quote_current_category_activity_quote_type_intent";
+    private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "all_quote_current_category_activity_current_fragment_tag_bundle";
+    private Fragment mMainFragment;
+    private String mQuotesType;
     Fragment mDetailFragment;
-
     String mCategoryName;
 
     @Override
@@ -43,48 +34,41 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     }
 
     @Override
-    public void otherStyleAction() {
-        super.otherStyleAction();
-        // Set AppBarLayout not expandable
-        setAppBarNotExpandable();
-    }
-
-    @Override
     public Fragment createFragment() {
-        mCurrentFragment = AllQuoteCurrentCategoryFragment.newInstance(mCategoryName, mQuoteTypeAllQuotesCategory);
-        return mCurrentFragment;
+        mMainFragment = AllQuoteCurrentCategoryFragment.newInstance(mCategoryName, mQuotesType);
+        return mMainFragment;
     }
 
     public static Intent newIntent(Context context, String categoryName, String quoteType) {
         Intent intent = new Intent(context, AllQuoteCurrentCategoryActivity.class);
-        intent.putExtra(QUOTE_CATEGORY_INTENT_AQCCA, categoryName);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQCCA, quoteType);
+        intent.putExtra(QUOTE_CATEGORY_INTENT, categoryName);
+        intent.putExtra(QUOTE_TYPE_INTENT, quoteType);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_INTENT_AQCCA, mQuoteTypeAllQuotesCategory);
-        outState.putString(QUOTE_CATEGORY_INTENT_AQCCA, mCategoryName);
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mMainFragment);
+        outState.putString(QUOTE_TYPE_INTENT, mQuotesType);
+        outState.putString(QUOTE_CATEGORY_INTENT, mCategoryName);
     }
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
-        super.getAndSetDataFromSaveInstanceState(saveInstanceState);
+    public void defineInputData(Bundle saveInstanceState) {
+        super.defineInputData(saveInstanceState);
         if (saveInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQCCA);
-            mQuoteTypeAllQuotesCategory = saveInstanceState.getString(QUOTE_TYPE_INTENT_AQCCA);
-            mCategoryName = saveInstanceState.getString(QUOTE_CATEGORY_INTENT_AQCCA);
-        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT_AQCCA) != null) {
-            mQuoteTypeAllQuotesCategory = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQCCA);
+            mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
+            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_INTENT);
+            mCategoryName = saveInstanceState.getString(QUOTE_CATEGORY_INTENT);
+        } else if (getIntent().getSerializableExtra(QUOTE_TYPE_INTENT) != null) {
+            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
             mCategoryName = getIntent()
-                    .getStringExtra(QUOTE_CATEGORY_INTENT_AQCCA);
+                    .getStringExtra(QUOTE_CATEGORY_INTENT);
         }
         //Set new text style for toolbar title
         String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteTypeAllQuotesCategory, localeLanguage, this));
+        setTitle(ColorationTextChar.setFirstVowelColor(mQuotesType, localeLanguage, this));
     }
 
     @Override
@@ -99,9 +83,9 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     }
 
     @Override
-    public void toDoWhenFabIsPressed() {
+    public void defineActionWhenFabIsPressed() {
         if (mCategoryName != null && !mCategoryName.equals("")) {
-            Intent intent = AddQuoteActivity.newIntent(this, mQuoteTypeAllQuotesCategory, mCategoryName);
+            Intent intent = AddQuoteActivity.newIntent(this, mQuotesType, mCategoryName);
             startActivity(intent);
         }
     }
@@ -109,14 +93,14 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     @Override
     public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, mQuoteTypeAllQuotesCategory);
+            Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, mQuotesType);
             startActivity(intent);
         } else {
             FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
             View.OnClickListener editFabListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = AddQuoteActivity.newIntent(AllQuoteCurrentCategoryActivity.this, currentId, mQuoteTypeAllQuotesCategory);
+                    Intent intent = AddQuoteActivity.newIntent(AllQuoteCurrentCategoryActivity.this, currentId, mQuotesType);
                     startActivity(intent);
                 }
             };
@@ -124,7 +108,7 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             fab.setOnClickListener(editFabListener);
 
             if (!isFinishing()) {
-                mDetailFragment = CurrentQuoteFragment.newInstance(currentId, mQuoteTypeAllQuotesCategory);
+                mDetailFragment = CurrentQuoteFragment.newInstance(currentId, mQuotesType);
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.detail_fragment_container, mDetailFragment)
@@ -138,16 +122,6 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
             fab.setImageDrawable(getResources().getDrawable(imageResourceId, getTheme()));
         } else {
             fab.setImageDrawable(getResources().getDrawable(imageResourceId));
-        }
-    }
-
-    private void setAppBarNotExpandable() {
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
         }
     }
 }

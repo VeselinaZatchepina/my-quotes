@@ -2,11 +2,7 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,7 +10,6 @@ import android.widget.Toast;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
-import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
 import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.Locale;
@@ -31,13 +26,6 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     Long mCurrentId;
 
     @Override
-    public void otherStyleAction() {
-        super.otherStyleAction();
-        // Set AppBarLayout not expandable
-        setAppBarNotExpandable();
-    }
-
-    @Override
     public Fragment createFragment() {
         mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuoteType, mCurrentCategory);
         return mCurrentFragment;
@@ -49,7 +37,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     }
 
     @Override
-    public void toDoWhenFabIsPressed() {
+    public void defineActionWhenFabIsPressed() {
         AddQuoteFragment addQuoteFragment = ((AddQuoteFragment) currentFragment);
         if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint()) {
             addQuoteFragment.createMapOfQuoteProperties();
@@ -88,8 +76,8 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     }
 
     @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
-        super.getAndSetDataFromSaveInstanceState(saveInstanceState);
+    public void defineInputData(Bundle saveInstanceState) {
+        super.defineInputData(saveInstanceState);
         if (saveInstanceState != null) {
             mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
             mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
@@ -113,16 +101,6 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setAppBarNotExpandable() {
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
-        }
     }
 
     @Override
