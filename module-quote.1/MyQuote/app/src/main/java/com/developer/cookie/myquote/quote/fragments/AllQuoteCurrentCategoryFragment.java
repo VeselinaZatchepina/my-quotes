@@ -149,6 +149,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     private void sortAndUpdateRecyclerView(String mSortedBy) {
         mQuoteTexts = mQuoteTexts.sort(mSortedBy);
         getListOfQuoteTexts(mQuoteTexts);
+        mRecyclerViewAdapter.changeDate();
     }
 
     @Override
@@ -386,6 +387,11 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
         @Override
         public int getItemCount() {
             return filteredQuoteTextList.size();
+        }
+
+        public void changeDate() {
+            filteredQuoteTextList = mCurrentCategoryQuoteTexts;
+            notifyDataSetChanged();
         }
     }
 
