@@ -95,9 +95,4 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
 }
