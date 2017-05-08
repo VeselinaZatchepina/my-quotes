@@ -21,11 +21,11 @@ public class QuoteCreationDate extends RealmObject {
         this.id = id;
     }
 
-    public String getQuoteDate() {
+    public String getQuoteDateValue() {
         return quoteDate;
     }
 
-    public void setQuoteDate(String quoteDate) {
+    public void setQuoteDateValue(String quoteDate) {
         this.quoteDate = quoteDate;
     }
 }

@@ -2,11 +2,7 @@ package com.developer.cookie.myquote.quote.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -14,32 +10,33 @@ import android.widget.Toast;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
-import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
-import com.developer.cookie.myquote.utils.ColorationTextChar;
-
-import java.util.Locale;
 
 public class AddQuoteActivity extends SingleFragmentAbstractActivity {
-    public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
-    public static final String QUOTE_TYPE_INTENT_AQA = "com.developer.cookie.myquote.quote_type_intent_aqa";
-    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqa";
-    public static final String QUOTE_TYPE_BUNDLE_AQA = "com.developer.cookie.myquote.fragments.quote_type_bundle_aqa";
-    public static final String QUOTE_CATEGORY_INTENT_AQA = "com.developer.cookie.myquote.fragments.quote_category_intent_aqa";
+    private static final String QUOTE_TEXT_ID_INTENT = "add_quote_activity_quote_text_id_intent";
+    private static final String QUOTE_TYPE_INTENT = "add_quote_activity_quote_type_intent";
+    private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "add_quote_activity_current_fragment_tag_bundle";
+    private static final String QUOTE_TYPE_BUNDLE = "add_quote_activity_quote_type_bundle";
+    private static final String QUOTE_CATEGORY_INTENT = "add_quote_activity_quote_category_intent";
     Fragment mCurrentFragment;
-    String mQuoteType;
     String mCurrentCategory;
     Long mCurrentId;
 
     @Override
-    public void otherStyleAction() {
-        super.otherStyleAction();
-        // Set AppBarLayout not expandable
-        setAppBarNotExpandable();
+    public void defineInputData(Bundle saveInstanceState) {
+        super.defineInputData(saveInstanceState);
+        if (saveInstanceState != null) {
+            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
+            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
+        } else {
+            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
+            mCurrentCategory = getIntent().getStringExtra(QUOTE_CATEGORY_INTENT);
+            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT, -1);
+        }
     }
 
     @Override
     public Fragment createFragment() {
-        mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuoteType, mCurrentCategory);
+        mCurrentFragment = AddQuoteFragment.newInstance(mCurrentId, mQuotesType, mCurrentCategory);
         return mCurrentFragment;
     }
 
@@ -49,7 +46,7 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     }
 
     @Override
-    public void toDoWhenFabIsPressed() {
+    public void defineActionWhenFabIsPressed() {
         AddQuoteFragment addQuoteFragment = ((AddQuoteFragment) currentFragment);
         if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint()) {
             addQuoteFragment.createMapOfQuoteProperties();
@@ -62,46 +59,29 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
 
     public static Intent newIntent(Context context, Long currentQuoteTextId, String quoteType) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TEXT_ID_INTENT_AQA, currentQuoteTextId);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, quoteType);
+        intent.putExtra(QUOTE_TEXT_ID_INTENT, currentQuoteTextId);
+        intent.putExtra(QUOTE_TYPE_INTENT, quoteType);
         return intent;
     }
 
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
+        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
         return intent;
     }
 
     public static Intent newIntent(Context context, String titleName, String currentCategory) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
-        intent.putExtra(QUOTE_CATEGORY_INTENT_AQA, currentCategory);
+        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
+        intent.putExtra(QUOTE_CATEGORY_INTENT, currentCategory);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_BUNDLE_AQA, mQuoteType);
-    }
-
-    @Override
-    public void getAndSetDataFromSaveInstanceState(Bundle saveInstanceState) {
-        super.getAndSetDataFromSaveInstanceState(saveInstanceState);
-        if (saveInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
-            mQuoteType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
-        } else {
-            mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
-            mCurrentCategory = getIntent()
-                    .getStringExtra(QUOTE_CATEGORY_INTENT_AQA);
-            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
-        }
-        //Set new text style for toolbar title
-        String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_BUNDLE, mQuotesType);
     }
 
     @Override
@@ -113,20 +93,5 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void setAppBarNotExpandable() {
-        if (findViewById(R.id.detail_fragment_container) == null) {
-            AppBarLayout appBarLayout = (AppBarLayout) findViewById(R.id.appbar_layout);
-            CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-            CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
-            Configuration configuration = getResources().getConfiguration();
-            AppBarLayoutExpended.setAppBarLayoutExpended(this, appBarLayout, layoutParams, collapsingToolbarLayout, configuration);
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }

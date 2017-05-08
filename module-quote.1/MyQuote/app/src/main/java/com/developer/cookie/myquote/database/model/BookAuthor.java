@@ -21,11 +21,11 @@ public class BookAuthor extends RealmObject {
         this.id = id;
     }
 
-    public String getBookAuthor() {
+    public String getBookAuthorName() {
         return bookAuthor;
     }
 
-    public void setBookAuthor(String bookAuthor) {
+    public void setBookAuthorName(String bookAuthor) {
         this.bookAuthor = bookAuthor;
     }
 }

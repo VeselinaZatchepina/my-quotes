@@ -21,11 +21,11 @@ public class QuoteType extends RealmObject {
         this.id = id;
     }
 
-    public String getType() {
+    public String getTypeValue() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setTypeValue(String type) {
         this.type = type;
     }
 }

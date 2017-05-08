@@ -39,16 +39,7 @@ interface QuoteRepository {
      * @param quoteType
      * @return List<QuoteText>
      */
-    List<QuoteText> getListOfQuoteTextByCategory(String category, String quoteType);
-
-    /**
-     * Method requests QuoteText object from the database by quote text.
-     *
-     * @param quoteText
-     * @param quoteType
-     * @return QuoteText
-     */
-    List<QuoteText> getQuoteTextObjectsByQuoteText(String quoteText, String quoteType);
+    List<QuoteText> getListOfQuotesByCategory(String category, String quoteType);
 
     /**
      * Method requests QuoteText object from the database by quote text id.
@@ -56,7 +47,7 @@ interface QuoteRepository {
      * @param quoteTextId
      * @return QuoteText
      */
-    List<QuoteText> getQuoteTextObjectsByQuoteId(Long quoteTextId);
+    List<QuoteText> getQuoteByQuoteId(Long quoteTextId);
 
     /**
      * Method saves edited quote
@@ -64,7 +55,7 @@ interface QuoteRepository {
      * @param quoteTextId          id current quote
      * @param mapOfQuoteProperties
      */
-    void saveChangedQuoteObject(long quoteTextId, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
+    void saveChangedQuote(long quoteTextId, HashMap<QuotePropertiesEnum, String> mapOfQuoteProperties);
 
     /**
      * Method delete quote object from db
@@ -72,7 +63,7 @@ interface QuoteRepository {
      * @param currentQuoteTextId
      * @param quoteType
      */
-    void deleteQuoteTextObjectById(long currentQuoteTextId, String quoteType);
+    void deleteQuoteByIdFromDb(long currentQuoteTextId, String quoteType);
 
     /**
      * Method delete all quotes with current category
@@ -87,7 +78,7 @@ interface QuoteRepository {
      *
      * @return list of quote text
      */
-    RealmResults<QuoteText> getAllQuoteText();
+    RealmResults<QuoteText> getAllQuote();
 
     /**
      * Method closes realm connection.

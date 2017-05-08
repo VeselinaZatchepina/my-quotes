@@ -4,11 +4,11 @@ package com.developer.cookie.myquote.quote.fragments;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pair;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,12 +20,9 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteCategory;
-import com.developer.cookie.myquote.quote.activities.AllQuoteCurrentCategoryActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import io.realm.RealmChangeListener;
+import io.realm.OrderedRealmCollection;
+import io.realm.RealmRecyclerViewAdapter;
 import io.realm.RealmResults;
 
 /**
@@ -33,23 +30,15 @@ import io.realm.RealmResults;
  * count of the quotes for every this category.
  */
 public class QuoteCategoryFragment extends Fragment {
-
     private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
-    public static final String QUOTE_TYPE_BUNDLE_QCF = "com.developer.cookie.myquote.quote_type_bundle_qcf";
-    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE_QCF = "com.developer.cookie.myquote.current_quote_type_new_instance_qcf";
-    View mRootView;
+    private static final String QUOTE_TYPE_BUNDLE = "quote_category_fragment_quote_type_bundle";
+    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE = "quote_category_fragment_current_quote_type_new_instance";
     QuoteDataRepository mQuoteDataRepository;
-
-    List<Integer> mQuoteCountListOfEveryCategory;
-    List<String> mListOfCategories;
-    Pair<List<String>, List<Integer>> mPair;
-
     QuoteCategoryRecyclerViewAdapter mQuoteCategoryRecyclerViewAdapter;
-    RealmResults<QuoteCategory> mQuoteCategoryList;
-
+    RealmResults<QuoteCategory> mQuoteCategoryResults;
     String mQuoteType;
-
     String mCategoryForDelete;
+    private QuoteCategoryCallbacks mCallbacks;
 
     public QuoteCategoryFragment() {
     }
@@ -57,72 +46,64 @@ public class QuoteCategoryFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_QCF);
-        } else if (getArguments() != null) {
-            mQuoteType = getActivity().getTitle().toString();
-        }
+        defineInputData(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
-        mQuoteCategoryList = mQuoteDataRepository.getListOfQuoteCategories(mQuoteType);
+        mQuoteCategoryResults = mQuoteDataRepository.getListOfQuoteCategories(mQuoteType);
+    }
+
+    private void defineInputData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE);
+        } else if (getArguments() != null) {
+            mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mRootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
-
-        TextView currentCategory = (TextView) mRootView.findViewById(R.id.current_category);
-        currentCategory.setVisibility(View.GONE);
-
-        mQuoteCategoryList.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
-            @Override
-            public void onChange(RealmResults<QuoteCategory> element) {
-                createPairObject(element);
-                mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(mPair);
-                // Create and set custom adapter for recyclerview
-                RecyclerView recyclerView = (RecyclerView) mRootView.findViewById(R.id.recycler_view);
-                registerForContextMenu(recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-                recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
-            }
-        });
-        return mRootView;
+        View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        setCurrentCategoryTitleIsGone(rootView);
+        defineRecyclerView(rootView);
+        return rootView;
     }
 
-    /**
-     * Method create Pair object for custom adapter. First parameter is name list of category,
-     * second is quote count list of this categories.
-     *
-     * @param element list of quote category realm object.
-     */
-    private void createPairObject(List<QuoteCategory> element) {
-        // Create parameters for mPair object
-        mQuoteCountListOfEveryCategory = new ArrayList<Integer>();
-        for (int i = 0; i < element.size(); i++) {
-            mQuoteCountListOfEveryCategory.add(element.get(i).getQuoteCountCurrentCategory());
-        }
-        mListOfCategories = new ArrayList<>();
-        for (int i = 0; i < element.size(); i++) {
-            String currentCategory = element.get(i).getCategory();
-            mListOfCategories.add(currentCategory);
-        }
-        mPair = new Pair<>(mListOfCategories, mQuoteCountListOfEveryCategory);
+    private void setCurrentCategoryTitleIsGone(View rootView) {
+        TextView currentCategoryTitle = (TextView) rootView.findViewById(R.id.current_category);
+        currentCategoryTitle.setVisibility(View.GONE);
+    }
+
+    private void defineRecyclerView(View rootView) {
+        mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(getActivity(), mQuoteCategoryResults, true);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
+    }
+
+    public static QuoteCategoryFragment newInstance(String quoteType) {
+        Bundle args = new Bundle();
+        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE, quoteType);
+        QuoteCategoryFragment fragment = new QuoteCategoryFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putString(QUOTE_TYPE_BUNDLE_QCF, mQuoteType);
+        outState.putString(QUOTE_TYPE_BUNDLE, mQuoteType);
         super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mCallbacks = (QuoteCategoryCallbacks) context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        mCallbacks = null;
     }
 
     @Override
@@ -131,25 +112,57 @@ public class QuoteCategoryFragment extends Fragment {
         mQuoteDataRepository.closeDbConnect();
     }
 
-    public static QuoteCategoryFragment newInstance(String quoteType) {
-        Bundle args = new Bundle();
-        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE_QCF, quoteType);
-        QuoteCategoryFragment fragment = new QuoteCategoryFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    /**
-     * This class is custom adapter for QuoteCategoryFragment.
-     * It helps to show list of all quote categories and how quote counts belongs to every this category.
-     */
-    private class QuoteCategoryRecyclerViewAdapter
-            extends RecyclerView.Adapter<QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
+    private class QuoteCategoryRecyclerViewAdapter extends RealmRecyclerViewAdapter<QuoteCategory, QuoteCategoryRecyclerViewAdapter.MyViewHolder> {
         private static final int EMPTY_LIST = 0;
         private static final int NOT_EMPTY_LIST = 1;
 
-        private List<String> listOfCategory;
-        private List<Integer> quoteCountList;
+        private OrderedRealmCollection<QuoteCategory> mData;
+
+        public QuoteCategoryRecyclerViewAdapter(@NonNull Context context, @Nullable OrderedRealmCollection<QuoteCategory> data, boolean autoUpdate) {
+            super(context, data, autoUpdate);
+            mData = data;
+        }
+
+        @Override
+        public QuoteCategoryRecyclerViewAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            switch (viewType) {
+                case EMPTY_LIST:
+                    View itemViewEmpty = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.fragment_empty_recycler_view, parent, false);
+                    return new MyViewHolder(itemViewEmpty);
+                case NOT_EMPTY_LIST:
+                    View itemView = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.quote_categories_recycler_view_item, parent, false);
+                    return new MyViewHolder(itemView);
+            }
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(QuoteCategoryRecyclerViewAdapter.MyViewHolder holder, int position) {
+            if (!mData.isEmpty()) {
+                holder.itemQuoteCategory.setText(mData.get(position).getCategoryName());
+                holder.itemQuoteCategory.setAllCaps(true);
+                holder.itemQuoteCount.setText(String.valueOf(mData.get(position).getQuoteCountCurrentCategory()));
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            if (mData.isEmpty()) {
+                return 1;
+            }
+            return mData.size();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (mData.isEmpty()) {
+                return EMPTY_LIST;
+            } else {
+                return NOT_EMPTY_LIST;
+            }
+        }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
             TextView itemQuoteCategory;
@@ -165,110 +178,59 @@ public class QuoteCategoryFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                if (listOfCategory.size() != 0) {
-                    startActivity(AllQuoteCurrentCategoryActivity.newIntent(getActivity(),
-                            itemQuoteCategory.getText().toString(), mQuoteType));
+                if (!mData.isEmpty()) {
+                    mCallbacks.onCategorySelected(itemQuoteCategory.getText().toString(), mQuoteType);
                 }
             }
 
             @Override
             public boolean onLongClick(View view) {
-                if (listOfCategory.size() != 0) {
+                if (!mData.isEmpty()) {
                     mCategoryForDelete = itemQuoteCategory.getText().toString();
                     openDeleteQuoteCategoryDialog();
                 }
                 return false;
             }
-        }
 
-        private void openDeleteQuoteCategoryDialog() {
-            // Create dialog for delete current category
-            LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
-            AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
-            mDialogBuilder.setView(dialogView);
-            mDialogBuilder
-                    .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
-                                    final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-                                    Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + mCategoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
-                                    snackbarIsDeleted.show();
-                                }
-                            })
-                    .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alertDialog = mDialogBuilder.create();
-            alertDialog.show();
-        }
+            private void openDeleteQuoteCategoryDialog() {
+                LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
+                View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
+                AlertDialog.Builder mDialogBuilder = new AlertDialog.Builder(getActivity());
+                mDialogBuilder.setView(dialogView);
+                mDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
+                                        showSnackbar();
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alertDialog = mDialogBuilder.create();
+                alertDialog.show();
+            }
 
+            private void showSnackbar() {
+                final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
+                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + mCategoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
+                snackbarIsDeleted.show();
+            }
+        }
+    }
+
+    public interface QuoteCategoryCallbacks {
         /**
-         * Method create custom adapter.
+         * Method starts activity with all quotes of current category
          *
-         * @param pair object with two field List<String> and List<Integer>. First field is for list of category.
-         *             Second field is for list of quote count.
+         * @param currentCategory
+         * @param quoteType
          */
-        public QuoteCategoryRecyclerViewAdapter(Pair<List<String>, List<Integer>> pair) {
-            listOfCategory = pair.first;
-            quoteCountList = pair.second;
-        }
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            switch (viewType) {
-                case EMPTY_LIST:
-                    View itemViewEmpty = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.fragment_empty_recycler_view, parent, false);
-                    return new MyViewHolder(itemViewEmpty);
-                case NOT_EMPTY_LIST:
-                    View itemView = LayoutInflater.from(parent.getContext())
-                            .inflate(R.layout.quote_categories_recycler_view_item, parent, false);
-                    return new MyViewHolder(itemView);
-            }
-            return null;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            if (listOfCategory.size() != 0) {
-                holder.itemQuoteCategory.setText(listOfCategory.get(position));
-                holder.itemQuoteCategory.setAllCaps(true);
-                holder.itemQuoteCount.setText(String.valueOf(quoteCountList.get(position)));
-            }
-        }
-
-        @Override
-        public int getItemCount() {
-            if (listOfCategory.size() == 0) {
-                return 1;
-            }
-            return listOfCategory.size();
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (listOfCategory.size() == 0) {
-                return EMPTY_LIST;
-            } else {
-                return NOT_EMPTY_LIST;
-            }
-        }
-
-        /**
-         * When adapter data is changed this method helps set new data for adapter.
-         *
-         * @param pair
-         */
-        public void changeDate(Pair<List<String>, List<Integer>> pair) {
-            listOfCategory = pair.first;
-            quoteCountList = pair.second;
-            notifyDataSetChanged();
-        }
+        void onCategorySelected(String currentCategory, String quoteType);
     }
 }
