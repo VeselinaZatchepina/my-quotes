@@ -12,14 +12,27 @@ import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractA
 import com.developer.cookie.myquote.quote.fragments.AddQuoteFragment;
 
 public class AddQuoteActivity extends SingleFragmentAbstractActivity {
-    public static final String QUOTE_TEXT_ID_INTENT_AQA = "com.developer.cookie.myquote.quote_text_id_intent_aqa";
-    public static final String QUOTE_TYPE_INTENT_AQA = "com.developer.cookie.myquote.quote_type_intent_aqa";
-    public static final String CURRENT_FRAGMENT_TAG_BUNDLE_AQA = "com.developer.cookie.myquote.current_fragment_tag_bundle_aqa";
-    public static final String QUOTE_TYPE_BUNDLE_AQA = "com.developer.cookie.myquote.fragments.quote_type_bundle_aqa";
-    public static final String QUOTE_CATEGORY_INTENT_AQA = "com.developer.cookie.myquote.fragments.quote_category_intent_aqa";
+    private static final String QUOTE_TEXT_ID_INTENT = "add_quote_activity_quote_text_id_intent";
+    private static final String QUOTE_TYPE_INTENT = "add_quote_activity_quote_type_intent";
+    private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "add_quote_activity_current_fragment_tag_bundle";
+    private static final String QUOTE_TYPE_BUNDLE = "add_quote_activity_quote_type_bundle";
+    private static final String QUOTE_CATEGORY_INTENT = "add_quote_activity_quote_category_intent";
     Fragment mCurrentFragment;
     String mCurrentCategory;
     Long mCurrentId;
+
+    @Override
+    public void defineInputData(Bundle saveInstanceState) {
+        super.defineInputData(saveInstanceState);
+        if (saveInstanceState != null) {
+            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
+            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
+        } else {
+            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
+            mCurrentCategory = getIntent().getStringExtra(QUOTE_CATEGORY_INTENT);
+            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT, -1);
+        }
+    }
 
     @Override
     public Fragment createFragment() {
@@ -46,43 +59,29 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
 
     public static Intent newIntent(Context context, Long currentQuoteTextId, String quoteType) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TEXT_ID_INTENT_AQA, currentQuoteTextId);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, quoteType);
+        intent.putExtra(QUOTE_TEXT_ID_INTENT, currentQuoteTextId);
+        intent.putExtra(QUOTE_TYPE_INTENT, quoteType);
         return intent;
     }
 
     public static Intent newIntent(Context context, String titleName) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
+        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
         return intent;
     }
 
     public static Intent newIntent(Context context, String titleName, String currentCategory) {
         Intent intent = new Intent(context, AddQuoteActivity.class);
-        intent.putExtra(QUOTE_TYPE_INTENT_AQA, titleName);
-        intent.putExtra(QUOTE_CATEGORY_INTENT_AQA, currentCategory);
+        intent.putExtra(QUOTE_TYPE_INTENT, titleName);
+        intent.putExtra(QUOTE_CATEGORY_INTENT, currentCategory);
         return intent;
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA, mCurrentFragment);
-        outState.putString(QUOTE_TYPE_BUNDLE_AQA, mQuotesType);
-    }
-
-    @Override
-    public void defineInputData(Bundle saveInstanceState) {
-        super.defineInputData(saveInstanceState);
-        if (saveInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE_AQA);
-            mQuotesType = saveInstanceState.getString(QUOTE_TYPE_BUNDLE_AQA);
-        } else {
-            mQuotesType = getIntent().getStringExtra(QUOTE_TYPE_INTENT_AQA);
-            mCurrentCategory = getIntent()
-                    .getStringExtra(QUOTE_CATEGORY_INTENT_AQA);
-            mCurrentId = getIntent().getLongExtra(QUOTE_TEXT_ID_INTENT_AQA, -1);
-        }
+        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        outState.putString(QUOTE_TYPE_BUNDLE, mQuotesType);
     }
 
     @Override
