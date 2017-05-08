@@ -16,15 +16,14 @@ import io.realm.RealmResults;
  * with current quote data
  */
 public class FillViewsWithCurrentQuoteDataHelper {
-
-    private static BookName bookName;
-
+    
     public static void fillViewsWithCurrentQuoteData(RealmResults<QuoteText> realmResults,
                                                      TextView quoteTextView, TextView bookNameView,
                                                      TextView authorNameView, TextView pageNumberView,
                                                      TextView publisherNameTextView,
                                                      TextView yearNumberView,
                                                      String quoteType) {
+        BookName bookName;
         QuoteText quote = realmResults.first();
         fillQuoteTextField(quoteTextView, quote);
         if (quoteType.equals(Types.BOOK_QUOTE)) {
