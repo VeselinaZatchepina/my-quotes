@@ -16,7 +16,7 @@ import io.realm.RealmResults;
  * with current quote data
  */
 public class FillViewsWithCurrentQuoteDataHelper {
-    
+
     public static void fillViewsWithCurrentQuoteData(RealmResults<QuoteText> realmResults,
                                                      TextView quoteTextView, TextView bookNameView,
                                                      TextView authorNameView, TextView pageNumberView,

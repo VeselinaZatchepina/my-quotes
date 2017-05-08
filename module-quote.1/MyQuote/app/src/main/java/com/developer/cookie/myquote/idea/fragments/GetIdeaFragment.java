@@ -24,10 +24,9 @@ import io.realm.RealmResults;
 
 public class GetIdeaFragment extends Fragment {
     private static final String LOG_TAG = GetIdeaFragment.class.getSimpleName();
-
     QuoteDataRepository mQuoteDataRepository;
-    RealmResults<QuoteText> mQuoteTextList;
-    ArrayList<String> mListOfCoincideQuoteText;
+    RealmResults<QuoteText> mQuoteTexts;
+    ArrayList<String> mCoincideQuoteTexts;
     View mRootView;
     List<Integer> mRandomList;
     GetIdeaCallbacks mCallbacks;
@@ -39,7 +38,7 @@ public class GetIdeaFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
-        mQuoteTextList = mQuoteDataRepository.getAllQuote();
+        mQuoteTexts = mQuoteDataRepository.getAllQuote();
     }
 
     @Override
@@ -64,30 +63,30 @@ public class GetIdeaFragment extends Fragment {
     private void getListOfCoincideQuoteText() {
         final EditText subjectEditText = (EditText) mRootView.findViewById(R.id.subject_text);
         String currentSubject = subjectEditText.getText().toString().toLowerCase();
-        mListOfCoincideQuoteText = new ArrayList<String>();
-        if (mQuoteTextList.load()) {
-            createRandomNumbers(mQuoteTextList.size());
+        mCoincideQuoteTexts = new ArrayList<String>();
+        if (mQuoteTexts.load()) {
+            createRandomNumbers(mQuoteTexts.size());
             int countOfCoincideQuoteText = 0;
-            for (int i = 0; i < mQuoteTextList.size(); i++) {
+            for (int i = 0; i < mQuoteTexts.size(); i++) {
                 if (countOfCoincideQuoteText == 5) {
-                    mCallbacks.generateIdea(mListOfCoincideQuoteText);
+                    mCallbacks.generateIdea(mCoincideQuoteTexts);
                     return;
                 }
                 int randomVariable = mRandomList.get(i);
-                String currentQuoteText = mQuoteTextList.get(randomVariable).getQuoteText();
+                String currentQuoteText = mQuoteTexts.get(randomVariable).getQuoteText();
                 if (TextUtils.isEmpty(currentSubject)) {
-                    if (!mListOfCoincideQuoteText.contains(currentQuoteText)) {
-                        mListOfCoincideQuoteText.add(currentQuoteText);
+                    if (!mCoincideQuoteTexts.contains(currentQuoteText)) {
+                        mCoincideQuoteTexts.add(currentQuoteText);
                         countOfCoincideQuoteText++;
                     }
                 } else {
-                    if (currentQuoteText.toLowerCase().contains(currentSubject) && !mListOfCoincideQuoteText.contains(currentQuoteText)) {
-                        mListOfCoincideQuoteText.add(currentQuoteText);
+                    if (currentQuoteText.toLowerCase().contains(currentSubject) && !mCoincideQuoteTexts.contains(currentQuoteText)) {
+                        mCoincideQuoteTexts.add(currentQuoteText);
                         countOfCoincideQuoteText++;
                     }
                 }
             }
-            mCallbacks.generateIdea(mListOfCoincideQuoteText);
+            mCallbacks.generateIdea(mCoincideQuoteTexts);
         }
     }
 

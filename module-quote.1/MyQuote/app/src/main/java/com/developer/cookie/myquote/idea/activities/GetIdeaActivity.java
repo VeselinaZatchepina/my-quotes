@@ -12,22 +12,21 @@ import android.widget.Toast;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.GetIdeaFragment;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
+import com.developer.cookie.myquote.quote.Types;
 import com.developer.cookie.myquote.quote.abstract_class.NavigationAbstractActivity;
-import com.developer.cookie.myquote.utils.ColorationTextChar;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * GetIdeaActivity helps to generate random quotes from db or show quotes by input subject
  */
 public class GetIdeaActivity extends NavigationAbstractActivity implements GetIdeaFragment.GetIdeaCallbacks {
-
-    Fragment mCurrentFragment;
+    Fragment mMainFragment;
     Fragment mDetailFragment;
 
     @Override
     public void defineInputData(Bundle savedInstanceState) {
+        setTitle(Types.GET_IDEA);
     }
 
     @Override
@@ -37,19 +36,12 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
 
     @Override
     public void defineFragment() {
-        // Set new style for toolbar title
-        if (findViewById(R.id.detail_fragment_container) != null) {
-            String localeLanguage = Locale.getDefault().getLanguage();
-            setTitle(ColorationTextChar.setFirstVowelColor(getString(R.string.idea_title), localeLanguage, this));
-        } else {
-            setTitle(getString(R.string.idea_title));
-        }
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mCurrentFragment = fragmentManager.findFragmentById(R.id.container);
-        if (mCurrentFragment == null) {
-            mCurrentFragment = new GetIdeaFragment();
+        mMainFragment = fragmentManager.findFragmentById(R.id.container);
+        if (mMainFragment == null) {
+            mMainFragment = new GetIdeaFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.container, mCurrentFragment)
+                    .add(R.id.container, mMainFragment)
                     .commit();
         }
     }

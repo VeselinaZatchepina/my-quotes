@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.fragments.IdeaCoincideQuoteTextFragment;
+import com.developer.cookie.myquote.quote.Types;
 import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractActivity;
 
 import java.util.ArrayList;
@@ -19,11 +20,14 @@ import java.util.ArrayList;
  */
 public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivity {
 
-    public static final String LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA = "com.developer.cookie.myquote.list_coincide_quote_text_intent_icqta";
+    private static final String LIST_COINCIDE_QUOTE_TEXT_INTENT = "idea_coincide_quote_text_activity_list_coincide_quote_text_intent";
+    public ArrayList<String> mListOfCoincideQuoteText;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
         super.defineInputData(saveInstanceState);
+        mQuotesType = Types.GET_IDEA;
+        mListOfCoincideQuoteText = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT);
     }
 
     @Override
@@ -33,15 +37,13 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
-        mQuotesType = getString(R.string.idea_title);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.GONE);
-        ArrayList<String> listOfCoicideQuoteText = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA);
-        return IdeaCoincideQuoteTextFragment.newInstance(listOfCoicideQuoteText);
+        return IdeaCoincideQuoteTextFragment.newInstance(mListOfCoincideQuoteText);
     }
 
     @Override
     public int setFabImageResourceId() {
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         return super.setFabImageResourceId();
     }
 
@@ -52,7 +54,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     public static Intent newIntent(Context context, ArrayList<String> listOfCoincideQuoteText) {
         Intent intent = new Intent(context, IdeaCoincideQuoteTextActivity.class);
-        intent.putExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT_ICQTA, listOfCoincideQuoteText);
+        intent.putExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT, listOfCoincideQuoteText);
         return intent;
     }
 

@@ -18,10 +18,8 @@ import java.util.List;
 
 
 public class IdeaCoincideQuoteTextFragment extends Fragment {
-
-    private static final String QUOTE_TEXT_LIST_NEW_INSTANCE = "com.developer.cookie.myquote.quote_text_list_new_instance_icqtf";
-
-    List<String> mListOfCoicideQuoteText;
+    private static final String QUOTE_TEXT_LIST_NEW_INSTANCE = "idea_coincide_quote_text_fragment_quote_text_list_new_instance";
+    List<String> mCoicideQuoteTexts;
     RecyclerView mRecyclerView;
     IdeaCoincideRecyclerViewAdapter mRecyclerViewAdapter;
 
@@ -32,7 +30,7 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mListOfCoicideQuoteText = getArguments().getStringArrayList(QUOTE_TEXT_LIST_NEW_INSTANCE);
+            mCoicideQuoteTexts = getArguments().getStringArrayList(QUOTE_TEXT_LIST_NEW_INSTANCE);
         }
     }
 
@@ -40,13 +38,21 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        setCurrentCategoryTitleVisibility(rootView);
+        defineRecyclerView(rootView);
+        return rootView;
+    }
+
+    private void setCurrentCategoryTitleVisibility(View rootView) {
         TextView currentCategoryTextView = (TextView) rootView.findViewById(R.id.current_category);
         currentCategoryTextView.setVisibility(View.GONE);
-        mRecyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mListOfCoicideQuoteText);
+    }
+
+    private void defineRecyclerView(View rootView) {
+        mRecyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mCoicideQuoteTexts);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
-        return rootView;
     }
 
     public static IdeaCoincideQuoteTextFragment newInstance(ArrayList<String> quoteTextList) {
@@ -120,14 +126,14 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
-            if (currentQuoteList.size() != 0) {
+            if (!currentQuoteList.isEmpty()) {
                 holder.currentQuote.setText(currentQuoteList.get(position));
             }
         }
 
         @Override
         public int getItemCount() {
-            if (currentQuoteList.size() == 0) {
+            if (currentQuoteList.isEmpty()) {
                 return 1;
             }
             return currentQuoteList.size();
@@ -135,7 +141,7 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (currentQuoteList.size() == 0) {
+            if (currentQuoteList.isEmpty()) {
                 return EMPTY_LIST;
             } else {
                 return NOT_EMPTY_LIST;
