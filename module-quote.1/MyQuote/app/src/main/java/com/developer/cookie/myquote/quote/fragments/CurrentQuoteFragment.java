@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
 import com.developer.cookie.myquote.database.model.QuoteText;
+import com.developer.cookie.myquote.quote.Types;
 import com.developer.cookie.myquote.utils.FillViewsWithCurrentQuoteDataHelper;
 
 import io.realm.RealmChangeListener;
@@ -30,33 +31,35 @@ import io.realm.RealmResults;
  */
 public class CurrentQuoteFragment extends Fragment {
     private static final String LOG_TAG = CurrentQuoteFragment.class.getSimpleName();
-    private static final String CURRENT_QUOTE_ID_NEW_INSTANCE_CQF = "com.developer.cookie.myquote.current_quote_id_new_instance_cqf";
-    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF = "com.developer.cookie.myquote.current_quote_type_new_instance_cqf";
-    public static final String QUOTE_TYPE_BUNDLE_CQF = "com.developer.cookie.myquote.quote_type_bundle_cqf";
-    public static final String QUOTE_ID_BUNDLE_CQF = "com.developer.cookie.myquote.quote_id_bundle_cqf";
-
-    Long mCurrentQuoteTextId;
+    private static final String CURRENT_QUOTE_ID_NEW_INSTANCE = "current_quote_fragment_current_quote_id_new_instance";
+    private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE = "current_quote_fragment_current_quote_type_new_instance";
+    private static final String QUOTE_TYPE_BUNDLE = "current_quote_fragment_quote_type_bundle";
+    private static final String QUOTE_ID_BUNDLE = "current_quote_fragment_quote_id_bundle";
+    Long mCurrentQuoteId;
     QuoteDataRepository mQuoteDataRepository;
-    RealmResults<QuoteText> mCurrentQuoteObjectList;
+    RealmResults<QuoteText> mCurrentQuote;
     String mCurrentCategory;
     String mQuoteType;
     ShareActionProvider mShareActionProvider;
-
     Intent sharingIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        if (savedInstanceState != null) {
-            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE_CQF);
-            mCurrentQuoteTextId = savedInstanceState.getLong(QUOTE_ID_BUNDLE_CQF);
-        } else if (getArguments() != null) {
-            mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF);
-            mCurrentQuoteTextId = getArguments().getLong(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF);
-        }
+        defineInputData(savedInstanceState);
         mQuoteDataRepository = new QuoteDataRepository();
-        mCurrentQuoteObjectList = mQuoteDataRepository.getQuoteByQuoteId(mCurrentQuoteTextId);
+        mCurrentQuote = mQuoteDataRepository.getQuoteByQuoteId(mCurrentQuoteId);
+    }
+
+    private void defineInputData(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mQuoteType = savedInstanceState.getString(QUOTE_TYPE_BUNDLE);
+            mCurrentQuoteId = savedInstanceState.getLong(QUOTE_ID_BUNDLE);
+        } else if (getArguments() != null) {
+            mQuoteType = getArguments().getString(CURRENT_QUOTE_TYPE_NEW_INSTANCE);
+            mCurrentQuoteId = getArguments().getLong(CURRENT_QUOTE_ID_NEW_INSTANCE);
+        }
     }
 
     @Override
@@ -71,39 +74,50 @@ public class CurrentQuoteFragment extends Fragment {
         final TextView yearNumberView = (TextView) rootView.findViewById(R.id.current_year_number);
         final TextView quoteCreationDate = (TextView) rootView.findViewById(R.id.quote_creation_date);
         final TextView currentCategory = (TextView) rootView.findViewById(R.id.current_category);
-
-        mCurrentQuoteObjectList.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+        mCurrentQuote.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
                 if (element.size() > 0) {
-                    mCurrentCategory = element.first().getCategory().getCategoryName();
                     FillViewsWithCurrentQuoteDataHelper.fillViewsWithCurrentQuoteData(element, quoteTextView,
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
-                    currentCategory.setText(element.first().getCategory().getCategoryName());
-                    currentCategory.setAllCaps(true);
-                    quoteCreationDate.setText(element.first().getDate().getQuoteDateValue());
-                    if (mQuoteType.equals("My quote")) {
-                        LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);
-                        LinearLayout bookNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_book_name_title);
-                        LinearLayout publisherNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_publisher_name_title);
-                        LinearLayout yearNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_year_number_title);
-                        LinearLayout pageNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_page_number_title);
-                        quoteAuthorTitle.setVisibility(View.GONE);
-                        bookNameTitle.setVisibility(View.GONE);
-                        publisherNameTitle.setVisibility(View.GONE);
-                        yearNumberTitle.setVisibility(View.GONE);
-                        pageNumberTitle.setVisibility(View.GONE);
-                    }
+                    setQuoteCategory(currentCategory, element);
+                    setQuoteCreationDate(quoteCreationDate, element);
+                    hideFieldForMyQuotes(rootView);
                 }
             }
         });
         return rootView;
     }
 
+    private void setQuoteCategory(TextView currentCategory, RealmResults<QuoteText> element) {
+        mCurrentCategory = element.first().getCategory().getCategoryName();
+        currentCategory.setText(element.first().getCategory().getCategoryName());
+        currentCategory.setAllCaps(true);
+    }
+
+    private void setQuoteCreationDate(TextView quoteCreationDate, RealmResults<QuoteText> element) {
+        quoteCreationDate.setText(element.first().getDate().getQuoteDateValue());
+    }
+
+    private void hideFieldForMyQuotes(View rootView) {
+        if (mQuoteType.equals(Types.MY_QUOTE)) {
+            LinearLayout quoteAuthorTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_quote_author_title);
+            LinearLayout bookNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_book_name_title);
+            LinearLayout publisherNameTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_publisher_name_title);
+            LinearLayout yearNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_year_number_title);
+            LinearLayout pageNumberTitle = (LinearLayout) rootView.findViewById(R.id.linear_layout_page_number_title);
+            quoteAuthorTitle.setVisibility(View.GONE);
+            bookNameTitle.setVisibility(View.GONE);
+            publisherNameTitle.setVisibility(View.GONE);
+            yearNumberTitle.setVisibility(View.GONE);
+            pageNumberTitle.setVisibility(View.GONE);
+        }
+    }
+
     public static CurrentQuoteFragment newInstance(Long currentQuoteTextId, String quoteType) {
         Bundle args = new Bundle();
-        args.putSerializable(CURRENT_QUOTE_ID_NEW_INSTANCE_CQF, currentQuoteTextId);
-        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE_CQF, quoteType);
+        args.putSerializable(CURRENT_QUOTE_ID_NEW_INSTANCE, currentQuoteTextId);
+        args.putSerializable(CURRENT_QUOTE_TYPE_NEW_INSTANCE, quoteType);
         CurrentQuoteFragment fragment = new CurrentQuoteFragment();
         fragment.setArguments(args);
         return fragment;
@@ -113,16 +127,24 @@ public class CurrentQuoteFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.menu_current_quote, menu);
+        setShareAction(menu);
+        setDeleteMenuVisibility(menu);
+    }
+
+    private void setShareAction(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_item_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
         sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String quoteTextForShareBody = mCurrentQuoteObjectList.first().getQuoteText();
+        String quoteTextForShareBody = mCurrentQuote.first().getQuoteText();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(sharingIntent);
         }
+    }
+
+    private void setDeleteMenuVisibility(Menu menu) {
         if (getActivity().findViewById(R.id.detail_fragment_container) != null) {
             MenuItem itemDeleteQuote = menu.findItem(R.id.delete_quote);
             itemDeleteQuote.setVisible(false);
@@ -143,7 +165,6 @@ public class CurrentQuoteFragment extends Fragment {
     }
 
     private void openDeleteQuoteDialog() {
-        // Create dialog for delete current quote
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View dialogView = layoutInflater.inflate(R.layout.dialog_delete, null);
         TextView deleteDialogTitle = (TextView) dialogView.findViewById(R.id.dialog_delete_title);
@@ -155,7 +176,7 @@ public class CurrentQuoteFragment extends Fragment {
                 .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                mQuoteDataRepository.deleteQuoteByIdFromDb(mCurrentQuoteTextId, mQuoteType);
+                                mQuoteDataRepository.deleteQuoteByIdFromDb(mCurrentQuoteId, mQuoteType);
                                 getActivity().finish();
                             }
                         })
@@ -172,7 +193,7 @@ public class CurrentQuoteFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString(QUOTE_TYPE_BUNDLE_CQF, mQuoteType);
-        outState.putLong(QUOTE_ID_BUNDLE_CQF, mCurrentQuoteTextId);
+        outState.putString(QUOTE_TYPE_BUNDLE, mQuoteType);
+        outState.putLong(QUOTE_ID_BUNDLE, mCurrentQuoteId);
     }
 }
