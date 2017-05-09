@@ -15,7 +15,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".quote.activities.AddQuoteActivity" />
+        <activity android:name=".quote.activities.AddQuoteActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity
             android:name=".quote.activities.AllQuoteCurrentCategoryActivity"
             android:launchMode="singleTop"
