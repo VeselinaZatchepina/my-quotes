@@ -12,4 +12,10 @@
     
 <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/my_main.png" width="250px" hspace="15" /> <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/my_current_quote.png" width="250px" hspace="15" /> <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/me_edit_quote.png" width="250px" hspace="15" />
 
+<p> Приложение можно использовать на планшетах.</p>
+
+<img src="https://github.com/VeselinaZatchepina/my-quote/blob/master/screenshots/tablet_main.png" width="400px" hspace="15" /><img src="https://github.com/VeselinaZatchepina/my-quote/blob/master/screenshots/tablet_add_quote.png" width="400px" hspace="15" />
+
+<p>Поддерживаемые языки: русский, английский.</p>
+
 <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/icon.png" width="100px" hspace="15"/>
