@@ -349,14 +349,14 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
             mDialogBuilder.setView(dialogView);
             mDialogBuilder
                     .setCancelable(false)
-                    .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                    .setPositiveButton(getString(R.string.dialog_ok_button),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     mQuoteDataRepository.deleteQuoteByIdFromDb(mCurrentId, mQuoteType);
                                     showSnackbar();
                                 }
                             })
-                    .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                    .setNegativeButton(getString(R.string.dialog_cancel_button),
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
