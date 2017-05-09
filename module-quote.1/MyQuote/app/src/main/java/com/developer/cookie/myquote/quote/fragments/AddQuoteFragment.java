@@ -73,8 +73,6 @@ public class AddQuoteFragment extends Fragment {
     private RealmResults<QuoteText> mQuoteTexts;
     public AlertDialog mAlertDialog;
     private Long mQuoteIdForEdit;
-    private String mCurrentQuoteCategory;
-    private QuoteText mQuote;
     private String mQuoteType;
 
     private TextInputLayout mQuoteTextInputLayout;
@@ -140,22 +138,22 @@ public class AddQuoteFragment extends Fragment {
     private void initViews(View rootView) {
         mQuoteTextInputLayout = (TextInputLayout) rootView.findViewById(R.id.quote_text_input_layout);
         mAuthorNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.author_name_input_layout);
+        mPageNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.page_number_input_layout);
+        mYearNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.year_number_input_layout);
+        mBookNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.book_name_input_layout);
+        mPublisherNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.publisher_name_input_layout);
         mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-        mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
-        mBookName = (EditText) rootView.findViewById(R.id.book_name);
-        mAuthorName = (EditText) rootView.findViewById(R.id.author_name);
-        mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
-        mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
-        mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
+        mQuoteText = mQuoteTextInputLayout.getEditText();
+        mBookName = mBookNameInputLayout.getEditText();
+        mAuthorName = mAuthorNameInputLayout.getEditText();
+        mPageNumber = mPageNumberInputLayout.getEditText();
+        mYearNumber = mYearNumberInputLayout.getEditText();
+        mPublishName = mPublisherNameInputLayout.getEditText();
     }
 
     private void hideFieldForMyQuotes(View rootView) {
         if (isAdded()) {
             if (mQuoteType.equals(Types.MY_QUOTE)) {
-                mBookNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.book_name_input_layout);
-                mPageNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.page_number_input_layout);
-                mYearNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.year_number_input_layout);
-                mPublisherNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.publisher_name_input_layout);
                 mBookNameInputLayout.setVisibility(View.GONE);
                 mAuthorNameInputLayout.setVisibility(View.GONE);
                 mPageNumberInputLayout.setVisibility(View.GONE);
@@ -223,10 +221,10 @@ public class AddQuoteFragment extends Fragment {
     }
 
     private void setSpinnerSelectionOnCurrentCategory(RealmResults<QuoteText> element) {
-        mQuote = element.first();
-        mCurrentQuoteCategory = mQuote.getCategory().getCategoryName();
+        QuoteText quote = element.first();
+        String currentQuoteCategory = quote.getCategory().getCategoryName();
         if (mAllCategories != null && !mAllCategories.isEmpty()) {
-            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentQuoteCategory.toUpperCase()));
+            mSpinner.setSelection(mSpinnerAdapter.getPosition(currentQuoteCategory.toUpperCase()));
         }
     }
 
@@ -360,6 +358,20 @@ public class AddQuoteFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public boolean isNumbersPositive() {
+        return isCurrentNumberPositive(mPageNumber, mPageNumberInputLayout) &&
+                isCurrentNumberPositive(mYearNumber, mYearNumberInputLayout);
+    }
+
+    private boolean isCurrentNumberPositive(EditText editText, TextInputLayout textInputLayout) {
+        String currentValue = editText.getText().toString();
+        if (!currentValue.isEmpty() && !currentValue.equals(getString(R.string.default_value)) && Integer.valueOf(currentValue) < 0) {
+            textInputLayout.setError(getString(R.string.page_number_error));
+            return false;
+        }
+        return true;
     }
 
     /**

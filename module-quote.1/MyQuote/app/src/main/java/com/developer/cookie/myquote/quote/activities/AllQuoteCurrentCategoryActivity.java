@@ -21,8 +21,8 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "all_quote_current_category_activity_current_fragment_tag_bundle";
     private static final String DETAIL_FRAGMENT_TAG_BUNDLE = "all_quote_current_category_activity_detail_fragment_tag_bundle";
     private Fragment mMainFragment;
-    Fragment mDetailFragment;
-    String mCategoryName;
+    private Fragment mDetailFragment;
+    private String mCategoryName;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {

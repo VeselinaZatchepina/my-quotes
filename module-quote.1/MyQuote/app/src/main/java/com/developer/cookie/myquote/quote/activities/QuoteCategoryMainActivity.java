@@ -20,18 +20,16 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
     private static final String MAIN_FRAGMENT_TAG_BUNDLE = "quote_category_main_activity_main_fragment_tag_bundle";
     private static final String QUOTE_TYPE_BUNDLE = "quote_category_main_activity_main_quote type_bundle";
     private static final String CURRENT_ID_BUNDLE = "quote_category_main_activity_main_current_id_bundle";
-    Fragment mMainFragment;
-    FloatingActionButton mFab;
-    int fabImageResourceId = setFabImageResourceId();
-    String mTitle;
-    long mCurrentId;
-    String mQuoteType;
+    private Fragment mMainFragment;
+    private int mFabImageResourceId = setFabImageResourceId();
+    private String mTitle;
+    private long mCurrentId;
+    private String mQuoteType;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
         if (saveInstanceState != null) {
             mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, MAIN_FRAGMENT_TAG_BUNDLE);
-
             mTitle = saveInstanceState.getString(QUOTE_TYPE_BUNDLE);
             mCurrentId = saveInstanceState.getLong(CURRENT_ID_BUNDLE);
         } else if (getIntent().getStringExtra(QUOTE_TYPE_INTENT) != null) {
@@ -44,11 +42,7 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
     }
 
     private void defineQuoteType() {
-        if (mTitle.equals(Types.BOOK_QUOTE)) {
-            mQuoteType = Types.BOOK_QUOTE;
-        } else {
-            mQuoteType = Types.MY_QUOTE;
-        }
+        mQuoteType = mTitle.equals(Types.BOOK_QUOTE) ? Types.BOOK_QUOTE : Types.MY_QUOTE;
     }
 
     @Override
@@ -70,9 +64,9 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
 
     @Override
     public void defineFab() {
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        setFabBackgroundImage(mFab, fabImageResourceId);
-        mFab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        setFabBackgroundImage(fab, mFabImageResourceId);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 defineActionWhenFabIsPressed();

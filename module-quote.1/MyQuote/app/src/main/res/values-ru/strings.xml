@@ -9,6 +9,9 @@
     <string name="title_empty_view_push">Нажмите</string>
     <string name="title_empty_view_button">кнопку</string>
 
+    <!-- AddQuoteActivity-->
+    <string name="toast_choose_category">Выберите категорию цитаты</string>
+
     <!-- AddQuoteFragment-->
     <string name="hint_quote_text">Текст цитаты</string>
     <string name="hint_book_name">Название книги</string>
@@ -21,6 +24,8 @@
     <string name="spinner_label">Категория</string>
     <string name="quote_text_empty_error">Введите текст цитаты</string>
     <string name="author_name_empty_error">Введите имя автора</string>
+    <string name="page_number_error">Введите положительное число</string>
+    <string name="year_number_error">Введите положительное число</string>
 
     <!-- Add category dialog -->
     <string name="dialog_add_category_title">Введите название категории</string>
@@ -69,5 +74,11 @@
     <string name="other_action">или просто нажмите кнопку</string>
     <string name="idea_button_text">Получить идею!</string>
     <string name="idea_title">Get idea</string>
+    <string name="idea_toast">У вас нет цитат с данным запросом</string>
+
+    <!-- Snackbar -->
+    <string name="quote_is_deleted">Цитата удалена!</string>
+    <string name="quote_category">"Выбранная категория "</string>
+    <string name="is_deleted">" удалена!"</string>
 
 </resources>

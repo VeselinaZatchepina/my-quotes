@@ -47,18 +47,17 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     private static final String QUOTE_TYPE_NEW_INSTANCE = "all_quote_current_category_fragment_quote_type_new_instance";
     private static final String QUOTE_SEARCH_BUNDLE = "all_quote_current_category_fragment_quote_search_bundle";
     private AllQuoteCurrentCategoryCallbacks mCallbacks;
-    String mCategoryName;
-    String mQuoteType;
-    QuoteDataRepository mQuoteDataRepository;
-    RealmResults<QuoteText> mQuoteTexts;
-    ArrayList<Long> mListOfQuotesId;
-    List<String> mCurrentCategoryQuoteTexts;
-    RecyclerView mRecyclerView;
-    AllQuoteCurrentCategoryRecyclerViewAdapter mRecyclerViewAdapter;
-    String mSortedBy;
-    long mCurrentId;
-    SearchView mSearchView;
-    String mSearchText;
+    private String mCategoryName;
+    private String mQuoteType;
+    private QuoteDataRepository mQuoteDataRepository;
+    private RealmResults<QuoteText> mQuoteTexts;
+    private ArrayList<Long> mListOfQuotesId;
+    private List<String> mCurrentCategoryQuoteTexts;
+    private AllQuoteCurrentCategoryRecyclerViewAdapter mRecyclerViewAdapter;
+    private String mSortedBy;
+    private long mCurrentId;
+    private SearchView mSearchView;
+    private String mSearchText;
 
     public AllQuoteCurrentCategoryFragment() { }
 
@@ -125,10 +124,10 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
     }
 
     private void defineRecyclerView(View rootView) {
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerViewAdapter = new AllQuoteCurrentCategoryRecyclerViewAdapter(mCurrentCategoryQuoteTexts);
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        recyclerView.setAdapter(mRecyclerViewAdapter);
     }
 
     private void setFirstCurrentQuoteForTablet(RealmResults<QuoteText> realmResults) {
@@ -368,7 +367,7 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
 
         private void showSnackbar() {
             final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-            Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote is deleted!", Snackbar.LENGTH_LONG);
+            Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.quote_is_deleted), Snackbar.LENGTH_LONG);
             snackbarIsDeleted.show();
         }
 

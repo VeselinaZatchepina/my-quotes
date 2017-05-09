@@ -35,11 +35,11 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     private static final String QUOTE_TYPE_PAGER_FOR_SAVE = "current_quote_pager_activity_quote_type_pager_for_save";
     private static final String QUOTE_ID_LIST_FOR_SAVE = "current_quote_pager_activity_quote_id_list_for_save";
     private static final String QUOTE_ID_FOR_SAVE = "current_quote_pager_activity_quote_id_for_save";
-    ArrayList<Long> mQuoteIds;
-    long mCurrentQuoteTextId;
-    long mQuoteTextIdForIntent;
-    String mQuoteType;
-    Fragment mCurrentFragment;
+    private ArrayList<Long> mQuoteIds;
+    private long mCurrentQuoteTextId;
+    private long mQuoteTextIdForIntent;
+    private String mQuoteType;
+    private Fragment mCurrentFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

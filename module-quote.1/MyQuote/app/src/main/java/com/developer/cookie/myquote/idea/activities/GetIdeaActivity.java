@@ -21,8 +21,6 @@ import java.util.ArrayList;
  * GetIdeaActivity helps to generate random quotes from db or show quotes by input subject
  */
 public class GetIdeaActivity extends NavigationAbstractActivity implements GetIdeaFragment.GetIdeaCallbacks {
-    Fragment mMainFragment;
-    Fragment mDetailFragment;
 
     @Override
     public void defineInputData(Bundle savedInstanceState) {
@@ -37,7 +35,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     @Override
     public void defineFragment() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        mMainFragment = fragmentManager.findFragmentById(R.id.container);
+        Fragment mMainFragment = fragmentManager.findFragmentById(R.id.container);
         if (mMainFragment == null) {
             mMainFragment = new GetIdeaFragment();
             fragmentManager.beginTransaction()
@@ -59,7 +57,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
     @Override
     public void generateIdea(ArrayList<String> listOfQuoteText) {
         if (findViewById(R.id.detail_fragment_container) != null) {
-            mDetailFragment = IdeaCoincideQuoteTextFragment.newInstance(listOfQuoteText);
+            Fragment mDetailFragment = IdeaCoincideQuoteTextFragment.newInstance(listOfQuoteText);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.detail_fragment_container, mDetailFragment)
@@ -68,7 +66,7 @@ public class GetIdeaActivity extends NavigationAbstractActivity implements GetId
             if (listOfQuoteText.size() != 0) {
                 startActivity(IdeaCoincideQuoteTextActivity.newIntent(this, listOfQuoteText));
             } else {
-                Toast.makeText(this, "You have no quote with this subject", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, getString(R.string.idea_toast), Toast.LENGTH_LONG).show();
             }
         }
     }

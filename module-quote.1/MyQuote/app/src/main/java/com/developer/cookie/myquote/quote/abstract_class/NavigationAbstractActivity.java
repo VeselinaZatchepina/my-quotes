@@ -23,6 +23,7 @@ import android.view.WindowManager;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.idea.activities.GetIdeaActivity;
+import com.developer.cookie.myquote.quote.Types;
 import com.developer.cookie.myquote.quote.activities.AddQuoteActivity;
 import com.developer.cookie.myquote.quote.activities.QuoteCategoryMainActivity;
 import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
@@ -32,6 +33,7 @@ import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
  */
 public abstract class NavigationAbstractActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private DrawerLayout mDrawer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,10 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.drawer_open, R.string.drawer_close);
-        drawer.setDrawerListener(toggle);
+                this, mDrawer, toolbar, R.string.drawer_open, R.string.drawer_close);
+        mDrawer.setDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -126,9 +128,9 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (mDrawer.isDrawerOpen(GravityCompat.START)) {
+            mDrawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
         }
@@ -137,19 +139,21 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.nav_book_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, "Book quote");
-            startActivity(intent);
-        } else if (id == R.id.nav_my_quote) {
-            Intent intent = QuoteCategoryMainActivity.newIntent(this, "My quote");
-            startActivity(intent);
-        } else if (id == R.id.nav_get_idea) {
-            Intent intent = GetIdeaActivity.newIntent(this);
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.nav_book_quote:
+                intent = QuoteCategoryMainActivity.newIntent(this, Types.BOOK_QUOTE);
+                break;
+            case R.id.nav_my_quote:
+                intent = QuoteCategoryMainActivity.newIntent(this, Types.MY_QUOTE);
+                break;
+            case R.id.nav_get_idea:
+                intent = GetIdeaActivity.newIntent(this);
+                break;
+        }
+        if (intent != null) {
             startActivity(intent);
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 }
