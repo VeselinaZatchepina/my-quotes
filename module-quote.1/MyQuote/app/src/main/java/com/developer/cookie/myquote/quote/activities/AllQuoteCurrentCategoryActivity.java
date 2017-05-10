@@ -13,8 +13,6 @@ import com.developer.cookie.myquote.quote.abstract_class.SingleFragmentAbstractA
 import com.developer.cookie.myquote.quote.fragments.AllQuoteCurrentCategoryFragment;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 
-import java.util.ArrayList;
-
 public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActivity implements AllQuoteCurrentCategoryFragment.AllQuoteCurrentCategoryCallbacks {
     private static final String QUOTE_CATEGORY_INTENT = "all_quote_current_category_activity_quote_category_intent";
     private static final String QUOTE_TYPE_INTENT = "all_quote_current_category_activity_quote_type_intent";
@@ -89,8 +87,10 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mMainFragment);
-        if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null) {
+        if (mMainFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mMainFragment);
+        }
+        if (findViewById(R.id.detail_fragment_container) != null && mDetailFragment != null && mDetailFragment.isAdded()) {
             getSupportFragmentManager().putFragment(outState, DETAIL_FRAGMENT_TAG_BUNDLE, mDetailFragment);
         }
         outState.putString(QUOTE_TYPE_INTENT, mQuotesType);
@@ -98,9 +98,9 @@ public class AllQuoteCurrentCategoryActivity extends SingleFragmentAbstractActiv
     }
 
     @Override
-    public void onQuoteSelected(ArrayList<Long> listOfQuotesId, final Long currentId) {
+    public void onQuoteSelected(long currentId) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = CurrentQuotePagerActivity.newIntent(this, listOfQuotesId, currentId, mQuotesType);
+            Intent intent = CurrentQuotePagerActivity.newIntent(this, mCategoryName, currentId, mQuotesType);
             startActivity(intent);
         } else {
             defineDetailFragment(currentId);

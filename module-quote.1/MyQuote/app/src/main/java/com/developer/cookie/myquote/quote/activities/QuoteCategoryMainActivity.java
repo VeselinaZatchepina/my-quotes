@@ -82,7 +82,9 @@ public class QuoteCategoryMainActivity extends NavigationAbstractActivity implem
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        getSupportFragmentManager().putFragment(outState, MAIN_FRAGMENT_TAG_BUNDLE, mMainFragment);
+        if (mMainFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, MAIN_FRAGMENT_TAG_BUNDLE, mMainFragment);
+        }
         outState.putString(QUOTE_TYPE_BUNDLE, mTitle);
         outState.putLong(CURRENT_ID_BUNDLE, mCurrentId);
         super.onSaveInstanceState(outState);

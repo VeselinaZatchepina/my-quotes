@@ -81,7 +81,9 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        if (mCurrentFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        }
         outState.putString(QUOTE_TYPE_BUNDLE, mQuotesType);
     }
 

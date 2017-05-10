@@ -19,27 +19,32 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.developer.cookie.myquote.R;
+import com.developer.cookie.myquote.database.QuoteDataRepository;
+import com.developer.cookie.myquote.database.model.QuoteText;
 import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
 import com.developer.cookie.myquote.utils.ColorationTextChar;
 
-import java.util.ArrayList;
 import java.util.Locale;
+
+import io.realm.RealmChangeListener;
+import io.realm.RealmResults;
 
 public class CurrentQuotePagerActivity extends AppCompatActivity {
     private static final String LOG_TAG = CurrentQuotePagerActivity.class.getSimpleName();
-    private static final String QUOTE_ID_LIST_INTENT = "current_quote_pager_activity_quote_id_list_intent";
+    private static final String QUOTE_CATEGORY_INTENT = "current_quote_pager_activity_quote_id_list_intent";
     private static final String CURRENT_ID_INTENT = "current_quote_pager_activity_current_id_intent";
-    private static final String QUOTE_TYPE_INTENT = "current_quote_pager_activity_quote_type_intent";
+    private static final String QUOTE_TYPE_INTENT = "current_quote_pager_activity_quote_category_intent";
     private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "current_quote_pager_activity_current_fragmet_tag_bundle";
     private static final String QUOTE_TYPE_PAGER_FOR_SAVE = "current_quote_pager_activity_quote_type_pager_for_save";
-    private static final String QUOTE_ID_LIST_FOR_SAVE = "current_quote_pager_activity_quote_id_list_for_save";
+    private static final String QUOTE_CATEGORY_FOR_SAVE = "current_quote_pager_activity_quote_category_for_save";
     private static final String QUOTE_ID_FOR_SAVE = "current_quote_pager_activity_quote_id_for_save";
-    private ArrayList<Long> mQuoteIds;
+    private RealmResults<QuoteText> mQuotes;
     private long mCurrentQuoteTextId;
     private long mQuoteTextIdForIntent;
     private String mQuoteType;
-    private Fragment mCurrentFragment;
+    private Fragment mMainFragment;
+    private String mCurrentCategory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,21 +54,28 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         defineToolbar();
         setAppBarNotExpandable();
         setNewTitleStyle();
-        defineViewPager();
+        mQuotes.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
+            @Override
+            public void onChange(RealmResults<QuoteText> element) {
+                defineViewPager(element);
+            }
+        });
         defineFab();
     }
 
     private void defineInputData(Bundle saveInstanceState) {
         if (saveInstanceState != null) {
-            mCurrentFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
+            mMainFragment = getSupportFragmentManager().getFragment(saveInstanceState, CURRENT_FRAGMENT_TAG_BUNDLE);
             mQuoteType = saveInstanceState.getString(QUOTE_TYPE_PAGER_FOR_SAVE);
-            mQuoteIds = (ArrayList<Long>) saveInstanceState.getSerializable(QUOTE_ID_LIST_FOR_SAVE);
+            mCurrentCategory = saveInstanceState.getString(QUOTE_CATEGORY_FOR_SAVE);
             mCurrentQuoteTextId = saveInstanceState.getLong(QUOTE_ID_FOR_SAVE);
         } else {
             mQuoteType = getIntent().getStringExtra(QUOTE_TYPE_INTENT);
-            mQuoteIds = (ArrayList<Long>) getIntent().getSerializableExtra(QUOTE_ID_LIST_INTENT);
+            mCurrentCategory = getIntent().getStringExtra(QUOTE_CATEGORY_INTENT);
             mCurrentQuoteTextId = (long) getIntent().getSerializableExtra(CURRENT_ID_INTENT);
         }
+        QuoteDataRepository quoteDataRepository = new QuoteDataRepository();
+        mQuotes = quoteDataRepository.getListOfQuotesByCategory(mCurrentCategory, mQuoteType);
     }
 
     private void defineToolbar() {
@@ -89,35 +101,35 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
     }
 
-    private void defineViewPager() {
+    private void defineViewPager(final RealmResults<QuoteText> element) {
         ViewPager viewPager = (ViewPager) findViewById(R.id.quote_pager);
         FragmentManager fragmentManager = getSupportFragmentManager();
         viewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
             @Override
             public Fragment getItem(int position) {
-                mCurrentFragment = CurrentQuoteFragment.newInstance(mQuoteIds.get(position), mQuoteType);
-                return mCurrentFragment;
+                mMainFragment = CurrentQuoteFragment.newInstance(element.get(position).getId(), mQuoteType);
+                return mMainFragment;
             }
 
             @Override
             public int getCount() {
-                return mQuoteIds.size();
+                return element.size();
             }
         });
-        setViewPagerOnClickedQuotePosition(viewPager);
-        setViewPagerOnPageChangeListener(viewPager);
+        setViewPagerOnClickedQuotePosition(viewPager, element);
+        setViewPagerOnPageChangeListener(viewPager, element);
     }
 
-    private void setViewPagerOnClickedQuotePosition(ViewPager viewPager) {
-        for (int i = 0; i < mQuoteIds.size(); i++) {
-            if (mQuoteIds.get(i) == mCurrentQuoteTextId) {
+    private void setViewPagerOnClickedQuotePosition(ViewPager viewPager, RealmResults<QuoteText> element) {
+        for (int i = 0; i < element.size(); i++) {
+            if (element.get(i).getId() == mCurrentQuoteTextId) {
                 viewPager.setCurrentItem(i);
-                mQuoteTextIdForIntent = mQuoteIds.get(viewPager.getCurrentItem());
+                mQuoteTextIdForIntent = element.get(viewPager.getCurrentItem()).getId();
             }
         }
     }
 
-    private void setViewPagerOnPageChangeListener(ViewPager viewPager) {
+    private void setViewPagerOnPageChangeListener(ViewPager viewPager, final RealmResults<QuoteText> element) {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -125,7 +137,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                mQuoteTextIdForIntent = mQuoteIds.get(position);
+                mQuoteTextIdForIntent = element.get(position).getId();
             }
 
             @Override
@@ -145,9 +157,9 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
         });
     }
 
-    public static Intent newIntent(Context context, ArrayList<Long> quoteList, long currentId, String quoteType) {
+    public static Intent newIntent(Context context, String currentCategory, long currentId, String quoteType) {
         Intent intent = new Intent(context, CurrentQuotePagerActivity.class);
-        intent.putExtra(QUOTE_ID_LIST_INTENT, quoteList);
+        intent.putExtra(QUOTE_CATEGORY_INTENT, currentCategory);
         intent.putExtra(CURRENT_ID_INTENT, currentId);
         intent.putExtra(QUOTE_TYPE_INTENT, quoteType);
         return intent;
@@ -156,9 +168,11 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        if (mMainFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mMainFragment);
+        }
         outState.putString(QUOTE_TYPE_PAGER_FOR_SAVE, mQuoteType);
-        outState.putSerializable(QUOTE_ID_LIST_FOR_SAVE, mQuoteIds);
+        outState.putString(QUOTE_CATEGORY_FOR_SAVE, mCurrentCategory);
         outState.putLong(QUOTE_ID_FOR_SAVE, mCurrentQuoteTextId);
     }
 }
