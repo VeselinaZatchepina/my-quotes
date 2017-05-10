@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.developer.cookie.myquote.R;
 import com.developer.cookie.myquote.database.QuoteDataRepository;
@@ -114,6 +115,15 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
             @Override
             public int getCount() {
                 return element.size();
+            }
+
+            @Override
+            public void finishUpdate(ViewGroup container) {
+                try{
+                    super.finishUpdate(container);
+                } catch (NullPointerException nullPointerException){
+                    System.out.println("Catch the NullPointerException in FragmentPagerAdapter.finishUpdate");
+                }
             }
         });
         setViewPagerOnClickedQuotePosition(viewPager, element);
