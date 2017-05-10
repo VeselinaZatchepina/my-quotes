@@ -70,24 +70,12 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
         private static final int NOT_EMPTY_LIST = 1;
         private List<String> currentQuoteList;
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        class MyViewHolder extends RecyclerView.ViewHolder {
             TextView currentQuote;
 
             MyViewHolder(View container) {
                 super(container);
                 currentQuote = (TextView) container.findViewById(R.id.current_quote);
-                container.setOnClickListener(this);
-                container.setOnLongClickListener(this);
-            }
-
-            @Override
-            public void onClick(View view) {
-
-            }
-
-            @Override
-            public boolean onLongClick(View view) {
-                return true;
             }
         }
 
