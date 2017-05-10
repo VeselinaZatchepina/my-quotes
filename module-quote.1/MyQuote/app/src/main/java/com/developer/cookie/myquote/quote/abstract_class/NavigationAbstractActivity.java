@@ -37,6 +37,7 @@ public abstract class NavigationAbstractActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         defineInputData(savedInstanceState);
         setContentView(getLayoutResId());
