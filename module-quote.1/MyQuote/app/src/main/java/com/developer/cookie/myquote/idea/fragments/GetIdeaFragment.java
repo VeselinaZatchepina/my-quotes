@@ -24,15 +24,13 @@ import io.realm.RealmResults;
 
 public class GetIdeaFragment extends Fragment {
     private static final String LOG_TAG = GetIdeaFragment.class.getSimpleName();
-    QuoteDataRepository mQuoteDataRepository;
-    RealmResults<QuoteText> mQuoteTexts;
-    ArrayList<String> mCoincideQuoteTexts;
-    View mRootView;
-    List<Integer> mRandomList;
-    GetIdeaCallbacks mCallbacks;
+    private QuoteDataRepository mQuoteDataRepository;
+    private RealmResults<QuoteText> mQuoteTexts;
+    private View mRootView;
+    private List<Integer> mRandomList;
+    private GetIdeaCallbacks mCallbacks;
 
-    public GetIdeaFragment() {
-    }
+    public GetIdeaFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,38 +53,36 @@ public class GetIdeaFragment extends Fragment {
         return mRootView;
     }
 
-    //TODO сделать более эффективный запрос в бд (чтобы получать не все записи сразу)
-
     /**
      * Method creates list of quote text which coincide with user subject input.
      */
     private void getListOfCoincideQuoteText() {
         final EditText subjectEditText = (EditText) mRootView.findViewById(R.id.subject_text);
         String currentSubject = subjectEditText.getText().toString().toLowerCase();
-        mCoincideQuoteTexts = new ArrayList<String>();
+        ArrayList<String> coincideQuoteTexts = new ArrayList<String>();
         if (mQuoteTexts.load()) {
             createRandomNumbers(mQuoteTexts.size());
             int countOfCoincideQuoteText = 0;
             for (int i = 0; i < mQuoteTexts.size(); i++) {
                 if (countOfCoincideQuoteText == 5) {
-                    mCallbacks.generateIdea(mCoincideQuoteTexts);
+                    mCallbacks.generateIdea(coincideQuoteTexts);
                     return;
                 }
                 int randomVariable = mRandomList.get(i);
                 String currentQuoteText = mQuoteTexts.get(randomVariable).getQuoteText();
                 if (TextUtils.isEmpty(currentSubject)) {
-                    if (!mCoincideQuoteTexts.contains(currentQuoteText)) {
-                        mCoincideQuoteTexts.add(currentQuoteText);
+                    if (!coincideQuoteTexts.contains(currentQuoteText)) {
+                        coincideQuoteTexts.add(currentQuoteText);
                         countOfCoincideQuoteText++;
                     }
                 } else {
-                    if (currentQuoteText.toLowerCase().contains(currentSubject) && !mCoincideQuoteTexts.contains(currentQuoteText)) {
-                        mCoincideQuoteTexts.add(currentQuoteText);
+                    if (currentQuoteText.toLowerCase().contains(currentSubject) && !coincideQuoteTexts.contains(currentQuoteText)) {
+                        coincideQuoteTexts.add(currentQuoteText);
                         countOfCoincideQuoteText++;
                     }
                 }
             }
-            mCallbacks.generateIdea(mCoincideQuoteTexts);
+            mCallbacks.generateIdea(coincideQuoteTexts);
         }
     }
 
@@ -106,6 +102,12 @@ public class GetIdeaFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mCallbacks = null;
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mQuoteTexts.removeAllChangeListeners();
     }
 
     @Override

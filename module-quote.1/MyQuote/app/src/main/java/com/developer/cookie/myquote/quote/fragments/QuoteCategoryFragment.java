@@ -33,15 +33,13 @@ public class QuoteCategoryFragment extends Fragment {
     private static final String LOG_TAG = QuoteCategoryFragment.class.getSimpleName();
     private static final String QUOTE_TYPE_BUNDLE = "quote_category_fragment_quote_type_bundle";
     private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE = "quote_category_fragment_current_quote_type_new_instance";
-    QuoteDataRepository mQuoteDataRepository;
-    QuoteCategoryRecyclerViewAdapter mQuoteCategoryRecyclerViewAdapter;
-    RealmResults<QuoteCategory> mQuoteCategoryResults;
-    String mQuoteType;
-    String mCategoryForDelete;
+    private QuoteDataRepository mQuoteDataRepository;
+    private RealmResults<QuoteCategory> mQuoteCategoryResults;
+    private String mQuoteType;
+    private String mCategoryForDelete;
     private QuoteCategoryCallbacks mCallbacks;
 
-    public QuoteCategoryFragment() {
-    }
+    public QuoteCategoryFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,10 +72,10 @@ public class QuoteCategoryFragment extends Fragment {
     }
 
     private void defineRecyclerView(View rootView) {
-        mQuoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(getActivity(), mQuoteCategoryResults, true);
+        QuoteCategoryRecyclerViewAdapter quoteCategoryRecyclerViewAdapter = new QuoteCategoryRecyclerViewAdapter(getActivity(), mQuoteCategoryResults, true);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mQuoteCategoryRecyclerViewAdapter);
+        recyclerView.setAdapter(quoteCategoryRecyclerViewAdapter);
     }
 
     public static QuoteCategoryFragment newInstance(String quoteType) {
@@ -157,11 +155,7 @@ public class QuoteCategoryFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (mData.isEmpty()) {
-                return EMPTY_LIST;
-            } else {
-                return NOT_EMPTY_LIST;
-            }
+            return mData.isEmpty() ? EMPTY_LIST : NOT_EMPTY_LIST;
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
@@ -199,14 +193,14 @@ public class QuoteCategoryFragment extends Fragment {
                 mDialogBuilder.setView(dialogView);
                 mDialogBuilder
                         .setCancelable(false)
-                        .setPositiveButton(getResources().getString(R.string.dialog_ok_button),
+                        .setPositiveButton(getString(R.string.dialog_ok_button),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         mQuoteDataRepository.deleteAllQuotesWithCurrentCategory(mCategoryForDelete, mQuoteType);
                                         showSnackbar();
                                     }
                                 })
-                        .setNegativeButton(getResources().getString(R.string.dialog_cancel_button),
+                        .setNegativeButton(getString(R.string.dialog_cancel_button),
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
                                         dialog.cancel();
@@ -218,7 +212,8 @@ public class QuoteCategoryFragment extends Fragment {
 
             private void showSnackbar() {
                 final CoordinatorLayout coordinatorLayout = (CoordinatorLayout) getActivity().findViewById(R.id.coordinator_layout);
-                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, "Quote category " + mCategoryForDelete + " is deleted", Snackbar.LENGTH_LONG);
+                Snackbar snackbarIsDeleted = Snackbar.make(coordinatorLayout, getString(R.string.quote_category) +
+                        mCategoryForDelete + getString(R.string.is_deleted), Snackbar.LENGTH_LONG);
                 snackbarIsDeleted.show();
             }
         }

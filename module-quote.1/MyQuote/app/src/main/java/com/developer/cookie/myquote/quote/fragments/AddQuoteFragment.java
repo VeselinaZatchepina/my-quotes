@@ -51,31 +51,39 @@ public class AddQuoteFragment extends Fragment {
     private static final String QUOTE_YEAR_SAVE_INSTANCE = "add_quote_fragment_quote_year_save_instance";
     private static final String QUOTE_PAGE_SAVE_INSTANCE = "add_quote_fragment_quote_page_save_instance";
     private static final String QUOTE_CATEGORY_VALUE_SAVE_INSTANCE = "add_quote_fragment_quote_category_value_save_instance";
-    QuoteDataRepository mQuoteDataRepository;
-    private List<String> mAllCategories;
-    ArrayAdapter<String> mSpinnerAdapter;
-    private String mSelectedValueOfCategory;
-    Spinner mSpinner;
-    String mCurrentQuoteText;
-    String mCurrentBookName;
-    String mCurrentAuthorName;
-    String mCurrentCategory;
-    EditText mQuoteText;
-    EditText mBookName;
-    EditText mAuthorName;
-    EditText mPageNumber;
-    EditText mYearNumber;
-    EditText mPublishName;
-    RealmResults<QuoteCategory> mQuoteCategories;
-    RealmResults<QuoteText> mQuoteTexts;
-    public AlertDialog mAlertDialog;
-    Long mQuoteIdForEdit;
-    String mCurrentQuoteCategory;
-    QuoteText mQuote;
-    String mQuoteType;
 
-    public AddQuoteFragment() {
-    }
+    private QuoteDataRepository mQuoteDataRepository;
+    private List<String> mAllCategories;
+    private ArrayAdapter<String> mSpinnerAdapter;
+    private String mSelectedValueOfCategory;
+    private Spinner mSpinner;
+    private String mCurrentQuoteText;
+    private String mCurrentBookName;
+    private String mCurrentAuthorName;
+    private String mCurrentCategory;
+
+    private EditText mQuoteText;
+    private EditText mBookName;
+    private EditText mAuthorName;
+    private EditText mPageNumber;
+    private EditText mYearNumber;
+    private EditText mPublishName;
+
+    private RealmResults<QuoteCategory> mQuoteCategories;
+    private RealmResults<QuoteText> mQuoteTexts;
+    public AlertDialog mAlertDialog;
+    private Long mQuoteIdForEdit;
+    private String mQuoteType;
+
+    private TextInputLayout mQuoteTextInputLayout;
+    private TextInputLayout mAuthorNameInputLayout;
+    private TextInputLayout mBookNameInputLayout;
+    private TextInputLayout mPageNumberInputLayout;
+    private TextInputLayout mYearNumberInputLayout;
+    private TextInputLayout mPublisherNameInputLayout;
+
+
+    public AddQuoteFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,13 +121,7 @@ public class AddQuoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_add_quote, container, false);
-        mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
-        mQuoteText = (EditText) rootView.findViewById(R.id.quote_text);
-        mBookName = (EditText) rootView.findViewById(R.id.book_name);
-        mAuthorName = (EditText) rootView.findViewById(R.id.author_name);
-        mPageNumber = (EditText) rootView.findViewById(R.id.page_number);
-        mYearNumber = (EditText) rootView.findViewById(R.id.year_number);
-        mPublishName = (EditText) rootView.findViewById(R.id.publish_name);
+        initViews(rootView);
         hideFieldForMyQuotes(rootView);
         mQuoteCategories.addChangeListener(new RealmChangeListener<RealmResults<QuoteCategory>>() {
             @Override
@@ -133,19 +135,30 @@ public class AddQuoteFragment extends Fragment {
         return rootView;
     }
 
+    private void initViews(View rootView) {
+        mQuoteTextInputLayout = (TextInputLayout) rootView.findViewById(R.id.quote_text_input_layout);
+        mAuthorNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.author_name_input_layout);
+        mPageNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.page_number_input_layout);
+        mYearNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.year_number_input_layout);
+        mBookNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.book_name_input_layout);
+        mPublisherNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.publisher_name_input_layout);
+        mSpinner = (Spinner) rootView.findViewById(R.id.category_spinner);
+        mQuoteText = mQuoteTextInputLayout.getEditText();
+        mBookName = mBookNameInputLayout.getEditText();
+        mAuthorName = mAuthorNameInputLayout.getEditText();
+        mPageNumber = mPageNumberInputLayout.getEditText();
+        mYearNumber = mYearNumberInputLayout.getEditText();
+        mPublishName = mPublisherNameInputLayout.getEditText();
+    }
+
     private void hideFieldForMyQuotes(View rootView) {
         if (isAdded()) {
             if (mQuoteType.equals(Types.MY_QUOTE)) {
-                TextInputLayout bookNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.book_name_input_layout);
-                TextInputLayout authorNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.author_name_input_layout);
-                TextInputLayout pageNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.page_number_input_layout);
-                TextInputLayout yearNumberInputLayout = (TextInputLayout) rootView.findViewById(R.id.year_number_input_layout);
-                TextInputLayout publisherNameInputLayout = (TextInputLayout) rootView.findViewById(R.id.publisher_name_input_layout);
-                bookNameInputLayout.setVisibility(View.GONE);
-                authorNameInputLayout.setVisibility(View.GONE);
-                pageNumberInputLayout.setVisibility(View.GONE);
-                yearNumberInputLayout.setVisibility(View.GONE);
-                publisherNameInputLayout.setVisibility(View.GONE);
+                mBookNameInputLayout.setVisibility(View.GONE);
+                mAuthorNameInputLayout.setVisibility(View.GONE);
+                mPageNumberInputLayout.setVisibility(View.GONE);
+                mYearNumberInputLayout.setVisibility(View.GONE);
+                mPublisherNameInputLayout.setVisibility(View.GONE);
             }
         }
     }
@@ -208,10 +221,10 @@ public class AddQuoteFragment extends Fragment {
     }
 
     private void setSpinnerSelectionOnCurrentCategory(RealmResults<QuoteText> element) {
-        mQuote = element.first();
-        mCurrentQuoteCategory = mQuote.getCategory().getCategoryName();
+        QuoteText quote = element.first();
+        String currentQuoteCategory = quote.getCategory().getCategoryName();
         if (mAllCategories != null && !mAllCategories.isEmpty()) {
-            mSpinner.setSelection(mSpinnerAdapter.getPosition(mCurrentQuoteCategory.toUpperCase()));
+            mSpinner.setSelection(mSpinnerAdapter.getPosition(currentQuoteCategory.toUpperCase()));
         }
     }
 
@@ -269,7 +282,7 @@ public class AddQuoteFragment extends Fragment {
         final EditText userInput = (EditText) dialogView.findViewById(R.id.input_text);
         mDialogBuilder
                 .setCancelable(false)
-                .setPositiveButton("OK",
+                .setPositiveButton(getString(R.string.dialog_add_category_ok),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 String currentUserInput = userInput.getText().toString();
@@ -280,7 +293,7 @@ public class AddQuoteFragment extends Fragment {
                                 mSelectedValueOfCategory = currentUserInput;
                             }
                         })
-                .setNegativeButton("CANCEL",
+                .setNegativeButton(getString(R.string.dialog_add_category_cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
@@ -332,19 +345,33 @@ public class AddQuoteFragment extends Fragment {
     public boolean isEditTextEmpty() {
         mCurrentQuoteText = mQuoteText.getText().toString();
         if (TextUtils.isEmpty(mCurrentQuoteText)) {
-            mQuoteText.setError("Quote text cannot be empty");
+            mQuoteTextInputLayout.setError(getString(R.string.quote_text_empty_error));
             return true;
         }
         if (isAdded()) {
-            if (!mQuoteType.equals(getString(R.string.my_quote_type))) {
+            if (!mQuoteType.equals(Types.MY_QUOTE)) {
                 mCurrentAuthorName = mAuthorName.getText().toString();
                 if (TextUtils.isEmpty(mCurrentAuthorName)) {
-                    mAuthorName.setError("Author name cannot be empty");
+                    mAuthorNameInputLayout.setError(getString(R.string.author_name_empty_error));
                     return true;
                 }
             }
         }
         return false;
+    }
+
+    public boolean isNumbersPositive() {
+        return isCurrentNumberPositive(mPageNumber, mPageNumberInputLayout) &&
+                isCurrentNumberPositive(mYearNumber, mYearNumberInputLayout);
+    }
+
+    private boolean isCurrentNumberPositive(EditText editText, TextInputLayout textInputLayout) {
+        String currentValue = editText.getText().toString();
+        if (!currentValue.isEmpty() && !currentValue.equals(getString(R.string.default_value)) && Integer.valueOf(currentValue) < 0) {
+            textInputLayout.setError(getString(R.string.page_number_error));
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -387,7 +414,7 @@ public class AddQuoteFragment extends Fragment {
      */
     private String emptyTextCheck(String currentValue) {
         if (currentValue.isEmpty() || currentValue.equals("")) {
-            currentValue = "-";
+            currentValue = getString(R.string.default_value);
         }
         return currentValue;
     }

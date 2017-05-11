@@ -19,18 +19,15 @@ import java.util.List;
 
 public class IdeaCoincideQuoteTextFragment extends Fragment {
     private static final String QUOTE_TEXT_LIST_NEW_INSTANCE = "idea_coincide_quote_text_fragment_quote_text_list_new_instance";
-    List<String> mCoicideQuoteTexts;
-    RecyclerView mRecyclerView;
-    IdeaCoincideRecyclerViewAdapter mRecyclerViewAdapter;
+    private List<String> mCoincideQuoteTexts;
 
-    public IdeaCoincideQuoteTextFragment() {
-    }
+    public IdeaCoincideQuoteTextFragment() { }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mCoicideQuoteTexts = getArguments().getStringArrayList(QUOTE_TEXT_LIST_NEW_INSTANCE);
+            mCoincideQuoteTexts = getArguments().getStringArrayList(QUOTE_TEXT_LIST_NEW_INSTANCE);
         }
     }
 
@@ -49,10 +46,10 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
     }
 
     private void defineRecyclerView(View rootView) {
-        mRecyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mCoicideQuoteTexts);
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setAdapter(mRecyclerViewAdapter);
+        IdeaCoincideRecyclerViewAdapter recyclerViewAdapter = new IdeaCoincideRecyclerViewAdapter(mCoincideQuoteTexts);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(recyclerViewAdapter);
     }
 
     public static IdeaCoincideQuoteTextFragment newInstance(ArrayList<String> quoteTextList) {
@@ -73,24 +70,12 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
         private static final int NOT_EMPTY_LIST = 1;
         private List<String> currentQuoteList;
 
-        class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
+        class MyViewHolder extends RecyclerView.ViewHolder {
             TextView currentQuote;
 
             MyViewHolder(View container) {
                 super(container);
                 currentQuote = (TextView) container.findViewById(R.id.current_quote);
-                container.setOnClickListener(this);
-                container.setOnLongClickListener(this);
-            }
-
-            @Override
-            public void onClick(View view) {
-
-            }
-
-            @Override
-            public boolean onLongClick(View view) {
-                return true;
             }
         }
 
@@ -141,11 +126,7 @@ public class IdeaCoincideQuoteTextFragment extends Fragment {
 
         @Override
         public int getItemViewType(int position) {
-            if (currentQuoteList.isEmpty()) {
-                return EMPTY_LIST;
-            } else {
-                return NOT_EMPTY_LIST;
-            }
+            return currentQuoteList.isEmpty() ? EMPTY_LIST : NOT_EMPTY_LIST;
         }
 
         /**

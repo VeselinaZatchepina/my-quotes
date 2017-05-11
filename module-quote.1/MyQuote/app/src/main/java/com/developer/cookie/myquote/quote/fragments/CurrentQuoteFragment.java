@@ -35,13 +35,11 @@ public class CurrentQuoteFragment extends Fragment {
     private static final String CURRENT_QUOTE_TYPE_NEW_INSTANCE = "current_quote_fragment_current_quote_type_new_instance";
     private static final String QUOTE_TYPE_BUNDLE = "current_quote_fragment_quote_type_bundle";
     private static final String QUOTE_ID_BUNDLE = "current_quote_fragment_quote_id_bundle";
-    Long mCurrentQuoteId;
-    QuoteDataRepository mQuoteDataRepository;
-    RealmResults<QuoteText> mCurrentQuote;
-    String mCurrentCategory;
-    String mQuoteType;
-    ShareActionProvider mShareActionProvider;
-    Intent sharingIntent;
+    private Long mCurrentQuoteId;
+    private QuoteDataRepository mQuoteDataRepository;
+    private RealmResults<QuoteText> mCurrentQuote;
+    private String mQuoteType;
+    private Intent mSharingIntent;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,16 +80,16 @@ public class CurrentQuoteFragment extends Fragment {
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
                     setQuoteCategory(currentCategory, element);
                     setQuoteCreationDate(quoteCreationDate, element);
-                    hideFieldForMyQuotes(rootView);
                 }
+                hideFieldForMyQuotes(rootView);
             }
         });
         return rootView;
     }
 
     private void setQuoteCategory(TextView currentCategory, RealmResults<QuoteText> element) {
-        mCurrentCategory = element.first().getCategory().getCategoryName();
-        currentCategory.setText(element.first().getCategory().getCategoryName());
+        String categoryValue = element.first().getCategory().getCategoryName();
+        currentCategory.setText(categoryValue);
         currentCategory.setAllCaps(true);
     }
 
@@ -133,14 +131,14 @@ public class CurrentQuoteFragment extends Fragment {
 
     private void setShareAction(Menu menu) {
         MenuItem item = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
-        sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
+        ShareActionProvider shareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(item);
+        mSharingIntent = new Intent(Intent.ACTION_SEND);
+        mSharingIntent.setType("text/plain");
         String quoteTextForShareBody = mCurrentQuote.first().getQuoteText();
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(sharingIntent);
+        mSharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!");
+        mSharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, quoteTextForShareBody);
+        if (shareActionProvider != null) {
+            shareActionProvider.setShareIntent(mSharingIntent);
         }
     }
 
@@ -158,7 +156,7 @@ public class CurrentQuoteFragment extends Fragment {
                 openDeleteQuoteDialog();
                 break;
             case R.id.menu_item_share:
-                startActivity(Intent.createChooser(sharingIntent, "Select conversation"));
+                startActivity(Intent.createChooser(mSharingIntent, "Select conversation"));
                 break;
         }
         return super.onOptionsItemSelected(item);

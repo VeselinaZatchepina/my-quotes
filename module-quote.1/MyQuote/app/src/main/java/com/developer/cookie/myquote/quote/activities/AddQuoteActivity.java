@@ -17,9 +17,9 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     private static final String CURRENT_FRAGMENT_TAG_BUNDLE = "add_quote_activity_current_fragment_tag_bundle";
     private static final String QUOTE_TYPE_BUNDLE = "add_quote_activity_quote_type_bundle";
     private static final String QUOTE_CATEGORY_INTENT = "add_quote_activity_quote_category_intent";
-    Fragment mCurrentFragment;
-    String mCurrentCategory;
-    Long mCurrentId;
+    private Fragment mCurrentFragment;
+    private String mCurrentCategory;
+    private Long mCurrentId;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
@@ -48,12 +48,13 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     @Override
     public void defineActionWhenFabIsPressed() {
         AddQuoteFragment addQuoteFragment = ((AddQuoteFragment) currentFragment);
-        if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint()) {
+        if (!addQuoteFragment.isEditTextEmpty() && !addQuoteFragment.isSpinnerSelectedItemHint() &&
+                addQuoteFragment.isNumbersPositive()) {
             addQuoteFragment.createMapOfQuoteProperties();
             this.finish();
         }
         if (addQuoteFragment.isSpinnerSelectedItemHint()) {
-            Toast.makeText(this, "Choose category", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, getString(R.string.toast_choose_category), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -80,7 +81,9 @@ public class AddQuoteActivity extends SingleFragmentAbstractActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        if (mCurrentFragment.isAdded()) {
+            getSupportFragmentManager().putFragment(outState, CURRENT_FRAGMENT_TAG_BUNDLE, mCurrentFragment);
+        }
         outState.putString(QUOTE_TYPE_BUNDLE, mQuotesType);
     }
 

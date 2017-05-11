@@ -21,13 +21,13 @@ import java.util.ArrayList;
 public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivity {
 
     private static final String LIST_COINCIDE_QUOTE_TEXT_INTENT = "idea_coincide_quote_text_activity_list_coincide_quote_text_intent";
-    public ArrayList<String> mListOfCoincideQuoteText;
+    private ArrayList<String> mCoincideQuoteTexts;
 
     @Override
     public void defineInputData(Bundle saveInstanceState) {
         super.defineInputData(saveInstanceState);
         mQuotesType = Types.GET_IDEA;
-        mListOfCoincideQuoteText = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT);
+        mCoincideQuoteTexts = getIntent().getStringArrayListExtra(LIST_COINCIDE_QUOTE_TEXT_INTENT);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class IdeaCoincideQuoteTextActivity extends SingleFragmentAbstractActivit
 
     @Override
     public Fragment createFragment() {
-        return IdeaCoincideQuoteTextFragment.newInstance(mListOfCoincideQuoteText);
+        return IdeaCoincideQuoteTextFragment.newInstance(mCoincideQuoteTexts);
     }
 
     @Override

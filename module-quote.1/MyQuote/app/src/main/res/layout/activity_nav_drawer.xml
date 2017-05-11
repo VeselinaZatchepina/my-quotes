@@ -21,7 +21,7 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header"
-        app:itemIconTint="@android:color/tertiary_text_light"
+        app:itemIconTint="@color/card_background"
         app:itemTextColor="@android:color/white"
         app:menu="@menu/menu_nav_drawer" />
 
