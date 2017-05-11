@@ -80,8 +80,8 @@ public class CurrentQuoteFragment extends Fragment {
                             bookNameView, authorNameView, pageNumberView, publisherNameTextView, yearNumberView, mQuoteType);
                     setQuoteCategory(currentCategory, element);
                     setQuoteCreationDate(quoteCreationDate, element);
-                    hideFieldForMyQuotes(rootView);
                 }
+                hideFieldForMyQuotes(rootView);
             }
         });
         return rootView;

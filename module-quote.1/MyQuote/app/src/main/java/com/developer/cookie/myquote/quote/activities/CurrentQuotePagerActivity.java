@@ -4,6 +4,7 @@ package com.developer.cookie.myquote.quote.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -157,7 +158,13 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     }
 
     private void defineFab() {
+        int fabImageResourceId = R.drawable.ic_create_white_24dp;
         FloatingActionButton editFab = (FloatingActionButton) findViewById(R.id.edit_fab);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            editFab.setImageDrawable(getResources().getDrawable(fabImageResourceId, getTheme()));
+        } else {
+            editFab.setImageDrawable(getResources().getDrawable(fabImageResourceId));
+        }
         editFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

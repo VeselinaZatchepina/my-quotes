@@ -107,6 +107,12 @@ public class GetIdeaFragment extends Fragment {
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        mQuoteTexts.removeAllChangeListeners();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         mQuoteDataRepository.closeDbConnect();

@@ -82,17 +82,18 @@ public class AllQuoteCurrentCategoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_recyclerview, container, false);
         setCurrentCategoryTitle(rootView);
+        defineRecyclerView(rootView);
+        if (mSortedBy != null) {
+            sortAndUpdateRecyclerView(mSortedBy);
+        }
         mQuoteTexts.addChangeListener(new RealmChangeListener<RealmResults<QuoteText>>() {
             @Override
             public void onChange(RealmResults<QuoteText> element) {
                 if (element.size() == 0 && getActivity() != null) {
                     getActivity().finish();
                 }
-                defineRecyclerView(rootView);
-                setFirstCurrentQuoteForTablet(element);
-                if (mSortedBy != null) {
-                    sortAndUpdateRecyclerView(mSortedBy);
-                }
+                setFirstCurrentQuoteForTablet(mQuoteTexts);
+                mRecyclerViewAdapter.notifyDataSetChanged();
             }
         });
 
