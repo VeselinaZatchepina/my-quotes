@@ -53,8 +53,6 @@ public class GetIdeaFragment extends Fragment {
         return mRootView;
     }
 
-    //TODO сделать более эффективный запрос в бд (чтобы получать не все записи сразу)
-
     /**
      * Method creates list of quote text which coincide with user subject input.
      */
