@@ -27,8 +27,6 @@ import com.developer.cookie.myquote.quote.fragments.CurrentQuoteFragment;
 import com.developer.cookie.myquote.utils.AppBarLayoutExpended;
 import com.developer.cookie.myquote.utils.ColorationTextChar;
 
-import java.util.Locale;
-
 import io.realm.RealmChangeListener;
 import io.realm.RealmResults;
 
@@ -99,8 +97,7 @@ public class CurrentQuotePagerActivity extends AppCompatActivity {
     }
 
     private void setNewTitleStyle() {
-        String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, localeLanguage, this));
+        setTitle(ColorationTextChar.setFirstVowelColor(mQuoteType, this));
     }
 
     private void defineViewPager(final RealmResults<QuoteText> element) {

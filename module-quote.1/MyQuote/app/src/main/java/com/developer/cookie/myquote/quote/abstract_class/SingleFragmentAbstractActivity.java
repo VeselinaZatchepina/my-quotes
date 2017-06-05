@@ -70,8 +70,7 @@ public abstract class SingleFragmentAbstractActivity extends AppCompatActivity {
     }
 
     public void setNewTitleStyle(String quoteType) {
-        String localeLanguage = Locale.getDefault().getLanguage();
-        setTitle(ColorationTextChar.setFirstVowelColor(quoteType, localeLanguage, this));
+        setTitle(ColorationTextChar.setFirstVowelColor(quoteType, this));
     }
 
     private void defineFragment() {

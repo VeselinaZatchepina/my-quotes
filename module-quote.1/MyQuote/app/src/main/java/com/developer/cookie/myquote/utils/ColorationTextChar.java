@@ -15,16 +15,14 @@ import java.util.regex.Pattern;
  */
 public class ColorationTextChar {
 
-    public static Spannable setFirstVowelColor(String text, String language, Context context) {
+    public static Spannable setFirstVowelColor(String text, Context context) {
         Spannable newText = new SpannableString(text);
         if (!text.isEmpty() || !text.equals("")) {
-            int index = getFirstVowelIndex(text, language);
-            if (index != -1) {
-                newText = new SpannableString(text);
-                newText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.card_background)),
-                        index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                return newText;
-            }
+            int index = getFirstVowelIndex(text);
+            newText = new SpannableString(text);
+            newText.setSpan(new ForegroundColorSpan(context.getResources().getColor(R.color.card_background)),
+                    index, index + 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return newText;
         }
         return newText;
     }
@@ -33,24 +31,11 @@ public class ColorationTextChar {
      * Method returns index of first vowel in title (for english and russian languages)
      *
      * @param text     current text
-     * @param language current language
      * @return index of first vowel
      */
-    private static int getFirstVowelIndex(String text, String language) {
-
-        String patternString;
-
-        if (language.equals("en")) {
-            patternString = "(?i:[aeiouy]).*";
-            return getIndex(patternString, text);
-
-        }
-        if (language.equals("ru")) {
-            patternString = "(?ui:[аеёиоуыэюя]).*";
-            return getIndex(patternString, text);
-        }
-
-        return -1;
+    private static int getFirstVowelIndex(String text) {
+        String patternString = "(?i:[aeiouy]).*";
+        return getIndex(patternString, text);
     }
 
     private static int getIndex(String patternString, String text) {
