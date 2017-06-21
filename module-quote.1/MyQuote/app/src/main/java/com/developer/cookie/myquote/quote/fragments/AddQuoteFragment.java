@@ -297,6 +297,7 @@ public class AddQuoteFragment extends Fragment {
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
+                                setSpinnerOnCurrentPosition();
                             }
                         });
         AlertDialog alertDialog = mDialogBuilder.create();
