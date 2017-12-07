@@ -4,5 +4,5 @@ import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
 
 @Entity
-data class PublishingOffice(@PrimaryKey val officeId: String,
+data class PublishingOffice(@PrimaryKey(autoGenerate = true) val officeId: Long,
                             val officeName: String)
