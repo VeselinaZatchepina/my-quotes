@@ -12,5 +12,5 @@
     <!-- Status bar opacity -->
     <color name="status_bar_opacity">#00000000</color>
 
-    <color name="card_background">#00A99D</color>
+    <color name="card_background">#00a99d</color>
 </resources>

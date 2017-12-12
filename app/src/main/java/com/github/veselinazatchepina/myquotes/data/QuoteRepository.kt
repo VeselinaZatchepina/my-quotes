@@ -15,6 +15,4 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
             return INSTANCE!!
         }
     }
-
-
 }

@@ -4,10 +4,10 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_book_quote"
-            android:title="@string/book_quote_type" />
+            android:title="@string/book_quote_nav" />
         <item
             android:id="@+id/nav_my_quote"
-            android:title="@string/my_quote_type" />
+            android:title="@string/my_quote_nav" />
         <item
             android:id="@+id/nav_get_idea"
             android:title="@string/get_idea" />

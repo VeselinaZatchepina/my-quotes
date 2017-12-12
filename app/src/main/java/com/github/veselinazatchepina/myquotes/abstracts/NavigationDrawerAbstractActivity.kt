@@ -3,13 +3,14 @@ package com.github.veselinazatchepina.myquotes.abstracts
 import android.app.Fragment
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.github.veselinazatchepina.myquotes.R
+import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
@@ -24,12 +25,16 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(getLayoutResId())
         defineNavigationDrawer()
+        defineInputData()
         defineFragment()
         createPresenter()
     }
+
+    abstract fun getLayoutResId() : Int
 
     private fun defineNavigationDrawer() {
         setSupportActionBar(toolbar)
@@ -58,6 +63,10 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
 
     abstract fun createPresenter()
 
+    open fun defineInputData() {
+
+    }
+
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
@@ -69,8 +78,8 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var intent: Intent? = null
         when (item.itemId) {
-            R.id.nav_book_quote -> intent = null
-            R.id.nav_my_quote -> intent = null
+            R.id.nav_book_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
+            R.id.nav_my_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
             R.id.nav_get_idea -> intent = null
         }
         if (intent != null) {

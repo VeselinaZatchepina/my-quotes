@@ -4,7 +4,11 @@
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="book_quote_type">Book quote</string>
-    <string name="my_quote_type">My quote</string>
+    <string name="book_quote_nav">Book\'s quote</string>
+    <string name="my_quote_nav">My quote</string>
     <string name="get_idea">Get idea</string>
+
+    <!-- Quote types enum -->
+    <string name="my_quote_type">My quote</string>
+    <string name="book_quote_type">Book\'s quote</string>
 </resources>

@@ -5,9 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.github.veselinazatchepina.myquotes.R
 
 
 class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
+
+    var mQuoteCategoriesPresenter: QuoteCategoriesContract.Presenter? = null
 
     companion object {
         fun createInstance(): QuoteCategoriesFragment {
@@ -15,11 +18,16 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return super.onCreateView(inflater, container, savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val rootView = inflater?.inflate(R.layout.fragment_quote_categories, container,false)
+
+
+
+
+        return rootView
     }
 
     override fun setPresenter(presenter: QuoteCategoriesContract.Presenter) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        mQuoteCategoriesPresenter = presenter
     }
 }
