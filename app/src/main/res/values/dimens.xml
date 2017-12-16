@@ -16,4 +16,38 @@
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- fragment_recycler_view layout -->
+    <dimen name="recycler_view_margin_bottom">8dp</dimen>
+    <dimen name="recycler_view_margin_end">8dp</dimen>
+    <dimen name="recycler_view_margin_start">8dp</dimen>
+    <dimen name="recycler_view_margin_top">16dp</dimen>
+    <dimen name="current_category_margin_start">16dp</dimen>
+    <dimen name="current_category_margin_top">16dp</dimen>
+
+    <!-- fragment_empty_recycler_view layout -->
+    <dimen name="no_quotes_marhin_end">8dp</dimen>
+    <dimen name="no_quotes_margin_start">8dp</dimen>
+    <dimen name="no_quotes_margin_top">140dp</dimen>
+    <dimen name="please_text_margin_end">8dp</dimen>
+    <dimen name="please_text_margin_start">8dp</dimen>
+    <dimen name="please_text_margin_top">8dp</dimen>
+    <dimen name="image_button_width">50dp</dimen>
+    <dimen name="image_button_height">50dp</dimen>
+    <dimen name="image_button_margin_end">8dp</dimen>
+    <dimen name="image_button_margin_start">8dp</dimen>
+    <dimen name="image_button_margin_top">8dp</dimen>
+    <dimen name="button_text_margin_end">8dp</dimen>
+    <dimen name="button_text_margin_start">8dp</dimen>
+    <dimen name="button_text_margin_top">8dp</dimen>
+
+    <!-- fragment quote_categories_recycler_view_item -->
+    <dimen name="item_card_view_height">84dp</dimen>
+    <dimen name="item_card_view_margin_end">8dp</dimen>
+    <dimen name="item_card_view_margin_start">8dp</dimen>
+    <dimen name="item_card_view_margin_top">8dp</dimen>
+    <dimen name="item_icon_margin_start">8dp</dimen>
+    <dimen name="item_quote_count_margin_end">16dp</dimen>
+
+
 </resources>

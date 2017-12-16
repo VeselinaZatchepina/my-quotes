@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/no_quotes_text"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/no_quotes_marhin_end"
+        android:layout_marginStart="@dimen/no_quotes_margin_start"
+        android:layout_marginTop="@dimen/no_quotes_margin_top"
+        android:text="@string/no_quotes_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/please_text"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/please_text_margin_end"
+        android:layout_marginStart="@dimen/please_text_margin_start"
+        android:layout_marginTop="@dimen/please_text_margin_top"
+        android:text="@string/please_push_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_quotes_text"/>
+
+    <ImageView
+        android:id="@+id/image_button"
+        android:layout_width="@dimen/image_button_width"
+        android:layout_height="@dimen/image_button_height"
+        android:layout_marginEnd="@dimen/image_button_margin_end"
+        android:layout_marginStart="@dimen/image_button_margin_start"
+        android:layout_marginTop="@dimen/image_button_margin_top"
+        android:contentDescription="@string/image_button_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/please_text"
+        app:srcCompat="@drawable/ic_add_circle_red_24dp"/>
+
+    <TextView
+        android:id="@+id/button_text"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/button_text_margin_end"
+        android:layout_marginStart="@dimen/button_text_margin_start"
+        android:layout_marginTop="@dimen/button_text_margin_top"
+        android:text="@string/button_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/image_button"/>
+</android.support.constraint.ConstraintLayout>

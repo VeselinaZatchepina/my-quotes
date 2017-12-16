@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.veselinazatchepina.myquotes.R
+import kotlinx.android.synthetic.main.fragment_recycler_view.*
 
 
 class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
@@ -19,7 +20,8 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val rootView = inflater?.inflate(R.layout.fragment_quote_categories, container,false)
+        val rootView = inflater?.inflate(R.layout.fragment_recycler_view, container,false)
+        current_category.visibility = View.GONE
 
 
 

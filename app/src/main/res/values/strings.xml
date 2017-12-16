@@ -11,4 +11,16 @@
     <!-- Quote types enum -->
     <string name="my_quote_type">My quote</string>
     <string name="book_quote_type">Book\'s quote</string>
+
+    <!-- fragment_empty_recycler_view layout -->
+    <string name="no_quotes_text">You don\'t have quotes</string>
+    <string name="please_push_text">Please push</string>
+    <string name="image_button_desc">image button</string>
+    <string name="button_text">button</string>
+
+    <!-- fragment quote_categories_recycler_view_item -->
+    <string name="item_icon_desc">category icon</string>
+
+
+
 </resources>
