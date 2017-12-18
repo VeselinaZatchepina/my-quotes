@@ -1,5 +1,8 @@
 package com.github.veselinazatchepina.myquotes.data
 
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
+import io.reactivex.Flowable
+
 
 class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSource,
                                           val quoteRemoteDataSource: QuoteDataSource) : QuoteDataSource {
@@ -14,5 +17,9 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
             }
             return INSTANCE!!
         }
+    }
+
+    override fun getBookCategories(): Flowable<List<BookCategory>> {
+        return quoteLocalDataSource.getBookCategories()
     }
 }
