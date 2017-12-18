@@ -41,7 +41,7 @@
     <dimen name="button_text_margin_start">8dp</dimen>
     <dimen name="button_text_margin_top">8dp</dimen>
 
-    <!-- fragment quote_categories_recycler_view_item -->
+    <!-- fragmbook_categories_recycler_view_itemitem -->
     <dimen name="item_card_view_height">84dp</dimen>
     <dimen name="item_card_view_margin_end">8dp</dimen>
     <dimen name="item_card_view_margin_start">8dp</dimen>

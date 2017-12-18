@@ -10,7 +10,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
-import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
+import com.github.veselinazatchepina.myquotes.quotecategories.BookCategoriesActivity
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
@@ -78,8 +78,8 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var intent: Intent? = null
         when (item.itemId) {
-            R.id.nav_book_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
-            R.id.nav_my_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
+            R.id.nav_book_quote -> intent = BookCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
+            R.id.nav_my_quote -> intent = BookCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
             R.id.nav_get_idea -> intent = null
         }
         if (intent != null) {

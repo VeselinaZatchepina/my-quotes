@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView"
@@ -31,7 +31,7 @@
                 android:layout_marginStart="@dimen/item_icon_margin_start"
                 android:layout_weight="1"
                 android:contentDescription="@string/item_icon_desc"
-                app:srcCompat="@android:drawable/btn_star"/>
+                android:src="@android:drawable/btn_star"/>
 
             <TextView
                 android:id="@+id/item_category_name"

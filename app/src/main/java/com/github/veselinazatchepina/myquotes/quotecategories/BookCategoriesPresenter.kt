@@ -4,8 +4,8 @@ import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import io.reactivex.disposables.CompositeDisposable
 
 
-class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
-                               val quoteCategoriesView: QuoteCategoriesContract.View) : QuoteCategoriesContract.Presenter {
+class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
+                              val quoteCategoriesView: BookCategoriesContract.View) : BookCategoriesContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
 

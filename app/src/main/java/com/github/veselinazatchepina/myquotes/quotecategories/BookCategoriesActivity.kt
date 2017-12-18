@@ -11,10 +11,10 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 
 
-class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
+class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
 
-    private var mQuoteCategoriesView: QuoteCategoriesFragment? = null
-    private var mQuoteCategoriesPresenter: QuoteCategoriesPresenter? = null
+    private var mQuoteCategoriesView: BookCategoriesFragment? = null
+    private var mQuoteCategoriesPresenter: BookCategoriesPresenter? = null
 
     private var quoteType: String? = null
 
@@ -22,7 +22,7 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
 
         fun newIntent(context: Context, quoteType: String): Intent {
-            val intent = Intent(context, QuoteCategoriesActivity::class.java)
+            val intent = Intent(context, BookCategoriesActivity::class.java)
             intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
@@ -38,7 +38,7 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
     }
 
     override fun createFragment(): Fragment? {
-        mQuoteCategoriesView = QuoteCategoriesFragment.createInstance()
+        mQuoteCategoriesView = BookCategoriesFragment.createInstance()
         return mQuoteCategoriesView
     }
 
@@ -46,6 +46,6 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        mQuoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository, mQuoteCategoriesView!!)
+        mQuoteCategoriesPresenter = BookCategoriesPresenter(quoteRepository, mQuoteCategoriesView!!)
     }
 }

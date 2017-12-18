@@ -6,4 +6,5 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity
 data class BookCategory(@PrimaryKey(autoGenerate = true) val categoryId: Long,
-                        val categoryName: String)
+                        val categoryName: String,
+                        val quoteCount: Int)
