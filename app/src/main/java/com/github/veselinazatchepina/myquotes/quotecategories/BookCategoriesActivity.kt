@@ -1,10 +1,13 @@
 package com.github.veselinazatchepina.myquotes.quotecategories
 
-import android.app.Fragment
+
 import android.content.Context
 import android.content.Intent
+import android.support.v4.app.Fragment
+import android.view.View
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
+import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
@@ -13,8 +16,8 @@ import com.github.veselinazatchepina.myquotes.enums.QuoteType
 
 class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
 
-    private var bookCategoriesView: BookCategoriesFragment? = null
-    private var bookCategoriesPresenter: BookCategoriesPresenter? = null
+    private lateinit var bookCategoriesView: BookCategoriesFragment
+    private lateinit var bookCategoriesPresenter: BookCategoriesPresenter
 
     private var quoteType: String? = null
 
@@ -37,7 +40,7 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
         title = quoteType ?: getString(QuoteType.BOOK_QUOTE.resource)
     }
 
-    override fun createFragment(): Fragment? {
+    override fun createFragment(): Fragment {
         bookCategoriesView = BookCategoriesFragment.createInstance()
         return bookCategoriesView
     }
@@ -46,6 +49,10 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        bookCategoriesPresenter = BookCategoriesPresenter(quoteRepository, bookCategoriesView!!)
+        bookCategoriesPresenter = BookCategoriesPresenter(quoteRepository, bookCategoriesView)
+    }
+
+    override fun defineActionWhenFabIsPressed(view: View) {
+        startActivity(AddQuoteActivity.newIntent(this))
     }
 }

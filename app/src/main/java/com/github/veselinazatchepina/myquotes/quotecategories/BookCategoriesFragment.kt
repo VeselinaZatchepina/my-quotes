@@ -1,7 +1,8 @@
 package com.github.veselinazatchepina.myquotes.quotecategories
 
-import android.app.Fragment
+
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -30,8 +31,8 @@ class BookCategoriesFragment : Fragment(), BookCategoriesContract.View {
         bookCategoriesPresenter.getBookCategoriesList()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        rootView = inflater!!.inflate(R.layout.fragment_recycler_view, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false)
         setCurrentCategoryTitleIsGone(rootView)
         return rootView
     }
