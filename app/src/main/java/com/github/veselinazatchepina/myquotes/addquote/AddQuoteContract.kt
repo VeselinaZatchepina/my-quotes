@@ -10,10 +10,12 @@ interface AddQuoteContract {
 
 
 
+
     }
 
     interface Presenter : BasePresenter {
 
+        fun saveQuote(mapOfQuoteProperties: HashMap<String, String>)
 
     }
 }

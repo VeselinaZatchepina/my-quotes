@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.quotecategories
+package com.github.veselinazatchepina.myquotes.bookcategories
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory

@@ -1,13 +1,11 @@
-package com.github.veselinazatchepina.myquotes.quotecategories
+package com.github.veselinazatchepina.myquotes.bookcategories
 
 
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
-import android.view.View
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
-import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
@@ -52,7 +50,7 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
         bookCategoriesPresenter = BookCategoriesPresenter(quoteRepository, bookCategoriesView)
     }
 
-    override fun defineActionWhenFabIsPressed(view: View) {
-        startActivity(AddQuoteActivity.newIntent(this))
-    }
+//    override fun defineActionWhenFabIsPressed(view: View) {
+//        //startActivity(AddQuoteActivity.newIntent(this))
+//    }
 }

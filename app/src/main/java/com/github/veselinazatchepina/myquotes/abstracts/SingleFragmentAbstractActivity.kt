@@ -9,10 +9,12 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import kotlinx.android.synthetic.main.activity_single_fragment.*
-import org.jetbrains.anko.toast
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
+
+    var isFabOpen = false
 
     companion object {
         fun provideSchedulerProvider(): BaseSchedulerProvider {
@@ -31,9 +33,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         defineFab()
     }
 
-    open fun defineInputData() { }
+    open fun defineInputData() {}
 
-    open fun getLayoutResId() : Int = R.layout.activity_current_single_fragment
+    open fun getLayoutResId(): Int = R.layout.activity_current_single_fragment
 
     private fun defineToolbar() {
         setSupportActionBar(toolbar)
@@ -65,16 +67,32 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     private fun defineFab() {
         val fabImageResourceId = setFabImageResId()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
-        } else{
-            fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
+            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
+        } else {
+            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
         }
     }
 
-    open fun setFabImageResId() : Int = R.drawable.ic_add_white_24dp
+    open fun setFabImageResId(): Int = R.drawable.ic_add_white_24dp
 
     open fun defineActionWhenFabIsPressed(view: View) {
-        toast("Hi")
+        //startActivity(AddQuoteActivity.newIntent(this))
+        if (!isFabOpen) {
+            showFABMenu();
+        } else {
+            closeFABMenu();
+        }
     }
 
+    private fun showFABMenu() {
+        isFabOpen = true
+        book_quote_fab.animate().translationY(-resources.getDimension(R.dimen.standard_75))
+        my_quote_fab.animate().translationY(-resources.getDimension(R.dimen.standard_150))
+    }
+
+    private fun closeFABMenu() {
+        isFabOpen = false
+        book_quote_fab.animate().translationY(0F)
+        my_quote_fab.animate().translationY(0F)
+    }
 }

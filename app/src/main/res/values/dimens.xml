@@ -2,6 +2,10 @@
 <resources>
     <dimen name="nav_header_height">160dp</dimen>
 
+    <!-- fab popup menu -->
+    <dimen name="standard_75">75dp</dimen>
+    <dimen name="standard_150">150dp</dimen>
+
     <!-- Toolbar size -->
     <dimen name="toolbar_height">223dp</dimen>
     <dimen name="toolbar_height_normal_portrait">80dp</dimen>

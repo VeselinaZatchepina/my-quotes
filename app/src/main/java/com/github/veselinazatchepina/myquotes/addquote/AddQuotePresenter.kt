@@ -14,6 +14,10 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         compositeDisposable = CompositeDisposable()
     }
 
+    override fun saveQuote(mapOfQuoteProperties: HashMap<String, String>) {
+
+    }
+
     override fun subscribe() {
 
     }

@@ -10,17 +10,24 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import android.view.animation.OvershootInterpolator
 import com.github.veselinazatchepina.myquotes.R
+import com.github.veselinazatchepina.myquotes.bookcategories.BookCategoriesActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
-import com.github.veselinazatchepina.myquotes.quotecategories.BookCategoriesActivity
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*
-import org.jetbrains.anko.toast
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    lateinit var fabOpenAnimation: Animation
+    lateinit var fabCloseAnimation: Animation
+    var isFabOpen = false
 
     companion object {
         fun provideSchedulerProvider(): BaseSchedulerProvider {
@@ -30,8 +37,11 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(getLayoutResId())
         defineNavigationDrawer()
+        fabOpenAnimation = AnimationUtils.loadAnimation(this, R.anim.open_fab_menu)
+        fabCloseAnimation = AnimationUtils.loadAnimation(this, R.anim.close_fab_menu)
         defineInputData()
         defineFragment()
         createPresenter()
@@ -74,16 +84,40 @@ abstract class NavigationDrawerAbstractActivity : AppCompatActivity(), Navigatio
     private fun defineFab() {
         val fabImageResourceId = setFabImageResId()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            fab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
+            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
         } else{
-            fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
+            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
         }
     }
 
     open fun setFabImageResId() : Int = R.drawable.ic_add_white_24dp
 
     open fun defineActionWhenFabIsPressed(view: View) {
-        toast("Hi")
+
+
+        //startActivity(AddQuoteActivity.newIntent(this))
+        if (!isFabOpen) {
+            showFABMenu();
+        } else {
+            closeFABMenu();
+        }
+    }
+
+    private fun showFABMenu() {
+
+        add_icon_fab.animate().rotation(45.0F).withLayer().setDuration(300).setInterpolator(OvershootInterpolator(10.0F)).start()
+        book_quote_fab.startAnimation(fabOpenAnimation)
+        my_quote_fab.startAnimation(fabOpenAnimation)
+        isFabOpen = true
+
+    }
+
+    private fun closeFABMenu() {
+
+        add_icon_fab.animate().rotation(0.0F).withLayer().setDuration(300).setInterpolator(OvershootInterpolator(10.0F)).start()
+        book_quote_fab.startAnimation(fabCloseAnimation)
+        my_quote_fab.startAnimation(fabCloseAnimation)
+        isFabOpen = false
     }
 
     override fun onBackPressed() {

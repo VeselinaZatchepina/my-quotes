@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.quotecategories
+package com.github.veselinazatchepina.myquotes.bookcategories
 
 
 import android.os.Bundle

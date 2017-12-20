@@ -31,6 +31,7 @@
                 app:layout_constraintVertical_bias="0.13">
 
                 <LinearLayout
+                    android:id="@+id/add_linear_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
@@ -54,13 +55,38 @@
                         android:inputType="textMultiLine"/>
 
                     <EditText
-                        android:id="@+id/add_book_author"
+                        android:id="@+id/add_book_author_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:layout_weight="7"
+                        android:ems="10"
+                        android:hint="Book author name"
+                        android:inputType="textMultiLine"/>
+
+                    <EditText
+                        android:id="@+id/add_book_author_surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:ems="10"
-                        android:hint="Book author"
+                        android:hint="Book author surname"
                         android:inputType="textMultiLine"/>
+
+                    <EditText
+                        android:id="@+id/add_book_author_patronymic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:ems="10"
+                        android:hint="Book author second name"
+                        android:inputType="textMultiLine"/>
+
+                    <Button
+                        android:id="@+id/add_author_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Add author"/>
 
                     <TextView
                         android:id="@+id/add_spinner_title"
