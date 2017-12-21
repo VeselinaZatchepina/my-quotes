@@ -13,12 +13,15 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 
 class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
-    lateinit var addQuoteView : AddQuoteFragment
-    lateinit var addQuotePresenter : AddQuotePresenter
+    lateinit var addQuoteView: AddQuoteFragment
+    lateinit var addQuotePresenter: AddQuotePresenter
 
     companion object {
-        fun newIntent(context: Context): Intent {
+        private const val QUOTE_TYPE_INTENT = "quote_type_intent"
+
+        fun newIntent(context: Context, quoteType: String): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
+            intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
     }

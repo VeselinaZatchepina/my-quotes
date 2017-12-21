@@ -1,6 +1,7 @@
 package com.github.veselinazatchepina.myquotes.addquote
 
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import com.github.veselinazatchepina.myquotes.R
 import kotlinx.android.synthetic.main.fragment_add_quote.view.*
+import org.jetbrains.anko.margin
 
 
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
@@ -38,35 +40,43 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     }
 
     private fun defineAddFieldsForAuthorDataBtn() {
-        rootView.add_author_btn.setOnClickListener {
-            val newAuthorNameField = EditText(activity)
-            val newAuthorSurnameField = EditText(activity)
-            val newAuthorPatronymicField = EditText(activity)
+        rootView.addAuthorFieldsBtn.setOnClickListener {
 
-            var allLayoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+            val newFieldAuthorNameInputLayout = TextInputLayout(activity)
+            val newFieldAuthorSurnameInputLayout = TextInputLayout(activity)
+            val newFieldAuthorPatronymicInputLayout = TextInputLayout(activity)
+
+            val newFieldAuthorNameEditText = EditText(activity)
+            val newFieldAuthorSurnameEditText = EditText(activity)
+            val newFieldAuthorPatronymicEditText = EditText(activity)
+
+            val layoutParamsInputLayout = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT)
+            layoutParamsInputLayout.margin = resources.getDimension(R.dimen.add_author_fields_margin).toInt()
+
+            val layoutParamsEditText = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
 
+            newFieldAuthorNameInputLayout.layoutParams = layoutParamsInputLayout
+            newFieldAuthorSurnameInputLayout.layoutParams = layoutParamsInputLayout
+            newFieldAuthorPatronymicInputLayout.layoutParams = layoutParamsInputLayout
 
-            newAuthorNameField.layoutParams = allLayoutParams
+            newFieldAuthorNameEditText.layoutParams = layoutParamsEditText
+            newFieldAuthorSurnameEditText.layoutParams = layoutParamsEditText
+            newFieldAuthorPatronymicEditText.layoutParams = layoutParamsEditText
 
+            newFieldAuthorNameEditText.hint = "Book author name"
+            newFieldAuthorSurnameEditText.hint = "Book author surname"
+            newFieldAuthorPatronymicEditText.hint = "Book author second name"
 
-            newAuthorSurnameField.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-            newAuthorPatronymicField.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
+            newFieldAuthorNameInputLayout.addView(newFieldAuthorNameEditText)
+            newFieldAuthorSurnameInputLayout.addView(newFieldAuthorSurnameEditText)
+            newFieldAuthorPatronymicInputLayout.addView(newFieldAuthorPatronymicEditText)
 
-            newAuthorNameField.hint = "Book author name"
-            newAuthorSurnameField.hint = "Book author surname"
-            newAuthorPatronymicField.hint = "Book author second name"
-
-            rootView.add_linear_layout.addView(newAuthorNameField)
-            rootView.add_linear_layout.addView(newAuthorSurnameField)
-            rootView.add_linear_layout.addView(newAuthorPatronymicField)
+            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorNameInputLayout)
+            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorSurnameInputLayout)
+            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorPatronymicInputLayout)
 
         }
     }
-
-
-
-
 }

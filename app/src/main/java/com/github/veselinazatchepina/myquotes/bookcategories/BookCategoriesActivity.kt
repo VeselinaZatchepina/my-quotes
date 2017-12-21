@@ -4,7 +4,6 @@ package com.github.veselinazatchepina.myquotes.bookcategories
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
-import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
@@ -29,10 +28,6 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
         }
     }
 
-    override fun getLayoutResId(): Int {
-        return R.layout.activity_nav_drawer
-    }
-
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
         title = quoteType ?: getString(QuoteType.BOOK_QUOTE.resource)
@@ -49,8 +44,4 @@ class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
                 QuoteRemoteDataSource.getInstance())
         bookCategoriesPresenter = BookCategoriesPresenter(quoteRepository, bookCategoriesView)
     }
-
-//    override fun defineActionWhenFabIsPressed(view: View) {
-//        //startActivity(AddQuoteActivity.newIntent(this))
-//    }
 }

@@ -2,10 +2,6 @@
 <resources>
     <dimen name="nav_header_height">160dp</dimen>
 
-    <!-- fab popup menu -->
-    <dimen name="standard_75">75dp</dimen>
-    <dimen name="standard_150">150dp</dimen>
-
     <!-- Toolbar size -->
     <dimen name="toolbar_height">223dp</dimen>
     <dimen name="toolbar_height_normal_portrait">80dp</dimen>
@@ -20,6 +16,18 @@
     <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
+    <!-- add quote fragment -->
+    <dimen name="add_author_fields_margin">10dp</dimen>
+
+
+
+
+
+
+
+
+
 
     <!-- fragment_recycler_view layout -->
     <dimen name="recycler_view_margin_bottom">8dp</dimen>
@@ -45,13 +53,20 @@
     <dimen name="button_text_margin_start">8dp</dimen>
     <dimen name="button_text_margin_top">8dp</dimen>
 
-    <!-- fragmbook_categories_recycler_view_itemitem -->
+    <!-- fragment book_categories_recycler_view_item -->
     <dimen name="item_card_view_height">84dp</dimen>
     <dimen name="item_card_view_margin_end">8dp</dimen>
     <dimen name="item_card_view_margin_start">8dp</dimen>
     <dimen name="item_card_view_margin_top">8dp</dimen>
     <dimen name="item_icon_margin_start">8dp</dimen>
     <dimen name="item_quote_count_margin_end">16dp</dimen>
+
+    <!-- popup fab -->
+    <dimen name="my_quote_fab_margin_bottom">58dp</dimen>
+    <dimen name="my_quote_fab_margin_end">84dp</dimen>
+    <dimen name="book_quote_fab_margin_bottom">90dp</dimen>
+    <dimen name="book_quote_fab_margin_end">16dp</dimen>
+    <dimen name="add_fab_margin">16dp</dimen>
 
 
 </resources>
