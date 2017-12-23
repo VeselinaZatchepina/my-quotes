@@ -20,7 +20,9 @@
 
     <!-- fragmbook_categories_recycler_view_itemitem -->
     <string name="item_icon_desc">category icon</string>
-
+    <string name="hint_author_name">Author name</string>
+    <string name="hint_author_surname">Author surname</string>
+    <string name="hint_author_second_name">Author second name</string>
 
 
 </resources>

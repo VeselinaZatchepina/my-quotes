@@ -66,42 +66,41 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     private fun defineAddFieldsForAuthorDataBtn() {
         rootView.addAuthorFieldsBtn.setOnClickListener {
+            val hints = listOf(getString(R.string.hint_author_name),
+                    getString(R.string.hint_author_surname),
+                    getString(R.string.hint_author_second_name))
 
-            val newFieldAuthorNameInputLayout = TextInputLayout(activity)
-            val newFieldAuthorSurnameInputLayout = TextInputLayout(activity)
-            val newFieldAuthorPatronymicInputLayout = TextInputLayout(activity)
-
-            val newFieldAuthorNameEditText = EditText(activity)
-            val newFieldAuthorSurnameEditText = EditText(activity)
-            val newFieldAuthorPatronymicEditText = EditText(activity)
-
-            val layoutParamsInputLayout = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-            layoutParamsInputLayout.margin = resources.getDimension(R.dimen.add_author_fields_margin).toInt()
-
-            val layoutParamsEditText = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            newFieldAuthorNameInputLayout.layoutParams = layoutParamsInputLayout
-            newFieldAuthorSurnameInputLayout.layoutParams = layoutParamsInputLayout
-            newFieldAuthorPatronymicInputLayout.layoutParams = layoutParamsInputLayout
-
-            newFieldAuthorNameEditText.layoutParams = layoutParamsEditText
-            newFieldAuthorSurnameEditText.layoutParams = layoutParamsEditText
-            newFieldAuthorPatronymicEditText.layoutParams = layoutParamsEditText
-
-            newFieldAuthorNameEditText.hint = "Book author name"
-            newFieldAuthorSurnameEditText.hint = "Book author surname"
-            newFieldAuthorPatronymicEditText.hint = "Book author second name"
-
-            newFieldAuthorNameInputLayout.addView(newFieldAuthorNameEditText)
-            newFieldAuthorSurnameInputLayout.addView(newFieldAuthorSurnameEditText)
-            newFieldAuthorPatronymicInputLayout.addView(newFieldAuthorPatronymicEditText)
-
-            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorNameInputLayout)
-            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorSurnameInputLayout)
-            rootView.addAuthorFieldsLinearLayout.addView(newFieldAuthorPatronymicInputLayout)
-
+            for (i in 0 until hints.count()) {
+                rootView.addAuthorFieldsLinearLayout.addView(createTextInputLayout(hints[i]))
+            }
         }
     }
+
+    private fun createTextInputLayout(hint: String): TextInputLayout {
+        val newFieldInputLayout = TextInputLayout(activity)
+        newFieldInputLayout.layoutParams = createLayoutParamsForInputLayout()
+        newFieldInputLayout.addView(createEditText(hint))
+        return newFieldInputLayout
+    }
+
+    private fun createLayoutParamsForInputLayout(): LinearLayout.LayoutParams {
+        val layoutParamsInputLayout = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        layoutParamsInputLayout.margin = resources.getDimension(R.dimen.add_author_fields_margin).toInt()
+        return layoutParamsInputLayout
+    }
+
+    private fun createEditText(hint: String): EditText {
+        val newFieldEditText = EditText(activity)
+        newFieldEditText.layoutParams = createLayoutParamsForEditText()
+        newFieldEditText.hint = hint
+        return newFieldEditText
+    }
+
+    private fun createLayoutParamsForEditText(): LinearLayout.LayoutParams {
+        val layoutParamsEditText = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT)
+        return layoutParamsEditText
+    }
+
 }

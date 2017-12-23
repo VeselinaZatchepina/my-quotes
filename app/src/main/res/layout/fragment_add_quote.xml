@@ -76,7 +76,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:hint="Author name"
+                            android:hint="@string/hint_author_name"
                             android:inputType="textMultiLine"/>
 
                     </android.support.design.widget.TextInputLayout>
@@ -90,7 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:hint="Author surname"
+                            android:hint="@string/hint_author_surname"
                             android:inputType="textMultiLine"/>
 
                     </android.support.design.widget.TextInputLayout>
@@ -104,7 +104,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
-                            android:hint="Author second name"
+                            android:hint="@string/hint_author_second_name"
                             android:inputType="textMultiLine"/>
 
                     </android.support.design.widget.TextInputLayout>
