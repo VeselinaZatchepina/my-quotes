@@ -143,6 +143,7 @@
                     android:background="@android:color/black"/>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addPublishingOfficeInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -155,6 +156,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addYearInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
@@ -167,6 +169,7 @@
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/addPageNumberInputLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 

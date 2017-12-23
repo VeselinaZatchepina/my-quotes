@@ -15,6 +15,7 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     lateinit var addQuoteView: AddQuoteFragment
     lateinit var addQuotePresenter: AddQuotePresenter
+    lateinit var quoteType: String
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
@@ -26,8 +27,12 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
         }
     }
 
+    override fun defineInputData() {
+        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
+    }
+
     override fun createFragment(): Fragment {
-        addQuoteView = AddQuoteFragment.createInstance()
+        addQuoteView = AddQuoteFragment.createInstance(quoteType)
         return addQuoteView
     }
 
