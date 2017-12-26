@@ -11,8 +11,14 @@ import io.reactivex.Flowable
 interface BookCategoryDao {
 
     @Insert
-    fun insertBookCategory(bookCategory: BookCategory)
+    fun insertBookCategory(bookCategory: BookCategory): Long
 
     @Query("SELECT * FROM BookCategory")
-    fun getAllBookCategories() : Flowable<List<BookCategory>>
+    fun getAllBookCategories(): Flowable<List<BookCategory>>
+
+    @Query("SELECT * FROM BookCategory WHERE BookCategory.categoryName = :name")
+    fun getBookCategoryByName(name: String): BookCategory?
+
+    @Query("UPDATE BookCategory SET quoteCount = :quoteCount WHERE BookCategory.categoryId = :bookCategoryId")
+    fun updateQuoteCount(quoteCount: Int, bookCategoryId: Long)
 }

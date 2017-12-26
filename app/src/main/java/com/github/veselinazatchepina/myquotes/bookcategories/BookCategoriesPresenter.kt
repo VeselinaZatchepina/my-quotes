@@ -25,9 +25,9 @@ class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
                 .subscribeWith(object : DisposableSubscriber<List<BookCategory>>() {
                     override fun onNext(list: List<BookCategory>?) {
                        // if (list != null) {
-                        val list2 = arrayListOf<BookCategory>(BookCategory(1, "first1", 1),
-                                BookCategory(2, "second2", 2),
-                                BookCategory(3, "third3", 3))
+                        val list2 = arrayListOf<BookCategory>(BookCategory("first1", 1),
+                                BookCategory("second2", 2),
+                                BookCategory("third3", 3))
                             bookCategoriesView.showBookCategoriesList(list2)
                         //}
                     }

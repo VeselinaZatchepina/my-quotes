@@ -5,5 +5,7 @@ import android.arch.persistence.room.PrimaryKey
 
 
 @Entity
-data class QuoteType(@PrimaryKey(autoGenerate = true) val typeId: Long,
-                     val type: String)
+data class QuoteType(val type: String) {
+    @PrimaryKey(autoGenerate = true)
+    var typeId: Long = 0
+}

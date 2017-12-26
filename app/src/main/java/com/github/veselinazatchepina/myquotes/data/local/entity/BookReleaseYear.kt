@@ -5,5 +5,7 @@ import android.arch.persistence.room.PrimaryKey
 
 
 @Entity
-data class BookReleaseYear(@PrimaryKey(autoGenerate = true) val yearId: Long,
-                           val year: Long)
+data class BookReleaseYear(val year: Long) {
+    @PrimaryKey(autoGenerate = true)
+    var yearId: Long = 0
+}

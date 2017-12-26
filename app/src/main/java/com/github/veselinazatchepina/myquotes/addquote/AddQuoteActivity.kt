@@ -48,5 +48,4 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
     override fun defineActionWhenFabIsPressed(view: View) {
         addQuoteView.createMapOfQuoteProperties()
     }
-
 }

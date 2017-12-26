@@ -9,11 +9,11 @@ import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 @Dao
 interface QuoteDao {
 
-    @Insert
-    fun insertQuote(quote: Quote)
-
     @Query("SELECT * FROM Quote WHERE Quote.quoteId = :quoteId")
     fun getQuoteById(quoteId: Long) : Quote
+
+    @Insert
+    fun insertQuote(quote: Quote): Long
 
 
 }

@@ -15,6 +15,8 @@ import android.arch.persistence.room.PrimaryKey
                 parentColumns = arrayOf("authorId"),
                 childColumns = arrayOf("authorIdJoin"))
 ))
-data class BookAndBookAuthor(@PrimaryKey(autoGenerate = true) val bookAndBookAuthorId: Long,
-                             val bookIdJoin: Long,
-                             val authorIdJoin: Long)
+data class BookAndBookAuthor(val bookIdJoin: Long,
+                             val authorIdJoin: Long) {
+    @PrimaryKey(autoGenerate = true)
+    var bookAndBookAuthorId: Long = 0
+}

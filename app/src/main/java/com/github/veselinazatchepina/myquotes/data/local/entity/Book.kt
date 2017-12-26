@@ -14,7 +14,9 @@ import android.arch.persistence.room.PrimaryKey
                 parentColumns = arrayOf("categoryId"),
                 childColumns = arrayOf("category_Id"))
 ))
-data class Book(@PrimaryKey(autoGenerate = true) val bookId: Long,
-                val bookName: String,
+data class Book(val bookName: String,
                 val office_Id: Long,
-                val category_Id: Long)
+                val category_Id: Long) {
+    @PrimaryKey(autoGenerate = true)
+    var bookId: Long = 0
+}

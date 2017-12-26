@@ -3,13 +3,16 @@ package com.github.veselinazatchepina.myquotes.addquote
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
+import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.github.veselinazatchepina.myquotes.R
+import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import kotlinx.android.synthetic.main.fragment_add_quote.*
 import kotlinx.android.synthetic.main.fragment_add_quote.view.*
 import org.jetbrains.anko.margin
 
@@ -19,6 +22,8 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     lateinit var addQuotePresenter: AddQuoteContract.Presenter
     lateinit var rootView: View
     lateinit var quoteType: String
+    val authorFieldIds: ArrayList<Int> = ArrayList<Int>()
+    lateinit var bookCategory: String
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -60,9 +65,45 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     }
 
     fun createMapOfQuoteProperties() {
-        var mapOfQuoteProperties = HashMap<String, String>()
-        addQuotePresenter.saveQuote(mapOfQuoteProperties)
+        // TODO check is book category selected
+      //  if (isQuoteTextFieldNotEmpty()) {
+
+            val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
+            mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
+            mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
+            mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = ""
+            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
+            mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
+            mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
+            mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
+            mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
+            mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
+
+            addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
+      //  }
     }
+
+    private fun createAuthorsList(): List<String> {
+        val list = ArrayList<String>()
+        list.add(addAuthorName.text.toString())
+        list.add(addAuthorSurname.text.toString())
+        list.add(addAuthorPatronymic.text.toString())
+        authorFieldIds
+                .map { rootView.findViewById<EditText>(it) }
+                .mapTo(list) { it.text.toString() }
+        return list
+    }
+
+    private fun isQuoteTextFieldNotEmpty(): Boolean {
+        var isEmpty = true
+        if (TextUtils.isEmpty(addQuoteText.text)) {
+            addQuoteTextInputLayout.error = "Quote text mustn't be empty"
+            isEmpty = false
+        }
+        return isEmpty
+    }
+
+    //private fun isBookCategorySelected(): Boolean = bookCategory != ("Select quote category")
 
     private fun defineAddFieldsForAuthorDataBtn() {
         rootView.addAuthorFieldsBtn.setOnClickListener {
@@ -94,13 +135,13 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         val newFieldEditText = EditText(activity)
         newFieldEditText.layoutParams = createLayoutParamsForEditText()
         newFieldEditText.hint = hint
+        newFieldEditText.id = View.generateViewId()
+        authorFieldIds.add(newFieldEditText.id)
         return newFieldEditText
     }
 
     private fun createLayoutParamsForEditText(): LinearLayout.LayoutParams {
-        val layoutParamsEditText = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+        return LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
-        return layoutParamsEditText
     }
-
 }
