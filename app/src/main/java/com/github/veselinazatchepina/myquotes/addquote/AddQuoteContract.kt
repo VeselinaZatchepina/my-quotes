@@ -9,7 +9,7 @@ interface AddQuoteContract {
 
     interface View : BaseView<Presenter> {
 
-
+        fun defineCategorySpinner(bookCategories: List<String>)
 
 
     }
@@ -17,6 +17,8 @@ interface AddQuoteContract {
     interface Presenter : BasePresenter {
 
         fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>)
+
+        fun getBookCategoriesList(quoteType: String)
 
     }
 }

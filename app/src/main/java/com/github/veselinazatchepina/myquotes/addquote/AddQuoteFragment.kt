@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,6 +24,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     lateinit var rootView: View
     lateinit var quoteType: String
     val authorFieldIds: ArrayList<Int> = ArrayList<Int>()
+    var bookCategoriesList: List<String>? = null
     lateinit var bookCategory: String
 
     companion object {
@@ -37,15 +39,20 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false)
         defineLayoutFields()
+        addQuotePresenter.getBookCategoriesList(quoteType)
         defineAddFieldsForAuthorDataBtn()
         return rootView
     }
 
     private fun defineLayoutFields() {
-        quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
+        quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: resources.getString(QuoteType.BOOK_QUOTE.resource)
         if (quoteType == resources.getString(QuoteType.MY_QUOTE.resource)) {
             hideBookQuoteFields()
         }
@@ -64,23 +71,33 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         addQuotePresenter = presenter
     }
 
+    override fun defineCategorySpinner(bookCategories: List<String>) {
+        // TODO fill spinner and set listener
+        bookCategoriesList = bookCategories
+        if (bookCategoriesList != null) {
+            for (i in bookCategoriesList!!) {
+                Log.v("SHOW CATEGORIES", i)
+            }
+        }
+    }
+
     fun createMapOfQuoteProperties() {
         // TODO check is book category selected
-      //  if (isQuoteTextFieldNotEmpty()) {
+        //  if (isQuoteTextFieldNotEmpty()) {
 
-            val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
-            mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
-            mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
-            mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = ""
-            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
-            mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
-            mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
-            mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
-            mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
-            mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
+        val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
+        mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
+        mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
+        mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = ""
+        mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
+        mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
+        mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
+        mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
+        mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
+        mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
 
-            addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
-      //  }
+        addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
+        //  }
     }
 
     private fun createAuthorsList(): List<String> {

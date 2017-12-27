@@ -4,7 +4,6 @@ import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
-import io.reactivex.Flowable
 
 
 @Dao
@@ -12,9 +11,6 @@ interface BookCategoryDao {
 
     @Insert
     fun insertBookCategory(bookCategory: BookCategory): Long
-
-    @Query("SELECT * FROM BookCategory")
-    fun getAllBookCategories(): Flowable<List<BookCategory>>
 
     @Query("SELECT * FROM BookCategory WHERE BookCategory.categoryName = :name")
     fun getBookCategoryByName(name: String): BookCategory?

@@ -25,6 +25,8 @@
     <string name="hint_author_name">Author name</string>
     <string name="hint_author_surname">Author surname</string>
     <string name="hint_author_second_name">Author second name</string>
+    <string name="spinner_add_category">+ add new category</string>
+    <string name="spinner_hint">Select quote category</string>
 
 
 </resources>

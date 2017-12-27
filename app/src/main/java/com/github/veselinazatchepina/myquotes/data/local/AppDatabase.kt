@@ -59,4 +59,6 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun bookAndBookReleaseYearDao(): BookAndBookReleaseYearDao
 
+    abstract fun bookCategoriesAndQuoteTypeDao(): BookCategoriesAndQuoteTypeDao
+
 }

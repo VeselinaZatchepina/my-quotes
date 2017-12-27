@@ -1,6 +1,6 @@
 package com.github.veselinazatchepina.myquotes.data
 
-import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
+import com.github.veselinazatchepina.myquotes.data.local.pojo.BookCategoriesAndQuoteType
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
@@ -20,8 +20,8 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         }
     }
 
-    override fun getBookCategories(): Flowable<List<BookCategory>> {
-        return quoteLocalDataSource.getBookCategories()
+    override fun getBookCategories(quoteType: String): Flowable<List<BookCategoriesAndQuoteType>> {
+        return quoteLocalDataSource.getBookCategories(quoteType)
     }
 
     override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {

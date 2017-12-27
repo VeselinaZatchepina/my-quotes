@@ -17,7 +17,7 @@ interface BookCategoriesContract {
     interface Presenter : BasePresenter {
         fun getBookCategoriesList()
 
-        fun getQuotesByCategory(categoryName: String) : List<Quote>
+        fun getQuotesByCategory(categoryName: String): List<Quote>
 
 
     }
