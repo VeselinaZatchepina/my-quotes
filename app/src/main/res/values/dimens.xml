@@ -17,8 +17,11 @@
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <!-- add quote fragment -->
+    <!-- Add quote fragment -->
     <dimen name="add_author_fields_margin">10dp</dimen>
+
+    <!-- Add category dialog -->
+    <dimen name="add_category_dialog_title_margin">24dp</dimen>
 
 
 

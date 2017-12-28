@@ -28,5 +28,10 @@
     <string name="spinner_add_category">+ add new category</string>
     <string name="spinner_hint">Select quote category</string>
 
+    <!-- Add category dialog -->
+    <string name="dialog_add_category_title">Enter the category name</string>
+    <string name="dialog_add_category_ok">OK</string>
+    <string name="dialog_add_category_cancel">CANCEL</string>
+
 
 </resources>

@@ -14,6 +14,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                         val addQuoteView: AddQuoteContract.View) : AddQuoteContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
+    private val bookCategories = ArrayList<String>()
 
     init {
         addQuoteView.setPresenter(this)
@@ -47,7 +48,6 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
     }
 
     private fun defineBookCategoriesListForView(list: List<BookCategoriesAndQuoteType>): List<String> {
-        val bookCategories = ArrayList<String>()
         list.map {
             it.bookCategories?.mapTo(bookCategories) {
                 it.categoryName.toUpperCase()
@@ -56,6 +56,11 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         bookCategories.add("+ add new category")
         bookCategories.add("Select quote category")
         return bookCategories
+    }
+
+    override fun addBookCategory(category: String) {
+        bookCategories.add(0, category)
+        addQuoteView.updateCategorySpinner(bookCategories)
     }
 
     override fun subscribe() {

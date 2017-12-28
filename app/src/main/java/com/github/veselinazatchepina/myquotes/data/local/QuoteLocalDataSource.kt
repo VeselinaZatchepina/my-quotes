@@ -36,7 +36,6 @@ class QuoteLocalDataSource private constructor(val context: Context,
     }
 
     override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
-
         Single.fromCallable {
             databaseInstance.runInTransaction {
                 val publishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] ?: "")
