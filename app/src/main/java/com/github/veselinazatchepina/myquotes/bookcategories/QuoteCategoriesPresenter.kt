@@ -9,8 +9,8 @@ import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 
 
-class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
-                              val bookCategoriesView: BookCategoriesContract.View) : BookCategoriesContract.Presenter {
+class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
+                               val bookCategoriesView: QuoteCategoriesContract.View) : QuoteCategoriesContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
 
@@ -19,17 +19,14 @@ class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun getBookCategoriesList() {
-        compositeDisposable.add(quoteDataSource.getQuoteCategories("").subscribeOn(Schedulers.io())
+    override fun getBookCategoriesList(quoteType: String) {
+        compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
                     override fun onNext(list: List<QuoteCategory>?) {
-                       // if (list != null) {
-                        val list2 = arrayListOf<QuoteCategory>(QuoteCategory("first1", 1),
-                                QuoteCategory("second2", 2),
-                                QuoteCategory("third3", 3))
-                            bookCategoriesView.showBookCategoriesList(list2)
-                        //}
+                        if (list != null) {
+                            bookCategoriesView.showBookCategoriesList(list.distinct())
+                        }
                     }
 
                     override fun onComplete() {
@@ -43,7 +40,7 @@ class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    override fun getQuotesByCategory(categoryName: String) : List<Quote> {
+    override fun getQuotesByCategory(categoryName: String): List<Quote> {
         return arrayListOf()
     }
 

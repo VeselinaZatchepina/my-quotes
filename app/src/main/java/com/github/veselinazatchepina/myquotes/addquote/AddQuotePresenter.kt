@@ -14,7 +14,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                         val addQuoteView: AddQuoteContract.View) : AddQuoteContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
-    private val bookCategoriesForSpinner = ArrayList<String>()
+    private var bookCategoriesForSpinner = ArrayList<String>()
 
     init {
         addQuoteView.setPresenter(this)
@@ -57,6 +57,12 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         list.mapTo(bookCategoriesForSpinner) {
             Log.v("CATEGORIES", it.categoryName)
             it.categoryName.toUpperCase()
+        }
+        if (!bookCategoriesForSpinner.isEmpty()) {
+            bookCategoriesForSpinner = bookCategoriesForSpinner.distinct() as ArrayList<String>
+        }
+        for (i in bookCategoriesForSpinner) {
+            Log.v("CATEGORIES_DISTINCT", i)
         }
         bookCategoriesForSpinner.add("+ add new category")
         bookCategoriesForSpinner.add("Select quote category")

@@ -11,37 +11,37 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 
 
-class BookCategoriesActivity : NavigationDrawerAbstractActivity() {
+class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
 
-    private lateinit var bookCategoriesView: BookCategoriesFragment
-    private lateinit var bookCategoriesPresenter: BookCategoriesPresenter
+    private lateinit var quoteCategoriesView: QuoteCategoriesFragment
+    private lateinit var quoteCategoriesPresenter: QuoteCategoriesPresenter
 
-    private var quoteType: String? = null
+    private lateinit var quoteType: String
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
 
         fun newIntent(context: Context, quoteType: String): Intent {
-            val intent = Intent(context, BookCategoriesActivity::class.java)
+            val intent = Intent(context, QuoteCategoriesActivity::class.java)
             intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
     }
 
     override fun defineInputData() {
-        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
-        title = quoteType ?: getString(QuoteType.BOOK_QUOTE.resource)
+        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: getString(QuoteType.BOOK_QUOTE.resource)
+        title = quoteType
     }
 
     override fun createFragment(): Fragment {
-        bookCategoriesView = BookCategoriesFragment.createInstance()
-        return bookCategoriesView
+        quoteCategoriesView = QuoteCategoriesFragment.createInstance(quoteType)
+        return quoteCategoriesView
     }
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        bookCategoriesPresenter = BookCategoriesPresenter(quoteRepository, bookCategoriesView)
+        quoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository, quoteCategoriesView)
     }
 }
