@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.*
-import com.github.veselinazatchepina.myquotes.data.local.pojo.BookCategoriesAndQuoteType
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import io.reactivex.Flowable
@@ -31,8 +30,8 @@ class QuoteLocalDataSource private constructor(val context: Context,
         }
     }
 
-    override fun getBookCategories(quoteType: String): Flowable<List<BookCategoriesAndQuoteType>> {
-        return databaseInstance.bookCategoriesAndQuoteTypeDao().getBookCategoriesByQuoteType(quoteType)
+    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategory>> {
+        return databaseInstance.quoteCategoryDao().getQuoteCategoryByQuoteType(quoteType)
     }
 
     override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
@@ -40,22 +39,34 @@ class QuoteLocalDataSource private constructor(val context: Context,
             databaseInstance.runInTransaction {
                 val publishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] ?: "")
                 Log.v("SAVE_QUOTE", "OK OFFICE")
-                val bookCategoryId = saveBookCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] ?: "")
+                val quoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] ?: "")
                 Log.v("SAVE_QUOTE", "OK CATEGORY")
-                val yearId = saveYear(mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER]?.toLong() ?: 0L)
+                val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||
+                        mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == "") {
+                    0L
+                } else {
+                    mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER]!!.toLong()
+                })
                 Log.v("SAVE_QUOTE", "OK YEAR")
                 val bookId = saveBook(mapOfQuoteProperties[QuoteProperties.BOOK_NAME] ?: "",
-                        bookCategoryId, publishingOfficeId, yearId)
+                        publishingOfficeId, yearId)
                 Log.v("SAVE_QUOTE", "OK BOOK")
                 saveBookAndBookReleaseYear(yearId, bookId)
                 Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_YEAR")
                 val quoteTypeId = saveQuoteType(mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] ?: "")
+                Log.v("SAVE_QUOTE", "OK QUOTE_TYPE")
                 val quoteId = saveQuote(mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] ?: "",
                         mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] ?: "",
                         mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] ?: "",
-                        mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER]?.toLong() ?: 0L,
+                        if (mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == null ||
+                                mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == "") {
+                            0L
+                        } else {
+                            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER]!!.toLong()
+                        },
                         bookId,
-                        quoteTypeId)
+                        quoteTypeId,
+                        quoteCategoryId)
                 Log.v("SAVE_QUOTE", "OK QUOTE")
 
                 for (i in 0 until authors.count() step 3) {
@@ -67,7 +78,7 @@ class QuoteLocalDataSource private constructor(val context: Context,
 
                 Log.v("SAVE_QUOTE",
                         mapOfQuoteProperties[QuoteProperties.BOOK_NAME] +
-                                bookCategoryId.toString() +
+                                quoteCategoryId.toString() +
                                 publishingOfficeId.toString() +
                                 yearId.toString() +
                                 bookId.toString())
@@ -84,8 +95,9 @@ class QuoteLocalDataSource private constructor(val context: Context,
                           comments: String,
                           pageNumber: Long,
                           bookId: Long,
-                          typeId: Long): Long {
-        val quote = Quote(quoteText, creationDate, comments, pageNumber, bookId, typeId)
+                          typeId: Long,
+                          categoryId: Long): Long {
+        val quote = Quote(quoteText, creationDate, comments, pageNumber, bookId, typeId, categoryId)
         return databaseInstance.quoteDao().insertQuote(quote)
     }
 
@@ -102,17 +114,17 @@ class QuoteLocalDataSource private constructor(val context: Context,
         }
     }
 
-    private fun saveBookCategory(bookCategoryName: String): Long {
-        val existedBookCategory = databaseInstance.bookCategoryDao()
-                .getBookCategoryByName(bookCategoryName)
-        val existedBookCategoryId = existedBookCategory?.categoryId ?: 0L
-        return if (existedBookCategoryId == 0L) {
-            val bookCategory = BookCategory(bookCategoryName, 1)
-            databaseInstance.bookCategoryDao().insertBookCategory(bookCategory)
+    private fun saveQuoteCategory(quoteCategoryName: String): Long {
+        val existedQuoteCategory = databaseInstance.quoteCategoryDao()
+                .getQuoteCategoryByName(quoteCategoryName.toLowerCase())
+        val existedQuoteCategoryId = existedQuoteCategory?.categoryId ?: 0L
+        return if (existedQuoteCategoryId == 0L) {
+            val quoteCategory = QuoteCategory(quoteCategoryName.toLowerCase(), 1)
+            databaseInstance.quoteCategoryDao().insertQuoteCategory(quoteCategory)
         } else {
-            databaseInstance.bookCategoryDao()
-                    .updateQuoteCount(existedBookCategory!!.quoteCount + 1, existedBookCategoryId)
-            existedBookCategoryId
+            databaseInstance.quoteCategoryDao()
+                    .updateQuoteCount(existedQuoteCategory!!.quoteCount + 1, existedQuoteCategoryId)
+            existedQuoteCategoryId
         }
     }
 
@@ -127,11 +139,11 @@ class QuoteLocalDataSource private constructor(val context: Context,
         }
     }
 
-    private fun saveBook(bookName: String, categoryId: Long, publishingOfficeId: Long, yearId: Long): Long {
+    private fun saveBook(bookName: String, publishingOfficeId: Long, yearId: Long): Long {
         val existedBook = databaseInstance.bookDao().getBookByNamePublishingYear(bookName, publishingOfficeId, yearId)
         val existedBookId = existedBook?.bookId ?: 0L
         return if (existedBookId == 0L) {
-            val book = Book(bookName, publishingOfficeId, categoryId)
+            val book = Book(bookName, publishingOfficeId)
             databaseInstance.bookDao().insertBook(book)
         } else {
             existedBookId

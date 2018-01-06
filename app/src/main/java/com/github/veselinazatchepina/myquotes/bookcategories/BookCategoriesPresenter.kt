@@ -1,9 +1,8 @@
 package com.github.veselinazatchepina.myquotes.bookcategories
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
-import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import com.github.veselinazatchepina.myquotes.data.local.pojo.BookCategoriesAndQuoteType
+import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -21,14 +20,14 @@ class BookCategoriesPresenter(val quoteDataSource: QuoteDataSource,
     }
 
     override fun getBookCategoriesList() {
-        compositeDisposable.add(quoteDataSource.getBookCategories("").subscribeOn(Schedulers.io())
+        compositeDisposable.add(quoteDataSource.getQuoteCategories("").subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSubscriber<List<BookCategoriesAndQuoteType>>() {
-                    override fun onNext(list: List<BookCategoriesAndQuoteType>?) {
+                .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
+                    override fun onNext(list: List<QuoteCategory>?) {
                        // if (list != null) {
-                        val list2 = arrayListOf<BookCategory>(BookCategory("first1", 1),
-                                BookCategory("second2", 2),
-                                BookCategory("third3", 3))
+                        val list2 = arrayListOf<QuoteCategory>(QuoteCategory("first1", 1),
+                                QuoteCategory("second2", 2),
+                                QuoteCategory("third3", 3))
                             bookCategoriesView.showBookCategoriesList(list2)
                         //}
                     }

@@ -8,15 +8,10 @@ import android.arch.persistence.room.PrimaryKey
         ForeignKey(
                 entity = PublishingOffice::class,
                 parentColumns = arrayOf("officeId"),
-                childColumns = arrayOf("office_Id")),
-        ForeignKey(
-                entity = BookCategory::class,
-                parentColumns = arrayOf("categoryId"),
-                childColumns = arrayOf("category_Id"))
+                childColumns = arrayOf("office_Id"))
 ))
 data class Book(val bookName: String,
-                val office_Id: Long,
-                val category_Id: Long) {
+                val office_Id: Long) {
     @PrimaryKey(autoGenerate = true)
     var bookId: Long = 0
 }

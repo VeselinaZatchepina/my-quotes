@@ -13,7 +13,7 @@ import com.github.veselinazatchepina.myquotes.data.local.entity.*
         Book::class,
         BookAndBookAuthor::class,
         BookAuthor::class,
-        BookCategory::class,
+        QuoteCategory::class,
         BookReleaseYear::class,
         BookAndBookReleaseYear::class,
         PublishingOffice::class,
@@ -43,7 +43,7 @@ abstract class AppDatabase : RoomDatabase() {
 
     abstract fun authorDao(): BookAuthorDao
 
-    abstract fun bookCategoryDao(): BookCategoryDao
+    abstract fun quoteCategoryDao(): QuoteCategoryDao
 
     abstract fun bookDao(): BookDao
 
@@ -58,7 +58,5 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun bookAndBookAuthorDao(): BookAndBookAuthorDao
 
     abstract fun bookAndBookReleaseYearDao(): BookAndBookReleaseYearDao
-
-    abstract fun bookCategoriesAndQuoteTypeDao(): BookCategoriesAndQuoteTypeDao
 
 }

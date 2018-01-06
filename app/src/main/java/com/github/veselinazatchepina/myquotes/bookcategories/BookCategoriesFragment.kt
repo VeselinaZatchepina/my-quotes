@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.AdapterImpl
-import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
+import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import kotlinx.android.synthetic.main.book_categories_recycler_view_item.view.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 class BookCategoriesFragment : Fragment(), BookCategoriesContract.View {
 
     lateinit var bookCategoriesPresenter: BookCategoriesContract.Presenter
-    lateinit var bookCategoriesAdapter: AdapterImpl<BookCategory>
+    lateinit var bookCategoriesAdapter: AdapterImpl<QuoteCategory>
     lateinit var rootView: View
 
     companion object {
@@ -37,7 +37,7 @@ class BookCategoriesFragment : Fragment(), BookCategoriesContract.View {
         return rootView
     }
 
-    override fun showBookCategoriesList(bookCategories: List<BookCategory>) {
+    override fun showBookCategoriesList(bookCategories: List<QuoteCategory>) {
         bookCategoriesAdapter = AdapterImpl(bookCategories, R.layout.book_categories_recycler_view_item, {
             item_category_name.text = it.categoryName
             item_quote_count.text = it.quoteCount.toString()

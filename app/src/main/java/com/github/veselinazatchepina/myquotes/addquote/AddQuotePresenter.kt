@@ -2,7 +2,7 @@ package com.github.veselinazatchepina.myquotes.addquote
 
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
-import com.github.veselinazatchepina.myquotes.data.local.pojo.BookCategoriesAndQuoteType
+import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -14,7 +14,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                         val addQuoteView: AddQuoteContract.View) : AddQuoteContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
-    private val bookCategories = ArrayList<String>()
+    private val bookCategoriesForSpinner = ArrayList<String>()
 
     init {
         addQuoteView.setPresenter(this)
@@ -25,13 +25,19 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
     }
 
-    override fun getBookCategoriesList(quoteType: String) {
-        compositeDisposable.add(quoteDataSource.getBookCategories(quoteType).subscribeOn(Schedulers.io())
+    override fun getQuoteCategoriesList(quoteType: String) {
+        compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSubscriber<List<BookCategoriesAndQuoteType>>() {
-                    override fun onNext(list: List<BookCategoriesAndQuoteType>?) {
+                .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
+                    override fun onNext(list: List<QuoteCategory>?) {
                         if (list != null) {
-                            addQuoteView.defineCategorySpinner(defineBookCategoriesListForView(list))
+                            if (bookCategoriesForSpinner.isEmpty()) {
+                                bookCategoriesForSpinner.clear()
+                                addQuoteView.defineCategorySpinner(defineBookCategoriesListForView(list))
+                            } else {
+                                bookCategoriesForSpinner.clear()
+                                addQuoteView.updateCategorySpinner(defineBookCategoriesListForView(list))
+                            }
                         } else {
                             Log.v("GET BOOK CATEGORIES", "NULL")
                         }
@@ -47,20 +53,19 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    private fun defineBookCategoriesListForView(list: List<BookCategoriesAndQuoteType>): List<String> {
-        list.map {
-            it.bookCategories?.mapTo(bookCategories) {
-                it.categoryName.toUpperCase()
-            }
+    private fun defineBookCategoriesListForView(list: List<QuoteCategory>): List<String> {
+        list.mapTo(bookCategoriesForSpinner) {
+            Log.v("CATEGORIES", it.categoryName)
+            it.categoryName.toUpperCase()
         }
-        bookCategories.add("+ add new category")
-        bookCategories.add("Select quote category")
-        return bookCategories
+        bookCategoriesForSpinner.add("+ add new category")
+        bookCategoriesForSpinner.add("Select quote category")
+        return bookCategoriesForSpinner
     }
 
-    override fun addBookCategory(category: String) {
-        bookCategories.add(0, category)
-        addQuoteView.updateCategorySpinner(bookCategories)
+    override fun addQuoteCategory(category: String) {
+        bookCategoriesForSpinner.add(0, category)
+        addQuoteView.updateCategorySpinner(bookCategoriesForSpinner)
     }
 
     override fun subscribe() {

@@ -9,9 +9,9 @@ interface AddQuoteContract {
 
     interface View : BaseView<Presenter> {
 
-        fun defineCategorySpinner(bookCategories: List<String>)
+        fun defineCategorySpinner(quoteCategories: List<String>)
 
-        fun updateCategorySpinner(bookCategories: List<String>)
+        fun updateCategorySpinner(quoteCategories: List<String>)
 
 
     }
@@ -20,9 +20,9 @@ interface AddQuoteContract {
 
         fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>)
 
-        fun getBookCategoriesList(quoteType: String)
+        fun getQuoteCategoriesList(quoteType: String)
 
-        fun addBookCategory(category: String)
+        fun addQuoteCategory(category: String)
 
     }
 }

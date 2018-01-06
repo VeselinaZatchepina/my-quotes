@@ -2,14 +2,14 @@ package com.github.veselinazatchepina.myquotes.bookcategories
 
 import com.github.veselinazatchepina.myquotes.BasePresenter
 import com.github.veselinazatchepina.myquotes.BaseView
-import com.github.veselinazatchepina.myquotes.data.local.entity.BookCategory
+import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 
 
 interface BookCategoriesContract {
 
     interface View : BaseView<Presenter> {
-        fun showBookCategoriesList(bookCategories: List<BookCategory>)
+        fun showBookCategoriesList(bookCategories: List<QuoteCategory>)
 
 
     }

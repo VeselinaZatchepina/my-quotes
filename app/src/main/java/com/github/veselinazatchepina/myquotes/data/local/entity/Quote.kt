@@ -13,15 +13,20 @@ import android.arch.persistence.room.PrimaryKey
         ForeignKey(
                 entity = QuoteType::class,
                 parentColumns = arrayOf("typeId"),
-                childColumns = arrayOf("type_Id"))
-)
-)
+                childColumns = arrayOf("type_Id")),
+
+        ForeignKey(
+                entity = QuoteCategory::class,
+                parentColumns = arrayOf("categoryId"),
+                childColumns = arrayOf("category_Id"))
+))
 data class Quote(val quoteText: String,
                  val creationDate: String,
                  val comments: String,
                  val pageNumber: Long,
                  val book_Id: Long,
-                 val type_Id: Long) {
+                 val type_Id: Long,
+                 val category_Id: Long) {
     @PrimaryKey(autoGenerate = true)
     var quoteId: Long = 0
 }

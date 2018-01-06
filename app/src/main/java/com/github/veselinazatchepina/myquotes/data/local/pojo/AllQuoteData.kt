@@ -33,9 +33,9 @@ class AllQuoteData(
         @Relation(
                 parentColumn = "category_Id",
                 entityColumn = "categoryId",
-                entity = BookCategory::class
+                entity = QuoteCategory::class
         )
-        var category: List<BookCategory>? = null,
+        var category: List<QuoteCategory>? = null,
 
         @Relation(
                 parentColumn = "authorIdJoin",

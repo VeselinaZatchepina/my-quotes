@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import kotlinx.android.synthetic.main.dialog_add_category.view.*
 import kotlinx.android.synthetic.main.fragment_add_quote.*
 import kotlinx.android.synthetic.main.fragment_add_quote.view.*
 import org.jetbrains.anko.margin
+import org.jetbrains.anko.support.v4.toast
 
 
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
@@ -25,10 +27,10 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     private lateinit var rootView: View
     lateinit var quoteType: String
     private val authorFieldIds: ArrayList<Int> = ArrayList<Int>()
-    private var bookCategoriesList: List<String>? = null
+    private var quoteCategoriesList: List<String>? = null
     private lateinit var categorySpinnerAdapter: ArrayAdapter<String>
 
-    lateinit var bookCategory: String
+    lateinit var quoteCategory: String
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -45,7 +47,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: resources.getString(QuoteType.BOOK_QUOTE.resource)
-        addQuotePresenter.getBookCategoriesList(quoteType)
+        addQuotePresenter.getQuoteCategoriesList(quoteType)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,7 +61,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         if (quoteType == resources.getString(QuoteType.MY_QUOTE.resource)) {
             hideBookQuoteFields()
         }
-        bookCategory = getString(R.string.spinner_hint)
+        quoteCategory = getString(R.string.spinner_hint)
     }
 
     private fun defineAddFieldsForAuthorDataBtn() {
@@ -116,16 +118,20 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         addQuotePresenter = presenter
     }
 
-    override fun defineCategorySpinner(bookCategories: List<String>) {
-        bookCategoriesList = bookCategories
-        defineSpinnerAdapter()
-        setListenerToSpinner()
+    override fun defineCategorySpinner(quoteCategories: List<String>) {
+        if (isAdded) {
+            quoteCategoriesList = quoteCategories
+            defineSpinnerAdapter()
+            setListenerToSpinner()
+        }
     }
 
-    override fun updateCategorySpinner(bookCategories: List<String>) {
-        categorySpinnerAdapter.clear()
-        categorySpinnerAdapter.addAll(bookCategories)
-        addCategorySpinner.setSelection(0)
+    override fun updateCategorySpinner(quoteCategories: List<String>) {
+        if (isAdded) {
+            categorySpinnerAdapter.clear()
+            categorySpinnerAdapter.addAll(quoteCategories)
+            addCategorySpinner.setSelection(0)
+        }
     }
 
     private fun defineSpinnerAdapter() {
@@ -143,7 +149,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
                 return super.getCount() - 1
             }
         }
-        categorySpinnerAdapter.addAll(bookCategoriesList)
+        categorySpinnerAdapter.addAll(quoteCategoriesList)
         addCategorySpinner.adapter = categorySpinnerAdapter
         addCategorySpinner.setSelection(categorySpinnerAdapter.count)
     }
@@ -172,7 +178,8 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         dialogBuilder.setCancelable(false)
                 .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
                     val currentUserInput = dialogView.input_text.text.toString()
-                    addQuotePresenter.addBookCategory(currentUserInput)
+                    addQuotePresenter.addQuoteCategory(currentUserInput)
+                    Log.v("CURRENT_USER_INPUT", currentUserInput)
                 }
                 .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
                     dialogInterface?.cancel()
@@ -184,19 +191,25 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
 
     fun createMapOfQuoteProperties() {
-        //TODO check quote and category
-        val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
-        mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
-        mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
-        mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = addCategorySpinner.selectedItem.toString()
-        mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
-        mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
-        mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
-        mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
-        mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
-        mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
+        if (isQuoteTextFieldNotEmpty() && isBookCategorySelected()) {
+            val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
+            mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
+            mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
+            mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = addCategorySpinner.selectedItem.toString()
+            Log.v("SPINNER", addCategorySpinner.selectedItem.toString())
+            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
+            mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
+            mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
+            mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
+            mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
+            mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
 
-        addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
+            addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
+            activity?.finish()
+        }
+        if (!isBookCategorySelected()) {
+            toast("Choose book category")
+        }
     }
 
     private fun createAuthorsList(): List<String> {
@@ -210,7 +223,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         return list
     }
 
-    fun isQuoteTextFieldNotEmpty(): Boolean {
+    private fun isQuoteTextFieldNotEmpty(): Boolean {
         var isEmpty = true
         if (TextUtils.isEmpty(addQuoteText.text)) {
             addQuoteTextInputLayout.error = "Quote text mustn't be empty"
@@ -219,5 +232,5 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         return isEmpty
     }
 
-    fun isBookCategorySelected(): Boolean = bookCategory != getString(R.string.spinner_hint)
+    private fun isBookCategorySelected(): Boolean = addCategorySpinner.selectedItem.toString() != getString(R.string.spinner_hint)
 }
