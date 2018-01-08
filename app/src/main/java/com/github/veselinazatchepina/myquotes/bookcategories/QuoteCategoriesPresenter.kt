@@ -19,13 +19,13 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
         compositeDisposable = CompositeDisposable()
     }
 
-    override fun getBookCategoriesList(quoteType: String) {
+    override fun getQuoteCategoriesList(quoteType: String) {
         compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
                     override fun onNext(list: List<QuoteCategory>?) {
                         if (list != null) {
-                            bookCategoriesView.showBookCategoriesList(list.distinct())
+                            bookCategoriesView.showQuoteCategoriesList(list.distinct())
                         }
                     }
 

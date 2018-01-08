@@ -181,4 +181,16 @@ class QuoteLocalDataSource private constructor(val context: Context,
         val bookAndBookAuthor = BookAndBookAuthor(bookId, authorId)
         databaseInstance.bookAndBookAuthorDao().insertBookAndBookAuthor(bookAndBookAuthor)
     }
+
+    override fun getAllQuotes(): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getAllQuotes()
+    }
+
+    override fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByQuoteType(quoteType)
+    }
+
+    override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    }
 }

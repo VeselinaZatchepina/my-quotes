@@ -11,14 +11,14 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.AdapterImpl
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
-import kotlinx.android.synthetic.main.book_categories_recycler_view_item.view.*
 import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
+import kotlinx.android.synthetic.main.quote_categories_recycler_view_item.view.*
 
 
 class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
 
     lateinit var bookCategoriesPresenter: QuoteCategoriesContract.Presenter
-    lateinit var bookCategoriesAdapter: AdapterImpl<QuoteCategory>
+    lateinit var quoteCategoriesAdapter: AdapterImpl<QuoteCategory>
     lateinit var rootView: View
     private lateinit var quoteType: String
 
@@ -37,7 +37,7 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
-        bookCategoriesPresenter.getBookCategoriesList(quoteType)
+        bookCategoriesPresenter.getQuoteCategoriesList(quoteType)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,16 +46,16 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
         return rootView
     }
 
-    override fun showBookCategoriesList(bookCategories: List<QuoteCategory>) {
-        bookCategoriesAdapter = AdapterImpl(bookCategories, R.layout.book_categories_recycler_view_item, {
-            item_category_name.text = it.categoryName
-            item_quote_count.text = it.quoteCount.toString()
+    override fun showQuoteCategoriesList(quoteCategories: List<QuoteCategory>) {
+        quoteCategoriesAdapter = AdapterImpl(quoteCategories, R.layout.quote_categories_recycler_view_item, {
+            rootView.item_category_name.text = it.categoryName
+            rootView.item_quote_count.text = it.quoteCount.toString()
         }, {
             startActivity(AllQuotesActivity.newIntent(activity!!.applicationContext,
                     this.categoryName,
                     quoteType))
         })
-        rootView.recycler_view.adapter = bookCategoriesAdapter
+        rootView.recycler_view.adapter = quoteCategoriesAdapter
         rootView.recycler_view.layoutManager = LinearLayoutManager(activity)
     }
 

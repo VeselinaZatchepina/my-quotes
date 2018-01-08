@@ -9,13 +9,13 @@ import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 interface QuoteCategoriesContract {
 
     interface View : BaseView<Presenter> {
-        fun showBookCategoriesList(bookCategories: List<QuoteCategory>)
+        fun showQuoteCategoriesList(quoteCategories: List<QuoteCategory>)
 
 
     }
 
     interface Presenter : BasePresenter {
-        fun getBookCategoriesList(quoteType: String)
+        fun getQuoteCategoriesList(quoteType: String)
 
         fun getQuotesByCategory(categoryName: String): List<Quote>
 

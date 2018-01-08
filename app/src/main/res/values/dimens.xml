@@ -70,6 +70,7 @@
     <dimen name="book_quote_fab_margin_bottom">90dp</dimen>
     <dimen name="book_quote_fab_margin_end">16dp</dimen>
     <dimen name="add_fab_margin">16dp</dimen>
+    <dimen name="all_quotes_linear_padding">16dp</dimen>
 
 
 </resources>
