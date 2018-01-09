@@ -39,4 +39,8 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
     override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
         return quoteLocalDataSource.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
     }
+
+    override fun getQuoteById(quoteId: Long): Flowable<Quote> {
+        return quoteLocalDataSource.getQuoteById(quoteId)
+    }
 }

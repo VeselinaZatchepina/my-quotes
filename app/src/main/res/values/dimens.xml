@@ -72,5 +72,16 @@
     <dimen name="add_fab_margin">16dp</dimen>
     <dimen name="all_quotes_linear_padding">16dp</dimen>
 
+    <!-- CurrentQuoteFragment -->
+    <dimen name="cardview_margin_top_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_start_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_end_current_quote">8dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="divider_current_quote">1dp</dimen>
+    <dimen name="divider_current_quote_margin_Top">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+
 
 </resources>

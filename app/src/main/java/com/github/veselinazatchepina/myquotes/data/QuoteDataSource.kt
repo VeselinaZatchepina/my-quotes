@@ -17,4 +17,6 @@ interface QuoteDataSource {
     fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>>
 
     fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
+
+    fun getQuoteById(quoteId: Long): Flowable<Quote>
 }

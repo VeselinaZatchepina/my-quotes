@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.AdapterImpl
+import com.github.veselinazatchepina.myquotes.currentquote.CurrentQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 import kotlinx.android.synthetic.main.quote_recycler_view_item.view.*
-import org.jetbrains.anko.support.v4.toast
 
 
 class AllQuotesFragment : Fragment(), AllQuotesContract.View {
@@ -65,7 +65,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
             rootView.item_quote_text.text = it.quoteText
         }, {
-            toast("Pushed")
+            startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext, quoteId))
         })
         rootView.recycler_view.adapter = quotesAdapter
         rootView.recycler_view.layoutManager = LinearLayoutManager(activity)

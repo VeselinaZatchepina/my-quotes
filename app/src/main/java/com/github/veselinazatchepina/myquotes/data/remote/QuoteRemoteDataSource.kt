@@ -40,4 +40,8 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         TODO("we don't need remote now")
     }
 
+    override fun getQuoteById(quoteId: Long): Flowable<Quote> {
+        TODO("we don't need remote now")
+    }
+
 }

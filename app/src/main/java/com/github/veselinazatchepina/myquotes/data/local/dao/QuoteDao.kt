@@ -11,7 +11,7 @@ import io.reactivex.Flowable
 interface QuoteDao {
 
     @Query("SELECT * FROM Quote WHERE Quote.quoteId = :quoteId")
-    fun getQuoteById(quoteId: Long) : Quote
+    fun getQuoteById(quoteId: Long) : Flowable<Quote>
 
     @Insert
     fun insertQuote(quote: Quote): Long

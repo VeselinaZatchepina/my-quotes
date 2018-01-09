@@ -193,4 +193,8 @@ class QuoteLocalDataSource private constructor(val context: Context,
     override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
         return databaseInstance.quoteDao().getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
     }
+
+    override fun getQuoteById(quoteId: Long): Flowable<Quote> {
+        return databaseInstance.quoteDao().getQuoteById(quoteId)
+    }
 }

@@ -37,5 +37,18 @@
     <string name="title_all_quotes">All quotes</string>
     <string name="all_quotes_nav">All quotes</string>
 
+    <!-- CurrentQuoteActivity -->
+    <string name="current_quote_title">Current quote</string>
+
+    <!-- CurrentQuoteFragment -->
+    <string name="quote_author_title">Quote author:</string>
+    <string name="book_name_title">Book name:</string>
+    <string name="publisher_name_title">Book publisher:</string>
+    <string name="year_number_title">Year:</string>
+    <string name="page_number_title">Page:</string>
+    <string name="current_category_title">Category:</string>
+    <string name="quote_creation_date_title">Quote creation date:</string>
+    <string name="default_value"> - </string>
+
 
 </resources>
