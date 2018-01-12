@@ -58,12 +58,6 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
             Log.v("CATEGORIES", it.categoryName)
             it.categoryName.toUpperCase()
         }
-        if (!bookCategoriesForSpinner.isEmpty()) {
-            bookCategoriesForSpinner = bookCategoriesForSpinner.distinct() as ArrayList<String>
-        }
-        for (i in bookCategoriesForSpinner) {
-            Log.v("CATEGORIES_DISTINCT", i)
-        }
         bookCategoriesForSpinner.add("+ add new category")
         bookCategoriesForSpinner.add("Select quote category")
         return bookCategoriesForSpinner

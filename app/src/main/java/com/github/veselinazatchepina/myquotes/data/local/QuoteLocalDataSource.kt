@@ -5,6 +5,7 @@ import android.content.Context
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.*
+import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import io.reactivex.Flowable
@@ -194,7 +195,15 @@ class QuoteLocalDataSource private constructor(val context: Context,
         return databaseInstance.quoteDao().getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
     }
 
-    override fun getQuoteById(quoteId: Long): Flowable<Quote> {
-        return databaseInstance.quoteDao().getQuoteById(quoteId)
+    override fun getAllQuoteData(): Flowable<List<AllQuoteData>> {
+        return databaseInstance.allQuoteDataDao().getAllQuoteData()
+    }
+
+    override fun getAllQuoteDataByQuoteType(quoteType: String): Flowable<List<AllQuoteData>> {
+        return databaseInstance.allQuoteDataDao().getAllQuoteData()
+    }
+
+    override fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>> {
+        return databaseInstance.allQuoteDataDao().getAllQuoteData()
     }
 }

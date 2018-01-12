@@ -2,6 +2,7 @@ package com.github.veselinazatchepina.myquotes.data
 
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
+import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
@@ -18,5 +19,9 @@ interface QuoteDataSource {
 
     fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
 
-    fun getQuoteById(quoteId: Long): Flowable<Quote>
+    fun getAllQuoteData(): Flowable<List<AllQuoteData>>
+
+    fun getAllQuoteDataByQuoteType(quoteType: String): Flowable<List<AllQuoteData>>
+
+    fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>>
 }

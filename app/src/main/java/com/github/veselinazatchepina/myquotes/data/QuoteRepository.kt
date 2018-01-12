@@ -2,12 +2,14 @@ package com.github.veselinazatchepina.myquotes.data
 
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
+import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
 
 class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSource,
                                           val quoteRemoteDataSource: QuoteDataSource) : QuoteDataSource {
+
     companion object {
         private var INSTANCE: QuoteRepository? = null
 
@@ -40,7 +42,15 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         return quoteLocalDataSource.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
     }
 
-    override fun getQuoteById(quoteId: Long): Flowable<Quote> {
-        return quoteLocalDataSource.getQuoteById(quoteId)
+    override fun getAllQuoteData(): Flowable<List<AllQuoteData>> {
+        return quoteLocalDataSource.getAllQuoteData()
+    }
+
+    override fun getAllQuoteDataByQuoteType(quoteType: String): Flowable<List<AllQuoteData>> {
+        return quoteLocalDataSource.getAllQuoteDataByQuoteType(quoteType)
+    }
+
+    override fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>> {
+        return quoteLocalDataSource.getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
     }
 }

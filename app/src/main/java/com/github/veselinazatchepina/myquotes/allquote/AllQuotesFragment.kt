@@ -65,7 +65,9 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
             rootView.item_quote_text.text = it.quoteText
         }, {
-            startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext, quoteId))
+            startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
+                    quoteCategory,
+                    quoteType))
         })
         rootView.recycler_view.adapter = quotesAdapter
         rootView.recycler_view.layoutManager = LinearLayoutManager(activity)
