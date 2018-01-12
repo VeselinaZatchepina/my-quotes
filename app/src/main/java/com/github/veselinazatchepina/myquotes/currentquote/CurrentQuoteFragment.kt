@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.fragment_current_quote.view.*
 import java.io.Serializable
 
 
-class CurrentQuoteFragment : Fragment(){
+class CurrentQuoteFragment : Fragment() {
 
     lateinit var allQuoteData: AllQuoteData
     lateinit var rootView: View
@@ -39,9 +39,16 @@ class CurrentQuoteFragment : Fragment(){
         return rootView
     }
 
-    fun showQuote(allQuoteData: AllQuoteData) {
-        rootView.current_quote_text.text = allQuoteData.quote?.quoteText ?: ""
+    private fun showQuote(allQuoteData: AllQuoteData) {
+        rootView.current_quote_text.text = allQuoteData.quote?.quoteText ?: "-"
+        rootView.current_author_name.text = allQuoteData.author?.first()?.name ?: "-"
+        rootView.current_book_name.text = allQuoteData.book?.bookName ?: "-"
+        rootView.current_category.text = allQuoteData.category?.first()?.categoryName ?: "-"
+        rootView.current_publisher_name.text = allQuoteData.publishingOffice?.first()?.officeName ?: "-"
+        rootView.current_year_number.text = allQuoteData.year?.first()?.year?.toString() ?: "-"
+        rootView.current_year_number.text = allQuoteData.quote?.pageNumber?.toString() ?: "-"
+        rootView.comments.text = allQuoteData.quote?.comments ?: "-"
+
+        //TODO fill quote creation date, many authors
     }
-
-
 }

@@ -48,6 +48,7 @@
     <string name="page_number_title">Page:</string>
     <string name="current_category_title">Category:</string>
     <string name="quote_creation_date_title">Quote creation date:</string>
+    <string name="comments_title">Comments:</string>
     <string name="default_value"> - </string>
 
 

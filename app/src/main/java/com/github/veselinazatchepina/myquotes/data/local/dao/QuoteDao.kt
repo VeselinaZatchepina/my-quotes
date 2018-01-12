@@ -19,10 +19,16 @@ interface QuoteDao {
     @Query("SELECT * FROM Quote")
     fun getAllQuotes(): Flowable<List<Quote>>
 
-    @Query("SELECT * FROM Quote INNER JOIN (SELECT * FROM QuoteType WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id")
+    @Query("SELECT * FROM Quote " +
+            "INNER JOIN (SELECT * FROM QuoteType " +
+            "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id")
     fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>>
 
-    @Query("SELECT * FROM Quote INNER JOIN (SELECT * FROM QuoteType WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id INNER JOIN (SELECT * FROM QuoteCategory WHERE QuoteCategory.categoryName = :quoteCategory) b ON b.categoryId = Quote.category_Id")
+    @Query("SELECT * FROM Quote " +
+            "INNER JOIN (SELECT * FROM QuoteType " +
+            "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id " +
+            "INNER JOIN (SELECT * FROM QuoteCategory " +
+            "WHERE QuoteCategory.categoryName = :quoteCategory) b ON b.categoryId = Quote.category_Id")
     fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
 
 }

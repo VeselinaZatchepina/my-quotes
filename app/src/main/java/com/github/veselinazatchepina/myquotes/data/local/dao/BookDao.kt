@@ -12,6 +12,10 @@ interface BookDao {
     @Insert
     fun insertBook(book: Book): Long
 
-    @Query("SELECT * FROM Book INNER JOIN BookAndBookReleaseYear ON Book.bookId = BookAndBookReleaseYear.byBookIdJoin WHERE Book.bookName = :bookName AND Book.office_Id = :publishingOfficeId AND BookAndBookReleaseYear.yearIdJoin = :yearId")
+    @Query("SELECT * FROM Book " +
+            "INNER JOIN BookAndBookReleaseYear ON Book.bookId = BookAndBookReleaseYear.byBookIdJoin " +
+            "WHERE Book.bookName = :bookName " +
+            "AND Book.office_Id = :publishingOfficeId " +
+            "AND BookAndBookReleaseYear.yearIdJoin = :yearId")
     fun getBookByNamePublishingYear(bookName: String, publishingOfficeId: Long, yearId: Long) : Book?
 }

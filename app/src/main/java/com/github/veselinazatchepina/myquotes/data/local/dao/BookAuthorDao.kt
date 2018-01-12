@@ -12,6 +12,9 @@ interface BookAuthorDao {
     @Insert
     fun insertAuthor(author: BookAuthor): Long
 
-    @Query("SELECT * FROM BookAuthor WHERE BookAuthor.surname = :surname AND BookAuthor.name = :name AND BookAuthor.patronymic = :patronymic")
+    @Query("SELECT * FROM BookAuthor " +
+            "WHERE BookAuthor.surname = :surname " +
+            "AND BookAuthor.name = :name " +
+            "AND BookAuthor.patronymic = :patronymic")
     fun getAuthor(surname: String, name: String, patronymic: String): BookAuthor?
 }
