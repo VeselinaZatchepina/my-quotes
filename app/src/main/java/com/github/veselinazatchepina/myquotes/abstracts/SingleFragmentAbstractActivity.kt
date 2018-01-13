@@ -1,5 +1,6 @@
 package com.github.veselinazatchepina.myquotes.abstracts
 
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -34,7 +35,7 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         setContentView(getLayoutResId())
         defineToolbar()
         defineNavigationDrawer()
-        setAppBarNotExpandable()
+        defineAppBarLayoutExpandableValue()
         setNewTitleStyle(title.toString())
         defineFab()
         defineInputData()
@@ -51,7 +52,19 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
 
     open fun defineNavigationDrawer() {}
 
-    private fun setAppBarNotExpandable() {}
+    open fun defineAppBarLayoutExpandableValue() {
+        setAppBarNotExpandable()
+    }
+
+    fun setAppBarNotExpandable() {
+        appbar_layout.setExpanded(false, false)
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            appbar_layout.layoutParams.height = this.resources.getDimension(R.dimen.toolbar_height_normal_portrait).toInt()
+        } else {
+            appbar_layout.layoutParams.height = this.resources.getDimension(R.dimen.toolbar_height_normal_landscape).toInt()
+        }
+        collapsing_toolbar.isTitleEnabled = false
+    }
 
     fun setNewTitleStyle(title: String) {}
 

@@ -1,10 +1,13 @@
 package com.github.veselinazatchepina.myquotes.abstracts
 
+import android.content.Context
 import android.content.Intent
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.view.Surface
+import android.view.WindowManager
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.bookcategories.QuoteCategoriesActivity
@@ -26,6 +29,20 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
         drawer_layout.setDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    override fun defineAppBarLayoutExpandableValue() {
+        defineToolbarForScreenOrientation(this)
+    }
+
+    private fun defineToolbarForScreenOrientation(context: Context) {
+        val screenOrientation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.orientation
+        when (screenOrientation) {
+            Surface.ROTATION_0 -> ""
+            Surface.ROTATION_90 -> setAppBarNotExpandable()
+            Surface.ROTATION_180 -> ""
+            Surface.ROTATION_270 -> ""
+        }
     }
 
     override fun onBackPressed() {
