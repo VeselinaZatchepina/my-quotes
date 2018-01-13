@@ -16,9 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".addquote.AddQuoteActivity"/>
+        <activity android:name=".addquote.AddQuoteActivity"
+                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"/>
         <activity android:name=".allquote.AllQuotesActivity"/>
-        <activity android:name=".currentquote.CurrentQuoteActivity"/>
+        <activity android:name=".currentquote.CurrentQuoteActivity"
+                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"/>
     </application>
 
 </manifest>
