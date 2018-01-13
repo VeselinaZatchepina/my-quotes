@@ -12,6 +12,7 @@ import android.view.animation.OvershootInterpolator
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import com.github.veselinazatchepina.myquotes.setFirstVowelColor
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import kotlinx.android.synthetic.main.activity_single_fragment.*
@@ -36,9 +37,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         defineToolbar()
         defineNavigationDrawer()
         defineAppBarLayoutExpandableValue()
-        setNewTitleStyle(title.toString())
         defineFab()
         defineInputData()
+        setNewTitleStyle(title.toString())
         defineFragment()
         createPresenter()
     }
@@ -66,7 +67,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         collapsing_toolbar.isTitleEnabled = false
     }
 
-    fun setNewTitleStyle(title: String) {}
+    open fun setNewTitleStyle(title: String) {
+        setTitle(title.setFirstVowelColor(this))
+    }
 
     private fun defineFabAnimation() {
         fabOpenAnimation = AnimationUtils.loadAnimation(this, R.anim.open_fab_menu)

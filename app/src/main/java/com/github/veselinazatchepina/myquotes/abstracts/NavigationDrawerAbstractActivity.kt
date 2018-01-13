@@ -38,11 +38,17 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
     private fun defineToolbarForScreenOrientation(context: Context) {
         val screenOrientation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.orientation
         when (screenOrientation) {
-            Surface.ROTATION_0 -> ""
-            Surface.ROTATION_90 -> setAppBarNotExpandable()
-            Surface.ROTATION_180 -> ""
-            Surface.ROTATION_270 -> ""
+            Surface.ROTATION_0 -> "android portrait screen"
+            Surface.ROTATION_90 -> {
+                setAppBarNotExpandable()
+                "android landscape screen"
+            }
+            Surface.ROTATION_180 -> "android reverse portrait screen"
         }
+    }
+
+    override fun setNewTitleStyle(title: String) {
+
     }
 
     override fun onBackPressed() {

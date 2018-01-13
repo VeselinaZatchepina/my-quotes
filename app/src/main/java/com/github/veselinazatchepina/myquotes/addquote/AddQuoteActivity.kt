@@ -29,6 +29,7 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
+        title = quoteType
     }
 
     override fun createFragment(): Fragment {
