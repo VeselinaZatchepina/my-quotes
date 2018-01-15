@@ -106,12 +106,9 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         return LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-
-
+    
     private fun hideBookQuoteFields() {
-        rootView.addBookNameInputLayout.visibility = View.GONE
-        rootView.addAuthorFieldsLinearLayout.visibility = View.GONE
-        rootView.addAuthorFieldsBtn.visibility = View.GONE
+        rootView.addBookPartCard.visibility = View.GONE
         rootView.addPublishingOfficeInputLayout.visibility = View.GONE
         rootView.addYearInputLayout.visibility = View.GONE
         rootView.addPageNumberInputLayout.visibility = View.GONE
@@ -211,7 +208,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             activity?.finish()
         }
         if (!isBookCategorySelected()) {
-            toast("Choose book category")
+            toast("Choose quote category")
         }
     }
 
