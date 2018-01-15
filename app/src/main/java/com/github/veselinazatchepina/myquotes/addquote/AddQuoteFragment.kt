@@ -14,9 +14,12 @@ import android.widget.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import kotlinx.android.synthetic.main.add_quote_book_part.*
+import kotlinx.android.synthetic.main.add_quote_book_part.view.*
+import kotlinx.android.synthetic.main.add_quote_main_part.*
+import kotlinx.android.synthetic.main.add_quote_other.*
+import kotlinx.android.synthetic.main.add_quote_other.view.*
 import kotlinx.android.synthetic.main.dialog_add_category.view.*
-import kotlinx.android.synthetic.main.fragment_add_quote.*
-import kotlinx.android.synthetic.main.fragment_add_quote.view.*
 import org.jetbrains.anko.margin
 import org.jetbrains.anko.support.v4.toast
 
@@ -214,9 +217,9 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     private fun createAuthorsList(): List<String> {
         val list = ArrayList<String>()
-        list.add(addAuthorName.text.toString())
+        list.add(addAuthorFirstName.text.toString())
         list.add(addAuthorSurname.text.toString())
-        list.add(addAuthorPatronymic.text.toString())
+        list.add(addAuthorMiddleName.text.toString())
         authorFieldIds
                 .map { rootView.findViewById<EditText>(it) }
                 .mapTo(list) { it.text.toString() }

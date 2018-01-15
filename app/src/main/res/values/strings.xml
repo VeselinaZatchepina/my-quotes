@@ -22,11 +22,33 @@
     <string name="item_icon_desc">category icon</string>
 
     <!-- fragment_add_quote -->
-    <string name="hint_author_name">Author name</string>
-    <string name="hint_author_surname">Author surname</string>
-    <string name="hint_author_second_name">Author second name</string>
+    <!-- add_main_part -->
+    <string name="add_main_quote_text_hint">Quote text</string>
+    <string name="add_main_spinner_title_text">Category</string>
     <string name="spinner_add_category">+ add new category</string>
     <string name="spinner_hint">Select quote category</string>
+
+    <!-- add_quote_book_part -->
+    <string name="add_book_name_hint">Book name</string>
+    <string name="hint_author_name">Author\'s first name</string>
+    <string name="hint_author_surname">Author\'s surname</string>
+    <string name="hint_author_second_name">Author\'s middle name</string>
+    <string name="add_author_button_text">Add author</string>
+
+    <!-- add_quote_other -->
+    <string name="add_other_publishing_name_hint">Publishing name</string>
+    <string name="add_other_year_hint">Year of publishing</string>
+    <string name="add_other_page_hint">Page number</string>
+    <string name="add_other_comments_hint">Comments</string>
+
+
+
+
+
+
+
+
+
 
     <!-- Add category dialog -->
     <string name="dialog_add_category_title">Enter the category name</string>
@@ -50,6 +72,7 @@
     <string name="quote_creation_date_title">Quote creation date:</string>
     <string name="comments_title">Comments:</string>
     <string name="default_value"> - </string>
+
 
 
 </resources>

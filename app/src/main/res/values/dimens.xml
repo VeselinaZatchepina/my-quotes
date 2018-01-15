@@ -18,7 +18,42 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Add quote fragment -->
+    <!-- add_quote_main_part -->
+    <dimen name="add_main_linear_margin">16dp</dimen>
+    <dimen name="add_main_quote_text_margin">10dp</dimen>
+    <dimen name="add_main_spinner_title_margin">10dp</dimen>
+    <dimen name="add_main_spinner_divider_height">1dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_bottom">40dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_end">10dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_start">10dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_top">8dp</dimen>
+    <dimen name="add_main_card_margin_bottom">16dp</dimen>
+
+    <!-- add_quote_book_part -->
+    <dimen name="add_book_linear_margin">16dp</dimen>
+    <dimen name="add_book_name_margin">10dp</dimen>
+    <dimen name="add_author_name_margin">10dp</dimen>
+    <dimen name="add_author_surname_margin">10dp</dimen>
+    <dimen name="add_author_patronymic_margin">10dp</dimen>
+    <dimen name="add_button_margin_end">80dp</dimen>
+    <dimen name="add_button_margin_start">80dp</dimen>
+    <dimen name="add_book_card_margin_bottom">16dp</dimen>
+
+    <!-- add_quote_other -->
+    <dimen name="add_other_linear_margin">16dp</dimen>
+    <dimen name="add_other_publish_margin">10dp</dimen>
+    <dimen name="add_other_year_margin">10dp</dimen>
+    <dimen name="add_other_page_margin">10dp</dimen>
+    <dimen name="add_other_comments_margin">10dp</dimen>
+    <dimen name="add_other_card_margin_bottom">250dp</dimen>
+    <dimen name="add_other_comments_margin_bottom">100dp</dimen>
+
+
+
+
     <dimen name="add_author_fields_margin">10dp</dimen>
+
+
 
     <!-- Add category dialog -->
     <dimen name="add_category_dialog_title_margin">24dp</dimen>
@@ -82,6 +117,7 @@
     <dimen name="divider_current_quote">1dp</dimen>
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
     <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+
 
 
 </resources>
