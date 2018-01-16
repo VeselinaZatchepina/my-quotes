@@ -86,6 +86,7 @@
     <dimen name="item_icon_margin_start">8dp</dimen>
     <dimen name="item_quote_count_margin_end">16dp</dimen>
     <dimen name="quote_categories_category_name_margin_start">12dp</dimen>
+    <dimen name="quote_categories_card_margin_bottom">16dp</dimen>
 
     <!-- popup fab -->
     <dimen name="my_quote_fab_margin_bottom">58dp</dimen>
@@ -105,7 +106,6 @@
     <dimen name="divider_current_quote">1dp</dimen>
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
     <dimen name="linear_layout_current_quote_margin">16dp</dimen>
-
 
 
 </resources>

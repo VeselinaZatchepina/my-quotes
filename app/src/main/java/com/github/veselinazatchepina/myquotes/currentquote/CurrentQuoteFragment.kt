@@ -43,7 +43,7 @@ class CurrentQuoteFragment : Fragment() {
         rootView.current_quote_text.text = allQuoteData.quote?.quoteText ?: "-"
         rootView.current_author_name.text = allQuoteData.author?.first()?.name ?: "-"
         rootView.current_book_name.text = allQuoteData.book?.bookName ?: "-"
-        rootView.current_category.text = allQuoteData.category?.first()?.categoryName ?: "-"
+        rootView.currentCategory.text = allQuoteData.category?.first()?.categoryName ?: "-"
         rootView.current_publisher_name.text = allQuoteData.publishingOffice?.first()?.officeName ?: "-"
         rootView.current_year_number.text = allQuoteData.year?.first()?.year?.toString() ?: "-"
         rootView.current_year_number.text = allQuoteData.quote?.pageNumber?.toString() ?: "-"

@@ -69,7 +69,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
                     quoteCategory,
                     quoteType))
         })
-        rootView.recycler_view.adapter = quotesAdapter
-        rootView.recycler_view.layoutManager = LinearLayoutManager(activity)
+        rootView.recyclerView.adapter = quotesAdapter
+        rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 }

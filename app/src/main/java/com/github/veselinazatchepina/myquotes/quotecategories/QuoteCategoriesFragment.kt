@@ -48,15 +48,15 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
 
     override fun showQuoteCategoriesList(quoteCategories: List<QuoteCategory>) {
         quoteCategoriesAdapter = AdapterImpl(quoteCategories, R.layout.quote_categories_recycler_view_item, {
-            rootView.item_category_name.text = it.categoryName.toUpperCase()
-            rootView.item_quote_count.text = it.quoteCount.toString()
+            rootView.itemCategoryName.text = it.categoryName.toUpperCase()
+            rootView.itemQuoteCount.text = it.quoteCount.toString()
         }, {
             startActivity(AllQuotesActivity.newIntent(activity!!.applicationContext,
                     this.categoryName,
                     quoteType))
         })
-        rootView.recycler_view.adapter = quoteCategoriesAdapter
-        rootView.recycler_view.layoutManager = LinearLayoutManager(activity)
+        rootView.recyclerView.adapter = quoteCategoriesAdapter
+        rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
     override fun setPresenter(presenter: QuoteCategoriesContract.Presenter) {
@@ -64,6 +64,6 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
     }
 
     private fun setCurrentCategoryTitleIsGone(rootView: View) {
-        rootView.current_category.visibility = View.GONE
+        rootView.currentCategory.visibility = View.GONE
     }
 }
