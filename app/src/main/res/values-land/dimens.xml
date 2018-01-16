@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Add quote fragment -->
+    <!-- AddQuoteFragment -->
     <dimen name="add_quote_scroll_view_margin_start_end">100dp</dimen>
+
+    <!-- QuoteCategoriesFragment -->
+    <dimen name="item_card_view_margin_end">100dp</dimen>
+    <dimen name="item_card_view_margin_start">100dp</dimen>
 
 
 

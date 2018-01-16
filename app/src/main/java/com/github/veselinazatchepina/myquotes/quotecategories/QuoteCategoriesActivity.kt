@@ -13,8 +13,8 @@ import com.github.veselinazatchepina.myquotes.enums.QuoteType
 
 class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
 
-    private lateinit var quoteCategoriesView: QuoteCategoriesFragment
-    private lateinit var quoteCategoriesPresenter: QuoteCategoriesPresenter
+    private var quoteCategoriesView: QuoteCategoriesFragment? = null
+    private var quoteCategoriesPresenter: QuoteCategoriesPresenter? = null
 
     private lateinit var quoteType: String
 
@@ -35,13 +35,14 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
 
     override fun createFragment(): Fragment {
         quoteCategoriesView = QuoteCategoriesFragment.createInstance(quoteType)
-        return quoteCategoriesView
+        return quoteCategoriesView!!
     }
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        quoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository, quoteCategoriesView)
+        quoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository,
+                quoteCategoriesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as QuoteCategoriesFragment)
     }
 }

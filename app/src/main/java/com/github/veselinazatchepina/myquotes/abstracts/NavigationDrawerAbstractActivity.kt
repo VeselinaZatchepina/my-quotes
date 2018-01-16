@@ -10,8 +10,8 @@ import android.view.Surface
 import android.view.WindowManager
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
-import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*
 
@@ -36,7 +36,8 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
     }
 
     private fun defineToolbarForScreenOrientation(context: Context) {
-        val screenOrientation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.orientation
+        val screenOrientation = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager)
+                .defaultDisplay.orientation
         when (screenOrientation) {
             Surface.ROTATION_0 -> "android portrait screen"
             Surface.ROTATION_90 -> {
@@ -44,6 +45,10 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
                 "android landscape screen"
             }
             Surface.ROTATION_180 -> "android reverse portrait screen"
+            else -> {
+                setAppBarNotExpandable()
+                "android reverse landscape screen"
+            }
         }
     }
 

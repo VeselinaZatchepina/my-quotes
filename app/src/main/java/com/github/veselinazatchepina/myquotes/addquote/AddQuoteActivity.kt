@@ -13,8 +13,8 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 
 class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
-    var addQuoteView: AddQuoteFragment? = null
-    var addQuotePresenter: AddQuotePresenter? = null
+    private var addQuoteView: AddQuoteFragment? = null
+    private var addQuotePresenter: AddQuotePresenter? = null
     lateinit var quoteType: String
 
     companion object {
