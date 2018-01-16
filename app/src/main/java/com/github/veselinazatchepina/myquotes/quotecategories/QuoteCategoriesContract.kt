@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.bookcategories
+package com.github.veselinazatchepina.myquotes.quotecategories
 
 import com.github.veselinazatchepina.myquotes.BasePresenter
 import com.github.veselinazatchepina.myquotes.BaseView

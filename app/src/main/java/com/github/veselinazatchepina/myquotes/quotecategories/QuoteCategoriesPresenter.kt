@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.bookcategories
+package com.github.veselinazatchepina.myquotes.quotecategories
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
@@ -25,7 +25,7 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
                 .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
                     override fun onNext(list: List<QuoteCategory>?) {
                         if (list != null) {
-                            bookCategoriesView.showQuoteCategoriesList(list.distinct())
+                            bookCategoriesView.showQuoteCategoriesList(list)
                         }
                     }
 

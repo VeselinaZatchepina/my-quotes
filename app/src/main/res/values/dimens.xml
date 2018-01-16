@@ -79,13 +79,13 @@
     <dimen name="button_text_margin_start">8dp</dimen>
     <dimen name="button_text_margin_top">8dp</dimen>
 
-    <!-- fragment book_categories_recycler_view_item -->
+    <!-- fragment quote_categories_recycler_view_item -->
     <dimen name="item_card_view_height">84dp</dimen>
     <dimen name="item_card_view_margin_end">8dp</dimen>
     <dimen name="item_card_view_margin_start">8dp</dimen>
-    <dimen name="item_card_view_margin_top">8dp</dimen>
     <dimen name="item_icon_margin_start">8dp</dimen>
     <dimen name="item_quote_count_margin_end">16dp</dimen>
+    <dimen name="quote_categories_category_name_margin_start">12dp</dimen>
 
     <!-- popup fab -->
     <dimen name="my_quote_fab_margin_bottom">58dp</dimen>

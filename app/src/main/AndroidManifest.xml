@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bookcategories.QuoteCategoriesActivity">
+        <activity android:name=".quotecategories.QuoteCategoriesActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -17,11 +17,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".addquote.AddQuoteActivity"
-                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"
+                  android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"
                   android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".allquote.AllQuotesActivity"/>
         <activity android:name=".currentquote.CurrentQuoteActivity"
-                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"/>
+                  android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"/>
     </application>
 
 </manifest>

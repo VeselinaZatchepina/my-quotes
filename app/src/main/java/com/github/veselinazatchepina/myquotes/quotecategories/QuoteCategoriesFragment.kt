@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.bookcategories
+package com.github.veselinazatchepina.myquotes.quotecategories
 
 
 import android.os.Bundle
@@ -48,7 +48,7 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
 
     override fun showQuoteCategoriesList(quoteCategories: List<QuoteCategory>) {
         quoteCategoriesAdapter = AdapterImpl(quoteCategories, R.layout.quote_categories_recycler_view_item, {
-            rootView.item_category_name.text = it.categoryName
+            rootView.item_category_name.text = it.categoryName.toUpperCase()
             rootView.item_quote_count.text = it.quoteCount.toString()
         }, {
             startActivity(AllQuotesActivity.newIntent(activity!!.applicationContext,

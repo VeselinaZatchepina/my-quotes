@@ -10,7 +10,7 @@ import android.view.Surface
 import android.view.WindowManager
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
-import com.github.veselinazatchepina.myquotes.bookcategories.QuoteCategoriesActivity
+import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*

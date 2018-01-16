@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+                                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
+                                    android:id="@+id/cardView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="@dimen/item_card_view_height"
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_marginEnd="@dimen/item_card_view_margin_end"
+                                    android:layout_marginStart="@dimen/item_card_view_margin_start"
+                                    app:cardBackgroundColor="@color/card_background"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/item_card_view_height"
-        android:layout_marginEnd="@dimen/item_card_view_margin_end"
-        android:layout_marginStart="@dimen/item_card_view_margin_start"
-        android:layout_marginTop="@dimen/item_card_view_margin_top"
-        app:cardBackgroundColor="@color/card_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <ImageView
+            android:id="@+id/item_image_icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/item_icon_margin_start"
+            android:layout_weight="1"
+            android:contentDescription="@string/item_icon_desc"
+            android:src="@drawable/ic_format_quote_white_24dp"/>
 
-            <ImageView
-                android:id="@+id/item_image_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/item_icon_margin_start"
-                android:layout_weight="1"
-                android:contentDescription="@string/item_icon_desc"
-                android:src="@android:drawable/btn_star"/>
+        <TextView
+            android:id="@+id/item_category_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/quote_categories_category_name_margin_start"
+            android:layout_weight="6"
+            android:textColor="@android:color/white"
+            tools:text="CATEGORY"/>
 
-            <TextView
-                android:id="@+id/item_category_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="8"
-                android:textColor="@android:color/white"
-                tools:text="CATEGORY"/>
-
-            <TextView
-                android:id="@+id/item_quote_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/item_quote_count_margin_end"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:textColor="@android:color/white"
-                tools:text="2"/>
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-</android.support.constraint.ConstraintLayout>
+        <TextView
+            android:id="@+id/item_quote_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/item_quote_count_margin_end"
+            android:layout_weight="1"
+            android:gravity="end"
+            android:textColor="@android:color/white"
+            tools:text="2"/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
