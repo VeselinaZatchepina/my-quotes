@@ -32,7 +32,8 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     private lateinit var quoteType: String
     @JvmField
     @State
-    internal var authorFieldIds: ArrayList<Int> = ArrayList<Int>()
+    internal var authorFieldText: ArrayList<String>? = null
+    private var authorFieldIds: ArrayList<Int> = ArrayList<Int>()
     private var quoteCategoriesList: List<String>? = null
     private lateinit var categorySpinnerAdapter: ArrayAdapter<String>
     private lateinit var quoteCategory: String
@@ -66,13 +67,30 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         addQuotePresenter?.getQuoteCategoriesList(quoteType)
         defineLayoutFields()
         defineAddFieldsForAuthorDataBtn()
+        if (savedInstanceState != null) {
+            defineAuthorFieldLayoutWhenConfigChanged()
+        }
         return rootView
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         chosenQuoteCategoryPosition = addCategorySpinner.selectedItemPosition
+        authorFieldText = ArrayList(createAuthorsList())
         Icepick.saveInstanceState(this, outState)
+    }
+
+    private fun defineAuthorFieldLayoutWhenConfigChanged() {
+        val hints = createAuthorFieldsHintList()
+        if (authorFieldText != null && !authorFieldText!!.isEmpty()) {
+            for (j in 3 until (authorFieldText!!.size) step 3) {
+                for (i in 0 until hints.count()) {
+                    val currentInputLayout = createTextInputLayout(hints[i])
+                    rootView.addAuthorFieldsLinearLayout.addView(currentInputLayout)
+                    currentInputLayout.editText!!.setText(authorFieldText!![j + i])
+                }
+            }
+        }
     }
 
     private fun defineLayoutFields() {
@@ -84,14 +102,17 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     private fun defineAddFieldsForAuthorDataBtn() {
         rootView.addAuthorFieldsBtn.setOnClickListener {
-            val hints = listOf(getString(R.string.hint_author_name),
-                    getString(R.string.hint_author_surname),
-                    getString(R.string.hint_author_second_name))
-
+            val hints = createAuthorFieldsHintList()
             for (i in 0 until hints.count()) {
                 rootView.addAuthorFieldsLinearLayout.addView(createTextInputLayout(hints[i]))
             }
         }
+    }
+
+    private fun createAuthorFieldsHintList(): List<String> {
+        return listOf(getString(R.string.hint_author_name),
+                getString(R.string.hint_author_surname),
+                getString(R.string.hint_author_second_name))
     }
 
     private fun createTextInputLayout(hint: String): TextInputLayout {
