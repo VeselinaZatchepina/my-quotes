@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".addquote.AddQuoteActivity"
-                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"/>
+                  android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"
+                  android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".allquote.AllQuotesActivity"/>
         <activity android:name=".currentquote.CurrentQuoteActivity"
                   android:parentActivityName = ".bookcategories.QuoteCategoriesActivity"/>

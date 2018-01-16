@@ -13,8 +13,8 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 
 class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
-    lateinit var addQuoteView: AddQuoteFragment
-    lateinit var addQuotePresenter: AddQuotePresenter
+    var addQuoteView: AddQuoteFragment? = null
+    var addQuotePresenter: AddQuotePresenter? = null
     lateinit var quoteType: String
 
     companion object {
@@ -34,19 +34,20 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createFragment(): Fragment {
         addQuoteView = AddQuoteFragment.createInstance(quoteType)
-        return addQuoteView
+        return addQuoteView!!
     }
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, SingleFragmentAbstractActivity.provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        addQuotePresenter = AddQuotePresenter(quoteRepository, addQuoteView)
+        addQuotePresenter = AddQuotePresenter(quoteRepository,
+                addQuoteView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
     }
 
     override fun setFabImageResId(): Int = R.drawable.ic_check_white_24dp
 
     override fun defineActionWhenFabIsPressed(view: View) {
-        addQuoteView.createMapOfQuoteProperties()
+        addQuoteView?.createMapOfQuoteProperties()
     }
 }

@@ -45,4 +45,9 @@ dependencies {
 
     //Anko
     compile "org.jetbrains.anko:anko:0.10.3"
+
+    //IcePick
+    compile "frankiesardo:icepick:3.2.0"
+    kapt "frankiesardo:icepick-processor:3.2.0"
+
 }

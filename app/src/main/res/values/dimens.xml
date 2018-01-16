@@ -18,6 +18,9 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <!-- Add quote fragment -->
+    <dimen name="add_quote_scroll_view_margin_start_end">16dp</dimen>
+    <dimen name="add_quote_scroll_view_margin_top_bottom">16dp</dimen>
+    <dimen name="add_quote_linear_margin_bottom">120dp</dimen>
     <!-- add_quote_main_part -->
     <dimen name="add_main_linear_margin">16dp</dimen>
     <dimen name="add_main_quote_text_margin">10dp</dimen>
@@ -38,6 +41,7 @@
     <dimen name="add_button_margin_end">80dp</dimen>
     <dimen name="add_button_margin_start">80dp</dimen>
     <dimen name="add_book_card_margin_bottom">16dp</dimen>
+    <dimen name="add_author_fields_margin">10dp</dimen>
 
     <!-- add_quote_other -->
     <dimen name="add_other_linear_margin">16dp</dimen>
@@ -48,24 +52,8 @@
     <dimen name="add_other_card_margin_bottom">250dp</dimen>
     <dimen name="add_other_comments_margin_bottom">100dp</dimen>
 
-
-
-
-    <dimen name="add_author_fields_margin">10dp</dimen>
-
-
-
     <!-- Add category dialog -->
     <dimen name="add_category_dialog_title_margin">24dp</dimen>
-
-
-
-
-
-
-
-
-
 
     <!-- fragment_recycler_view layout -->
     <dimen name="recycler_view_margin_bottom">8dp</dimen>

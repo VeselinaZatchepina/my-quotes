@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.Fragment
 import android.text.TextUtils
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +13,8 @@ import android.widget.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.add_quote_book_part.*
 import kotlinx.android.synthetic.main.add_quote_book_part.view.*
 import kotlinx.android.synthetic.main.add_quote_main_part.*
@@ -26,14 +27,21 @@ import org.jetbrains.anko.support.v4.toast
 
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
-    private lateinit var addQuotePresenter: AddQuoteContract.Presenter
+    private var addQuotePresenter: AddQuoteContract.Presenter? = null
     private lateinit var rootView: View
-    lateinit var quoteType: String
-    private val authorFieldIds: ArrayList<Int> = ArrayList<Int>()
+    private lateinit var quoteType: String
+    @JvmField
+    @State
+    internal var authorFieldIds: ArrayList<Int> = ArrayList<Int>()
     private var quoteCategoriesList: List<String>? = null
     private lateinit var categorySpinnerAdapter: ArrayAdapter<String>
-
-    lateinit var quoteCategory: String
+    private lateinit var quoteCategory: String
+    @JvmField
+    @State
+    internal var chosenQuoteCategoryPosition: Int = -1
+    @JvmField
+    @State
+    internal var chosenNewCategory: String? = null
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -50,14 +58,21 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: resources.getString(QuoteType.BOOK_QUOTE.resource)
-        addQuotePresenter.getQuoteCategoriesList(quoteType)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Icepick.restoreInstanceState(this, savedInstanceState)
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false)
+        addQuotePresenter?.getQuoteCategoriesList(quoteType)
         defineLayoutFields()
         defineAddFieldsForAuthorDataBtn()
         return rootView
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        chosenQuoteCategoryPosition = addCategorySpinner.selectedItemPosition
+        Icepick.saveInstanceState(this, outState)
     }
 
     private fun defineLayoutFields() {
@@ -106,7 +121,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         return LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
     }
-    
+
     private fun hideBookQuoteFields() {
         rootView.addBookPartCard.visibility = View.GONE
         rootView.addPublishingOfficeInputLayout.visibility = View.GONE
@@ -123,6 +138,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             quoteCategoriesList = quoteCategories
             defineSpinnerAdapter()
             setListenerToSpinner()
+
         }
     }
 
@@ -130,7 +146,20 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         if (isAdded) {
             categorySpinnerAdapter.clear()
             categorySpinnerAdapter.addAll(quoteCategories)
-            addCategorySpinner.setSelection(0)
+            chosenNewCategory = quoteCategories[0]
+            setSpinnerToCorrectPositionWhenUpdate()
+        }
+    }
+
+    private fun setSpinnerToCorrectPositionWhenUpdate() {
+        if (chosenNewCategory != null) {
+            addCategorySpinner.setSelection(categorySpinnerAdapter.getPosition(chosenNewCategory))
+        } else {
+            if (chosenQuoteCategoryPosition != -1) {
+                addCategorySpinner.setSelection(chosenQuoteCategoryPosition)
+            } else {
+                addCategorySpinner.setSelection(0)
+            }
         }
     }
 
@@ -149,9 +178,27 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
                 return super.getCount() - 1
             }
         }
-        categorySpinnerAdapter.addAll(quoteCategoriesList)
+        defineSpinnerAdapterWhenCategoryAdded()
         addCategorySpinner.adapter = categorySpinnerAdapter
-        addCategorySpinner.setSelection(categorySpinnerAdapter.count)
+        setSpinnerToCorrectPositionWhenCreate()
+    }
+
+    private fun defineSpinnerAdapterWhenCategoryAdded() {
+        if (chosenNewCategory != null) {
+            val quoteCategoriesListWithNewCategory = ArrayList(quoteCategoriesList)
+            quoteCategoriesListWithNewCategory.add(0, chosenNewCategory)
+            categorySpinnerAdapter.addAll(quoteCategoriesListWithNewCategory)
+        } else {
+            categorySpinnerAdapter.addAll(quoteCategoriesList)
+        }
+    }
+
+    private fun setSpinnerToCorrectPositionWhenCreate() {
+        if (chosenQuoteCategoryPosition == -1) {
+            addCategorySpinner.setSelection(categorySpinnerAdapter.count)
+        } else {
+            addCategorySpinner.setSelection(chosenQuoteCategoryPosition)
+        }
     }
 
     private fun setListenerToSpinner() {
@@ -178,8 +225,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         dialogBuilder.setCancelable(false)
                 .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
                     val currentUserInput = dialogView.input_text.text.toString()
-                    addQuotePresenter.addQuoteCategory(currentUserInput)
-                    Log.v("CURRENT_USER_INPUT", currentUserInput)
+                    addQuotePresenter?.addQuoteCategory(currentUserInput)
                 }
                 .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
                     dialogInterface?.cancel()
@@ -196,7 +242,6 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
             mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
             mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = addCategorySpinner.selectedItem.toString()
-            Log.v("SPINNER", addCategorySpinner.selectedItem.toString())
             mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
             mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
             mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
@@ -204,7 +249,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
             mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
 
-            addQuotePresenter.saveQuote(mapOfQuoteProperties, createAuthorsList())
+            addQuotePresenter?.saveQuote(mapOfQuoteProperties, createAuthorsList())
             activity?.finish()
         }
         if (!isBookCategorySelected()) {

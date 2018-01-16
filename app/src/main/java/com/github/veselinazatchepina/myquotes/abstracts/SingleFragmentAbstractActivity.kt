@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
@@ -26,6 +27,8 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     var isFabOpen = false
 
     companion object {
+        const val FRAGMENT_TAG = "fragment_tag"
+
         fun provideSchedulerProvider(): BaseSchedulerProvider {
             return SchedulerProvider.getInstance()
         }
@@ -133,8 +136,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         if (currentFragment == null) {
             currentFragment = createFragment()
             supportFragmentManager.beginTransaction()
-                    .add(R.id.container, currentFragment)
+                    .add(R.id.container, currentFragment, FRAGMENT_TAG)
                     .commit()
+            Log.v("FRAGMENT", "CREATED")
         }
     }
 
