@@ -34,13 +34,23 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
         }
     }
 
+    override fun defineNavigationDrawer() {
+        if (quoteCategory == "") {
+            super.defineNavigationDrawer()
+        }
+    }
+
+    override fun defineAppBarLayoutExpandableValue() {
+        setAppBarNotExpandable()
+    }
+
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
         quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
-        title = if (quoteCategory == "") {
+        title = if (quoteType == "") {
             getString(R.string.title_all_quotes)
         } else {
-            quoteCategory
+            quoteType
         }
     }
 

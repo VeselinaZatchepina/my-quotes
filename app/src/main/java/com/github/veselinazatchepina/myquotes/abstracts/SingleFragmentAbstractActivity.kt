@@ -37,11 +37,11 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutResId())
+        defineInputData()
         defineToolbar()
         defineNavigationDrawer()
         defineAppBarLayoutExpandableValue()
         defineFab()
-        defineInputData()
         setNewTitleStyle(title.toString())
         defineFragment()
         createPresenter()

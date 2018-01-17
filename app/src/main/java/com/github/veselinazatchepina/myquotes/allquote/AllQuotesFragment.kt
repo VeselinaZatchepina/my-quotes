@@ -12,6 +12,7 @@ import com.github.veselinazatchepina.myquotes.currentquote.CurrentQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 import kotlinx.android.synthetic.main.quote_recycler_view_item.view.*
+import org.jetbrains.anko.textColor
 
 
 class AllQuotesFragment : Fragment(), AllQuotesContract.View {
@@ -58,7 +59,17 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false)
+        defineChosenQuoteCategoryTitleIfExist()
         return rootView
+    }
+
+    private fun defineChosenQuoteCategoryTitleIfExist() {
+        if (quoteCategory != "") {
+            rootView.currentCategory.text = quoteCategory.toUpperCase()
+            rootView.currentCategory.textColor = resources.getColor(R.color.card_background)
+        } else {
+            rootView.currentCategory.visibility = View.GONE
+        }
     }
 
     override fun showQuotes(quotes: List<Quote>) {
