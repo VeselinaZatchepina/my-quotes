@@ -7,6 +7,8 @@
     <dimen name="item_card_view_margin_end">100dp</dimen>
     <dimen name="item_card_view_margin_start">100dp</dimen>
 
+    <!-- AllQuotesFragment -->
+    <dimen name="current_category_margin_start">80dp</dimen>
 
 
 

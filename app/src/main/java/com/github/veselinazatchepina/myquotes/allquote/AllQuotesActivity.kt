@@ -12,8 +12,8 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 
 class AllQuotesActivity : NavigationDrawerAbstractActivity() {
 
-    private lateinit var allQuotesView: AllQuotesFragment
-    private lateinit var allQuotesPresenter: AllQuotesPresenter
+    private var allQuotesView: AllQuotesFragment? = null
+    private var allQuotesPresenter: AllQuotesPresenter? = null
 
     private lateinit var quoteType: String
     private lateinit var quoteCategory: String
@@ -56,13 +56,14 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
 
     override fun createFragment(): Fragment {
         allQuotesView = AllQuotesFragment.createInstance(quoteType, quoteCategory)
-        return allQuotesView
+        return allQuotesView!!
     }
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        allQuotesPresenter = AllQuotesPresenter(quoteRepository, allQuotesView)
+        allQuotesPresenter = AllQuotesPresenter(quoteRepository,
+                allQuotesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AllQuotesFragment)
     }
 }

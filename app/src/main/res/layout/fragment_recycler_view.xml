@@ -14,7 +14,8 @@
         android:layout_marginTop="@dimen/current_category_margin_top"
         android:gravity="start"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="TEXT"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerView"

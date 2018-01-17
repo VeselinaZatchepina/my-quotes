@@ -52,10 +52,6 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
         }
     }
 
-    override fun setNewTitleStyle(title: String) {
-
-    }
-
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)

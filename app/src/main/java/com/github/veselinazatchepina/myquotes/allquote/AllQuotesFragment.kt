@@ -17,7 +17,7 @@ import org.jetbrains.anko.textColor
 
 class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
-    lateinit var allQuotesPresenter: AllQuotesContract.Presenter
+    private var allQuotesPresenter: AllQuotesContract.Presenter? = null
     lateinit var quoteType: String
     lateinit var quoteCategory: String
     lateinit var rootView: View
@@ -45,22 +45,25 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
         quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
-
-        if (quoteType == "" && quoteCategory == "") {
-            allQuotesPresenter.getAllQuotes()
-        }
-        if (quoteType != "" && quoteCategory == "") {
-            allQuotesPresenter.getQuotesByQuoteType(quoteType)
-        }
-        if (quoteType != "" && quoteCategory != "") {
-            allQuotesPresenter.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false)
+        getQuotes()
         defineChosenQuoteCategoryTitleIfExist()
         return rootView
+    }
+
+    private fun getQuotes() {
+        if (quoteType == "" && quoteCategory == "") {
+            allQuotesPresenter?.getAllQuotes()
+        }
+        if (quoteType != "" && quoteCategory == "") {
+            allQuotesPresenter?.getQuotesByQuoteType(quoteType)
+        }
+        if (quoteType != "" && quoteCategory != "") {
+            allQuotesPresenter?.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+        }
     }
 
     private fun defineChosenQuoteCategoryTitleIfExist() {
@@ -74,7 +77,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     override fun showQuotes(quotes: List<Quote>) {
         quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
-            rootView.item_quote_text.text = it.quoteText
+            rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
         }, {
             startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
                     quoteCategory,

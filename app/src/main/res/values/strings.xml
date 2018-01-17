@@ -58,6 +58,9 @@
     <!-- AllQuotesActivity -->
     <string name="title_all_quotes">All quotes</string>
     <string name="all_quotes_nav">All quotes</string>
+    
+    <!-- AllQuotesFragment -->
+    <string name="quote_text_format">\"%1$s\"</string>
 
     <!-- CurrentQuoteActivity -->
     <string name="current_quote_title">Current quote</string>
