@@ -9,10 +9,4 @@
         app:actionViewClass="android.support.v7.widget.SearchView"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/filter_quote"
-        android:icon="@drawable/ic_filter_list_white_24dp"
-        android:title="@string/menu_filter_quote"
-        app:showAsAction="ifRoom"/>
-
 </menu>

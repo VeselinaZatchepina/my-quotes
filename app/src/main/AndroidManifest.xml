@@ -19,7 +19,8 @@
         <activity android:name=".addquote.AddQuoteActivity"
                   android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"
                   android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".allquote.AllQuotesActivity"/>
+        <activity android:name=".allquote.AllQuotesActivity"
+                  android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"/>
         <activity android:name=".currentquote.CurrentQuoteActivity"
                   android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"/>
     </application>

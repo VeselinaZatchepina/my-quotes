@@ -57,7 +57,6 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_all_quotes, menu)
-        defineVisibilityFilterMenu(menu)
         super.onCreateOptionsMenu(menu, inflater)
         defineSearchViewListener(menu)
     }
@@ -76,16 +75,6 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
             }
 
         })
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return super.onOptionsItemSelected(item)
-    }
-
-    private fun defineVisibilityFilterMenu(menu: Menu?) {
-        if (quoteType == QuoteTypeEnum.MY_QUOTE.name) {
-            menu?.findItem(R.id.filter_quote)?.isVisible = false
-        }
     }
 
     private fun getQuotes() {
