@@ -2,7 +2,9 @@ package com.github.veselinazatchepina.myquotes.allquote
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.SearchView
 import android.view.*
 import com.github.veselinazatchepina.myquotes.R
@@ -21,7 +23,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     lateinit var quoteType: String
     lateinit var quoteCategory: String
     private lateinit var rootView: View
-    private lateinit var quotesAdapter: AdapterImpl<Quote>
+    private var quotesAdapter: AdapterImpl<Quote>? = null
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -58,7 +60,49 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_all_quotes, menu)
         super.onCreateOptionsMenu(menu, inflater)
+        hideFilterMenu(menu)
         defineSearchViewListener(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.filter_quote -> {
+                val view = activity!!.findViewById(R.id.filter_quote) as ActionMenuItemView
+                showPopup(view)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun showPopup(view: View) {
+        val popup = PopupMenu(activity!!, view)
+        popup.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.show_book_quotes -> {
+                    allQuotesPresenter?.getQuotesByType(getString(QuoteTypeEnum.BOOK_QUOTE.resource))
+                    true
+                }
+                R.id.show_my_quotes -> {
+                    allQuotesPresenter?.getQuotesByType(getString(QuoteTypeEnum.MY_QUOTE.resource))
+                    true
+                }
+                R.id.show_all_quotes -> {
+                    allQuotesPresenter?.getAllQuotes()
+                    true
+                }
+                else -> true
+            }
+        }
+        val inflater = popup.menuInflater
+        inflater.inflate(R.menu.menu_popup_all_quotes, popup.menu)
+        popup.show()
+    }
+
+
+    private fun hideFilterMenu(menu: Menu?) {
+        if (quoteType != "") {
+            menu?.findItem(R.id.filter_quote)?.isVisible = false
+        }
     }
 
     private fun defineSearchViewListener(menu: Menu?) {
@@ -111,18 +155,22 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     }
 
     override fun showQuotes(quotes: List<Quote>) {
-        quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
-            rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
-        }, {
-            startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
-                    quoteCategory,
-                    quoteType))
-        })
-        rootView.recyclerView.adapter = quotesAdapter
-        rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
+        if (quotesAdapter != null) {
+            quotesAdapter!!.update(quotes)
+        } else {
+            quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
+                rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
+            }, {
+                startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
+                        quoteCategory,
+                        quoteType))
+            })
+            rootView.recyclerView.adapter = quotesAdapter
+            rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
+        }
     }
 
     override fun showQuotesFromSearchView(quotes: List<Quote>) {
-        quotesAdapter.update(quotes)
+        quotesAdapter!!.update(quotes)
     }
 }
