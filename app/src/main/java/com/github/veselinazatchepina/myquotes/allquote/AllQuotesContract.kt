@@ -11,6 +11,8 @@ interface AllQuotesContract {
 
         fun showQuotes(quotes: List<Quote>)
 
+        fun showQuotesFromSearchView(quotes: List<Quote>)
+
 
     }
 
@@ -18,9 +20,15 @@ interface AllQuotesContract {
 
         fun getAllQuotes()
 
-        fun getQuotesByQuoteType(quoteType: String)
+        fun getQuotesByType(quoteType: String)
 
-        fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String)
+        fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String)
+
+        fun getQuotesByTextIfContains(quoteText: String)
+
+        fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String)
+
+        fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String)
 
     }
 }

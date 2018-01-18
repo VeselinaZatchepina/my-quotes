@@ -15,13 +15,22 @@ interface QuoteDataSource {
 
     fun getAllQuotes(): Flowable<List<Quote>>
 
-    fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>>
+    fun getQuotesByType(quoteType: String): Flowable<List<Quote>>
 
-    fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
+    fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
 
     fun getAllQuoteData(): Flowable<List<AllQuoteData>>
 
     fun getAllQuoteDataByQuoteType(quoteType: String): Flowable<List<AllQuoteData>>
 
     fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>>
+
+    fun getQuotesByQuoteTextIfContains(quoteText: String): Flowable<List<Quote>>
+
+    fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String): Flowable<List<Quote>>
+
+    fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String,
+                                                    quoteCategory: String,
+                                                    text: String): Flowable<List<Quote>>
+
 }

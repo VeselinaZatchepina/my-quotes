@@ -33,11 +33,11 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         TODO("we don't need remote now")
     }
 
-    override fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>> {
+    override fun getQuotesByType(quoteType: String): Flowable<List<Quote>> {
         TODO("we don't need remote now")
     }
 
-    override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
+    override fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
         TODO("we don't need remote now")
     }
 
@@ -50,6 +50,18 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     }
 
     override fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>> {
+        TODO("we don't need remote now")
+    }
+
+    override fun getQuotesByQuoteTextIfContains(quoteText: String): Flowable<List<Quote>> {
+        TODO("we don't need remote now")
+    }
+
+    override fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String): Flowable<List<Quote>> {
+        TODO("we don't need remote now")
+    }
+
+    override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
         TODO("we don't need remote now")
     }
 }

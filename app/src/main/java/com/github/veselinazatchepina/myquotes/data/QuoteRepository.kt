@@ -34,12 +34,12 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         return quoteLocalDataSource.getAllQuotes()
     }
 
-    override fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>> {
-        return quoteLocalDataSource.getQuotesByQuoteType(quoteType)
+    override fun getQuotesByType(quoteType: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getQuotesByType(quoteType)
     }
 
-    override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
-        return quoteLocalDataSource.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    override fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getQuotesByTypeAndCategory(quoteType, quoteCategory)
     }
 
     override fun getAllQuoteData(): Flowable<List<AllQuoteData>> {
@@ -52,5 +52,17 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
 
     override fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>> {
         return quoteLocalDataSource.getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    }
+
+    override fun getQuotesByQuoteTextIfContains(quoteText: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getQuotesByQuoteTextIfContains(quoteText)
+    }
+
+    override fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getQuotesByTypeAndTextIfContains(quoteType, text)
+    }
+
+    override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, text)
     }
 }

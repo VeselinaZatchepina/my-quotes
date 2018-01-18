@@ -62,6 +62,10 @@
     <!-- AllQuotesFragment -->
     <string name="quote_text_format">\"%1$s\"</string>
 
+    <!-- menu_all_quotes -->
+    <string name="menu_search_quote">Search</string>
+    <string name="menu_filter_quote">Filter</string>
+
     <!-- CurrentQuoteActivity -->
     <string name="current_quote_title">Current quote</string>
 

@@ -3,9 +3,8 @@ package com.github.veselinazatchepina.myquotes.allquote
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.SearchView
+import android.view.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.AdapterImpl
 import com.github.veselinazatchepina.myquotes.currentquote.CurrentQuoteActivity
@@ -13,6 +12,7 @@ import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import kotlinx.android.synthetic.main.fragment_recycler_view.view.*
 import kotlinx.android.synthetic.main.quote_recycler_view_item.view.*
 import org.jetbrains.anko.textColor
+import com.github.veselinazatchepina.myquotes.enums.QuoteType as QuoteTypeEnum
 
 
 class AllQuotesFragment : Fragment(), AllQuotesContract.View {
@@ -20,8 +20,8 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     private var allQuotesPresenter: AllQuotesContract.Presenter? = null
     lateinit var quoteType: String
     lateinit var quoteCategory: String
-    lateinit var rootView: View
-    lateinit var quotesAdapter: AdapterImpl<Quote>
+    private lateinit var rootView: View
+    private lateinit var quotesAdapter: AdapterImpl<Quote>
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -43,6 +43,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
         quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
     }
@@ -54,15 +55,60 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         return rootView
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_all_quotes, menu)
+        defineVisibilityFilterMenu(menu)
+        super.onCreateOptionsMenu(menu, inflater)
+        defineSearchViewListener(menu)
+    }
+
+    private fun defineSearchViewListener(menu: Menu?) {
+        val searchView = menu?.findItem(R.id.search_quote)?.actionView as SearchView
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                getQuotesFromSearchView(query ?: "")
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                getQuotesFromSearchView(newText ?: "")
+                return true
+            }
+
+        })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun defineVisibilityFilterMenu(menu: Menu?) {
+        if (quoteType == QuoteTypeEnum.MY_QUOTE.name) {
+            menu?.findItem(R.id.filter_quote)?.isVisible = false
+        }
+    }
+
     private fun getQuotes() {
         if (quoteType == "" && quoteCategory == "") {
             allQuotesPresenter?.getAllQuotes()
         }
         if (quoteType != "" && quoteCategory == "") {
-            allQuotesPresenter?.getQuotesByQuoteType(quoteType)
+            allQuotesPresenter?.getQuotesByType(quoteType)
         }
         if (quoteType != "" && quoteCategory != "") {
-            allQuotesPresenter?.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+            allQuotesPresenter?.getQuotesByTypeAndCategory(quoteType, quoteCategory)
+        }
+    }
+
+    private fun getQuotesFromSearchView(query: String) {
+        if (quoteType == "" && quoteCategory == "") {
+            allQuotesPresenter?.getQuotesByTextIfContains(query ?: "")
+        }
+        if (quoteType != "" && quoteCategory == "") {
+            allQuotesPresenter?.getQuotesByTypeAndTextIfContains(quoteType, query)
+        }
+        if (quoteType != "" && quoteCategory != "") {
+            allQuotesPresenter?.getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, query)
         }
     }
 
@@ -85,5 +131,9 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         })
         rootView.recyclerView.adapter = quotesAdapter
         rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
+    }
+
+    override fun showQuotesFromSearchView(quotes: List<Quote>) {
+        quotesAdapter.update(quotes)
     }
 }

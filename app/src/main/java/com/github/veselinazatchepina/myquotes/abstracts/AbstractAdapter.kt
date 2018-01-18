@@ -34,4 +34,9 @@ abstract class AbstractAdapter<ITEM> constructor(
     protected open fun onItemClick(itemView: View, position: Int) {
 
     }
+
+    fun update(items: List<ITEM>) {
+        itemList = items
+        notifyDataSetChanged()
+    }
 }

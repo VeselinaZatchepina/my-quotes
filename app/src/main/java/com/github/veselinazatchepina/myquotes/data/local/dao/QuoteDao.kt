@@ -11,7 +11,7 @@ import io.reactivex.Flowable
 interface QuoteDao {
 
     @Query("SELECT * FROM Quote WHERE Quote.quoteId = :quoteId")
-    fun getQuoteById(quoteId: Long) : Flowable<Quote>
+    fun getQuoteById(quoteId: Long): Flowable<Quote>
 
     @Insert
     fun insertQuote(quote: Quote): Long
@@ -19,16 +19,37 @@ interface QuoteDao {
     @Query("SELECT * FROM Quote")
     fun getAllQuotes(): Flowable<List<Quote>>
 
+    @Query("SELECT * FROM Quote WHERE Quote.quoteText LIKE '%'||:text||'%'")
+    fun getAllQuotesByQuoteTextIfContains(text: String): Flowable<List<Quote>>
+
     @Query("SELECT * FROM Quote " +
             "INNER JOIN (SELECT * FROM QuoteType " +
             "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id")
-    fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>>
+    fun getQuotesByType(quoteType: String): Flowable<List<Quote>>
+
+
+    @Query("SELECT * FROM Quote " +
+            "INNER JOIN (SELECT * FROM QuoteType " +
+            "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id " +
+            "WHERE Quote.quoteText LIKE '%'||:text||'%'")
+    fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String): Flowable<List<Quote>>
 
     @Query("SELECT * FROM Quote " +
             "INNER JOIN (SELECT * FROM QuoteType " +
             "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id " +
             "INNER JOIN (SELECT * FROM QuoteCategory " +
             "WHERE QuoteCategory.categoryName = :quoteCategory) b ON b.categoryId = Quote.category_Id")
-    fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
+    fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>>
+
+
+    @Query("SELECT * FROM Quote " +
+            "INNER JOIN (SELECT * FROM QuoteType " +
+            "WHERE QuoteType.type = :quoteType) c ON c.typeId = Quote.type_Id " +
+            "INNER JOIN (SELECT * FROM QuoteCategory " +
+            "WHERE QuoteCategory.categoryName = :quoteCategory) b ON b.categoryId = Quote.category_Id " +
+            "WHERE Quote.quoteText LIKE '%'||:text||'%'")
+    fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String,
+                                                    quoteCategory: String,
+                                                    text: String): Flowable<List<Quote>>
 
 }

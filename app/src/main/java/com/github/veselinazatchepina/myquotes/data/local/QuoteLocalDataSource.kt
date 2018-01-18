@@ -187,12 +187,12 @@ class QuoteLocalDataSource private constructor(val context: Context,
         return databaseInstance.quoteDao().getAllQuotes()
     }
 
-    override fun getQuotesByQuoteType(quoteType: String): Flowable<List<Quote>> {
-        return databaseInstance.quoteDao().getQuotesByQuoteType(quoteType)
+    override fun getQuotesByType(quoteType: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByType(quoteType)
     }
 
-    override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
-        return databaseInstance.quoteDao().getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    override fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByTypeAndCategory(quoteType, quoteCategory)
     }
 
     override fun getAllQuoteData(): Flowable<List<AllQuoteData>> {
@@ -205,5 +205,17 @@ class QuoteLocalDataSource private constructor(val context: Context,
 
     override fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>> {
         return databaseInstance.allQuoteDataDao().getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    }
+
+    override fun getQuotesByQuoteTextIfContains(quoteText: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getAllQuotesByQuoteTextIfContains(quoteText)
+    }
+
+    override fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByTypeAndTextIfContains(quoteType, text)
+    }
+
+    override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, text)
     }
 }

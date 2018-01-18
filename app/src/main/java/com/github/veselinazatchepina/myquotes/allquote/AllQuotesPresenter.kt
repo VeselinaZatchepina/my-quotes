@@ -39,8 +39,8 @@ class AllQuotesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    override fun getQuotesByQuoteType(quoteType: String) {
-        compositeDisposable.add(quoteDataSource.getQuotesByQuoteType(quoteType).subscribeOn(Schedulers.io())
+    override fun getQuotesByType(quoteType: String) {
+        compositeDisposable.add(quoteDataSource.getQuotesByType(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
                     override fun onNext(list: List<Quote>?) {
@@ -60,8 +60,8 @@ class AllQuotesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    override fun getQuotesByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String) {
-        compositeDisposable.add(quoteDataSource.getQuotesByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+    override fun getQuotesByTypeAndCategory(quoteType: String, quoteCategory: String) {
+        compositeDisposable.add(quoteDataSource.getQuotesByTypeAndCategory(quoteType, quoteCategory)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
@@ -82,6 +82,71 @@ class AllQuotesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
+    override fun getQuotesByTextIfContains(quoteText: String) {
+        compositeDisposable.add(quoteDataSource.getQuotesByQuoteTextIfContains(quoteText)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
+                    override fun onNext(list: List<Quote>?) {
+                        if (list != null) {
+                            allQuotesView.showQuotesFromSearchView(list)
+                        }
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(t: Throwable?) {
+
+                    }
+
+                }))
+    }
+
+    override fun getQuotesByTypeAndTextIfContains(quoteType: String, text: String) {
+        compositeDisposable.add(quoteDataSource.getQuotesByTypeAndTextIfContains(quoteType, text)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
+                    override fun onNext(list: List<Quote>?) {
+                        if (list != null) {
+                            allQuotesView.showQuotesFromSearchView(list)
+                        }
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(t: Throwable?) {
+
+                    }
+
+                }))
+    }
+
+    override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String) {
+        compositeDisposable.add(quoteDataSource.getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, text)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
+                    override fun onNext(list: List<Quote>?) {
+                        if (list != null) {
+                            allQuotesView.showQuotesFromSearchView(list)
+                        }
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(t: Throwable?) {
+
+                    }
+
+                }))
+    }
 
     override fun subscribe() {
 

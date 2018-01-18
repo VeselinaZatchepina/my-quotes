@@ -159,7 +159,6 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             quoteCategoriesList = quoteCategories
             defineSpinnerAdapter()
             setListenerToSpinner()
-
         }
     }
 
