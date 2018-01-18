@@ -24,6 +24,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     lateinit var quoteCategory: String
     private lateinit var rootView: View
     private var quotesAdapter: AdapterImpl<Quote>? = null
+    private var filterQuoteType: String = ""
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -80,14 +81,17 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
             when (it.itemId) {
                 R.id.show_book_quotes -> {
                     allQuotesPresenter?.getQuotesByType(getString(QuoteTypeEnum.BOOK_QUOTE.resource))
+                    filterQuoteType = getString(QuoteTypeEnum.BOOK_QUOTE.resource)
                     true
                 }
                 R.id.show_my_quotes -> {
                     allQuotesPresenter?.getQuotesByType(getString(QuoteTypeEnum.MY_QUOTE.resource))
+                    filterQuoteType = getString(QuoteTypeEnum.MY_QUOTE.resource)
                     true
                 }
                 R.id.show_all_quotes -> {
                     allQuotesPresenter?.getAllQuotes()
+                    filterQuoteType = ""
                     true
                 }
                 else -> true
@@ -135,7 +139,11 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     private fun getQuotesFromSearchView(query: String) {
         if (quoteType == "" && quoteCategory == "") {
-            allQuotesPresenter?.getQuotesByTextIfContains(query ?: "")
+            if (filterQuoteType != "") {
+                allQuotesPresenter?.getQuotesByTypeAndTextIfContains(filterQuoteType, query)
+            } else {
+                allQuotesPresenter?.getQuotesByTextIfContains(query ?: "")
+            }
         }
         if (quoteType != "" && quoteCategory == "") {
             allQuotesPresenter?.getQuotesByTypeAndTextIfContains(quoteType, query)
