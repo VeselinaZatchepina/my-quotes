@@ -19,16 +19,25 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
+        private const val QUOTE_ID_INTENT = "quote_id_intent"
 
         fun newIntent(context: Context, quoteType: String): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
             intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
+
+        fun newIntent(context: Context, quoteType: String, quoteId: Long): Intent {
+            val intent = Intent(context, AddQuoteActivity::class.java)
+            intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
+            intent.putExtra(QUOTE_ID_INTENT, quoteId)
+            return intent
+        }
     }
 
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
+        //TODO if quoteType = ""
         title = quoteType
     }
 

@@ -84,7 +84,6 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         setViewPagerOnPageChangeListener(quotes)
     }
 
-    //For EditQuote
     private fun setViewPagerOnPageChangeListener(quotes: List<AllQuoteData>) {
         rootView.quote_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {

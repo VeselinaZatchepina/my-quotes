@@ -3,12 +3,15 @@ package com.github.veselinazatchepina.myquotes.currentquote
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
+import android.view.View
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
+import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
@@ -61,5 +64,15 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
         currentQuoteMainPresenter = CurrentQuoteMainPresenter(quoteRepository, currentQuoteMainView)
+    }
+
+    override fun setFabImageResId(): Int {
+        return R.drawable.ic_mode_edit_white_24dp
+    }
+
+    override fun defineActionWhenFabIsPressed(view: View) {
+        add_icon_fab.setOnClickListener {
+            startActivity(AddQuoteActivity.newIntent(this, quoteType, currentQuoteMainView.selectedQuoteId!!))
+        }
     }
 }
