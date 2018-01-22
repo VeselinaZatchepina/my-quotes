@@ -53,7 +53,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     }
 
     override fun showBookAuthors(authors: List<BookAuthor>) {
-        rootView.current_author_name.text = isEmptyString(getAllAuthorString(authors))
+        rootView.current_author_name.text = getAllAuthorString(authors)
     }
 
     override fun showBookReleaseYears(years: List<BookReleaseYear>) {
@@ -61,11 +61,14 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     }
 
     private fun showQuote(allQuoteData: AllQuoteData) {
-        rootView.current_quote_text.text = getString(R.string.quote_text_format,
-                allQuoteData.quote?.quoteText ?: "-")
-        rootView.current_book_name.text = isEmptyString(allQuoteData.book?.bookName ?: "")
-        rootView.currentCategory.text = allQuoteData.category?.first()?.categoryName ?: ""
-        rootView.current_publisher_name.text = isEmptyString(allQuoteData.publishingOffice?.first()?.officeName ?: "")
+        rootView.current_quote_text.text = getString(R.string.quote_text_format, allQuoteData.quote?.quoteText)
+        rootView.currentCategory.text = allQuoteData.category?.first()?.categoryName
+
+        rootView.current_book_name.text = isDataEmpty(allQuoteData.book!!.bookName, allQuoteData.book!!.bookId, "NoBookName")
+        rootView.current_publisher_name.text = isDataEmpty(allQuoteData.publishingOffice!!.first().officeName,
+                allQuoteData.publishingOffice!!.first().officeId,
+                "NoPublishingOfficeName")
+
         rootView.current_page_number.text = isEmptyString(allQuoteData.quote?.pageNumber?.toString() ?: "")
         rootView.quote_creation_date.text = isEmptyString(allQuoteData.quote?.creationDate ?: "")
         rootView.comments.text = isEmptyString(allQuoteData.quote?.comments ?: "")
@@ -77,16 +80,31 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
         currentValue
     }
 
+    private fun isDataEmpty(currentValue: String, id: Long, pattern: String): String {
+        return if (currentValue == pattern + id) {
+            "-"
+        } else {
+            currentValue
+        }
+    }
+
 
     private fun getAllAuthorString(authors: List<BookAuthor>): String {
         var author = ""
         for (i in 0 until authors.size) {
+            if (isDataEmpty(authors[i].name, authors[i].authorId, "NoAuthorName") == "-") {
+                continue
+            }
             author = author.plus("${authors[i].name} " + "${authors[i].surname} " + "${authors[i].patronymic} ")
             if (i != authors.size - 1) {
                 author = author.plus(",\n")
             }
         }
-        return author
+        return if (author == "") {
+            "-"
+        } else {
+            author
+        }
     }
 
     private fun getAllYearString(years: List<BookReleaseYear>): String {

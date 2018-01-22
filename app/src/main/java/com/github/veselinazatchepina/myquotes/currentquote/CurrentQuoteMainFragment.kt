@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.currentquote
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,15 +22,18 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
     lateinit var rootView: View
     lateinit var quoteType: String
     lateinit var quoteCategory: String
+    var selectedQuoteId: Long? = -1L
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
         private const val QUOTE_CATEGORY_BUNDLE = "quote_category_bundle"
+        private const val QUOTE_ID_BUNDLE = "quote_id_bundle"
 
-        fun createInstance(quoteType: String, quoteCategory: String): CurrentQuoteMainFragment {
+        fun createInstance(quoteType: String, quoteCategory: String, quoteId: Long): CurrentQuoteMainFragment {
             val bundle = Bundle()
             bundle.putString(QUOTE_TYPE_BUNDLE, quoteType)
             bundle.putString(QUOTE_CATEGORY_BUNDLE, quoteCategory)
+            bundle.putLong(QUOTE_ID_BUNDLE, quoteId)
             val fragment = CurrentQuoteMainFragment()
             fragment.arguments = bundle
             return fragment
@@ -40,6 +44,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
         quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
+        selectedQuoteId = arguments?.getLong(QUOTE_ID_BUNDLE, -1)
 
         if (quoteType == "" && quoteCategory == "") {
             currentQuoteMainPresenter.getAllQuoteData()
@@ -65,7 +70,8 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         rootView.quote_pager.adapter = object : FragmentStatePagerAdapter(this.fragmentManager) {
 
             override fun getItem(position: Int): Fragment {
-                val fragment = CurrentQuoteFragment.createInstance(quotes[position])
+                val fragment: Fragment
+                fragment = CurrentQuoteFragment.createInstance(quotes[position])
                 createPresenter(fragment)
                 return fragment
             }
@@ -74,6 +80,34 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
                 return quotes.size
             }
         }
+        setViewPagerOnClickedQuotePosition(quotes)
+        setViewPagerOnPageChangeListener(quotes)
+    }
+
+    //For EditQuote
+    private fun setViewPagerOnPageChangeListener(quotes: List<AllQuoteData>) {
+        rootView.quote_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+                selectedQuoteId = quotes[position].quote!!.quoteId
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+
+        })
+    }
+
+    private fun setViewPagerOnClickedQuotePosition(quotes: List<AllQuoteData>) {
+        (0 until quotes.size)
+                .filter { quotes[it].quote!!.quoteId == selectedQuoteId }
+                .forEach {
+                    rootView.quote_pager.currentItem = it
+                }
     }
 
     private fun createPresenter(currentQuoteView: CurrentQuoteFragment) {

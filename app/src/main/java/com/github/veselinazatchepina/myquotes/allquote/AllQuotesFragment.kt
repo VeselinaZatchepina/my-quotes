@@ -172,11 +172,13 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
                 if (filterQuoteType == "") {
                     startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
                             quoteCategory,
-                            quoteType))
+                            quoteType,
+                            quoteId))
                 } else {
                     startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
                             quoteCategory,
-                            filterQuoteType))
+                            filterQuoteType,
+                            quoteId))
                 }
             })
             rootView.recyclerView.adapter = quotesAdapter

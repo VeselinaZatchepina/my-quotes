@@ -17,10 +17,12 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
     private lateinit var currentQuoteMainPresenter: CurrentQuoteMainPresenter
     private lateinit var quoteType: String
     private lateinit var quoteCategory: String
+    private var quoteId: Long = -1
 
     companion object {
         private const val QUOTE_CATEGORY_INTENT = "quote_category_intent"
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
+        private const val QUOTE_ID_INTENT = "quote_id_intent"
 
         fun newIntent(context: Context): Intent {
             return Intent(context, AllQuotesActivity::class.java)
@@ -32,16 +34,25 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
             intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
+
+        fun newIntent(context: Context, quoteCategory: String, quoteType: String, quoteId: Long): Intent {
+            val intent = Intent(context, CurrentQuoteActivity::class.java)
+            intent.putExtra(QUOTE_CATEGORY_INTENT, quoteCategory)
+            intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
+            intent.putExtra(QUOTE_ID_INTENT, quoteId)
+            return intent
+        }
     }
 
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
         quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
+        quoteId = intent.getLongExtra(QUOTE_ID_INTENT, -1)
         title = getString(R.string.current_quote_title)
     }
 
     override fun createFragment(): Fragment {
-        currentQuoteMainView = CurrentQuoteMainFragment.createInstance(quoteType, quoteCategory)
+        currentQuoteMainView = CurrentQuoteMainFragment.createInstance(quoteType, quoteCategory, quoteId)
         return currentQuoteMainView
     }
 
