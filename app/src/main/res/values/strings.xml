@@ -4,8 +4,8 @@
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="book_quote_nav">Book quote</string>
-    <string name="my_quote_nav">My quote</string>
+    <string name="book_quote_nav">Book quotes</string>
+    <string name="my_quote_nav">My quotes</string>
     <string name="get_idea">Get idea</string>
 
     <!-- Quote types enum -->
@@ -61,7 +61,7 @@
     <string name="menu_filter_quote">Filter</string>
 
     <!-- CurrentQuoteActivity -->
-    <string name="current_quote_title">Current quote</string>
+    <string name="current_quote_title">All quotes</string>
 
     <!-- CurrentQuoteFragment -->
     <string name="quote_author_title">Quote author:</string>

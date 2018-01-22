@@ -51,7 +51,11 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
         quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
         quoteId = intent.getLongExtra(QUOTE_ID_INTENT, -1)
-        title = getString(R.string.current_quote_title)
+        title = if (quoteType != "") {
+            quoteType
+        } else {
+            getString(R.string.current_quote_title)
+        }
     }
 
     override fun createFragment(): Fragment {
