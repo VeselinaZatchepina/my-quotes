@@ -7,7 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.veselinazatchepina.myquotes.R
+import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
+import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import kotlinx.android.synthetic.main.fragment_current_quote_pager.view.*
 
 
@@ -62,6 +66,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
             override fun getItem(position: Int): Fragment {
                 val fragment = CurrentQuoteFragment.createInstance(quotes[position])
+                createPresenter(fragment)
                 return fragment
             }
 
@@ -69,5 +74,12 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
                 return quotes.size
             }
         }
+    }
+
+    private fun createPresenter(currentQuoteView: CurrentQuoteFragment) {
+        val quoteRepository = QuoteRepository.getInstance(
+                QuoteLocalDataSource.getInstance(activity!!.applicationContext, SingleFragmentAbstractActivity.provideSchedulerProvider()),
+                QuoteRemoteDataSource.getInstance())
+        val currentQuotePresenter = CurrentQuotePresenter(quoteRepository, currentQuoteView)
     }
 }

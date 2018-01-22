@@ -1,5 +1,7 @@
 package com.github.veselinazatchepina.myquotes.data
 
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
@@ -64,5 +66,13 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
 
     override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
         return quoteLocalDataSource.getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, text)
+    }
+
+    override fun getBookAuthorsByIds(ids: List<Long>): Flowable<List<BookAuthor>> {
+        return quoteLocalDataSource.getBookAuthorsByIds(ids)
+    }
+
+    override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
+        return quoteLocalDataSource.getBookReleaseYearsByIds(ids)
     }
 }

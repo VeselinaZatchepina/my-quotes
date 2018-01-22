@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.add_quote_other.view.*
 import kotlinx.android.synthetic.main.dialog_add_category.view.*
 import org.jetbrains.anko.margin
 import org.jetbrains.anko.support.v4.toast
+import java.util.*
 
 
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
@@ -257,7 +258,8 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
 
     fun createMapOfQuoteProperties() {
-        if (isQuoteTextFieldNotEmpty() && isBookCategorySelected()) {
+        if (!isFieldEmpty(addQuoteText, addQuoteTextInputLayout) &&
+                isBookCategorySelected()) {
             val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
             mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
             mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
@@ -265,7 +267,9 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
             mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
             mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()
-            mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = ""
+            val currentCreateDate = Calendar.getInstance()
+            val currentDate = String.format("%1\$td %1\$tb %1\$tY", currentCreateDate)
+            mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] = currentDate
             mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
             mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
 
@@ -288,14 +292,14 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         return list
     }
 
-    private fun isQuoteTextFieldNotEmpty(): Boolean {
-        var isEmpty = true
-        if (TextUtils.isEmpty(addQuoteText.text)) {
-            addQuoteTextInputLayout.error = "Quote text mustn't be empty"
-            isEmpty = false
-        }
-        return isEmpty
-    }
+    private fun isFieldEmpty(editText: EditText, textInputLayout: TextInputLayout): Boolean =
+            if (TextUtils.isEmpty(editText.text)) {
+                textInputLayout.error = "This field couldn't be empty"
+                true
+            } else {
+                false
+            }
+
 
     private fun isBookCategorySelected(): Boolean = addCategorySpinner.selectedItem.toString() != getString(R.string.spinner_hint)
 }

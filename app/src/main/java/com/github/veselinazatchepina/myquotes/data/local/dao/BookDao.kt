@@ -12,6 +12,9 @@ interface BookDao {
     @Insert
     fun insertBook(book: Book): Long
 
+    @Query("UPDATE Book SET bookName = :currentBookName  WHERE bookId = :bId")
+    fun updateBook(bId: Long, currentBookName: String)
+
     @Query("SELECT * FROM Book " +
             "INNER JOIN BookAndBookReleaseYear ON Book.bookId = BookAndBookReleaseYear.byBookIdJoin " +
             "WHERE Book.bookName = :bookName " +

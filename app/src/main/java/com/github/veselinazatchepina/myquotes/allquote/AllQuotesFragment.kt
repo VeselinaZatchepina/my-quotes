@@ -169,9 +169,15 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
             quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
                 rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
             }, {
-                startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
-                        quoteCategory,
-                        quoteType))
+                if (filterQuoteType == "") {
+                    startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
+                            quoteCategory,
+                            quoteType))
+                } else {
+                    startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,
+                            quoteCategory,
+                            filterQuoteType))
+                }
             })
             rootView.recyclerView.adapter = quotesAdapter
             rootView.recyclerView.layoutManager = LinearLayoutManager(activity)

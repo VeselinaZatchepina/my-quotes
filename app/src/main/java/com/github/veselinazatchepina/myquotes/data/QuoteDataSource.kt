@@ -1,5 +1,7 @@
 package com.github.veselinazatchepina.myquotes.data
 
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
@@ -32,5 +34,9 @@ interface QuoteDataSource {
     fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String,
                                                     quoteCategory: String,
                                                     text: String): Flowable<List<Quote>>
+
+    fun getBookAuthorsByIds(ids: List<Long>): Flowable<List<BookAuthor>>
+
+    fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>>
 
 }

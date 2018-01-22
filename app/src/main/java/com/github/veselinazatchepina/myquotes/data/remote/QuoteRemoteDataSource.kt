@@ -1,6 +1,8 @@
 package com.github.veselinazatchepina.myquotes.data.remote
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
@@ -62,6 +64,14 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     }
 
     override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
+        TODO("we don't need remote now")
+    }
+
+    override fun getBookAuthorsByIds(ids: List<Long>): Flowable<List<BookAuthor>> {
+        TODO("we don't need remote now")
+    }
+
+    override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
         TODO("we don't need remote now")
     }
 }

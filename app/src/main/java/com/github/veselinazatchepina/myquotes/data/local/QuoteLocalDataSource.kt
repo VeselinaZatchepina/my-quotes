@@ -109,7 +109,11 @@ class QuoteLocalDataSource private constructor(val context: Context,
         val existedPublishingOfficeId = existedPublishingOffice?.officeId ?: 0L
         return if (existedPublishingOfficeId == 0L) {
             val publishingOffice = PublishingOffice(publishingOfficeName)
-            databaseInstance.publishingOfficeDao().insertPublishingOffice(publishingOffice)
+            val id = databaseInstance.publishingOfficeDao().insertPublishingOffice(publishingOffice)
+            if (publishingOfficeName == "") {
+                databaseInstance.publishingOfficeDao().updatePublishingOffice(id, "NoPublishingOfficeName$id")
+            }
+            id
         } else {
             existedPublishingOfficeId
         }
@@ -145,7 +149,11 @@ class QuoteLocalDataSource private constructor(val context: Context,
         val existedBookId = existedBook?.bookId ?: 0L
         return if (existedBookId == 0L) {
             val book = Book(bookName, publishingOfficeId)
-            databaseInstance.bookDao().insertBook(book)
+            val id = databaseInstance.bookDao().insertBook(book)
+            if (bookName == "") {
+                databaseInstance.bookDao().updateBook(id, "NoBookName$id")
+            }
+            id
         } else {
             existedBookId
         }
@@ -172,7 +180,11 @@ class QuoteLocalDataSource private constructor(val context: Context,
         val existedAuthorId = existedAuthor?.authorId ?: 0L
         return if (existedAuthorId == 0L) {
             val author = BookAuthor(surname, name, patronymic)
-            databaseInstance.authorDao().insertAuthor(author)
+            val id = databaseInstance.authorDao().insertAuthor(author)
+            if (surname == "" && name == "" && patronymic == "") {
+                databaseInstance.authorDao().updateBookAuthor(id, "NoAuthorName$id")
+            }
+            id
         } else {
             existedAuthorId
         }
@@ -217,5 +229,13 @@ class QuoteLocalDataSource private constructor(val context: Context,
 
     override fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String): Flowable<List<Quote>> {
         return databaseInstance.quoteDao().getQuotesByTypeAndCategoryAndTextIfContains(quoteType, quoteCategory, text)
+    }
+
+    override fun getBookAuthorsByIds(ids: List<Long>): Flowable<List<BookAuthor>> {
+        return databaseInstance.authorDao().getBookAuthorsByIds(ids)
+    }
+
+    override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
+        return databaseInstance.bookReleaseYearDao().getBookReleaseYearsByIds(ids)
     }
 }

@@ -14,11 +14,26 @@ class AllQuoteData(
         @Embedded
         var book: Book? = null,
 
-        @Embedded
-        var bookAndBookAuthor: BookAndBookAuthor? = null,
+        @Relation(
+                parentColumn = "book_Id",
+                entityColumn = "bookId",
+                entity = Book::class
+        )
+        var bookList: List<Book>? = null,
 
-        @Embedded
-        var bookAndBookReleaseYear: BookAndBookReleaseYear? = null,
+                @Relation(
+                parentColumn = "type_Id",
+                entityColumn = "typeId",
+                entity = QuoteType::class
+        )
+        var type: List<QuoteType>? = null,
+
+                @Relation(
+                parentColumn = "category_Id",
+                entityColumn = "categoryId",
+                entity = QuoteCategory::class
+        )
+        var category: List<QuoteCategory>? = null,
 
         @Relation(
                 parentColumn = "office_Id",
@@ -28,37 +43,16 @@ class AllQuoteData(
         var publishingOffice: List<PublishingOffice>? = null,
 
         @Relation(
-                parentColumn = "type_Id",
-                entityColumn = "typeId",
-                entity = QuoteType::class
+                parentColumn = "bookId",
+                entityColumn = "bookIdJoin",
+                entity = BookAndBookAuthor::class
         )
-        var type: List<QuoteType>? = null,
+        var authorsId: List<BookAndBookAuthor>? = null,
 
         @Relation(
-                parentColumn = "book_Id",
-                entityColumn = "bookId",
-                entity = Book::class
+                parentColumn = "bookId",
+                entityColumn = "byBookIdJoin",
+                entity = BookAndBookReleaseYear::class
         )
-        var bookList: List<Book>? = null,
-
-        @Relation(
-                parentColumn = "category_Id",
-                entityColumn = "categoryId",
-                entity = QuoteCategory::class
-        )
-        var category: List<QuoteCategory>? = null,
-
-        @Relation(
-                parentColumn = "authorIdJoin",
-                entityColumn = "authorId",
-                entity = BookAuthor::class
-        )
-        var author: List<BookAuthor>? = null,
-
-        @Relation(
-                parentColumn = "yearIdJoin",
-                entityColumn = "yearId",
-                entity = BookReleaseYear::class
-        )
-        var year: List<BookReleaseYear>? = null
+        var yearsId: List<BookAndBookReleaseYear>? = null
 ) : Serializable

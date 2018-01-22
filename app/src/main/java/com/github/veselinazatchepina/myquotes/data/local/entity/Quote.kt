@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.data.local.entity
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(foreignKeys = arrayOf(
         ForeignKey(
@@ -26,7 +27,7 @@ data class Quote(val quoteText: String,
                  val pageNumber: Long,
                  val book_Id: Long,
                  val type_Id: Long,
-                 val category_Id: Long) {
+                 val category_Id: Long) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var quoteId: Long = 0
 }

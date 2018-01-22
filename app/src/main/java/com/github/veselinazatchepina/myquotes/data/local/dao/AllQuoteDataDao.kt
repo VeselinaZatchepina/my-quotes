@@ -9,31 +9,19 @@ import io.reactivex.Flowable
 @Dao
 interface AllQuoteDataDao {
 
-    @Query("SELECT * FROM Quote, Book, BookAndBookAuthor, BookAndBookReleaseYear " +
-            "WHERE Quote.book_Id = Book.bookId " +
-            "AND Book.bookId = BookAndBookAuthor.bookIdJoin " +
-            "AND Book.bookId = BookAndBookReleaseYear.byBookIdJoin " +
-            "GROUP BY quoteId")
+    @Query("SELECT * FROM Quote, Book " +
+            "WHERE Book.bookId = Quote.book_Id")
     fun getAllQuoteData(): Flowable<List<AllQuoteData>>
 
-    @Query("SELECT * FROM Quote, Book, BookAndBookAuthor, BookAndBookReleaseYear, QuoteType " +
-            "WHERE QuoteType.type = :quoteType " +
-            "AND Quote.type_Id = QuoteType.typeId " +
-            "AND Quote.book_Id = Book.bookId " +
-            "AND Book.bookId = BookAndBookAuthor.bookIdJoin " +
-            "AND Book.bookId = BookAndBookReleaseYear.byBookIdJoin " +
-            "GROUP BY quoteId")
+    @Query("SELECT * FROM Quote, Book " +
+            "WHERE Quote.type_Id = (SELECT typeId FROM QuoteType WHERE QuoteType.type = :quoteType) " +
+            "AND Book.bookId = Quote.book_Id")
     fun getAllQuoteDataByQuoteType(quoteType: String): Flowable<List<AllQuoteData>>
 
-    @Query("SELECT * FROM Quote, Book, BookAndBookAuthor, BookAndBookReleaseYear, QuoteType, QuoteCategory" +
-            " WHERE QuoteType.type = :quoteType " +
-            "AND QuoteCategory.categoryName = :quoteCategory " +
-            "AND Quote.category_Id = QuoteCategory.categoryId " +
-            "AND Quote.type_Id = QuoteType.typeId " +
-            "AND Quote.book_Id = Book.bookId " +
-            "AND Book.bookId = BookAndBookAuthor.bookIdJoin " +
-            "AND Book.bookId = BookAndBookReleaseYear.byBookIdJoin " +
-            "GROUP BY quoteId")
+    @Query("SELECT * FROM Quote, Book " +
+            "WHERE Quote.type_Id = (SELECT typeId FROM QuoteType WHERE QuoteType.type = :quoteType) " +
+            "AND Quote.category_Id = (SELECT categoryId FROM QuoteCategory WHERE QuoteCategory.categoryName = :quoteCategory) " +
+            "AND Book.bookId = Quote.book_Id ")
     fun getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType: String, quoteCategory: String): Flowable<List<AllQuoteData>>
 
 }

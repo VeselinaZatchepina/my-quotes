@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.data.local.entity
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
 import android.arch.persistence.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(foreignKeys = arrayOf(
         ForeignKey(
@@ -11,7 +12,7 @@ import android.arch.persistence.room.PrimaryKey
                 childColumns = arrayOf("office_Id"))
 ))
 data class Book(val bookName: String,
-                val office_Id: Long) {
+                val office_Id: Long) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var bookId: Long = 0
 }

@@ -41,15 +41,6 @@
     <string name="add_other_page_hint">Page number</string>
     <string name="add_other_comments_hint">Comments</string>
 
-
-
-
-
-
-
-
-
-
     <!-- Add category dialog -->
     <string name="dialog_add_category_title">Enter the category name</string>
     <string name="dialog_add_category_ok">OK</string>
