@@ -1,10 +1,11 @@
 package com.github.veselinazatchepina.myquotes.currentquote
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v4.view.MenuItemCompat
+import android.support.v7.widget.ShareActionProvider
+import android.view.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
@@ -18,6 +19,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     private var currentQuotePresenter: CurrentQuoteContract.Presenter? = null
     lateinit var quote: AllQuoteData
     lateinit var rootView: View
+    private var shareIntent: Intent? = null
 
     companion object {
         private const val ALL_QUOTE_DATA_BUNDLE = "all_quote_data_bundle"
@@ -33,6 +35,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         quote = arguments?.getSerializable(ALL_QUOTE_DATA_BUNDLE) as AllQuoteData
     }
 
@@ -46,6 +49,35 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
         } ?: emptyList())
         showQuote(quote)
         return rootView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.menu_current_quote, menu)
+        setShareAction(menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private fun setShareAction(menu: Menu?) {
+        val shareItem = menu?.findItem(R.id.menu_item_share)
+        val shareActionProvider = MenuItemCompat.getActionProvider(shareItem) as ShareActionProvider?
+        shareIntent = Intent(Intent.ACTION_SEND).apply {
+            this.type = "text/plain"
+            this.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!")
+            this.putExtra(android.content.Intent.EXTRA_TEXT, quote.quote?.quoteText)
+        }
+        shareActionProvider?.setShareIntent(shareIntent)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_item_share -> {
+                startActivity(Intent.createChooser(shareIntent, "Select conversation"))
+            }
+            R.id.menu_item_delete_quote -> {
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun setPresenter(presenter: CurrentQuoteContract.Presenter) {

@@ -49,7 +49,7 @@
     <!-- AllQuotesActivity -->
     <string name="title_all_quotes">All quotes</string>
     <string name="all_quotes_nav">All quotes</string>
-    
+
     <!-- AllQuotesFragment -->
     <string name="quote_text_format">\"%1$s\"</string>
     <string name="show_book_quotes">Book quotes</string>
@@ -73,7 +73,8 @@
     <string name="quote_creation_date_title">Quote creation date:</string>
     <string name="comments_title">Comments:</string>
     <string name="default_value"> - </string>
-
+    <string name="share">Share quote</string>
+    <string name="delete_title">Delete quote</string>
 
 
 </resources>
