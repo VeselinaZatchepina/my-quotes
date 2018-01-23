@@ -17,7 +17,7 @@ import java.io.Serializable
 class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     private var currentQuotePresenter: CurrentQuoteContract.Presenter? = null
-    lateinit var quote: AllQuoteData
+    lateinit var allQuoteData: AllQuoteData
     lateinit var rootView: View
     private var shareIntent: Intent? = null
 
@@ -36,18 +36,18 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        quote = arguments?.getSerializable(ALL_QUOTE_DATA_BUNDLE) as AllQuoteData
+        allQuoteData = arguments?.getSerializable(ALL_QUOTE_DATA_BUNDLE) as AllQuoteData
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_current_quote, container, false)
-        currentQuotePresenter?.getBookAuthors(quote.authorsId?.map {
+        currentQuotePresenter?.getBookAuthors(allQuoteData.authorsId?.map {
             it.authorIdJoin
         } ?: emptyList())
-        currentQuotePresenter?.getBookReleaseYear(quote.yearsId?.map {
+        currentQuotePresenter?.getBookReleaseYear(allQuoteData.yearsId?.map {
             it.yearIdJoin
         } ?: emptyList())
-        showQuote(quote)
+        showQuote(allQuoteData)
         return rootView
     }
 
@@ -62,8 +62,8 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
         val shareActionProvider = MenuItemCompat.getActionProvider(shareItem) as ShareActionProvider?
         shareIntent = Intent(Intent.ACTION_SEND).apply {
             this.type = "text/plain"
-            this.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!")
-            this.putExtra(android.content.Intent.EXTRA_TEXT, quote.quote?.quoteText)
+            this.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great allQuoteData! Listen!")
+            this.putExtra(android.content.Intent.EXTRA_TEXT, allQuoteData.quote?.quoteText)
         }
         shareActionProvider?.setShareIntent(shareIntent)
     }
@@ -74,7 +74,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
                 startActivity(Intent.createChooser(shareIntent, "Select conversation"))
             }
             R.id.menu_item_delete_quote -> {
-
+                currentQuotePresenter?.deleteQuote(allQuoteData.quote!!.quoteId)
             }
         }
         return super.onOptionsItemSelected(item)
@@ -90,6 +90,12 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     override fun showBookReleaseYears(years: List<BookReleaseYear>) {
         rootView.current_year_number.text = isEmptyString(getAllYearString(years))
+    }
+
+    override fun updateCategory() {
+        val quoteCategory = allQuoteData.category?.first()
+        currentQuotePresenter?.updateCategoryCount(quoteCategory?.quoteCount!! - 1,
+                quoteCategory.categoryId)
     }
 
     private fun showQuote(allQuoteData: AllQuoteData) {

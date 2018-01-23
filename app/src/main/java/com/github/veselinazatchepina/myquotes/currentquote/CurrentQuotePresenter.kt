@@ -4,8 +4,12 @@ import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 
@@ -61,6 +65,44 @@ class CurrentQuotePresenter(val quoteDataSource: QuoteDataSource,
                     }
 
                 }))
+    }
+
+    override fun deleteQuote(qId: Long) {
+        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.deleteQuote(qId) })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Any> {
+                    override fun onSubscribe(d: Disposable) {
+                        currentQuoteFragment.updateCategory()
+                    }
+
+                    override fun onNext(o: Any) {
+                    }
+
+                    override fun onError(e: Throwable) {}
+
+                    override fun onComplete() {
+
+                    }
+                })
+    }
+
+    override fun updateCategoryCount(quoteCount: Int, quoteCategoryId: Long) {
+        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.updateQuoteCount(quoteCount, quoteCategoryId) })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(object : Observer<Any> {
+                    override fun onSubscribe(d: Disposable) {}
+
+                    override fun onNext(o: Any) {
+                    }
+
+                    override fun onError(e: Throwable) {}
+
+                    override fun onComplete() {
+
+                    }
+                })
     }
 
     override fun subscribe() {

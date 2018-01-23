@@ -75,4 +75,12 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
     override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
         return quoteLocalDataSource.getBookReleaseYearsByIds(ids)
     }
+
+    override fun deleteQuote(qId: Long) {
+        quoteLocalDataSource.deleteQuote(qId)
+    }
+
+    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
+        quoteLocalDataSource.updateQuoteCount(quoteCount, quoteCategoryId)
+    }
 }

@@ -277,7 +277,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             activity?.finish()
         }
         if (!isBookCategorySelected()) {
-            toast("Choose quote category")
+            toast("Choose allQuoteData category")
         }
     }
 

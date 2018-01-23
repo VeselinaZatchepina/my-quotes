@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.quote_categories_recycler_view_item.view.*
 
 class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
 
-    private var bookCategoriesPresenter: QuoteCategoriesContract.Presenter? = null
+    private var quoteCategoriesPresenter: QuoteCategoriesContract.Presenter? = null
     lateinit var quoteCategoriesAdapter: AdapterImpl<QuoteCategory>
     lateinit var rootView: View
     private lateinit var quoteType: String
@@ -41,7 +41,7 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false)
-        bookCategoriesPresenter?.getQuoteCategoriesList(quoteType)
+        quoteCategoriesPresenter?.getQuoteCategoriesList(quoteType)
         setCurrentCategoryTitleIsGone(rootView)
         return rootView
     }
@@ -60,7 +60,7 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
     }
 
     override fun setPresenter(presenter: QuoteCategoriesContract.Presenter) {
-        bookCategoriesPresenter = presenter
+        quoteCategoriesPresenter = presenter
     }
 
     private fun setCurrentCategoryTitleIsGone(rootView: View) {

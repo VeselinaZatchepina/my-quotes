@@ -14,6 +14,8 @@ interface CurrentQuoteContract {
 
         fun showBookReleaseYears(years: List<BookReleaseYear>)
 
+        fun updateCategory()
+
 
     }
 
@@ -22,6 +24,10 @@ interface CurrentQuoteContract {
         fun getBookAuthors(bookAuthorId: List<Long>)
 
         fun getBookReleaseYear(yearIds: List<Long>)
+
+        fun deleteQuote(qId: Long)
+
+        fun updateCategoryCount(quoteCount: Int, quoteCategoryId: Long)
 
     }
 }

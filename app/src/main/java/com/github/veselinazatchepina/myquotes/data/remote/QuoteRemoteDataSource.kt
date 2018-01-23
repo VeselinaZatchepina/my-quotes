@@ -74,4 +74,12 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
         TODO("we don't need remote now")
     }
+
+    override fun deleteQuote(qId: Long) {
+        TODO("we don't need remote now")
+    }
+
+    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
+        TODO("we don't need remote now")
+    }
 }

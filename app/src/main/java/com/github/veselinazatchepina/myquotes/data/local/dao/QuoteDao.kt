@@ -51,5 +51,7 @@ interface QuoteDao {
     fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String,
                                                     quoteCategory: String,
                                                     text: String): Flowable<List<Quote>>
+    @Query("DELETE FROM Quote WHERE quoteId = :qId")
+    fun deleteQuote(qId: Long)
 
 }

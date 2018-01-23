@@ -238,4 +238,12 @@ class QuoteLocalDataSource private constructor(val context: Context,
     override fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>> {
         return databaseInstance.bookReleaseYearDao().getBookReleaseYearsByIds(ids)
     }
+
+    override fun deleteQuote(qId: Long) {
+        databaseInstance.quoteDao().deleteQuote(qId)
+    }
+
+    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
+        databaseInstance.quoteCategoryDao().updateQuoteCount(quoteCount, quoteCategoryId)
+    }
 }
