@@ -2,13 +2,21 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    <ScrollView android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/current_quote_scroll_view_margin_top_bottom"
+                android:layout_marginEnd="@dimen/current_quote_scroll_view_margin_start_end"
+                android:layout_marginStart="@dimen/current_quote_scroll_view_margin_start_end"
+                android:layout_marginTop="@dimen/current_quote_scroll_view_margin_top_bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
         <android.support.v7.widget.CardView
             android:id="@+id/current_quote_cardview"
@@ -215,6 +223,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:layout_marginBottom="@dimen/current_quote_linear_comments_margin_bottom"
                     android:orientation="horizontal">
 
                     <TextView

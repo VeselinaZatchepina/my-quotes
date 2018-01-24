@@ -13,15 +13,20 @@ import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
+import icepick.Icepick
+import icepick.State
 import kotlinx.android.synthetic.main.fragment_current_quote_pager.view.*
 
 
 class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
-    lateinit var currentQuoteMainPresenter: CurrentQuoteMainContract.Presenter
+    private var currentQuoteMainPresenter: CurrentQuoteMainContract.Presenter? = null
+    private var currentQuoteFragment: CurrentQuoteFragment? = null
     lateinit var rootView: View
     lateinit var quoteType: String
     lateinit var quoteCategory: String
+    @JvmField
+    @State
     var selectedQuoteId: Long? = -1L
 
     companion object {
@@ -45,21 +50,30 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
         quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
         selectedQuoteId = arguments?.getLong(QUOTE_ID_BUNDLE, -1)
-
-        if (quoteType == "" && quoteCategory == "") {
-            currentQuoteMainPresenter.getAllQuoteData()
-        }
-        if (quoteType != "" && quoteCategory == "") {
-            currentQuoteMainPresenter.getAllQuoteDataByQuoteType(quoteType)
-        }
-        if (quoteType != "" && quoteCategory != "") {
-            currentQuoteMainPresenter.getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        Icepick.restoreInstanceState(this, savedInstanceState)
         rootView = inflater.inflate(R.layout.fragment_current_quote_pager, container, false)
+        getAllQuoteData()
         return rootView
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Icepick.saveInstanceState(this, outState)
+    }
+
+    private fun getAllQuoteData() {
+        if (quoteType == "" && quoteCategory == "") {
+            currentQuoteMainPresenter?.getAllQuoteData()
+        }
+        if (quoteType != "" && quoteCategory == "") {
+            currentQuoteMainPresenter?.getAllQuoteDataByQuoteType(quoteType)
+        }
+        if (quoteType != "" && quoteCategory != "") {
+            currentQuoteMainPresenter?.getAllQuoteDataByQuoteTypeAndQuoteCategory(quoteType, quoteCategory)
+        }
     }
 
     override fun setPresenter(presenter: CurrentQuoteMainContract.Presenter) {
@@ -70,10 +84,9 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         rootView.quote_pager.adapter = object : FragmentStatePagerAdapter(this.fragmentManager) {
 
             override fun getItem(position: Int): Fragment {
-                val fragment: Fragment
-                fragment = CurrentQuoteFragment.createInstance(quotes[position])
-                createPresenter(fragment)
-                return fragment
+                currentQuoteFragment = CurrentQuoteFragment.createInstance(quotes[position])
+                createPresenter(currentQuoteFragment!!)
+                return currentQuoteFragment!!
             }
 
             override fun getCount(): Int {
@@ -113,6 +126,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(activity!!.applicationContext, SingleFragmentAbstractActivity.provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        val currentQuotePresenter = CurrentQuotePresenter(quoteRepository, currentQuoteView)
+        val currentQuotePresenter = CurrentQuotePresenter(quoteRepository,
+                currentQuoteView)
     }
 }

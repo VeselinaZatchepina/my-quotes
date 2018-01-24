@@ -10,6 +10,9 @@
     <!-- AllQuotesFragment -->
     <dimen name="current_category_margin_start">80dp</dimen>
 
+    <!-- CurrentQuoteFragment -->
+    <dimen name="current_quote_scroll_view_margin_start_end">100dp</dimen>
+
 
 
 

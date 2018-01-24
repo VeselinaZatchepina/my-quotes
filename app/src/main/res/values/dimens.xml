@@ -17,7 +17,7 @@
     <dimen name="vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
 
-    <!-- allQuoteDatauote fragment -->
+    <!-- AddQuoteFragment -->
     <dimen name="add_quote_scroll_view_margin_start_end">16dp</dimen>
     <dimen name="add_quote_scroll_view_margin_top_bottom">16dp</dimen>
     <dimen name="add_quote_linear_margin_bottom">120dp</dimen>
@@ -79,7 +79,7 @@
     <dimen name="button_text_margin_start">8dp</dimen>
     <dimen name="button_text_margin_top">8dp</dimen>
 
-    <!-- fragment quote_categories_recycler_view_item -->
+    <!-- quote_categories_recycler_view_item -->
     <dimen name="item_card_view_height">84dp</dimen>
     <dimen name="item_card_view_margin_end">8dp</dimen>
     <dimen name="item_card_view_margin_start">8dp</dimen>
@@ -97,8 +97,8 @@
     <dimen name="all_quotes_linear_padding">16dp</dimen>
 
     <!-- CurrentQuoteFragment -->
-    <dimen name="cardview_margin_top_current_quote">8dp</dimen>
-    <dimen name="cardview_margin_bottom_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_top_current_quote">16dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">16dp</dimen>
     <dimen name="cardview_margin_start_current_quote">8dp</dimen>
     <dimen name="cardview_margin_end_current_quote">8dp</dimen>
     <dimen name="corner_radius">2dp</dimen>
@@ -106,6 +106,9 @@
     <dimen name="divider_current_quote">1dp</dimen>
     <dimen name="divider_current_quote_margin_Top">16dp</dimen>
     <dimen name="linear_layout_current_quote_margin">16dp</dimen>
-
+    <dimen name="current_quote_scroll_view_margin_start_end">8dp</dimen>
+    <dimen name="current_quote_scroll_view_margin_top_bottom">8dp</dimen>
+    <dimen name="current_quote_linear_margin_bottom">120dp</dimen>
+    <dimen name="current_quote_linear_comments_margin_bottom">120dp</dimen>
 
 </resources>

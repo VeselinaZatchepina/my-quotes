@@ -59,7 +59,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
             it.categoryName.toUpperCase()
         }
         bookCategoriesForSpinner.add("+ add new category")
-        bookCategoriesForSpinner.add("Select allQuoteData category")
+        bookCategoriesForSpinner.add("Select quote category")
         return bookCategoriesForSpinner
     }
 

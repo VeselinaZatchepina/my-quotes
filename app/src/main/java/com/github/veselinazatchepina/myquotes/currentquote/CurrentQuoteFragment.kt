@@ -1,5 +1,7 @@
 package com.github.veselinazatchepina.myquotes.currentquote
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -74,10 +76,24 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
                 startActivity(Intent.createChooser(shareIntent, "Select conversation"))
             }
             R.id.menu_item_delete_quote -> {
-                currentQuotePresenter?.deleteQuote(allQuoteData.quote!!.quoteId)
+                createDeleteQuoteDialog()
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun createDeleteQuoteDialog() {
+        AlertDialog.Builder(activity).apply {
+            val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_delete_quote, null)
+            this.setView(dialogView)
+            this.setCancelable(false)
+                    .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
+                        currentQuotePresenter?.deleteQuote(allQuoteData.quote!!.quoteId)
+                    }
+                    .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
+                        dialogInterface?.cancel()
+                    }
+        }.create().show()
     }
 
     override fun setPresenter(presenter: CurrentQuoteContract.Presenter) {

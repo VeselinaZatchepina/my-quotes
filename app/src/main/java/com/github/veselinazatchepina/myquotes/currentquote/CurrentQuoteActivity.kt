@@ -15,8 +15,8 @@ import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 
 class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
-    private lateinit var currentQuoteMainView: CurrentQuoteMainFragment
-    private lateinit var currentQuoteMainPresenter: CurrentQuoteMainPresenter
+    private var currentQuoteMainView: CurrentQuoteMainFragment? = null
+    private var currentQuoteMainPresenter: CurrentQuoteMainPresenter? = null
     private lateinit var quoteType: String
     private lateinit var quoteCategory: String
     private var quoteId: Long = -1
@@ -59,14 +59,16 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createFragment(): Fragment {
         currentQuoteMainView = CurrentQuoteMainFragment.createInstance(quoteType, quoteCategory, quoteId)
-        return currentQuoteMainView
+        return currentQuoteMainView!!
     }
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
                 QuoteRemoteDataSource.getInstance())
-        currentQuoteMainPresenter = CurrentQuoteMainPresenter(quoteRepository, currentQuoteMainView)
+        currentQuoteMainPresenter = CurrentQuoteMainPresenter(quoteRepository,
+                currentQuoteMainView ?:
+                        supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment)
     }
 
     override fun setFabImageResId(): Int {
@@ -74,6 +76,6 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
     }
 
     override fun defineActionWhenFabIsPressed(view: View) {
-        startActivity(AddQuoteActivity.newIntent(this, quoteType, currentQuoteMainView.selectedQuoteId!!))
+        startActivity(AddQuoteActivity.newIntent(this, quoteType, currentQuoteMainView?.selectedQuoteId!!))
     }
 }

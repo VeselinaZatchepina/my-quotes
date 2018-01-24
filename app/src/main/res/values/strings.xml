@@ -75,6 +75,7 @@
     <string name="default_value"> - </string>
     <string name="share">Share quote</string>
     <string name="delete_title">Delete quote</string>
+    <string name="dialog_delete_quote_title">Delete quote?</string>
 
 
 </resources>

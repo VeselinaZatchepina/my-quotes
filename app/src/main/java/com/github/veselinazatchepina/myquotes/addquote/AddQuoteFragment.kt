@@ -238,22 +238,19 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     }
 
     private fun createAddCategoryDialog() {
-        val layoutInflater = LayoutInflater.from(activity)
-        val dialogView = layoutInflater.inflate(R.layout.dialog_add_category, null)
-        val dialogBuilder = AlertDialog.Builder(activity)
-        dialogBuilder.setView(dialogView)
-
-        dialogBuilder.setCancelable(false)
-                .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
-                    val currentUserInput = dialogView.input_text.text.toString()
-                    addQuotePresenter?.addQuoteCategory(currentUserInput)
-                }
-                .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
-                    dialogInterface?.cancel()
-                    addCategorySpinner.setSelection(0)
-                }
-        val alertDialog = dialogBuilder.create()
-        alertDialog.show()
+        AlertDialog.Builder(activity).apply {
+            val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_add_category, null)
+            this.setView(dialogView)
+            this.setCancelable(false)
+                    .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
+                        val currentUserInput = dialogView.input_text.text.toString()
+                        addQuotePresenter?.addQuoteCategory(currentUserInput)
+                    }
+                    .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
+                        dialogInterface?.cancel()
+                        addCategorySpinner.setSelection(0)
+                    }
+        }.create().show()
     }
 
 
