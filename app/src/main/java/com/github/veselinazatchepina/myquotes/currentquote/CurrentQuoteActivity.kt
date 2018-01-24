@@ -3,7 +3,6 @@ package com.github.veselinazatchepina.myquotes.currentquote
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
-import android.view.View
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
@@ -11,13 +10,14 @@ import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     private var currentQuoteMainView: CurrentQuoteMainFragment? = null
     private var currentQuoteMainPresenter: CurrentQuoteMainPresenter? = null
-    private lateinit var quoteType: String
+    private var quoteType: String = ""
     private lateinit var quoteCategory: String
     private var quoteId: Long = -1
 
@@ -75,7 +75,10 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
         return R.drawable.ic_mode_edit_white_24dp
     }
 
-    override fun defineActionWhenFabIsPressed(view: View) {
-        startActivity(AddQuoteActivity.newIntent(this, quoteType, currentQuoteMainView?.selectedQuoteId!!))
+    override fun defineActionWhenFabIsPressed() {
+        add_icon_fab.setOnClickListener {
+            startActivity(AddQuoteActivity.newIntent(this, quoteType, (currentQuoteMainView ?:
+                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment).selectedQuoteId!!))
+        }
     }
 }

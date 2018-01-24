@@ -3,12 +3,12 @@ package com.github.veselinazatchepina.myquotes.addquote
 import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
-import android.view.View
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 class AddQuoteActivity : SingleFragmentAbstractActivity() {
@@ -56,7 +56,11 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun setFabImageResId(): Int = R.drawable.ic_check_white_24dp
 
-    override fun defineActionWhenFabIsPressed(view: View) {
-        addQuoteView?.createMapOfQuoteProperties()
+    override fun defineActionWhenFabIsPressed() {
+        add_icon_fab.setOnClickListener {
+            (addQuoteView ?:
+                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
+                    .createMapOfQuoteProperties()
+        }
     }
 }

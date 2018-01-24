@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.abstracts
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
@@ -16,6 +17,7 @@ import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import com.github.veselinazatchepina.myquotes.setFirstVowelColor
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
+import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_single_fragment.*
 import kotlinx.android.synthetic.main.fab_popup_menu.*
 
@@ -36,6 +38,7 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Icepick.restoreInstanceState(this, savedInstanceState)
         setContentView(getLayoutResId())
         defineInputData()
         defineToolbar()
@@ -45,6 +48,11 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         setNewTitleStyle(title.toString())
         defineFragment()
         createPresenter()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        Icepick.saveInstanceState(this, outState)
     }
 
     open fun getLayoutResId(): Int = R.layout.activity_current_single_fragment
@@ -87,17 +95,20 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         } else {
             add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
         }
+        defineActionWhenFabIsPressed()
     }
 
     open fun setFabImageResId(): Int = R.drawable.ic_add_white_24dp
 
-    open fun defineActionWhenFabIsPressed(view: View) {
-        defineBookFabListener()
-        defineMyQuoteFabListener()
-        if (!isFabOpen) {
-            showFabMenu()
-        } else {
-            closeFabMenu()
+    open fun defineActionWhenFabIsPressed() {
+        add_icon_fab.setOnClickListener {
+            defineBookFabListener()
+            defineMyQuoteFabListener()
+            if (!isFabOpen) {
+                showFabMenu()
+            } else {
+                closeFabMenu()
+            }
         }
     }
 
