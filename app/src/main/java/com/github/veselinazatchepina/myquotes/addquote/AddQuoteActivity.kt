@@ -16,10 +16,12 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
     private var addQuoteView: AddQuoteFragment? = null
     private var addQuotePresenter: AddQuotePresenter? = null
     lateinit var quoteType: String
+    lateinit var quoteCategory: String
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
         private const val QUOTE_ID_INTENT = "quote_id_intent"
+        private const val QUOTE_CATEGORY_INTENT = "quote_category_intent"
 
         fun newIntent(context: Context, quoteType: String): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
@@ -33,16 +35,23 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
             intent.putExtra(QUOTE_ID_INTENT, quoteId)
             return intent
         }
+
+        fun newIntent(context: Context, quoteType: String, quoteCategory: String): Intent {
+            val intent = Intent(context, AddQuoteActivity::class.java)
+            intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
+            intent.putExtra(QUOTE_CATEGORY_INTENT, quoteCategory)
+            return intent
+        }
     }
 
     override fun defineInputData() {
         quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
-        //TODO if quoteType = ""
+        quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: getString(R.string.spinner_hint)
         title = quoteType
     }
 
     override fun createFragment(): Fragment {
-        addQuoteView = AddQuoteFragment.createInstance(quoteType)
+        addQuoteView = AddQuoteFragment.createInstance(quoteType, quoteCategory)
         return addQuoteView!!
     }
 

@@ -47,10 +47,12 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
+        private const val QUOTE_CATEGORY_BUNDLE = "quote_category_bundle"
 
-        fun createInstance(quoteType: String): AddQuoteFragment {
+        fun createInstance(quoteType: String, quoteCategory: String): AddQuoteFragment {
             val bundle = Bundle()
             bundle.putString(QUOTE_TYPE_BUNDLE, quoteType)
+            bundle.putString(QUOTE_CATEGORY_BUNDLE, quoteCategory)
             val fragment = AddQuoteFragment()
             fragment.arguments = bundle
             return fragment
@@ -60,6 +62,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: resources.getString(QuoteType.BOOK_QUOTE.resource)
+        quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: getString(R.string.spinner_hint)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -98,7 +101,6 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         if (quoteType == resources.getString(QuoteType.MY_QUOTE.resource)) {
             hideBookQuoteFields()
         }
-        quoteCategory = getString(R.string.spinner_hint)
     }
 
     private fun defineAddFieldsForAuthorDataBtn() {
@@ -215,8 +217,10 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     }
 
     private fun setSpinnerToCorrectPositionWhenCreate() {
-        if (chosenQuoteCategoryPosition == -1) {
+        if (chosenQuoteCategoryPosition == -1 && quoteCategory == getString(R.string.spinner_hint)) {
             addCategorySpinner.setSelection(categorySpinnerAdapter.count)
+        } else if (chosenQuoteCategoryPosition == -1 && quoteCategory != getString(R.string.spinner_hint)) {
+            addCategorySpinner.setSelection(quoteCategoriesList!!.indexOf(quoteCategory.toUpperCase()))
         } else {
             addCategorySpinner.setSelection(chosenQuoteCategoryPosition)
         }

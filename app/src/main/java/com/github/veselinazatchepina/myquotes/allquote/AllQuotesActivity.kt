@@ -5,9 +5,11 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
+import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
+import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 
 class AllQuotesActivity : NavigationDrawerAbstractActivity() {
@@ -65,5 +67,15 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
                 QuoteRemoteDataSource.getInstance())
         allQuotesPresenter = AllQuotesPresenter(quoteRepository,
                 allQuotesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AllQuotesFragment)
+    }
+
+    override fun defineActionWhenFabIsPressed() {
+        if (quoteType == "") {
+            super.defineActionWhenFabIsPressed()
+        } else {
+            add_icon_fab.setOnClickListener {
+                startActivity(AddQuoteActivity.newIntent(this, quoteType, quoteCategory))
+            }
+        }
     }
 }
