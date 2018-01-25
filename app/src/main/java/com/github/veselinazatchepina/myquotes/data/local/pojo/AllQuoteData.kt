@@ -21,14 +21,14 @@ class AllQuoteData(
         )
         var bookList: List<Book>? = null,
 
-                @Relation(
+        @Relation(
                 parentColumn = "type_Id",
                 entityColumn = "typeId",
                 entity = QuoteType::class
         )
-        var type: List<QuoteType>? = null,
+        var types: List<QuoteType>? = null,
 
-                @Relation(
+        @Relation(
                 parentColumn = "category_Id",
                 entityColumn = "categoryId",
                 entity = QuoteCategory::class

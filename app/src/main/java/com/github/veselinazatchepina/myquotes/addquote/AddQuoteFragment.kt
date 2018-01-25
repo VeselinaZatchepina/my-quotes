@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.github.veselinazatchepina.myquotes.R
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
+import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import icepick.Icepick
@@ -18,6 +21,7 @@ import icepick.State
 import kotlinx.android.synthetic.main.add_quote_book_part.*
 import kotlinx.android.synthetic.main.add_quote_book_part.view.*
 import kotlinx.android.synthetic.main.add_quote_main_part.*
+import kotlinx.android.synthetic.main.add_quote_main_part.view.*
 import kotlinx.android.synthetic.main.add_quote_other.*
 import kotlinx.android.synthetic.main.add_quote_other.view.*
 import kotlinx.android.synthetic.main.dialog_add_category.view.*
@@ -25,7 +29,7 @@ import org.jetbrains.anko.margin
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 
-
+//TODO update edit quote
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     private var addQuotePresenter: AddQuoteContract.Presenter? = null
@@ -45,14 +49,26 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
     @State
     internal var chosenNewCategory: String? = null
 
+
+    var editQuoteData: AllQuoteData? = null
+
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
         private const val QUOTE_CATEGORY_BUNDLE = "quote_category_bundle"
+        private const val QUOTE_DATA_BUNDLE = "quote_data_bundle"
 
         fun createInstance(quoteType: String, quoteCategory: String): AddQuoteFragment {
             val bundle = Bundle()
             bundle.putString(QUOTE_TYPE_BUNDLE, quoteType)
             bundle.putString(QUOTE_CATEGORY_BUNDLE, quoteCategory)
+            val fragment = AddQuoteFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+
+        fun createInstance(allQuoteData: AllQuoteData?): AddQuoteFragment {
+            val bundle = Bundle()
+            bundle.putSerializable(QUOTE_DATA_BUNDLE, allQuoteData)
             val fragment = AddQuoteFragment()
             fragment.arguments = bundle
             return fragment
@@ -63,18 +79,60 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
         super.onCreate(savedInstanceState)
         quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: resources.getString(QuoteType.BOOK_QUOTE.resource)
         quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: getString(R.string.spinner_hint)
+        editQuoteData = arguments?.getSerializable(QUOTE_DATA_BUNDLE) as? AllQuoteData
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         Icepick.restoreInstanceState(this, savedInstanceState)
         rootView = inflater.inflate(R.layout.fragment_add_quote, container, false)
-        addQuotePresenter?.getQuoteCategoriesList(quoteType)
+        getQuoteCategories()
         defineLayoutFields()
         defineAddFieldsForAuthorDataBtn()
         if (savedInstanceState != null) {
             defineAuthorFieldLayoutWhenConfigChanged()
         }
+        getQuoteDataForEdit(savedInstanceState)
         return rootView
+    }
+
+    private fun getQuoteCategories() {
+        addQuotePresenter?.getQuoteCategoriesList(quoteType)
+    }
+
+    private fun getQuoteDataForEdit(savedInstanceState: Bundle?) {
+        if (editQuoteData != null && savedInstanceState == null) {
+            fillQuoteDataForEdit()
+            addQuotePresenter?.getBookAuthors(editQuoteData?.authorsId?.map {
+                it.authorIdJoin
+            } ?: emptyList())
+            addQuotePresenter?.getBookReleaseYear(editQuoteData?.yearsId?.map {
+                it.yearIdJoin
+            } ?: emptyList())
+        }
+    }
+
+    private fun fillQuoteDataForEdit() {
+        rootView.addQuoteText.setText(editQuoteData!!.quote?.quoteText)
+        rootView.addBookName.setText(isDataEmpty(editQuoteData!!.book?.bookName!!,
+                editQuoteData!!.book!!.bookId,
+                "NoBookName"))
+        rootView.addPublishingOfficeName.setText(isDataEmpty(editQuoteData!!.publishingOffice!!.first().officeName,
+                editQuoteData!!.publishingOffice!!.first().officeId, "NoPublishingOfficeName"))
+        rootView.addPageNumber.setText(if (editQuoteData!!.quote?.pageNumber == 0L) {
+            ""
+        } else {
+            editQuoteData!!.quote?.pageNumber.toString()
+        })
+        rootView.addComments.setText(editQuoteData!!.quote?.comments)
+        quoteCategory = editQuoteData!!.category!!.first().categoryName
+    }
+
+    private fun isDataEmpty(currentValue: String, id: Long, pattern: String): String {
+        return if (currentValue == pattern + id) {
+            ""
+        } else {
+            currentValue
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -95,6 +153,45 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
                 }
             }
         }
+    }
+
+    override fun showBookAuthors(authors: List<BookAuthor>) {
+        if (authors.isNotEmpty()) {
+            rootView.addAuthorFirstName.setText(isDataEmpty(authors[0].name, authors[0].authorId, "NoAuthorName"))
+            rootView.addAuthorSurname.setText(authors[0].surname)
+            rootView.addAuthorMiddleName.setText(authors[0].patronymic)
+            if (authors.size > 1) {
+                for (i in 1 until authors.size) {
+                    val hints = createAuthorFieldsHintList()
+                    for (j in 0 until hints.count()) {
+                        val textInputLayout = createTextInputLayout(hints[i])
+                        textInputLayout.editText?.setText(when (j) {
+                            0 -> isDataEmpty(authors[i].name, authors[i].authorId, "NoAuthorName")
+                            1 -> authors[i].surname
+                            else -> authors[i].patronymic
+                        })
+                        rootView.addAuthorFieldsLinearLayout.addView(textInputLayout)
+                    }
+                }
+            }
+        }
+    }
+
+    override fun showBookReleaseYears(years: List<BookReleaseYear>) {
+        rootView.addYear.setText(getAllYearString(years))
+    }
+
+    private fun getAllYearString(years: List<BookReleaseYear>): String {
+        var year = ""
+        for (i in 0 until years.size) {
+            if (years[i].year != 0L) {
+                year = year.plus("${years[i].year}")
+                if (i != years.size - 1) {
+                    year = year.plus(",\n")
+                }
+            }
+        }
+        return year
     }
 
     private fun defineLayoutFields() {
@@ -278,7 +375,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             activity?.finish()
         }
         if (!isBookCategorySelected()) {
-            toast("Choose allQuoteData category")
+            toast("Choose quote category")
         }
     }
 

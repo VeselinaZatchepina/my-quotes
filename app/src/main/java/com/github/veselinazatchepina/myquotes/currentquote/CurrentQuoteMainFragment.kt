@@ -21,10 +21,11 @@ import kotlinx.android.synthetic.main.fragment_current_quote_pager.view.*
 class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
     private var currentQuoteMainPresenter: CurrentQuoteMainContract.Presenter? = null
-    private var currentQuoteFragment: CurrentQuoteFragment? = null
+    var currentQuoteFragment: CurrentQuoteFragment? = null
     lateinit var rootView: View
     lateinit var quoteType: String
     lateinit var quoteCategory: String
+    var chosenQuoteData: AllQuoteData? = null
     @JvmField
     @State
     var selectedQuoteId: Long? = -1L
@@ -105,6 +106,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
                 selectedQuoteId = quotes[position].quote!!.quoteId
+                chosenQuoteData = quotes[position]
             }
 
             override fun onPageSelected(position: Int) {

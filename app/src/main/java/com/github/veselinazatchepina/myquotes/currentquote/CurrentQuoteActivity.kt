@@ -77,8 +77,10 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun defineActionWhenFabIsPressed() {
         add_icon_fab.setOnClickListener {
-            startActivity(AddQuoteActivity.newIntent(this, quoteType, (currentQuoteMainView ?:
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment).selectedQuoteId!!))
+            val currentMainFragment = currentQuoteMainView ?:
+                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment
+            startActivity(AddQuoteActivity.newIntent(this,
+                    currentMainFragment.chosenQuoteData))
         }
     }
 }

@@ -2,6 +2,8 @@ package com.github.veselinazatchepina.myquotes.addquote
 
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
+import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -66,6 +68,49 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
     override fun addQuoteCategory(category: String) {
         bookCategoriesForSpinner.add(0, category)
         addQuoteView.updateCategorySpinner(bookCategoriesForSpinner)
+    }
+
+    override fun getBookAuthors(bookAuthorId: List<Long>) {
+        compositeDisposable.add(quoteDataSource.getBookAuthorsByIds(bookAuthorId).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSubscriber<List<BookAuthor>>() {
+                    override fun onNext(list: List<BookAuthor>?) {
+                        if (list != null) {
+                            addQuoteView.showBookAuthors(list)
+                            Log.v("LIST_SIZE", list.size.toString() + "OK")
+                        }
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(t: Throwable?) {
+
+                    }
+
+                }))
+    }
+
+    override fun getBookReleaseYear(yearIds: List<Long>) {
+        compositeDisposable.add(quoteDataSource.getBookReleaseYearsByIds(yearIds).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableSubscriber<List<BookReleaseYear>>() {
+                    override fun onNext(list: List<BookReleaseYear>?) {
+                        if (list != null) {
+                            addQuoteView.showBookReleaseYears(list)
+                        }
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                    override fun onError(t: Throwable?) {
+
+                    }
+
+                }))
     }
 
     override fun subscribe() {
