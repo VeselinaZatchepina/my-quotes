@@ -1,5 +1,7 @@
 package com.github.veselinazatchepina.myquotes.allquote
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.view.menu.ActionMenuItemView
@@ -25,6 +27,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     private lateinit var rootView: View
     private var quotesAdapter: AdapterImpl<Quote>? = null
     private var filterQuoteType: String = ""
+    private var quoteForDelete: Quote? = null
 
     companion object {
         private const val QUOTE_TYPE_BUNDLE = "quote_type_bundle"
@@ -180,13 +183,34 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
                             filterQuoteType,
                             quoteId))
                 }
+            }, {
+                quoteForDelete = this
+                createDeleteQuoteDialog(this)
             })
             rootView.recyclerView.adapter = quotesAdapter
             rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
         }
     }
 
+    private fun createDeleteQuoteDialog(quote: Quote) {
+        AlertDialog.Builder(activity).apply {
+            val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_delete_quote, null)
+            this.setView(dialogView)
+            this.setCancelable(false)
+                    .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
+                        allQuotesPresenter?.deleteQuote(quote.quoteId)
+                    }
+                    .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
+                        dialogInterface?.cancel()
+                    }
+        }.create().show()
+    }
+
     override fun showQuotesFromSearchView(quotes: List<Quote>) {
         quotesAdapter!!.update(quotes)
+    }
+
+    override fun updateCategory() {
+        allQuotesPresenter?.updateCategoryCountById(quoteForDelete!!.category_Id)
     }
 }

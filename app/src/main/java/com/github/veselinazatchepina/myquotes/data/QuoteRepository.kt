@@ -80,7 +80,7 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         quoteLocalDataSource.deleteQuote(qId)
     }
 
-    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
-        quoteLocalDataSource.updateQuoteCount(quoteCount, quoteCategoryId)
+    override fun updateQuoteCountById(quoteCategoryId: Long) {
+        quoteLocalDataSource.updateQuoteCountById(quoteCategoryId)
     }
 }

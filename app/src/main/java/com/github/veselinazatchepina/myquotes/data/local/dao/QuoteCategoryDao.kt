@@ -22,7 +22,12 @@ interface QuoteCategoryDao {
             "GROUP BY categoryId")
     fun getQuoteCategoryByQuoteType(quoteType: String): Flowable<List<QuoteCategory>>
 
-    @Query("UPDATE QuoteCategory SET quoteCount = :quoteCount " +
+    @Query("UPDATE QuoteCategory SET quoteCount = quoteCount - 1 " +
             "WHERE QuoteCategory.categoryId = :quoteCategoryId")
-    fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long)
+    fun updateQuoteCountByIdWhenDeleted(quoteCategoryId: Long)
+
+    @Query("UPDATE QuoteCategory SET quoteCount = quoteCount + 1 " +
+            "WHERE QuoteCategory.categoryId = :quoteCategoryId")
+    fun updateQuoteCountByIdWhenAdded(quoteCategoryId: Long)
+
 }

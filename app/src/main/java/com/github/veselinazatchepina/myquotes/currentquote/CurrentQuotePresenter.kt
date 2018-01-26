@@ -87,8 +87,8 @@ class CurrentQuotePresenter(val quoteDataSource: QuoteDataSource,
                 })
     }
 
-    override fun updateCategoryCount(quoteCount: Int, quoteCategoryId: Long) {
-        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.updateQuoteCount(quoteCount, quoteCategoryId) })
+    override fun updateCategoryCount(quoteCategoryId: Long) {
+        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.updateQuoteCountById(quoteCategoryId) })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Any> {

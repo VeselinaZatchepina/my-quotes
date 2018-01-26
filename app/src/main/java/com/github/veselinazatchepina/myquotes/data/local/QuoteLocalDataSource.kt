@@ -128,7 +128,7 @@ class QuoteLocalDataSource private constructor(val context: Context,
             databaseInstance.quoteCategoryDao().insertQuoteCategory(quoteCategory)
         } else {
             databaseInstance.quoteCategoryDao()
-                    .updateQuoteCount(existedQuoteCategory!!.quoteCount + 1, existedQuoteCategoryId)
+                    .updateQuoteCountByIdWhenAdded(existedQuoteCategoryId)
             existedQuoteCategoryId
         }
     }
@@ -243,7 +243,7 @@ class QuoteLocalDataSource private constructor(val context: Context,
         databaseInstance.quoteDao().deleteQuote(qId)
     }
 
-    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
-        databaseInstance.quoteCategoryDao().updateQuoteCount(quoteCount, quoteCategoryId)
+    override fun updateQuoteCountById(quoteCategoryId: Long) {
+        databaseInstance.quoteCategoryDao().updateQuoteCountByIdWhenDeleted(quoteCategoryId)
     }
 }

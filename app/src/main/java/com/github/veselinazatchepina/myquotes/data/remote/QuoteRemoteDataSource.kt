@@ -79,7 +79,7 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         TODO("we don't need remote now")
     }
 
-    override fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long) {
+    override fun updateQuoteCountById(quoteCategoryId: Long) {
         TODO("we don't need remote now")
     }
 }

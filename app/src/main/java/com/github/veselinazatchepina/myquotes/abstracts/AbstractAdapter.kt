@@ -24,6 +24,13 @@ abstract class AbstractAdapter<ITEM> constructor(
                 onItemClick(itemView, adapterPosition)
             }
         }
+        itemView.setOnLongClickListener {
+            val adapterPosition = viewHolder.adapterPosition
+            if (adapterPosition != RecyclerView.NO_POSITION) {
+                onLongItemClick(itemView, adapterPosition)
+            }
+            true
+        }
         return viewHolder
     }
 
@@ -32,6 +39,10 @@ abstract class AbstractAdapter<ITEM> constructor(
     }
 
     protected open fun onItemClick(itemView: View, position: Int) {
+
+    }
+
+    protected open fun onLongItemClick(itemView: View, position: Int) {
 
     }
 

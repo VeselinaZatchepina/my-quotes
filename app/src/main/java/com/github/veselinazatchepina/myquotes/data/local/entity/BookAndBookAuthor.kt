@@ -2,20 +2,23 @@ package com.github.veselinazatchepina.myquotes.data.local.entity
 
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.ForeignKey
+import android.arch.persistence.room.ForeignKey.CASCADE
 import android.arch.persistence.room.PrimaryKey
 import java.io.Serializable
 
 
-@Entity(foreignKeys = arrayOf(
-        ForeignKey(
-                entity = Book::class,
-                parentColumns = arrayOf("bookId"),
-                childColumns = arrayOf("bookIdJoin")),
-        ForeignKey(
-                entity = BookAuthor::class,
-                parentColumns = arrayOf("authorId"),
-                childColumns = arrayOf("authorIdJoin"))
-))
+@Entity(foreignKeys = [
+    (ForeignKey(
+        entity = Book::class,
+        parentColumns = arrayOf("bookId"),
+        childColumns = arrayOf("bookIdJoin"),
+        onDelete = CASCADE)),
+    (ForeignKey(
+        entity = BookAuthor::class,
+        parentColumns = arrayOf("authorId"),
+        childColumns = arrayOf("authorIdJoin"),
+        onDelete = CASCADE))
+])
 data class BookAndBookAuthor(val bookIdJoin: Long,
                              val authorIdJoin: Long) : Serializable {
     @PrimaryKey(autoGenerate = true)

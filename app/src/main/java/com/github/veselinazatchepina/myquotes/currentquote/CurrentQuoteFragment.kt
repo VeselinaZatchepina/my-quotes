@@ -122,8 +122,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     override fun updateCategory() {
         val quoteCategory = allQuoteData?.category?.first()
-        currentQuotePresenter?.updateCategoryCount(quoteCategory?.quoteCount!! - 1,
-                quoteCategory.categoryId)
+        currentQuotePresenter?.updateCategoryCount(quoteCategory!!.categoryId)
     }
 
     private fun showQuote(allQuoteData: AllQuoteData?) {

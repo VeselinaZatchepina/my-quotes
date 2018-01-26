@@ -41,6 +41,6 @@ interface QuoteDataSource {
 
     fun deleteQuote(qId: Long)
 
-    fun updateQuoteCount(quoteCount: Int, quoteCategoryId: Long)
+    fun updateQuoteCountById(quoteCategoryId: Long)
 
 }

@@ -27,7 +27,7 @@ interface CurrentQuoteContract {
 
         fun deleteQuote(qId: Long)
 
-        fun updateCategoryCount(quoteCount: Int, quoteCategoryId: Long)
+        fun updateCategoryCount(quoteCategoryId: Long)
 
     }
 }
