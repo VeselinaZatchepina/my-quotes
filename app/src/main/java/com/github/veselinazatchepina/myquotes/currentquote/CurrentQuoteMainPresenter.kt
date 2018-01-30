@@ -1,7 +1,7 @@
 package com.github.veselinazatchepina.myquotes.currentquote
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers

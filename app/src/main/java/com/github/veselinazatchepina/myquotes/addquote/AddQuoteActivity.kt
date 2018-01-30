@@ -7,7 +7,7 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import kotlinx.android.synthetic.main.fab_popup_menu.*
 

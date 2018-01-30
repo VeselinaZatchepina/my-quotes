@@ -2,7 +2,7 @@ package com.github.veselinazatchepina.myquotes.currentquote
 
 import com.github.veselinazatchepina.myquotes.BasePresenter
 import com.github.veselinazatchepina.myquotes.BaseView
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 
 
 interface CurrentQuoteMainContract {

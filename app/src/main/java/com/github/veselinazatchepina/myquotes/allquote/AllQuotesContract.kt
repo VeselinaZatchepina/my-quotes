@@ -13,8 +13,6 @@ interface AllQuotesContract {
 
         fun showQuotesFromSearchView(quotes: List<Quote>)
 
-        fun updateCategory()
-
     }
 
     interface Presenter : BasePresenter {
@@ -32,8 +30,6 @@ interface AllQuotesContract {
         fun getQuotesByTypeAndCategoryAndTextIfContains(quoteType: String, quoteCategory: String, text: String)
 
         fun deleteQuote(quoteId: Long)
-
-        fun updateCategoryCountById(quoteCategoryId: Long)
 
     }
 }

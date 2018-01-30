@@ -13,7 +13,7 @@ import android.widget.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import icepick.Icepick

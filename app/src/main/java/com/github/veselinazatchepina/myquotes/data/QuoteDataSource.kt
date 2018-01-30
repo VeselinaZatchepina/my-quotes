@@ -3,15 +3,15 @@ package com.github.veselinazatchepina.myquotes.data
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
 
 interface QuoteDataSource {
 
-    fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategory>>
+    fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategoryModel>>
 
     fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>)
 
@@ -40,7 +40,4 @@ interface QuoteDataSource {
     fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>>
 
     fun deleteQuote(qId: Long)
-
-    fun updateQuoteCountById(quoteCategoryId: Long)
-
 }

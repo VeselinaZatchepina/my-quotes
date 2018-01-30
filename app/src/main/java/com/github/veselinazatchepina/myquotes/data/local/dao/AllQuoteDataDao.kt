@@ -2,7 +2,7 @@ package com.github.veselinazatchepina.myquotes.data.local.dao
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Query
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import io.reactivex.Flowable
 
 

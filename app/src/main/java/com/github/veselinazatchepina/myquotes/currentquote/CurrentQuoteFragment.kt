@@ -11,7 +11,7 @@ import android.view.*
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import kotlinx.android.synthetic.main.fragment_current_quote.view.*
 import java.io.Serializable
 
@@ -118,11 +118,6 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     override fun showBookReleaseYears(years: List<BookReleaseYear>) {
         yearsValues = years
         rootView.current_year_number.text = isEmptyString(getAllYearString(years))
-    }
-
-    override fun updateCategory() {
-        val quoteCategory = allQuoteData?.category?.first()
-        currentQuotePresenter?.updateCategoryCount(quoteCategory!!.categoryId)
     }
 
     private fun showQuote(allQuoteData: AllQuoteData?) {

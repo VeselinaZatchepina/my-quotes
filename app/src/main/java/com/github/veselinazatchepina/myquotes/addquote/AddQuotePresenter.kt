@@ -4,7 +4,7 @@ import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
-import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -30,8 +30,8 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
     override fun getQuoteCategoriesList(quoteType: String) {
         compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
-                    override fun onNext(list: List<QuoteCategory>?) {
+                .subscribeWith(object : DisposableSubscriber<List<QuoteCategoryModel>>() {
+                    override fun onNext(list: List<QuoteCategoryModel>?) {
                         if (list != null) {
                             if (bookCategoriesForSpinner.isEmpty()) {
                                 bookCategoriesForSpinner.clear()
@@ -55,10 +55,9 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    private fun defineBookCategoriesListForView(list: List<QuoteCategory>): List<String> {
+    private fun defineBookCategoriesListForView(list: List<QuoteCategoryModel>): List<String> {
         list.mapTo(bookCategoriesForSpinner) {
-            Log.v("CATEGORIES", it.categoryName)
-            it.categoryName.toUpperCase()
+            it.quoteCategory?.categoryName?.toUpperCase() ?: ""
         }
         bookCategoriesForSpinner.add("+ add new category")
         bookCategoriesForSpinner.add("Select quote category")

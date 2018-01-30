@@ -2,7 +2,7 @@ package com.github.veselinazatchepina.myquotes.quotecategories
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -22,8 +22,8 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
     override fun getQuoteCategoriesList(quoteType: String) {
         compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSubscriber<List<QuoteCategory>>() {
-                    override fun onNext(list: List<QuoteCategory>?) {
+                .subscribeWith(object : DisposableSubscriber<List<QuoteCategoryModel>>() {
+                    override fun onNext(list: List<QuoteCategoryModel>?) {
                         if (list != null) {
                             bookCategoriesView.showQuoteCategoriesList(list)
                         }

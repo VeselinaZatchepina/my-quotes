@@ -4,8 +4,8 @@ import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
@@ -23,7 +23,7 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         }
     }
 
-    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategory>> {
+    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategoryModel>> {
         TODO("we don't need remote now")
     }
 
@@ -76,10 +76,6 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     }
 
     override fun deleteQuote(qId: Long) {
-        TODO("we don't need remote now")
-    }
-
-    override fun updateQuoteCountById(quoteCategoryId: Long) {
         TODO("we don't need remote now")
     }
 }

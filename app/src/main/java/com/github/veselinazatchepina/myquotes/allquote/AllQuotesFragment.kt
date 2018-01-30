@@ -209,8 +209,4 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     override fun showQuotesFromSearchView(quotes: List<Quote>) {
         quotesAdapter!!.update(quotes)
     }
-
-    override fun updateCategory() {
-        allQuotesPresenter?.updateCategoryCountById(quoteForDelete!!.category_Id)
-    }
 }

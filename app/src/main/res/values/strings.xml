@@ -77,5 +77,8 @@
     <string name="delete_title">Delete quote</string>
     <string name="dialog_delete_quote_title">Delete quote?</string>
 
+    <!--QuoteCategoriesFragment -->
+    <string name="dialog_delete_quote_category_title">Delete quote category?</string>
+
 
 </resources>

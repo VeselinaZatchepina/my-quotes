@@ -3,8 +3,8 @@ package com.github.veselinazatchepina.myquotes.data
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import io.reactivex.Flowable
 
@@ -24,7 +24,7 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         }
     }
 
-    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategory>> {
+    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategoryModel>> {
         return quoteLocalDataSource.getQuoteCategories(quoteType)
     }
 
@@ -78,9 +78,5 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
 
     override fun deleteQuote(qId: Long) {
         quoteLocalDataSource.deleteQuote(qId)
-    }
-
-    override fun updateQuoteCountById(quoteCategoryId: Long) {
-        quoteLocalDataSource.updateQuoteCountById(quoteCategoryId)
     }
 }

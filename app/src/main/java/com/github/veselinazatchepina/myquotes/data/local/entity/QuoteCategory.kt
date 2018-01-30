@@ -6,8 +6,9 @@ import java.io.Serializable
 
 
 @Entity
-data class QuoteCategory(val categoryName: String,
-                         val quoteCount: Int) : Serializable {
+data class QuoteCategory(var categoryName: String) : Serializable {
+
     @PrimaryKey(autoGenerate = true)
     var categoryId: Long = 0
+
 }

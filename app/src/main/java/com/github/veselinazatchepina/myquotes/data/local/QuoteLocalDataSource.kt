@@ -5,7 +5,8 @@ import android.content.Context
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.*
-import com.github.veselinazatchepina.myquotes.data.local.pojo.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
+import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import io.reactivex.Flowable
@@ -31,8 +32,8 @@ class QuoteLocalDataSource private constructor(val context: Context,
         }
     }
 
-    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategory>> {
-        return databaseInstance.quoteCategoryDao().getQuoteCategoryByQuoteType(quoteType)
+    override fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategoryModel>> {
+        return databaseInstance.quoteCategoryModel().getQuoteCategoriesByQuoteType(quoteType)
     }
 
     override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
@@ -124,11 +125,9 @@ class QuoteLocalDataSource private constructor(val context: Context,
                 .getQuoteCategoryByName(quoteCategoryName.toLowerCase())
         val existedQuoteCategoryId = existedQuoteCategory?.categoryId ?: 0L
         return if (existedQuoteCategoryId == 0L) {
-            val quoteCategory = QuoteCategory(quoteCategoryName.toLowerCase(), 1)
+            val quoteCategory = QuoteCategory(quoteCategoryName.toLowerCase())
             databaseInstance.quoteCategoryDao().insertQuoteCategory(quoteCategory)
         } else {
-            databaseInstance.quoteCategoryDao()
-                    .updateQuoteCountByIdWhenAdded(existedQuoteCategoryId)
             existedQuoteCategoryId
         }
     }
@@ -241,9 +240,5 @@ class QuoteLocalDataSource private constructor(val context: Context,
 
     override fun deleteQuote(qId: Long) {
         databaseInstance.quoteDao().deleteQuote(qId)
-    }
-
-    override fun updateQuoteCountById(quoteCategoryId: Long) {
-        databaseInstance.quoteCategoryDao().updateQuoteCountByIdWhenDeleted(quoteCategoryId)
     }
 }

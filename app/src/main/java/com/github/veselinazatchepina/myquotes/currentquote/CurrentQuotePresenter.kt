@@ -73,26 +73,8 @@ class CurrentQuotePresenter(val quoteDataSource: QuoteDataSource,
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : Observer<Any> {
                     override fun onSubscribe(d: Disposable) {
-                        currentQuoteFragment.updateCategory()
-                    }
-
-                    override fun onNext(o: Any) {
-                    }
-
-                    override fun onError(e: Throwable) {}
-
-                    override fun onComplete() {
 
                     }
-                })
-    }
-
-    override fun updateCategoryCount(quoteCategoryId: Long) {
-        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.updateQuoteCountById(quoteCategoryId) })
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Any> {
-                    override fun onSubscribe(d: Disposable) {}
 
                     override fun onNext(o: Any) {
                     }

@@ -1,4 +1,4 @@
-package com.github.veselinazatchepina.myquotes.data.local.pojo
+package com.github.veselinazatchepina.myquotes.data.local.model
 
 import android.arch.persistence.room.Embedded
 import android.arch.persistence.room.Relation
