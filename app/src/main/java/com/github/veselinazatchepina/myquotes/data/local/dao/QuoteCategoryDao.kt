@@ -22,11 +22,10 @@ interface QuoteCategoryDao {
             "GROUP BY categoryId")
     fun getQuoteCategoryByQuoteType(quoteType: String): Flowable<List<QuoteCategory>>
 
-    @Query("DELETE FROM QuoteCategory WHERE categoryName = :quoteCategory AND " +
-            "categoryId = (SELECT category_Id FROM Quote " +
-            "INNER JOIN QuoteType ON Quote.type_Id = QuoteType.typeId " +
-            "INNER JOIN QuoteCategory ON Quote.category_Id = QuoteCategory.categoryId " +
-            "WHERE type = :quoteType AND QuoteCategory.categoryName = :quoteCategory)")
+    @Query("DELETE FROM Quote WHERE Quote.category_Id = " +
+            "(SELECT categoryId FROM QuoteCategory WHERE QuoteCategory.categoryName = :quoteCategory) AND " +
+            "Quote.type_Id = " +
+            "(SELECT typeId FROM QuoteType WHERE QuoteType.type = :quoteType)")
     fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
 
 }
