@@ -6,6 +6,7 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,7 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
     override fun showQuoteCategoriesList(quoteCategories: List<QuoteCategoryModel>) {
         quoteCategoriesList = quoteCategories
         quoteCategoriesAdapter = AdapterImpl(quoteCategories, R.layout.quote_categories_recycler_view_item, {
-            rootView.itemCategoryName.text = it.quoteCategory?.categoryName
+            rootView.itemCategoryName.text = it.quoteCategory?.categoryName?.toUpperCase()
             rootView.itemQuoteCount.text = it.quoteCountOfCurrentCategory.toString()
         }, {
             startActivity(AllQuotesActivity.newIntent(activity!!.applicationContext,
@@ -66,13 +67,15 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
         rootView.recyclerView.layoutManager = LinearLayoutManager(activity)
     }
 
-    private fun createDeleteQuoteDialog(quoteCategory: QuoteCategoryModel) {
+    private fun createDeleteQuoteDialog(quoteCategoryModel: QuoteCategoryModel) {
         AlertDialog.Builder(activity).apply {
             val dialogView = LayoutInflater.from(activity).inflate(R.layout.dialog_delete_quote_category, null)
             this.setView(dialogView)
             this.setCancelable(false)
                     .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
-                        //TODO delete category
+                        quoteCategoriesPresenter?.deleteQuoteCategory(quoteType,
+                                quoteCategoryModel.quoteCategory!!.categoryName)
+                        Log.d("DELETE_QUOTE_CAT", "$quoteType ${quoteCategoryModel.quoteCategory!!.categoryName} OK")
                     }
                     .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
                         dialogInterface?.cancel()

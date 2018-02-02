@@ -152,6 +152,7 @@ class AllQuotesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
+    //TODO add to compositedisposible
     override fun deleteQuote(quoteId: Long) {
         Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.deleteQuote(quoteId) })
                 .subscribeOn(Schedulers.io())

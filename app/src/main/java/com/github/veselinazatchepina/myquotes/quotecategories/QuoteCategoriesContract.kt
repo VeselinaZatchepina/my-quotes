@@ -19,5 +19,7 @@ interface QuoteCategoriesContract {
 
         fun getQuotesByCategory(categoryName: String): List<Quote>
 
+        fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
+
     }
 }

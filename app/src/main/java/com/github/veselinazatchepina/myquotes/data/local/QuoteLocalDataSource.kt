@@ -241,4 +241,8 @@ class QuoteLocalDataSource private constructor(val context: Context,
     override fun deleteQuote(qId: Long) {
         databaseInstance.quoteDao().deleteQuote(qId)
     }
+
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
+        databaseInstance.quoteCategoryDao().deleteQuoteCategory(quoteType, quoteCategory)
+    }
 }

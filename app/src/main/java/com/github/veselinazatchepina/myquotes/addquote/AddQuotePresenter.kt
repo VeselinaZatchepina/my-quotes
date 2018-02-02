@@ -23,6 +23,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         compositeDisposable = CompositeDisposable()
     }
 
+    //TODO add to compositedisposible
     override fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
         quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
     }

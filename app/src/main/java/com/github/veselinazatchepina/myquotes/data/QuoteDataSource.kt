@@ -40,4 +40,6 @@ interface QuoteDataSource {
     fun getBookReleaseYearsByIds(ids: List<Long>): Flowable<List<BookReleaseYear>>
 
     fun deleteQuote(qId: Long)
+
+    fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
 }

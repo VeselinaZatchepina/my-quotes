@@ -79,4 +79,8 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
     override fun deleteQuote(qId: Long) {
         quoteLocalDataSource.deleteQuote(qId)
     }
+
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
+        quoteLocalDataSource.deleteQuoteCategory(quoteType, quoteCategory)
+    }
 }

@@ -1,8 +1,10 @@
 package com.github.veselinazatchepina.myquotes.quotecategories
 
+import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -42,6 +44,19 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
 
     override fun getQuotesByCategory(categoryName: String): List<Quote> {
         return arrayListOf()
+    }
+
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
+        compositeDisposable.add(Observable.fromCallable {
+            quoteDataSource.deleteQuoteCategory(quoteType, quoteCategory)
+        }.subscribeOn(Schedulers.io())
+                .subscribe({
+                    Log.d("DELETE_QUOTE_CAT", "$quoteType $quoteCategory OK")
+                }, {
+                    Log.d("DELETE_QUOTE_CAT", "ERROR")
+                }, {
+                    Log.d("DELETE_QUOTE_CAT", "COMPLETE")
+                }))
     }
 
     override fun subscribe() {
