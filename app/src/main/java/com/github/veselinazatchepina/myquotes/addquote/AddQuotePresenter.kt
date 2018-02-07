@@ -6,6 +6,7 @@ import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
+import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,9 +24,18 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
         compositeDisposable = CompositeDisposable()
     }
 
-    //TODO add to compositedisposible
     override fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
-        quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
+        compositeDisposable.add(Observable.fromCallable {
+            quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
+        }.subscribeOn(Schedulers.io())
+                .subscribe({
+                    Log.d("DELETE_QUOTE_CAT", "OK")
+                }, {
+                    Log.d("DELETE_QUOTE_CAT", "ERROR")
+                }, {
+                    Log.d("DELETE_QUOTE_CAT", "COMPLETE")
+                }))
+
     }
 
     override fun getQuoteCategoriesList(quoteType: String) {
@@ -111,6 +121,17 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                     }
 
                 }))
+    }
+
+    override fun updateQuote(quoteId: Long,
+                             mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                             authors: List<String>) {
+        compositeDisposable.add(Observable.fromCallable {
+            quoteDataSource.updateQuote(quoteId, mapOfQuoteProperties, authors)
+        }.subscribeOn(Schedulers.io())
+                .subscribe {
+
+                })
     }
 
     override fun subscribe() {

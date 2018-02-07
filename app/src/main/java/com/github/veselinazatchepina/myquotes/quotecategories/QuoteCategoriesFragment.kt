@@ -6,7 +6,6 @@ import android.content.DialogInterface
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -75,7 +74,6 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
                     .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
                         quoteCategoriesPresenter?.deleteQuoteCategory(quoteType,
                                 quoteCategoryModel.quoteCategory!!.categoryName)
-                        Log.d("DELETE_QUOTE_CAT", "$quoteType ${quoteCategoryModel.quoteCategory!!.categoryName} OK")
                     }
                     .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
                         dialogInterface?.cancel()

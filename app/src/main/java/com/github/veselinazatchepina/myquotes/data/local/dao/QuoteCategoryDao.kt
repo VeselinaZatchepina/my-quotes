@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.data.local.dao
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import com.github.veselinazatchepina.myquotes.data.local.entity.QuoteCategory
 import io.reactivex.Flowable
 
@@ -27,5 +28,11 @@ interface QuoteCategoryDao {
             "Quote.type_Id = " +
             "(SELECT typeId FROM QuoteType WHERE QuoteType.type = :quoteType)")
     fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
+
+    @Query("SELECT * FROM QuoteCategory WHERE QuoteCategory.categoryId = :quoteCategoryId")
+    fun getJustSimpleQuoteCategoryById(quoteCategoryId: Long): QuoteCategory
+
+    @Update
+    fun updateQuoteCategory(quoteCategory: QuoteCategory)
 
 }

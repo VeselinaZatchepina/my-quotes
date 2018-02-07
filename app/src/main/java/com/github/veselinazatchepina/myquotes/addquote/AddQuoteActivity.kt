@@ -24,8 +24,6 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
         private const val QUOTE_CATEGORY_INTENT = "quote_category_intent"
         private const val QUOTE_DATA_INTENT = "quote_data_intent"
-        private const val BOOK_AUTHORS_INTENT = "book_authors_intent"
-        private const val YEARS_INTENT = "years_intent"
 
         fun newIntent(context: Context, quoteType: String): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
@@ -33,10 +31,11 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
             return intent
         }
 
-        fun newIntent(context: Context,
+        fun newIntent(context: Context, quoteType: String,
                       allQuoteData: AllQuoteData?): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
             intent.putExtra(QUOTE_DATA_INTENT, allQuoteData)
+            intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             return intent
         }
 
@@ -61,7 +60,7 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createFragment(): Fragment {
         if (editQuoteData != null) {
-            addQuoteView = AddQuoteFragment.createInstance(editQuoteData!!)
+            addQuoteView = AddQuoteFragment.createInstanceForEdit(editQuoteData!!, quoteType!!)
         } else {
             addQuoteView = AddQuoteFragment.createInstance(quoteType!!, quoteCategory)
         }

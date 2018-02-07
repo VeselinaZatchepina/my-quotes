@@ -3,6 +3,7 @@ package com.github.veselinazatchepina.myquotes.data.local.dao
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
+import android.arch.persistence.room.Update
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import io.reactivex.Flowable
 
@@ -13,8 +14,14 @@ interface QuoteDao {
     @Query("SELECT * FROM Quote WHERE Quote.quoteId = :quoteId")
     fun getQuoteById(quoteId: Long): Flowable<Quote>
 
+    @Query("SELECT * FROM Quote WHERE Quote.quoteId = :quoteId")
+    fun getSimpleQuoteById(quoteId: Long): Quote
+
     @Insert
     fun insertQuote(quote: Quote): Long
+
+    @Update
+    fun updateQuote(quote: Quote)
 
     @Query("SELECT * FROM Quote")
     fun getAllQuotes(): Flowable<List<Quote>>

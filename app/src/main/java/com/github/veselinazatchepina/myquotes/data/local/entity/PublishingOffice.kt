@@ -5,7 +5,7 @@ import android.arch.persistence.room.PrimaryKey
 import java.io.Serializable
 
 @Entity
-data class PublishingOffice(val officeName: String) : Serializable {
+data class PublishingOffice(var officeName: String) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var officeId: Long = 0
 }

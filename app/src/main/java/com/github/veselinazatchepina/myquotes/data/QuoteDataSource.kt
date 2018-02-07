@@ -42,4 +42,8 @@ interface QuoteDataSource {
     fun deleteQuote(qId: Long)
 
     fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
+
+    fun updateQuote(quoteId: Long,
+                    mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                    authors: List<String>)
 }

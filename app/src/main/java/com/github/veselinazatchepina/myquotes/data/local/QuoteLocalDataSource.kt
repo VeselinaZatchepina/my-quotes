@@ -10,8 +10,6 @@ import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryMode
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
 import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
 
 
 class QuoteLocalDataSource private constructor(val context: Context,
@@ -37,59 +35,55 @@ class QuoteLocalDataSource private constructor(val context: Context,
     }
 
     override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
-        Single.fromCallable {
-            databaseInstance.runInTransaction {
-                val publishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] ?: "")
-                Log.v("SAVE_QUOTE", "OK OFFICE")
-                val quoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] ?: "")
-                Log.v("SAVE_QUOTE", "OK CATEGORY")
-                val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||
-                        mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == "") {
-                    0L
-                } else {
-                    mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER]!!.toLong()
-                })
-                Log.v("SAVE_QUOTE", "OK YEAR")
-                val bookId = saveBook(mapOfQuoteProperties[QuoteProperties.BOOK_NAME] ?: "",
-                        publishingOfficeId, yearId)
-                Log.v("SAVE_QUOTE", "OK BOOK")
-                saveBookAndBookReleaseYear(yearId, bookId)
-                Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_YEAR")
-                val quoteTypeId = saveQuoteType(mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] ?: "")
-                Log.v("SAVE_QUOTE", "OK QUOTE_TYPE")
-                val quoteId = saveQuote(mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] ?: "",
-                        mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] ?: "",
-                        mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] ?: "",
-                        if (mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == null ||
-                                mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == "") {
-                            0L
-                        } else {
-                            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER]!!.toLong()
-                        },
-                        bookId,
-                        quoteTypeId,
-                        quoteCategoryId)
-                Log.v("SAVE_QUOTE", "OK QUOTE")
+        databaseInstance.runInTransaction {
+            val publishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME]
+                    ?: "")
+            Log.v("SAVE_QUOTE", "OK OFFICE")
+            val quoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME]
+                    ?: "")
+            Log.v("SAVE_QUOTE", "OK CATEGORY")
+            val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||
+                    mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == "") {
+                0L
+            } else {
+                mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER]!!.toLong()
+            })
+            Log.v("SAVE_QUOTE", "OK YEAR")
+            val bookId = saveBook(mapOfQuoteProperties[QuoteProperties.BOOK_NAME] ?: "",
+                    publishingOfficeId, yearId)
+            Log.v("SAVE_QUOTE", "OK BOOK")
+            saveBookAndBookReleaseYear(yearId, bookId)
+            Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_YEAR")
+            val quoteTypeId = saveQuoteType(mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] ?: "")
+            Log.v("SAVE_QUOTE", "OK QUOTE_TYPE")
+            val quoteId = saveQuote(mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] ?: "",
+                    mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] ?: "",
+                    mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] ?: "",
+                    if (mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == null ||
+                            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == "") {
+                        0L
+                    } else {
+                        mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER]!!.toLong()
+                    },
+                    bookId,
+                    quoteTypeId,
+                    quoteCategoryId)
+            Log.v("SAVE_QUOTE", "OK QUOTE")
 
-                for (i in 0 until authors.count() step 3) {
-                    val authorId = saveAuthor(authors[i], authors[i + 1], authors[i + 2])
-                    Log.v("SAVE_QUOTE", "OK AUTHOR $authorId")
-                    saveBookAndBookAuthor(bookId, authorId)
-                    Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_AUTHOR")
-                }
-
-                Log.v("SAVE_QUOTE",
-                        mapOfQuoteProperties[QuoteProperties.BOOK_NAME] +
-                                quoteCategoryId.toString() +
-                                publishingOfficeId.toString() +
-                                yearId.toString() +
-                                bookId.toString())
+            for (i in 0 until authors.count() step 3) {
+                val authorId = saveAuthor(authors[i], authors[i + 1], authors[i + 2])
+                Log.v("SAVE_QUOTE", "OK AUTHOR $authorId")
+                saveBookAndBookAuthor(bookId, authorId)
+                Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_AUTHOR")
             }
-        }.subscribeOn(Schedulers.io())
-                .subscribe({
-                }, {
-                    Log.v("SAVE_QUOTE", "Shit")
-                })
+
+            Log.v("SAVE_QUOTE",
+                    mapOfQuoteProperties[QuoteProperties.BOOK_NAME] +
+                            quoteCategoryId.toString() +
+                            publishingOfficeId.toString() +
+                            yearId.toString() +
+                            bookId.toString())
+        }
     }
 
     private fun saveQuote(quoteText: String,
@@ -244,5 +238,78 @@ class QuoteLocalDataSource private constructor(val context: Context,
 
     override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
         databaseInstance.quoteCategoryDao().deleteQuoteCategory(quoteType, quoteCategory)
+    }
+
+    override fun updateQuote(quoteId: Long,
+                             mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                             authors: List<String>) {
+        databaseInstance.runInTransaction {
+
+            val editPublishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME]!!)
+            Log.v("EDIT_QUOTE", "OK OFFICE")
+
+            val editQuoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME]!!)
+            Log.v("EDIT_QUOTE", "OK CATEGORY")
+
+            val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||
+                    mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == "") {
+                0L
+            } else {
+                mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER]!!.toLong()
+            })
+            Log.v("EDIT_QUOTE", "OK YEAR")
+
+            val bookId = saveBook(mapOfQuoteProperties[QuoteProperties.BOOK_NAME] ?: "",
+                    editPublishingOfficeId, yearId)
+            Log.v("EDIT_QUOTE", "OK BOOK")
+
+            saveBookAndBookReleaseYear(yearId, bookId)
+            Log.v("EDIT_QUOTE", "OK BOOK_AND_BOOK_YEAR")
+
+            val quoteTypeId = saveQuoteType(mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] ?: "")
+            Log.v("EDIT_QUOTE", "OK QUOTE_TYPE")
+
+            val quoteId = updateQuoteObject(quoteId, mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT]
+                    ?: "",
+                    mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] ?: "",
+                    mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] ?: "",
+                    if (mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == null ||
+                            mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == "") {
+                        0L
+                    } else {
+                        mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER]!!.toLong()
+                    },
+                    bookId,
+                    quoteTypeId,
+                    editQuoteCategoryId)
+            Log.v("EDIT_QUOTE", "OK QUOTE")
+
+            for (i in 0 until authors.count() step 3) {
+                val authorId = saveAuthor(authors[i], authors[i + 1], authors[i + 2])
+                Log.v("EDIT_QUOTE", "OK AUTHOR $authorId")
+                saveBookAndBookAuthor(bookId, authorId)
+                Log.v("EDIT_QUOTE", "OK BOOK_AND_BOOK_AUTHOR")
+            }
+        }
+    }
+
+    private fun updateQuoteObject(quoteId: Long, quoteText: String,
+                                  creationDate: String,
+                                  comments: String,
+                                  pageNumber: Long,
+                                  bookId: Long,
+                                  typeId: Long,
+                                  categoryId: Long): Long {
+        val editQuote = databaseInstance.quoteDao().getSimpleQuoteById(quoteId).apply {
+            this.quoteText = quoteText
+            this.creationDate = creationDate
+            this.comments = comments
+            this.pageNumber = pageNumber
+            this.book_Id = bookId
+            this.category_Id = categoryId
+            this.type_Id = typeId
+        }
+        databaseInstance.quoteDao().updateQuote(editQuote)
+        return quoteId
     }
 }

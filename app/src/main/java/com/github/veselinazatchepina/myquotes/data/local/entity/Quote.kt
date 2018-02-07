@@ -23,13 +23,13 @@ import java.io.Serializable
         childColumns = arrayOf("category_Id"),
         onDelete = CASCADE))
 ])
-data class Quote(val quoteText: String,
-                 val creationDate: String,
-                 val comments: String,
-                 val pageNumber: Long,
-                 val book_Id: Long,
-                 val type_Id: Long,
-                 val category_Id: Long) : Serializable {
+data class Quote(var quoteText: String,
+                 var creationDate: String,
+                 var comments: String,
+                 var pageNumber: Long,
+                 var book_Id: Long,
+                 var type_Id: Long,
+                 var category_Id: Long) : Serializable {
     @PrimaryKey(autoGenerate = true)
     var quoteId: Long = 0
 }

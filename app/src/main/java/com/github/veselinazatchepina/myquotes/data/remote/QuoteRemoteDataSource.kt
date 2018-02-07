@@ -82,4 +82,8 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
         TODO("we don't need remote now")
     }
+
+    override fun updateQuote(quoteId: Long, mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
+        TODO("we don't need remote now")
+    }
 }

@@ -34,5 +34,9 @@ interface AddQuoteContract {
 
         fun getBookReleaseYear(yearIds: List<Long>)
 
+        fun updateQuote(quoteId: Long,
+                        mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                        authors: List<String>)
+
     }
 }

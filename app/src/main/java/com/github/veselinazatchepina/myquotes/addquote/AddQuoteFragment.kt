@@ -66,9 +66,10 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             return fragment
         }
 
-        fun createInstance(allQuoteData: AllQuoteData?): AddQuoteFragment {
+        fun createInstanceForEdit(allQuoteData: AllQuoteData, quoteType: String): AddQuoteFragment {
             val bundle = Bundle()
             bundle.putSerializable(QUOTE_DATA_BUNDLE, allQuoteData)
+            bundle.putString(QUOTE_TYPE_BUNDLE, quoteType)
             val fragment = AddQuoteFragment()
             fragment.arguments = bundle
             return fragment
@@ -371,9 +372,17 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] = quoteType
             mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] = addComments.text.toString()
 
-            addQuotePresenter?.saveQuote(mapOfQuoteProperties, createAuthorsList())
+            if (editQuoteData != null) {
+                addQuotePresenter?.updateQuote(editQuoteData!!.quote!!.quoteId,
+                        mapOfQuoteProperties,
+                        createAuthorsList())
+            } else {
+                addQuotePresenter?.saveQuote(mapOfQuoteProperties, createAuthorsList())
+            }
             activity?.finish()
+
         }
+
         if (!isBookCategorySelected()) {
             toast("Choose quote category")
         }
