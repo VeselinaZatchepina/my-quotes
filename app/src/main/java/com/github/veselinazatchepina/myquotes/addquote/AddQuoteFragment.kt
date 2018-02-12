@@ -29,7 +29,7 @@ import org.jetbrains.anko.margin
 import org.jetbrains.anko.support.v4.toast
 import java.util.*
 
-//TODO update edit quote
+
 class AddQuoteFragment : Fragment(), AddQuoteContract.View {
 
     private var addQuotePresenter: AddQuoteContract.Presenter? = null
@@ -362,7 +362,7 @@ class AddQuoteFragment : Fragment(), AddQuoteContract.View {
             val mapOfQuoteProperties = HashMap<QuoteProperties, String>()
             mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] = addQuoteText.text.toString()
             mapOfQuoteProperties[QuoteProperties.BOOK_NAME] = addBookName.text.toString()
-            mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME] = addCategorySpinner.selectedItem.toString()
+            mapOfQuoteProperties[QuoteProperties.QUOTE_CATEGORY_NAME] = addCategorySpinner.selectedItem.toString()
             mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] = addPageNumber.text.toString()
             mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] = addYear.text.toString()
             mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME] = addPublishingOfficeName.text.toString()

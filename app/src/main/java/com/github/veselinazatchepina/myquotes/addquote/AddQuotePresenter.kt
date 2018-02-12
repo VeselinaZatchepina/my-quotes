@@ -29,11 +29,11 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
             quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
         }.subscribeOn(Schedulers.io())
                 .subscribe({
-                    Log.d("DELETE_QUOTE_CAT", "OK")
+                    Log.d("SAVE_QUOTE_CAT", "OK $it")
                 }, {
-                    Log.d("DELETE_QUOTE_CAT", "ERROR")
+                    Log.d("SAVE_QUOTE_CAT", "ERROR")
                 }, {
-                    Log.d("DELETE_QUOTE_CAT", "COMPLETE")
+                    Log.d("SAVE_QUOTE_CAT", "COMPLETE")
                 }))
 
     }

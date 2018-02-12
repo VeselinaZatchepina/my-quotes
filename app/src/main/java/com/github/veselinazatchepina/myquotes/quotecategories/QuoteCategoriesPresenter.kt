@@ -2,7 +2,6 @@ package com.github.veselinazatchepina.myquotes.quotecategories
 
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
-import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
 import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,12 +11,12 @@ import io.reactivex.subscribers.DisposableSubscriber
 
 
 class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
-                               val bookCategoriesView: QuoteCategoriesContract.View) : QuoteCategoriesContract.Presenter {
+                               val quoteCategoriesView: QuoteCategoriesContract.View) : QuoteCategoriesContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
 
     init {
-        bookCategoriesView.setPresenter(this)
+        quoteCategoriesView.setPresenter(this)
         compositeDisposable = CompositeDisposable()
     }
 
@@ -27,7 +26,7 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
                 .subscribeWith(object : DisposableSubscriber<List<QuoteCategoryModel>>() {
                     override fun onNext(list: List<QuoteCategoryModel>?) {
                         if (list != null) {
-                            bookCategoriesView.showQuoteCategoriesList(list)
+                            quoteCategoriesView.showQuoteCategoriesList(list)
                         }
                     }
 
@@ -40,10 +39,6 @@ class QuoteCategoriesPresenter(val quoteDataSource: QuoteDataSource,
                     }
 
                 }))
-    }
-
-    override fun getQuotesByCategory(categoryName: String): List<Quote> {
-        return arrayListOf()
     }
 
     override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {

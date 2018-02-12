@@ -13,7 +13,8 @@ interface QuoteDataSource {
 
     fun getQuoteCategories(quoteType: String): Flowable<List<QuoteCategoryModel>>
 
-    fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>)
+    fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                      authors: List<String>): Long
 
     fun getAllQuotes(): Flowable<List<Quote>>
 
@@ -41,7 +42,7 @@ interface QuoteDataSource {
 
     fun deleteQuote(qId: Long)
 
-    fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
+    fun deleteQuoteCategory(quoteType: String, quoteCategory: String): Int
 
     fun updateQuote(quoteId: Long,
                     mapOfQuoteProperties: HashMap<QuoteProperties, String>,

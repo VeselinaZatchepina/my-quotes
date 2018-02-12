@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
@@ -69,7 +70,7 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
-                QuoteLocalDataSource.getInstance(applicationContext, SingleFragmentAbstractActivity.provideSchedulerProvider()),
+                QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         addQuotePresenter = AddQuotePresenter(quoteRepository,
                 addQuoteView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)

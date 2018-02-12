@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.github.veselinazatchepina.myquotes.R
-import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
@@ -126,7 +126,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
     private fun createPresenter(currentQuoteView: CurrentQuoteFragment) {
         val quoteRepository = QuoteRepository.getInstance(
-                QuoteLocalDataSource.getInstance(activity!!.applicationContext, SingleFragmentAbstractActivity.provideSchedulerProvider()),
+                QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(activity!!.applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         val currentQuotePresenter = CurrentQuotePresenter(quoteRepository,
                 currentQuoteView)

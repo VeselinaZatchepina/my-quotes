@@ -28,8 +28,9 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         return quoteLocalDataSource.getQuoteCategories(quoteType)
     }
 
-    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
-        quoteLocalDataSource.saveQuoteData(mapOfQuoteProperties, authors)
+    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                               authors: List<String>): Long {
+        return quoteLocalDataSource.saveQuoteData(mapOfQuoteProperties, authors)
     }
 
     override fun getAllQuotes(): Flowable<List<Quote>> {
@@ -80,8 +81,8 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
         quoteLocalDataSource.deleteQuote(qId)
     }
 
-    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
-        quoteLocalDataSource.deleteQuoteCategory(quoteType, quoteCategory)
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String): Int {
+        return quoteLocalDataSource.deleteQuoteCategory(quoteType, quoteCategory)
     }
 
     override fun updateQuote(quoteId: Long,

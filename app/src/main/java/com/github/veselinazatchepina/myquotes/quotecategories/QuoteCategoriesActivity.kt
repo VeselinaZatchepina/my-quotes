@@ -6,6 +6,7 @@ import android.content.Intent
 import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
@@ -40,7 +41,7 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
-                QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
+                QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         quoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository,
                 quoteCategoriesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as QuoteCategoriesFragment)

@@ -1,30 +1,26 @@
 package com.github.veselinazatchepina.myquotes.data.local
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.util.Log
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.*
 import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
 import com.github.veselinazatchepina.myquotes.data.local.model.QuoteCategoryModel
 import com.github.veselinazatchepina.myquotes.enums.QuoteProperties
-import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
 import io.reactivex.Flowable
 
 
-class QuoteLocalDataSource private constructor(val context: Context,
-                                               val schedulerProvider: BaseSchedulerProvider) : QuoteDataSource {
+class QuoteLocalDataSource private constructor(val appDatabase: AppDatabase) : QuoteDataSource {
 
-    var databaseInstance: AppDatabase = AppDatabase.getAppDatabaseInstance(context)
+    var databaseInstance: AppDatabase = appDatabase
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var INSTANCE: QuoteLocalDataSource? = null
 
-        fun getInstance(context: Context,
-                        schedulerProvider: BaseSchedulerProvider): QuoteLocalDataSource {
+        fun getInstance(appDatabase: AppDatabase): QuoteLocalDataSource {
             if (INSTANCE == null) {
-                INSTANCE = QuoteLocalDataSource(context.applicationContext, schedulerProvider)
+                INSTANCE = QuoteLocalDataSource(appDatabase)
             }
             return INSTANCE!!
         }
@@ -34,12 +30,14 @@ class QuoteLocalDataSource private constructor(val context: Context,
         return databaseInstance.quoteCategoryModel().getQuoteCategoriesByQuoteType(quoteType)
     }
 
-    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
+    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                               authors: List<String>): Long {
+        var quoteId: Long = -1
         databaseInstance.runInTransaction {
             val publishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME]
                     ?: "")
             Log.v("SAVE_QUOTE", "OK OFFICE")
-            val quoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME]
+            val quoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.QUOTE_CATEGORY_NAME]
                     ?: "")
             Log.v("SAVE_QUOTE", "OK CATEGORY")
             val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||
@@ -56,7 +54,7 @@ class QuoteLocalDataSource private constructor(val context: Context,
             Log.v("SAVE_QUOTE", "OK BOOK_AND_BOOK_YEAR")
             val quoteTypeId = saveQuoteType(mapOfQuoteProperties[QuoteProperties.QUOTE_TYPE] ?: "")
             Log.v("SAVE_QUOTE", "OK QUOTE_TYPE")
-            val quoteId = saveQuote(mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] ?: "",
+            quoteId = saveQuote(mapOfQuoteProperties[QuoteProperties.QUOTE_TEXT] ?: "",
                     mapOfQuoteProperties[QuoteProperties.QUOTE_CREATION_DATE] ?: "",
                     mapOfQuoteProperties[QuoteProperties.QUOTE_COMMENTS] ?: "",
                     if (mapOfQuoteProperties[QuoteProperties.PAGE_NUMBER] == null ||
@@ -83,7 +81,9 @@ class QuoteLocalDataSource private constructor(val context: Context,
                             publishingOfficeId.toString() +
                             yearId.toString() +
                             bookId.toString())
+            println(quoteId)
         }
+        return quoteId
     }
 
     private fun saveQuote(quoteText: String,
@@ -236,8 +236,8 @@ class QuoteLocalDataSource private constructor(val context: Context,
         databaseInstance.quoteDao().deleteQuote(qId)
     }
 
-    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
-        databaseInstance.quoteCategoryDao().deleteQuoteCategory(quoteType, quoteCategory)
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String): Int {
+        return databaseInstance.quoteCategoryDao().deleteQuoteCategory(quoteType, quoteCategory)
     }
 
     override fun updateQuote(quoteId: Long,
@@ -248,7 +248,7 @@ class QuoteLocalDataSource private constructor(val context: Context,
             val editPublishingOfficeId = savePublishingOffice(mapOfQuoteProperties[QuoteProperties.PUBLISHING_OFFICE_NAME]!!)
             Log.v("EDIT_QUOTE", "OK OFFICE")
 
-            val editQuoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.BOOK_CATEGORY_NAME]!!)
+            val editQuoteCategoryId = saveQuoteCategory(mapOfQuoteProperties[QuoteProperties.QUOTE_CATEGORY_NAME]!!)
             Log.v("EDIT_QUOTE", "OK CATEGORY")
 
             val yearId = saveYear(if (mapOfQuoteProperties[QuoteProperties.YEAR_NUMBER] == null ||

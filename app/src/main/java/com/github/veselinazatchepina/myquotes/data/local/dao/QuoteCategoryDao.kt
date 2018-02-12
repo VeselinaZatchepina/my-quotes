@@ -27,7 +27,7 @@ interface QuoteCategoryDao {
             "(SELECT categoryId FROM QuoteCategory WHERE QuoteCategory.categoryName = :quoteCategory) AND " +
             "Quote.type_Id = " +
             "(SELECT typeId FROM QuoteType WHERE QuoteType.type = :quoteType)")
-    fun deleteQuoteCategory(quoteType: String, quoteCategory: String)
+    fun deleteQuoteCategory(quoteType: String, quoteCategory: String): Int
 
     @Query("SELECT * FROM QuoteCategory WHERE QuoteCategory.categoryId = :quoteCategoryId")
     fun getJustSimpleQuoteCategoryById(quoteCategoryId: Long): QuoteCategory

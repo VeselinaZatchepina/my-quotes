@@ -27,7 +27,8 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         TODO("we don't need remote now")
     }
 
-    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
+    override fun saveQuoteData(mapOfQuoteProperties: HashMap<QuoteProperties, String>,
+                               authors: List<String>): Long {
         TODO("we don't need remote now")
     }
 
@@ -79,7 +80,7 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
         TODO("we don't need remote now")
     }
 
-    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String) {
+    override fun deleteQuoteCategory(quoteType: String, quoteCategory: String): Int {
         TODO("we don't need remote now")
     }
 

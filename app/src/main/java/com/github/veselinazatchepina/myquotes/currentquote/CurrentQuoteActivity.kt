@@ -8,6 +8,7 @@ import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractAc
 import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import kotlinx.android.synthetic.main.fab_popup_menu.*
@@ -64,7 +65,7 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
-                QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
+                QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         currentQuoteMainPresenter = CurrentQuoteMainPresenter(quoteRepository,
                 currentQuoteMainView ?:

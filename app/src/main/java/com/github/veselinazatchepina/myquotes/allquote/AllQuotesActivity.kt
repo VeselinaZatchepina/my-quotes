@@ -7,6 +7,7 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
 import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
+import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.remote.QuoteRemoteDataSource
 import kotlinx.android.synthetic.main.fab_popup_menu.*
@@ -63,7 +64,7 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
 
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
-                QuoteLocalDataSource.getInstance(applicationContext, provideSchedulerProvider()),
+                QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         allQuotesPresenter = AllQuotesPresenter(quoteRepository,
                 allQuotesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AllQuotesFragment)
