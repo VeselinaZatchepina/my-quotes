@@ -3,11 +3,9 @@ package com.github.veselinazatchepina.myquotes.abstracts
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
@@ -45,7 +43,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         defineNavigationDrawer()
         defineAppBarLayoutExpandableValue()
         defineFab()
-        setNewTitleStyle(title.toString())
+        if (title != null) {
+            setNewTitleStyle(title.toString())
+        }
         defineFragment()
         createPresenter()
     }
