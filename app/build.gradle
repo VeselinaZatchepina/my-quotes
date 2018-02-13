@@ -13,6 +13,7 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
+        testInstrumentationRunner 'com.github.tmurakami.dexopener.DexOpenerAndroidJUnitRunner'
     }
     buildTypes {
         release {
@@ -24,6 +25,10 @@ android {
         unitTests {
             includeAndroidResources = true
         }
+    }
+    repositories {
+        jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -40,6 +45,18 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-contrib:3.0.1'
     androidTestCompile 'com.android.support.test:rules:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testCompile 'org.mockito:mockito-core:2.8.9'
+    androidTestCompile 'com.github.tmurakami:dexopener:0.9.2'
+    testCompile ("com.nhaarman:mockito-kotlin:1.4.0", {
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.mockito'
+    })
+
+    androidTestCompile 'org.mockito:mockito-android:2.8.9'
+    androidTestCompile ("com.nhaarman:mockito-kotlin:1.4.0", {
+        exclude group: 'org.jetbrains.kotlin'
+        exclude group: 'org.mockito'
+    })
     // Room
     compile 'android.arch.persistence.room:runtime:1.0.0'
     kapt "android.arch.persistence.room:compiler:1.0.0"

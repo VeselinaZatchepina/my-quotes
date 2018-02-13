@@ -2,6 +2,7 @@ package com.github.veselinazatchepina.myquotes.allquote
 
 import android.content.Context
 import android.content.Intent
+import android.support.annotation.VisibleForTesting
 import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
@@ -60,6 +61,11 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
     override fun createFragment(): Fragment {
         allQuotesView = AllQuotesFragment.createInstance(quoteType, quoteCategory)
         return allQuotesView!!
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
+    fun getFragment(): AllQuotesFragment? {
+        return allQuotesView
     }
 
     override fun createPresenter() {

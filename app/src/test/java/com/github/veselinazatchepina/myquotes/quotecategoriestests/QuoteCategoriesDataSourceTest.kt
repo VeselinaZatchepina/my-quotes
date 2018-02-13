@@ -1,7 +1,8 @@
-package com.github.veselinazatchepina.myquotes
+package com.github.veselinazatchepina.myquotes.quotecategoriestests
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.github.veselinazatchepina.myquotes.BuildConfig
 import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
 import com.github.veselinazatchepina.myquotes.data.local.QuoteLocalDataSource
 import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
