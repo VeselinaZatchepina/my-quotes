@@ -78,11 +78,13 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
             this.putExtra(android.content.Intent.EXTRA_TEXT, allQuoteData?.quote?.quoteText)
         }
         shareActionProvider?.setShareIntent(shareIntent)
+        println(shareIntent)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_item_share -> {
+                println(shareIntent)
                 startActivity(Intent.createChooser(shareIntent, "Select conversation"))
             }
             R.id.menu_item_delete_quote -> {

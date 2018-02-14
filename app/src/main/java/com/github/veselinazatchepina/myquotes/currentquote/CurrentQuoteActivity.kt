@@ -18,7 +18,7 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     private var currentQuoteMainView: CurrentQuoteMainFragment? = null
     private var currentQuoteMainPresenter: CurrentQuoteMainPresenter? = null
-    private var quoteType: String = ""
+    public var quoteType: String = ""
     private lateinit var quoteCategory: String
     private var quoteId: Long = -1
 
@@ -61,6 +61,10 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
     override fun createFragment(): Fragment {
         currentQuoteMainView = CurrentQuoteMainFragment.createInstance(quoteType, quoteCategory, quoteId)
         return currentQuoteMainView!!
+    }
+
+    fun setMainFragment(fragment: CurrentQuoteMainFragment) {
+        currentQuoteMainView = fragment
     }
 
     override fun createPresenter() {

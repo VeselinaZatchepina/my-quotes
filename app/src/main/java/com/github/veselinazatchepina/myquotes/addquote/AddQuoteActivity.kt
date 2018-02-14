@@ -68,6 +68,10 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
         return addQuoteView!!
     }
 
+    fun setFragment(fragment: AddQuoteFragment) {
+        addQuoteView = fragment
+    }
+
     override fun createPresenter() {
         val quoteRepository = QuoteRepository.getInstance(
                 QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
