@@ -2,6 +2,7 @@ package com.github.veselinazatchepina.myquotes.addquote
 
 import android.content.Context
 import android.content.Intent
+import android.support.annotation.VisibleForTesting
 import android.support.v4.app.Fragment
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.SingleFragmentAbstractActivity
@@ -68,6 +69,7 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
         return addQuoteView!!
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.NONE)
     fun setFragment(fragment: AddQuoteFragment) {
         addQuoteView = fragment
     }
