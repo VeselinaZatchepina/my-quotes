@@ -35,6 +35,7 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         Icepick.restoreInstanceState(this, savedInstanceState)
         setContentView(getLayoutResId())

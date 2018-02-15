@@ -72,8 +72,8 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
                 QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         currentQuoteMainPresenter = CurrentQuoteMainPresenter(quoteRepository,
-                currentQuoteMainView ?:
-                        supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment)
+                currentQuoteMainView
+                        ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment)
     }
 
     override fun setFabImageResId(): Int {
@@ -82,8 +82,8 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun defineActionWhenFabIsPressed() {
         add_icon_fab.setOnClickListener {
-            val currentMainFragment = currentQuoteMainView ?:
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment
+            val currentMainFragment = currentQuoteMainView
+                    ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment
             startActivity(AddQuoteActivity.newIntent(this,
                     currentMainFragment.chosenQuoteData!!.types!!.first().type,
                     currentMainFragment.chosenQuoteData))
