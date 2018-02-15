@@ -111,4 +111,16 @@
     <dimen name="current_quote_linear_margin_bottom">120dp</dimen>
     <dimen name="current_quote_linear_comments_margin_bottom">120dp</dimen>
 
+
+    <!-- GetIdeaFragment -->
+    <dimen name="cardview_margin_top_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_bottom_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_start_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_end_get_idea">8dp</dimen>
+    <dimen name="linear_layout_margin">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_top">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_bottom">16dp</dimen>
+    <dimen name="button_height">250dp</dimen>
+    <dimen name="button_width">70dp</dimen>
+
 </resources>

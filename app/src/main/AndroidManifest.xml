@@ -23,6 +23,9 @@
                   android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"/>
         <activity android:name=".currentquote.CurrentQuoteActivity"
                   android:parentActivityName = ".quotecategories.QuoteCategoriesActivity"/>
+        <activity android:name=".getidea.GetIdeaActivity"/>
+        <activity android:name=".coincidequotes.CoincideQuotesActivity"
+                  android:parentActivityName = ".getidea.GetIdeaActivity"/>
     </application>
 
 </manifest>

@@ -61,4 +61,7 @@ interface QuoteDao {
     @Query("DELETE FROM Quote WHERE quoteId = :qId")
     fun deleteQuote(qId: Long)
 
+    @Query("SELECT * FROM Quote WHERE quoteText LIKE '%'||:inputText||'%'")
+    fun getCoincideQuotesByInputText(inputText: String): Flowable<List<Quote>>
+
 }

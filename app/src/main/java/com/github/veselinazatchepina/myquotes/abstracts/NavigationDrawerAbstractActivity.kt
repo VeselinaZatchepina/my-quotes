@@ -11,6 +11,7 @@ import android.view.WindowManager
 import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.allquote.AllQuotesActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
+import com.github.veselinazatchepina.myquotes.getidea.GetIdeaActivity
 import com.github.veselinazatchepina.myquotes.quotecategories.QuoteCategoriesActivity
 import kotlinx.android.synthetic.main.activity_nav_drawer.*
 import kotlinx.android.synthetic.main.activity_single_fragment.*
@@ -66,7 +67,7 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
             R.id.nav_book_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
             R.id.nav_my_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
             R.id.nav_all_quotes -> intent = AllQuotesActivity.newIntent(this)
-            R.id.nav_get_idea -> intent = null
+            R.id.nav_get_idea -> intent = GetIdeaActivity.newIntent(this)
         }
         if (intent != null) {
             startActivity(intent)

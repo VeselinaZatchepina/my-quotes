@@ -47,4 +47,6 @@ interface QuoteDataSource {
     fun updateQuote(quoteId: Long,
                     mapOfQuoteProperties: HashMap<QuoteProperties, String>,
                     authors: List<String>)
+
+    fun getCoincideQuotesByInputText(inputText: String): Flowable<List<Quote>>
 }

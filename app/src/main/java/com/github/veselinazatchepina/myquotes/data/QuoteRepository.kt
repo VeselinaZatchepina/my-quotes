@@ -90,4 +90,8 @@ class QuoteRepository private constructor(val quoteLocalDataSource: QuoteDataSou
                              authors: List<String>) {
         quoteLocalDataSource.updateQuote(quoteId, mapOfQuoteProperties, authors)
     }
+
+    override fun getCoincideQuotesByInputText(inputText: String): Flowable<List<Quote>> {
+        return quoteLocalDataSource.getCoincideQuotesByInputText(inputText)
+    }
 }

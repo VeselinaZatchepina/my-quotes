@@ -312,4 +312,8 @@ class QuoteLocalDataSource private constructor(val appDatabase: AppDatabase) : Q
         databaseInstance.quoteDao().updateQuote(editQuote)
         return quoteId
     }
+
+    override fun getCoincideQuotesByInputText(inputText: String): Flowable<List<Quote>> {
+        return databaseInstance.quoteDao().getCoincideQuotesByInputText(inputText)
+    }
 }

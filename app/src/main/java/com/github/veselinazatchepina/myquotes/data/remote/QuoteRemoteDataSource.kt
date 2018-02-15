@@ -87,4 +87,8 @@ class QuoteRemoteDataSource private constructor() : QuoteDataSource {
     override fun updateQuote(quoteId: Long, mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
         TODO("we don't need remote now")
     }
+
+    override fun getCoincideQuotesByInputText(inputText: String): Flowable<List<Quote>> {
+        TODO("we don't need remote now")
+    }
 }
