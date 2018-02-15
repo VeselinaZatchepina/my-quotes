@@ -4,7 +4,7 @@
     <!-- Navigation Drawer -->
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
-    <string name="book_quote_nav">Book quotes</string>
+    <string name="book_quote_nav">Book\'s quotes</string>
     <string name="my_quote_nav">My quotes</string>
     <string name="get_idea">Get idea</string>
 
@@ -53,7 +53,7 @@
 
     <!-- AllQuotesFragment -->
     <string name="quote_text_format">\"%1$s\"</string>
-    <string name="show_book_quotes">Book quotes</string>
+    <string name="show_book_quotes">Book\'s quotes</string>
     <string name="show_my_quotes">My quotes</string>
     <string name="show_all_quotes">All quotes</string>
 

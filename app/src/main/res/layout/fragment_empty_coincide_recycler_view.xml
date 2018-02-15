@@ -14,6 +14,7 @@
         android:layout_marginEnd="@dimen/no_quotes_marhin_end"
         android:layout_marginStart="@dimen/no_quotes_margin_start"
         android:layout_marginTop="@dimen/no_quotes_margin_top"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
         android:text="@string/no_coincide_quotes_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -12,6 +12,7 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookAuthor
 import com.github.veselinazatchepina.myquotes.data.local.entity.BookReleaseYear
 import com.github.veselinazatchepina.myquotes.data.local.model.AllQuoteData
+import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import kotlinx.android.synthetic.main.fragment_current_quote.view.*
 import java.io.Serializable
 
@@ -47,8 +48,19 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
         rootView = inflater.inflate(R.layout.fragment_current_quote, container, false)
         getBookAuthors()
         getBookReleaseYear()
+        hideFields()
         showQuote(allQuoteData)
         return rootView
+    }
+
+    private fun hideFields() {
+        if (allQuoteData!!.types!!.first().type == getString(QuoteType.MY_QUOTE.resource)) {
+            rootView.linear_layout_book_name_title.visibility = View.GONE
+            rootView.linear_layout_page_number_title.visibility = View.GONE
+            rootView.linear_layout_publisher_name_title.visibility = View.GONE
+            rootView.linear_layout_quote_author_title.visibility = View.GONE
+            rootView.linear_layout_year_number_title.visibility = View.GONE
+        }
     }
 
     private fun getBookAuthors() {
@@ -124,7 +136,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     private fun showQuote(allQuoteData: AllQuoteData?) {
         rootView.current_quote_text.text = getString(R.string.quote_text_format, allQuoteData?.quote?.quoteText)
-        rootView.currentCategory.text = allQuoteData?.category?.first()?.categoryName
+        rootView.currentCategory.text = allQuoteData?.category?.first()?.categoryName?.toUpperCase()
         rootView.current_book_name.text = isDataEmpty(allQuoteData?.book!!.bookName, allQuoteData.book!!.bookId, "NoBookName")
         rootView.current_publisher_name.text = isDataEmpty(allQuoteData.publishingOffice!!.first().officeName,
                 allQuoteData.publishingOffice!!.first().officeId,
