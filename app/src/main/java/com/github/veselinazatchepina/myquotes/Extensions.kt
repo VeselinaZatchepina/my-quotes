@@ -19,11 +19,12 @@ infix fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View {
 
 fun <ITEM> RecyclerView.setUp(items: List<ITEM>,
                               layoutResId: Int,
+                              emptyLayoutResId: Int,
                               bindHolder: View.(ITEM) -> Unit,
                               itemClick: ITEM.() -> Unit = {},
                               manager: RecyclerView.LayoutManager = LinearLayoutManager(this.context))
         : AdapterImpl<ITEM> {
-    return AdapterImpl(items, layoutResId, {
+    return AdapterImpl(items, layoutResId, emptyLayoutResId, {
         bindHolder(it)
     }, {
         itemClick()

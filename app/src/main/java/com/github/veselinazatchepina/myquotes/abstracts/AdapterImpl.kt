@@ -5,29 +5,39 @@ import android.view.View
 
 class AdapterImpl<ITEM>(items: List<ITEM>,
                         layoutResId: Int,
-                        private val bindHolder: View.(ITEM) -> Unit) : AbstractAdapter<ITEM>(items, layoutResId) {
+                        emptyLayoutResId: Int,
+                        private val bindHolder: View.(ITEM) -> Unit) : AbstractAdapter<ITEM>(items,
+        layoutResId,
+        emptyLayoutResId) {
 
     private var itemClick: ITEM.() -> Unit = {}
     private var longItemClick: ITEM.() -> Unit = {}
 
     constructor(items: List<ITEM>,
                 layoutResId: Int,
+                emptyLayoutResId: Int,
                 bindHolder: View.(ITEM) -> Unit,
                 itemClick: ITEM.() -> Unit = {},
-                longItemClick: ITEM.() -> Unit = {}) : this(items, layoutResId, bindHolder) {
+                longItemClick: ITEM.() -> Unit = {}) : this(items, layoutResId, emptyLayoutResId, bindHolder) {
         this.itemClick = itemClick
         this.longItemClick = longItemClick
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.itemView.bindHolder(itemList[position])
+        if (itemList.isNotEmpty()) {
+            holder.itemView.bindHolder(itemList[position])
+        }
     }
 
     override fun onItemClick(itemView: View, position: Int) {
-        itemList[position].itemClick()
+        if (itemList.isNotEmpty()) {
+            itemList[position].itemClick()
+        }
     }
 
     override fun onLongItemClick(itemView: View, position: Int) {
-        itemList[position].longItemClick()
+        if (itemList.isNotEmpty()) {
+            itemList[position].longItemClick()
+        }
     }
 }

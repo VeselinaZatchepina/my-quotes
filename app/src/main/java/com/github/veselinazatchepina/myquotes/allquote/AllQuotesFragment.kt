@@ -169,7 +169,7 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         if (quotesAdapter != null) {
             quotesAdapter!!.update(quotes)
         } else {
-            quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, {
+            quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, R.layout.fragment_empty_recycler_view,  {
                 rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
             }, {
                 if (filterQuoteType == "") {

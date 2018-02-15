@@ -47,12 +47,19 @@ class QuoteCategoriesFragment : Fragment(), QuoteCategoriesContract.View {
         rootView = inflater.inflate(R.layout.fragment_recycler_view, container, false)
         quoteCategoriesPresenter?.getQuoteCategoriesList(quoteType)
         setCurrentCategoryTitleIsGone(rootView)
+
+
+
         return rootView
     }
 
+
+
     override fun showQuoteCategoriesList(quoteCategories: List<QuoteCategoryModel>) {
         quoteCategoriesList = quoteCategories
-        quoteCategoriesAdapter = AdapterImpl(quoteCategories, R.layout.quote_categories_recycler_view_item, {
+        quoteCategoriesAdapter = AdapterImpl(quoteCategories,
+                R.layout.quote_categories_recycler_view_item,
+                R.layout.fragment_empty_recycler_view, {
             rootView.itemCategoryName.text = it.quoteCategory?.categoryName?.toUpperCase()
             rootView.itemQuoteCount.text = it.quoteCountOfCurrentCategory.toString()
         }, {
