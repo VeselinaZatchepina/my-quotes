@@ -19,24 +19,28 @@ class CoincideQuotesPresenter(val quoteDataSource: QuoteDataSource,
     }
 
     override fun getCoincideQuotesByInputText(inputText: String) {
-        compositeDisposable.add(quoteDataSource.getCoincideQuotesByInputText(inputText).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
-                    override fun onNext(list: List<Quote>?) {
-                        if (list != null) {
-                            coincideQuotesView.showQuotes(list)
+        if (inputText.isNotEmpty()) {
+            compositeDisposable.add(quoteDataSource.getCoincideQuotesByInputText(inputText).subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(object : DisposableSubscriber<List<Quote>>() {
+                        override fun onNext(list: List<Quote>?) {
+                            if (list != null) {
+                                coincideQuotesView.showQuotes(list)
+                            }
                         }
-                    }
 
-                    override fun onComplete() {
+                        override fun onComplete() {
 
-                    }
+                        }
 
-                    override fun onError(t: Throwable?) {
+                        override fun onError(t: Throwable?) {
 
-                    }
+                        }
 
-                }))
+                    }))
+        } else {
+            coincideQuotesView.showQuotes(emptyList())
+        }
     }
 
     override fun subscribe() {
