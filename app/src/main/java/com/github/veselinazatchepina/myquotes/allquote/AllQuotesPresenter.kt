@@ -2,12 +2,9 @@ package com.github.veselinazatchepina.myquotes.allquote
 
 import com.github.veselinazatchepina.myquotes.data.QuoteDataSource
 import com.github.veselinazatchepina.myquotes.data.local.entity.Quote
-import io.reactivex.Observable
-import io.reactivex.ObservableOnSubscribe
-import io.reactivex.Observer
+import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subscribers.DisposableSubscriber
 
@@ -152,25 +149,18 @@ class AllQuotesPresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    //TODO add to compositedisposible
     override fun deleteQuote(quoteId: Long) {
-        Observable.create(ObservableOnSubscribe<Any> { quoteDataSource.deleteQuote(quoteId) })
-                .subscribeOn(Schedulers.io())
+        compositeDisposable.add(Flowable.fromCallable {
+            quoteDataSource.deleteQuote(quoteId)
+        }.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(object : Observer<Any> {
-                    override fun onSubscribe(d: Disposable) {
+                .subscribe({
 
-                    }
+                }, {
 
-                    override fun onNext(o: Any) {
-                    }
+                }, {
 
-                    override fun onError(e: Throwable) {}
-
-                    override fun onComplete() {
-
-                    }
-                })
+                }))
     }
 
     override fun subscribe() {

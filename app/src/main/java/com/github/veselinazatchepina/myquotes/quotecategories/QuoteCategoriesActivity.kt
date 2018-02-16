@@ -17,7 +17,9 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
     private var quoteCategoriesView: QuoteCategoriesFragment? = null
     private var quoteCategoriesPresenter: QuoteCategoriesPresenter? = null
 
-    private lateinit var quoteType: String
+    private val quoteType: String by lazy {
+        intent.getStringExtra(QUOTE_TYPE_INTENT) ?: getString(QuoteType.BOOK_QUOTE.resource)
+    }
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
@@ -30,7 +32,6 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
     }
 
     override fun defineInputData() {
-        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: getString(QuoteType.BOOK_QUOTE.resource)
         title = quoteType
     }
 
@@ -44,6 +45,7 @@ class QuoteCategoriesActivity : NavigationDrawerAbstractActivity() {
                 QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         quoteCategoriesPresenter = QuoteCategoriesPresenter(quoteRepository,
-                quoteCategoriesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as QuoteCategoriesFragment)
+                quoteCategoriesView
+                        ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as QuoteCategoriesFragment)
     }
 }

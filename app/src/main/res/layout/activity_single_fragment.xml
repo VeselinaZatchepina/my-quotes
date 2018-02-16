@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appbar_layout"
+        android:id="@+id/appbarLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/toolbar_height"
         android:background="@drawable/toolbar_gradient"
@@ -17,7 +17,7 @@
         app:theme="@style/TransparentToolbar">
 
         <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_toolbar"
+            android:id="@+id/collapsingToolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
@@ -37,11 +37,11 @@
     </android.support.design.widget.AppBarLayout>
 
     <View
-        android:id="@+id/divider_light"
+        android:id="@+id/dividerLight"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_divider"
         android:background="@color/fab_divider"
-        app:layout_anchor="@id/appbar_layout"
+        app:layout_anchor="@id/appbarLayout"
         app:layout_anchorGravity="bottom"/>
 
     <FrameLayout

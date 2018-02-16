@@ -6,7 +6,7 @@
              android:layout_gravity="bottom|end">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/my_quote_fab"
+        android:id="@+id/myQuoteFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -17,7 +17,7 @@
         app:srcCompat="@drawable/ic_face_white_18dp"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/book_quote_fab"
+        android:id="@+id/bookQuoteFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -28,7 +28,7 @@
         app:srcCompat="@drawable/ic_import_contacts_white_18dp"/>
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/add_icon_fab"
+        android:id="@+id/addFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"

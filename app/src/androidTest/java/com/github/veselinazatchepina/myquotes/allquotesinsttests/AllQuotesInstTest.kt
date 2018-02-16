@@ -60,11 +60,11 @@ class AllQuotesInstTest {
     @Test
     fun isAddBookQuoteIntentCorrect() {
         rule.activity.runOnUiThread {
-            rule.activity.findViewById<FloatingActionButton>(R.id.book_quote_fab).visibility = View.VISIBLE
+            rule.activity.findViewById<FloatingActionButton>(R.id.bookQuoteFab).visibility = View.VISIBLE
 
         }
-        Espresso.onView(ViewMatchers.withId(R.id.add_icon_fab)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.book_quote_fab)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.addFab)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.bookQuoteFab)).perform(ViewActions.click())
 
         Intents.intended(IntentMatchers.hasExtras(
                 BundleMatchers.hasEntry(CoreMatchers.equalTo("quote_type_intent"), CoreMatchers.equalTo("Book's quote"))
@@ -74,11 +74,11 @@ class AllQuotesInstTest {
     @Test
     fun isAddMyQuoteIntentCorrect() {
         rule.activity.runOnUiThread {
-            rule.activity.findViewById<FloatingActionButton>(R.id.my_quote_fab).visibility = View.VISIBLE
+            rule.activity.findViewById<FloatingActionButton>(R.id.myQuoteFab).visibility = View.VISIBLE
 
         }
-        Espresso.onView(ViewMatchers.withId(R.id.add_icon_fab)).perform(ViewActions.click())
-        Espresso.onView(ViewMatchers.withId(R.id.my_quote_fab)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.addFab)).perform(ViewActions.click())
+        Espresso.onView(ViewMatchers.withId(R.id.myQuoteFab)).perform(ViewActions.click())
 
         Intents.intended(IntentMatchers.hasExtras(
                 BundleMatchers.hasEntry(CoreMatchers.equalTo("quote_type_intent"), CoreMatchers.equalTo("My quote"))

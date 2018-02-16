@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.support.v4.app.Fragment
 import android.view.View
+import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.abstracts.NavigationDrawerAbstractActivity
 import com.github.veselinazatchepina.myquotes.data.QuoteRepository
 import com.github.veselinazatchepina.myquotes.data.local.AppDatabase
@@ -24,8 +25,8 @@ class GetIdeaActivity : NavigationDrawerAbstractActivity() {
     }
 
     override fun defineInputData() {
-        add_icon_fab.visibility = View.GONE
-        title = "Get idea"
+        addFab.visibility = View.GONE
+        title = getString(R.string.idea_title)
     }
 
     override fun createFragment(): Fragment {

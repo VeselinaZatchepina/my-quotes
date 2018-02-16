@@ -19,7 +19,8 @@ class CurrentQuoteMainPresenter(val quoteDataSource: QuoteDataSource,
     }
 
     override fun getAllQuoteData() {
-        compositeDisposable.add(quoteDataSource.getAllQuoteData().subscribeOn(Schedulers.io())
+        compositeDisposable.add(quoteDataSource.getAllQuoteData()
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<AllQuoteData>>() {
                     override fun onNext(list: List<AllQuoteData>?) {
@@ -40,7 +41,8 @@ class CurrentQuoteMainPresenter(val quoteDataSource: QuoteDataSource,
     }
 
     override fun getAllQuoteDataByQuoteType(quoteType: String) {
-        compositeDisposable.add(quoteDataSource.getAllQuoteDataByQuoteType(quoteType).subscribeOn(Schedulers.io())
+        compositeDisposable.add(quoteDataSource.getAllQuoteDataByQuoteType(quoteType)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<AllQuoteData>>() {
                     override fun onNext(list: List<AllQuoteData>?) {

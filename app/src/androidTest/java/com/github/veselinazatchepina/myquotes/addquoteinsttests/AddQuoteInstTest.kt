@@ -28,11 +28,11 @@ class AddQuoteInstTest {
     @Before
     fun init() {
         rule.activity.runOnUiThread {
-            rule.activity.findViewById<FloatingActionButton>(R.id.book_quote_fab).visibility = View.VISIBLE
+            rule.activity.findViewById<FloatingActionButton>(R.id.bookQuoteFab).visibility = View.VISIBLE
 
         }
-        onView(withId(R.id.add_icon_fab)).perform(ViewActions.click())
-        onView(withId(R.id.book_quote_fab)).perform(ViewActions.click())
+        onView(withId(R.id.addFab)).perform(ViewActions.click())
+        onView(withId(R.id.bookQuoteFab)).perform(ViewActions.click())
         ViewActions.closeSoftKeyboard()
     }
 

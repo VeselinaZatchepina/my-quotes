@@ -89,5 +89,7 @@
     <string name="idea_title">Get idea</string>
     <string name="idea_toast">You have no quote with this subject</string>
 
+    <!-- CoincideQuotesFragment -->
+    <string name="coincide_title">Coincide idea</string>
 
 </resources>

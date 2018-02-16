@@ -7,37 +7,34 @@ import com.github.veselinazatchepina.myquotes.inflate
 
 
 abstract class AbstractAdapter<ITEM> constructor(
-        protected var itemList: List<ITEM>,
+        protected var items: List<ITEM>,
         private val layoutResId: Int,
         private val emptyLayoutResId: Int) : RecyclerView.Adapter<AbstractAdapter.Holder>() {
 
-    private val EMPTY_LIST = 0
-    private val NOT_EMPTY_LIST = 1
-    private var IS_EMPTY = NOT_EMPTY_LIST
+    companion object {
+        private const val EMPTY_LIST = 0
+        private const val NOT_EMPTY_LIST = 1
+    }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
     override fun getItemCount(): Int {
-        if (itemList.isEmpty()) {
+        if (items.isEmpty()) {
             return 1
         } else {
-            return itemList.size
+            return items.size
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (itemList.isEmpty()) {
-            IS_EMPTY = EMPTY_LIST
-            IS_EMPTY
-        } else IS_EMPTY
+        return if (items.isEmpty()) EMPTY_LIST else NOT_EMPTY_LIST
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        var view: View
         var viewHolder: Holder? = null
-        when (IS_EMPTY) {
+        when (viewType) {
             NOT_EMPTY_LIST -> {
-                view = parent inflate layoutResId
+                val view = parent inflate layoutResId
                 viewHolder = Holder(view)
                 val itemView = viewHolder.itemView
                 itemView.setOnClickListener {
@@ -55,7 +52,7 @@ abstract class AbstractAdapter<ITEM> constructor(
                 }
             }
             EMPTY_LIST -> {
-                view = parent inflate emptyLayoutResId
+                val view = parent inflate emptyLayoutResId
                 viewHolder = Holder(view)
             }
         }
@@ -75,8 +72,8 @@ abstract class AbstractAdapter<ITEM> constructor(
 
     }
 
-    fun update(items: List<ITEM>) {
-        itemList = items
+    fun update(newItems: List<ITEM>) {
+        items = newItems
         notifyDataSetChanged()
     }
 }

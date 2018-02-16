@@ -39,11 +39,11 @@ class QuoteCategoriesInstTest {
     @Test
     fun isAddBookQuoteIntentCorrect() {
         rule.activity.runOnUiThread {
-            rule.activity.findViewById<FloatingActionButton>(R.id.book_quote_fab).visibility = View.VISIBLE
+            rule.activity.findViewById<FloatingActionButton>(R.id.bookQuoteFab).visibility = View.VISIBLE
 
         }
-        onView(withId(R.id.add_icon_fab)).perform(ViewActions.click())
-        onView(withId(R.id.book_quote_fab)).perform(ViewActions.click())
+        onView(withId(R.id.addFab)).perform(ViewActions.click())
+        onView(withId(R.id.bookQuoteFab)).perform(ViewActions.click())
 
         Intents.intended(IntentMatchers.hasExtras(
                 BundleMatchers.hasEntry(CoreMatchers.equalTo("quote_type_intent"), CoreMatchers.equalTo("Book's quote"))
@@ -53,11 +53,11 @@ class QuoteCategoriesInstTest {
     @Test
     fun isAddMyQuoteIntentCorrect() {
         rule.activity.runOnUiThread {
-            rule.activity.findViewById<FloatingActionButton>(R.id.my_quote_fab).visibility = View.VISIBLE
+            rule.activity.findViewById<FloatingActionButton>(R.id.myQuoteFab).visibility = View.VISIBLE
 
         }
-        onView(withId(R.id.add_icon_fab)).perform(ViewActions.click())
-        onView(withId(R.id.my_quote_fab)).perform(ViewActions.click())
+        onView(withId(R.id.addFab)).perform(ViewActions.click())
+        onView(withId(R.id.myQuoteFab)).perform(ViewActions.click())
 
         Intents.intended(IntentMatchers.hasExtras(
                 BundleMatchers.hasEntry(CoreMatchers.equalTo("quote_type_intent"), CoreMatchers.equalTo("My quote"))

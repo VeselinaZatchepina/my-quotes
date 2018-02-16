@@ -17,7 +17,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                         val addQuoteView: AddQuoteContract.View) : AddQuoteContract.Presenter {
 
     private var compositeDisposable: CompositeDisposable
-    private var bookCategoriesForSpinner = ArrayList<String>()
+    private var quoteCategories = ArrayList<String>()
 
     init {
         addQuoteView.setPresenter(this)
@@ -27,67 +27,69 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
     override fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>) {
         compositeDisposable.add(Observable.fromCallable {
             quoteDataSource.saveQuoteData(mapOfQuoteProperties, authors)
-        }.subscribeOn(Schedulers.io())
+        }
+                .subscribeOn(Schedulers.io())
                 .subscribe({
                     Log.d("SAVE_QUOTE_CAT", "OK $it")
                 }, {
-                    Log.d("SAVE_QUOTE_CAT", "ERROR")
+                    Log.d("SAVE_QUOTE_CAT", "ERROR ${it.message}")
                 }, {
                     Log.d("SAVE_QUOTE_CAT", "COMPLETE")
                 }))
 
     }
 
-    override fun getQuoteCategoriesList(quoteType: String) {
-        compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType).subscribeOn(Schedulers.io())
+    override fun getQuoteCategories(quoteType: String) {
+        compositeDisposable.add(quoteDataSource.getQuoteCategories(quoteType)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<QuoteCategoryModel>>() {
-                    override fun onNext(list: List<QuoteCategoryModel>?) {
-                        if (list != null) {
-                            if (bookCategoriesForSpinner.isEmpty()) {
-                                bookCategoriesForSpinner.clear()
-                                addQuoteView.defineCategorySpinner(defineBookCategoriesListForView(list))
+                    override fun onNext(quoteCategoryModels: List<QuoteCategoryModel>?) {
+                        if (quoteCategoryModels != null) {
+                            if (quoteCategories.isEmpty()) {
+                                quoteCategories.clear()
+                                addQuoteView.defineCategorySpinner(defineBookCategoriesListForView(quoteCategoryModels))
                             } else {
-                                bookCategoriesForSpinner.clear()
-                                addQuoteView.updateCategorySpinner(defineBookCategoriesListForView(list))
+                                quoteCategories.clear()
+                                addQuoteView.updateCategorySpinner(defineBookCategoriesListForView(quoteCategoryModels))
                             }
                         } else {
-                            Log.v("GET BOOK CATEGORIES", "NULL")
+                            Log.v("GET_BOOK_CATEGORIES", "NULL")
                         }
                     }
 
                     override fun onComplete() {
-                        Log.v("GET BOOK CATEGORIES", "COMPLETE")
+                        Log.v("GET_BOOK_CATEGORIES", "COMPLETE")
                     }
 
                     override fun onError(t: Throwable?) {
-                        Log.v("GET BOOK CATEGORIES", "OOPS")
+                        Log.v("GET_BOOK_CATEGORIES", "ERROR ${t?.message}")
                     }
                 }))
     }
 
-    private fun defineBookCategoriesListForView(list: List<QuoteCategoryModel>): List<String> {
-        list.mapTo(bookCategoriesForSpinner) {
-            it.quoteCategory?.categoryName?.toUpperCase() ?: ""
+    private fun defineBookCategoriesListForView(quoteCategoryModels: List<QuoteCategoryModel>): List<String> {
+        quoteCategoryModels.mapTo(quoteCategories) {
+            it.quoteCategory!!.categoryName.toUpperCase()
         }
-        bookCategoriesForSpinner.add("+ add new category")
-        bookCategoriesForSpinner.add("Select quote category")
-        return bookCategoriesForSpinner
+        quoteCategories.add("+ add new category")
+        quoteCategories.add("Select quote category")
+        return quoteCategories
     }
 
     override fun addQuoteCategory(category: String) {
-        bookCategoriesForSpinner.add(0, category)
-        addQuoteView.updateCategorySpinner(bookCategoriesForSpinner)
+        quoteCategories.add(0, category)
+        addQuoteView.updateCategorySpinner(quoteCategories)
     }
 
     override fun getBookAuthors(bookAuthorId: List<Long>) {
-        compositeDisposable.add(quoteDataSource.getBookAuthorsByIds(bookAuthorId).subscribeOn(Schedulers.io())
+        compositeDisposable.add(quoteDataSource.getBookAuthorsByIds(bookAuthorId)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<BookAuthor>>() {
-                    override fun onNext(list: List<BookAuthor>?) {
-                        if (list != null) {
-                            addQuoteView.showBookAuthors(list)
-                            Log.v("LIST_SIZE", list.size.toString() + "OK")
+                    override fun onNext(bookAuthors: List<BookAuthor>?) {
+                        if (bookAuthors != null) {
+                            addQuoteView.showBookAuthors(bookAuthors)
                         }
                     }
 
@@ -102,13 +104,14 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                 }))
     }
 
-    override fun getBookReleaseYear(yearIds: List<Long>) {
-        compositeDisposable.add(quoteDataSource.getBookReleaseYearsByIds(yearIds).subscribeOn(Schedulers.io())
+    override fun getBookReleaseYears(yearIds: List<Long>) {
+        compositeDisposable.add(quoteDataSource.getBookReleaseYearsByIds(yearIds)
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSubscriber<List<BookReleaseYear>>() {
-                    override fun onNext(list: List<BookReleaseYear>?) {
-                        if (list != null) {
-                            addQuoteView.showBookReleaseYears(list)
+                    override fun onNext(years: List<BookReleaseYear>?) {
+                        if (years != null) {
+                            addQuoteView.showBookReleaseYears(years)
                         }
                     }
 
@@ -128,7 +131,8 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
                              authors: List<String>) {
         compositeDisposable.add(Observable.fromCallable {
             quoteDataSource.updateQuote(quoteId, mapOfQuoteProperties, authors)
-        }.subscribeOn(Schedulers.io())
+        }
+                .subscribeOn(Schedulers.io())
                 .subscribe {
 
                 })
@@ -139,7 +143,7 @@ class AddQuotePresenter(val quoteDataSource: QuoteDataSource,
     }
 
     override fun unsubscribe() {
-
+        compositeDisposable.clear()
     }
 
 

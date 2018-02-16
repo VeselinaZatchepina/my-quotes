@@ -20,7 +20,9 @@ import java.io.Serializable
 class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     private var currentQuotePresenter: CurrentQuoteContract.Presenter? = null
-    var allQuoteData: AllQuoteData? = null
+    private val allQuoteData: AllQuoteData by lazy {
+        arguments?.getSerializable(ALL_QUOTE_DATA_BUNDLE) as AllQuoteData
+    }
     lateinit var rootView: View
     private var shareIntent: Intent? = null
     var bookAuthors: List<BookAuthor>? = null
@@ -41,7 +43,6 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        allQuoteData = arguments?.getSerializable(ALL_QUOTE_DATA_BUNDLE) as AllQuoteData
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -54,23 +55,23 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
     }
 
     private fun hideFields() {
-        if (allQuoteData!!.types!!.first().type == getString(QuoteType.MY_QUOTE.resource)) {
-            rootView.linear_layout_book_name_title.visibility = View.GONE
-            rootView.linear_layout_page_number_title.visibility = View.GONE
-            rootView.linear_layout_publisher_name_title.visibility = View.GONE
-            rootView.linear_layout_quote_author_title.visibility = View.GONE
-            rootView.linear_layout_year_number_title.visibility = View.GONE
+        if (allQuoteData.types!!.first().type == getString(QuoteType.MY_QUOTE.resource)) {
+            rootView.linearLayoutBookNameTitle.visibility = View.GONE
+            rootView.linearLayoutPageNumberTitle.visibility = View.GONE
+            rootView.linearLayoutPublisherNameTitle.visibility = View.GONE
+            rootView.linearLayoutQuoteAuthorTitle.visibility = View.GONE
+            rootView.linearLayoutYearNumberTitle.visibility = View.GONE
         }
     }
 
     private fun getBookAuthors() {
-        currentQuotePresenter?.getBookAuthors(allQuoteData?.authorsId?.map {
+        currentQuotePresenter?.getBookAuthors(allQuoteData.authorsId?.map {
             it.authorIdJoin
         } ?: emptyList())
     }
 
     private fun getBookReleaseYear() {
-        currentQuotePresenter?.getBookReleaseYear(allQuoteData?.yearsId?.map {
+        currentQuotePresenter?.getBookReleaseYear(allQuoteData.yearsId?.map {
             it.yearIdJoin
         } ?: emptyList())
     }
@@ -87,7 +88,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
         shareIntent = Intent(Intent.ACTION_SEND).apply {
             this.type = "text/plain"
             this.putExtra(android.content.Intent.EXTRA_SUBJECT, "It is great quote! Listen!")
-            this.putExtra(android.content.Intent.EXTRA_TEXT, allQuoteData?.quote?.quoteText)
+            this.putExtra(android.content.Intent.EXTRA_TEXT, allQuoteData.quote?.quoteText)
         }
         shareActionProvider?.setShareIntent(shareIntent)
         println(shareIntent)
@@ -112,7 +113,7 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
             this.setView(dialogView)
             this.setCancelable(false)
                     .setPositiveButton(getString(R.string.dialog_add_category_ok)) { dialogInterface: DialogInterface?, id: Int ->
-                        currentQuotePresenter?.deleteQuote(allQuoteData?.quote!!.quoteId)
+                        currentQuotePresenter?.deleteQuote(allQuoteData.quote!!.quoteId)
                     }
                     .setNegativeButton(getString(R.string.dialog_add_category_cancel)) { dialogInterface: DialogInterface?, id: Int ->
                         dialogInterface?.cancel()
@@ -126,23 +127,24 @@ class CurrentQuoteFragment : Fragment(), CurrentQuoteContract.View {
 
     override fun showBookAuthors(authors: List<BookAuthor>) {
         bookAuthors = authors
-        rootView.current_author_name.text = getAllAuthorString(authors)
+        rootView.currentAuthorName.text = getAllAuthorString(authors)
     }
 
     override fun showBookReleaseYears(years: List<BookReleaseYear>) {
         yearsValues = years
-        rootView.current_year_number.text = isEmptyString(getAllYearString(years))
+        rootView.currentYearNumber.text = isEmptyString(getAllYearString(years))
     }
 
     private fun showQuote(allQuoteData: AllQuoteData?) {
-        rootView.current_quote_text.text = getString(R.string.quote_text_format, allQuoteData?.quote?.quoteText)
+        rootView.currentQuoteText.text = getString(R.string.quote_text_format, allQuoteData?.quote?.quoteText)
         rootView.currentCategory.text = allQuoteData?.category?.first()?.categoryName?.toUpperCase()
-        rootView.current_book_name.text = isDataEmpty(allQuoteData?.book!!.bookName, allQuoteData.book!!.bookId, "NoBookName")
-        rootView.current_publisher_name.text = isDataEmpty(allQuoteData.publishingOffice!!.first().officeName,
+        rootView.currentBookName.text = isDataEmpty(allQuoteData?.book!!.bookName, allQuoteData.book!!.bookId, "NoBookName")
+        rootView.currentPublisherName.text = isDataEmpty(allQuoteData.publishingOffice!!.first().officeName,
                 allQuoteData.publishingOffice!!.first().officeId,
                 "NoPublishingOfficeName")
-        rootView.current_page_number.text = isEmptyString(allQuoteData.quote?.pageNumber?.toString() ?: "")
-        rootView.quote_creation_date.text = isEmptyString(allQuoteData.quote?.creationDate ?: "")
+        rootView.currentPageNumber.text = isEmptyString(allQuoteData.quote?.pageNumber?.toString()
+                ?: "")
+        rootView.quoteCreationDate.text = isEmptyString(allQuoteData.quote?.creationDate ?: "")
         rootView.comments.text = isEmptyString(allQuoteData.quote?.comments ?: "")
     }
 

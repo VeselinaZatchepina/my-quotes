@@ -21,7 +21,7 @@
         android:padding="@dimen/all_quotes_linear_padding">
 
         <TextView
-            android:id="@+id/item_quote_text"
+            android:id="@+id/itemQuoteText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal|center_vertical"

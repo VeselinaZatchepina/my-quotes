@@ -51,7 +51,7 @@ class CoincideQuotesFragment : Fragment(), CoincideQuotesContract.View {
     override fun showQuotes(quotes: List<Quote>) {
         quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item,
                 R.layout.fragment_empty_coincide_recycler_view, {
-            rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
+            rootView.itemQuoteText.text = getString(R.string.quote_text_format, it.quoteText)
         }, {
 
         }, {

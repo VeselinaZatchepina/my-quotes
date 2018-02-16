@@ -5,7 +5,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
@@ -13,8 +12,6 @@ import com.github.veselinazatchepina.myquotes.R
 import com.github.veselinazatchepina.myquotes.addquote.AddQuoteActivity
 import com.github.veselinazatchepina.myquotes.enums.QuoteType
 import com.github.veselinazatchepina.myquotes.setFirstVowelColor
-import com.github.veselinazatchepina.myquotes.utils.BaseSchedulerProvider
-import com.github.veselinazatchepina.myquotes.utils.SchedulerProvider
 import icepick.Icepick
 import kotlinx.android.synthetic.main.activity_single_fragment.*
 import kotlinx.android.synthetic.main.fab_popup_menu.*
@@ -22,16 +19,12 @@ import kotlinx.android.synthetic.main.fab_popup_menu.*
 
 abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
 
-    lateinit var fabOpenAnimation: Animation
-    lateinit var fabCloseAnimation: Animation
-    var isFabOpen = false
+    private lateinit var fabOpenAnimation: Animation
+    private lateinit var fabCloseAnimation: Animation
+    private var isFabOpen = false
 
     companion object {
         const val FRAGMENT_TAG = "fragment_tag"
-
-        fun provideSchedulerProvider(): BaseSchedulerProvider {
-            return SchedulerProvider.getInstance()
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,12 +44,9 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         createPresenter()
     }
 
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        Icepick.saveInstanceState(this, outState)
-    }
-
     open fun getLayoutResId(): Int = R.layout.activity_current_single_fragment
+
+    open fun defineInputData() {}
 
     private fun defineToolbar() {
         setSupportActionBar(toolbar)
@@ -70,17 +60,26 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     }
 
     fun setAppBarNotExpandable() {
-        appbar_layout.setExpanded(false, false)
+        appbarLayout.setExpanded(false, false)
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            appbar_layout.layoutParams.height = this.resources.getDimension(R.dimen.toolbar_height_normal_portrait).toInt()
+            appbarLayout.layoutParams.height = this.resources
+                    .getDimension(R.dimen.toolbar_height_normal_portrait).toInt()
         } else {
-            appbar_layout.layoutParams.height = this.resources.getDimension(R.dimen.toolbar_height_normal_landscape).toInt()
+            appbarLayout.layoutParams.height = this.resources
+                    .getDimension(R.dimen.toolbar_height_normal_landscape).toInt()
         }
-        collapsing_toolbar.isTitleEnabled = false
+        collapsingToolbar.isTitleEnabled = false
     }
 
-    open fun setNewTitleStyle(title: String) {
-        setTitle(title.setFirstVowelColor(this))
+    private fun defineFab() {
+        defineFabAnimation()
+        val fabImageResourceId = setFabImageResId()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            addFab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
+        } else {
+            addFab.setImageDrawable(resources.getDrawable(fabImageResourceId))
+        }
+        defineActionWhenFabIsPressed()
     }
 
     private fun defineFabAnimation() {
@@ -88,21 +87,10 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
         fabCloseAnimation = AnimationUtils.loadAnimation(this, R.anim.close_fab_menu)
     }
 
-    private fun defineFab() {
-        defineFabAnimation()
-        val fabImageResourceId = setFabImageResId()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId, theme))
-        } else {
-            add_icon_fab.setImageDrawable(resources.getDrawable(fabImageResourceId))
-        }
-        defineActionWhenFabIsPressed()
-    }
-
     open fun setFabImageResId(): Int = R.drawable.ic_add_white_24dp
 
     open fun defineActionWhenFabIsPressed() {
-        add_icon_fab.setOnClickListener {
+        addFab.setOnClickListener {
             defineBookFabListener()
             defineMyQuoteFabListener()
             if (!isFabOpen) {
@@ -114,34 +102,44 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
     }
 
     private fun defineBookFabListener() {
-        book_quote_fab.setOnClickListener {
+        bookQuoteFab.setOnClickListener {
             startActivity(AddQuoteActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource)))
             closeFabMenu()
         }
     }
 
     private fun defineMyQuoteFabListener() {
-        my_quote_fab.setOnClickListener {
+        myQuoteFab.setOnClickListener {
             startActivity(AddQuoteActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource)))
             closeFabMenu()
         }
     }
 
     private fun showFabMenu() {
-        add_icon_fab.animate().rotation(45.0F).withLayer().setDuration(300).setInterpolator(OvershootInterpolator(10.0F)).start()
-        book_quote_fab.startAnimation(fabOpenAnimation)
-        my_quote_fab.startAnimation(fabOpenAnimation)
+        addFab.animate().rotation(45.0F)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10.0F))
+                .start()
+        bookQuoteFab.startAnimation(fabOpenAnimation)
+        myQuoteFab.startAnimation(fabOpenAnimation)
         isFabOpen = true
     }
 
     private fun closeFabMenu() {
-        add_icon_fab.animate().rotation(0.0F).withLayer().setDuration(300).setInterpolator(OvershootInterpolator(10.0F)).start()
-        book_quote_fab.startAnimation(fabCloseAnimation)
-        my_quote_fab.startAnimation(fabCloseAnimation)
+        addFab.animate().rotation(0.0F)
+                .withLayer()
+                .setDuration(300)
+                .setInterpolator(OvershootInterpolator(10.0F))
+                .start()
+        bookQuoteFab.startAnimation(fabCloseAnimation)
+        myQuoteFab.startAnimation(fabCloseAnimation)
         isFabOpen = false
     }
 
-    open fun defineInputData() {}
+    open fun setNewTitleStyle(title: String) {
+        setTitle(title.setFirstVowelColor(this))
+    }
 
     private fun defineFragment() {
         var currentFragment = supportFragmentManager.findFragmentById(R.id.container)
@@ -150,11 +148,15 @@ abstract class SingleFragmentAbstractActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                     .add(R.id.container, currentFragment, FRAGMENT_TAG)
                     .commit()
-            Log.v("FRAGMENT", "CREATED")
         }
     }
 
     abstract fun createFragment(): Fragment
 
     abstract fun createPresenter()
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        Icepick.saveInstanceState(this, outState)
+    }
 }

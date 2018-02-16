@@ -26,13 +26,13 @@ interface AddQuoteContract {
 
         fun saveQuote(mapOfQuoteProperties: HashMap<QuoteProperties, String>, authors: List<String>)
 
-        fun getQuoteCategoriesList(quoteType: String)
+        fun getQuoteCategories(quoteType: String)
 
         fun addQuoteCategory(category: String)
 
         fun getBookAuthors(bookAuthorId: List<Long>)
 
-        fun getBookReleaseYear(yearIds: List<Long>)
+        fun getBookReleaseYears(yearIds: List<Long>)
 
         fun updateQuote(quoteId: Long,
                         mapOfQuoteProperties: HashMap<QuoteProperties, String>,

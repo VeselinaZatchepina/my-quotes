@@ -18,9 +18,12 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
 
     private var allQuotesView: AllQuotesFragment? = null
     private var allQuotesPresenter: AllQuotesPresenter? = null
-
-    private lateinit var quoteType: String
-    private lateinit var quoteCategory: String
+    private val quoteType: String by lazy {
+        intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
+    }
+    private val quoteCategory: String by lazy {
+        intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
+    }
 
     companion object {
         private const val QUOTE_CATEGORY_INTENT = "quote_category_intent"
@@ -49,8 +52,6 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
     }
 
     override fun defineInputData() {
-        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
-        quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
         title = if (quoteType == "") {
             getString(R.string.title_all_quotes)
         } else {
@@ -73,14 +74,15 @@ class AllQuotesActivity : NavigationDrawerAbstractActivity() {
                 QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         allQuotesPresenter = AllQuotesPresenter(quoteRepository,
-                allQuotesView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AllQuotesFragment)
+                allQuotesView
+                        ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AllQuotesFragment)
     }
 
     override fun defineActionWhenFabIsPressed() {
         if (quoteType == "") {
             super.defineActionWhenFabIsPressed()
         } else {
-            add_icon_fab.setOnClickListener {
+            addFab.setOnClickListener {
                 startActivity(AddQuoteActivity.newIntent(this, quoteType, quoteCategory))
             }
         }

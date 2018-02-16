@@ -22,8 +22,12 @@ import com.github.veselinazatchepina.myquotes.enums.QuoteType as QuoteTypeEnum
 class AllQuotesFragment : Fragment(), AllQuotesContract.View {
 
     private var allQuotesPresenter: AllQuotesContract.Presenter? = null
-    lateinit var quoteType: String
-    lateinit var quoteCategory: String
+    private val quoteType: String by lazy {
+        arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
+    }
+    private val quoteCategory: String by lazy {
+        arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
+    }
     private lateinit var rootView: View
     private var quotesAdapter: AdapterImpl<Quote>? = null
     private var filterQuoteType: String = ""
@@ -50,8 +54,6 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
-        quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,6 +61,28 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         getQuotes()
         defineChosenQuoteCategoryTitleIfExist()
         return rootView
+    }
+
+    private fun getQuotes() {
+        if (quoteType == "" && quoteCategory == "") {
+            allQuotesPresenter?.getAllQuotes()
+        }
+        if (quoteType != "" && quoteCategory == "") {
+            allQuotesPresenter?.getQuotesByType(quoteType)
+        }
+        if (quoteType != "" && quoteCategory != "") {
+            allQuotesPresenter?.getQuotesByTypeAndCategory(quoteType, quoteCategory)
+        }
+    }
+
+
+    private fun defineChosenQuoteCategoryTitleIfExist() {
+        if (quoteCategory != "") {
+            rootView.currentCategory.text = quoteCategory.toUpperCase()
+            rootView.currentCategory.textColor = resources.getColor(R.color.card_background)
+        } else {
+            rootView.currentCategory.visibility = View.GONE
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -128,18 +152,6 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         })
     }
 
-    private fun getQuotes() {
-        if (quoteType == "" && quoteCategory == "") {
-            allQuotesPresenter?.getAllQuotes()
-        }
-        if (quoteType != "" && quoteCategory == "") {
-            allQuotesPresenter?.getQuotesByType(quoteType)
-        }
-        if (quoteType != "" && quoteCategory != "") {
-            allQuotesPresenter?.getQuotesByTypeAndCategory(quoteType, quoteCategory)
-        }
-    }
-
     private fun getQuotesFromSearchView(query: String) {
         if (quoteType == "" && quoteCategory == "") {
             if (filterQuoteType != "") {
@@ -156,21 +168,12 @@ class AllQuotesFragment : Fragment(), AllQuotesContract.View {
         }
     }
 
-    private fun defineChosenQuoteCategoryTitleIfExist() {
-        if (quoteCategory != "") {
-            rootView.currentCategory.text = quoteCategory.toUpperCase()
-            rootView.currentCategory.textColor = resources.getColor(R.color.card_background)
-        } else {
-            rootView.currentCategory.visibility = View.GONE
-        }
-    }
-
     override fun showQuotes(quotes: List<Quote>) {
         if (quotesAdapter != null) {
             quotesAdapter!!.update(quotes)
         } else {
-            quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, R.layout.fragment_empty_recycler_view,  {
-                rootView.item_quote_text.text = getString(R.string.quote_text_format, it.quoteText)
+            quotesAdapter = AdapterImpl(quotes, R.layout.quote_recycler_view_item, R.layout.fragment_empty_recycler_view, {
+                rootView.itemQuoteText.text = getString(R.string.quote_text_format, it.quoteText)
             }, {
                 if (filterQuoteType == "") {
                     startActivity(CurrentQuoteActivity.newIntent(activity!!.applicationContext,

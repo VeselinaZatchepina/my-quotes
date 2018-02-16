@@ -23,8 +23,12 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
     private var currentQuoteMainPresenter: CurrentQuoteMainContract.Presenter? = null
     var currentQuoteFragment: CurrentQuoteFragment? = null
     lateinit var rootView: View
-    lateinit var quoteType: String
-    lateinit var quoteCategory: String
+    private val quoteType: String by lazy {
+        arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
+    }
+    private val quoteCategory: String by lazy {
+        arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
+    }
     var chosenQuoteData: AllQuoteData? = null
     @JvmField
     @State
@@ -48,8 +52,6 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        quoteType = arguments?.getString(QUOTE_TYPE_BUNDLE) ?: ""
-        quoteCategory = arguments?.getString(QUOTE_CATEGORY_BUNDLE) ?: ""
         selectedQuoteId = arguments?.getLong(QUOTE_ID_BUNDLE, -1)
     }
 
@@ -82,7 +84,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
     }
 
     override fun createViewPager(quotes: List<AllQuoteData>) {
-        rootView.quote_pager.adapter = object : FragmentStatePagerAdapter(this.fragmentManager) {
+        rootView.quotePager.adapter = object : FragmentStatePagerAdapter(this.fragmentManager) {
 
             override fun getItem(position: Int): Fragment {
                 currentQuoteFragment = CurrentQuoteFragment.createInstance(quotes[position])
@@ -99,7 +101,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
     }
 
     private fun setViewPagerOnPageChangeListener(quotes: List<AllQuoteData>) {
-        rootView.quote_pager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+        rootView.quotePager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
 
             }
@@ -120,7 +122,7 @@ class CurrentQuoteMainFragment : Fragment(), CurrentQuoteMainContract.View {
         (0 until quotes.size)
                 .filter { quotes[it].quote!!.quoteId == selectedQuoteId }
                 .forEach {
-                    rootView.quote_pager.currentItem = it
+                    rootView.quotePager.currentItem = it
                 }
     }
 

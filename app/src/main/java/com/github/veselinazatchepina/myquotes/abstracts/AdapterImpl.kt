@@ -6,9 +6,8 @@ import android.view.View
 class AdapterImpl<ITEM>(items: List<ITEM>,
                         layoutResId: Int,
                         emptyLayoutResId: Int,
-                        private val bindHolder: View.(ITEM) -> Unit) : AbstractAdapter<ITEM>(items,
-        layoutResId,
-        emptyLayoutResId) {
+                        private val bindHolder: View.(ITEM) -> Unit
+) : AbstractAdapter<ITEM>(items, layoutResId, emptyLayoutResId) {
 
     private var itemClick: ITEM.() -> Unit = {}
     private var longItemClick: ITEM.() -> Unit = {}
@@ -24,20 +23,20 @@ class AdapterImpl<ITEM>(items: List<ITEM>,
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        if (itemList.isNotEmpty()) {
-            holder.itemView.bindHolder(itemList[position])
+        if (items.isNotEmpty()) {
+            holder.itemView.bindHolder(items[position])
         }
     }
 
     override fun onItemClick(itemView: View, position: Int) {
-        if (itemList.isNotEmpty()) {
-            itemList[position].itemClick()
+        if (items.isNotEmpty()) {
+            items[position].itemClick()
         }
     }
 
     override fun onLongItemClick(itemView: View, position: Int) {
-        if (itemList.isNotEmpty()) {
-            itemList[position].longItemClick()
+        if (items.isNotEmpty()) {
+            items[position].longItemClick()
         }
     }
 }

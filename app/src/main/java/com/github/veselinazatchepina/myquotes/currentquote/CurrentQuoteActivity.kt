@@ -18,9 +18,15 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
 
     private var currentQuoteMainView: CurrentQuoteMainFragment? = null
     private var currentQuoteMainPresenter: CurrentQuoteMainPresenter? = null
-    public var quoteType: String = ""
-    private lateinit var quoteCategory: String
-    private var quoteId: Long = -1
+    private val quoteType: String by lazy {
+        intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
+    }
+    private val quoteCategory: String by lazy {
+        intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
+    }
+    private val quoteId: Long by lazy {
+        intent.getLongExtra(QUOTE_ID_INTENT, -1)
+    }
 
     companion object {
         private const val QUOTE_CATEGORY_INTENT = "quote_category_intent"
@@ -48,9 +54,6 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
     }
 
     override fun defineInputData() {
-        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT) ?: ""
-        quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: ""
-        quoteId = intent.getLongExtra(QUOTE_ID_INTENT, -1)
         title = if (quoteType != "") {
             quoteType
         } else {
@@ -81,7 +84,7 @@ class CurrentQuoteActivity : SingleFragmentAbstractActivity() {
     }
 
     override fun defineActionWhenFabIsPressed() {
-        add_icon_fab.setOnClickListener {
+        addFab.setOnClickListener {
             val currentMainFragment = currentQuoteMainView
                     ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as CurrentQuoteMainFragment
             startActivity(AddQuoteActivity.newIntent(this,

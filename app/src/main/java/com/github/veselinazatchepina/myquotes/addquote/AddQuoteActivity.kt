@@ -18,9 +18,15 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     private var addQuoteView: AddQuoteFragment? = null
     private var addQuotePresenter: AddQuotePresenter? = null
-    var quoteType: String? = null
-    lateinit var quoteCategory: String
-    private var editQuoteData: AllQuoteData? = null
+    private val quoteType: String by lazy {
+        intent.getStringExtra(QUOTE_TYPE_INTENT)
+    }
+    private val quoteCategory: String by lazy {
+        intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: getString(R.string.spinner_hint)
+    }
+    private val editQuoteData: AllQuoteData? by lazy {
+        intent.getSerializableExtra(QUOTE_DATA_INTENT) as? AllQuoteData
+    }
 
     companion object {
         private const val QUOTE_TYPE_INTENT = "quote_type_intent"
@@ -33,7 +39,8 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
             return intent
         }
 
-        fun newIntent(context: Context, quoteType: String,
+        fun newIntent(context: Context,
+                      quoteType: String,
                       allQuoteData: AllQuoteData?): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
             intent.putExtra(QUOTE_DATA_INTENT, allQuoteData)
@@ -41,7 +48,9 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
             return intent
         }
 
-        fun newIntent(context: Context, quoteType: String, quoteCategory: String): Intent {
+        fun newIntent(context: Context,
+                      quoteType: String,
+                      quoteCategory: String): Intent {
             val intent = Intent(context, AddQuoteActivity::class.java)
             intent.putExtra(QUOTE_TYPE_INTENT, quoteType)
             intent.putExtra(QUOTE_CATEGORY_INTENT, quoteCategory)
@@ -50,9 +59,6 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
     }
 
     override fun defineInputData() {
-        quoteType = intent.getStringExtra(QUOTE_TYPE_INTENT)
-        quoteCategory = intent.getStringExtra(QUOTE_CATEGORY_INTENT) ?: getString(R.string.spinner_hint)
-        editQuoteData = intent.getSerializableExtra(QUOTE_DATA_INTENT) as? AllQuoteData
         title = if (editQuoteData != null) {
             editQuoteData!!.types?.first()?.type
         } else {
@@ -62,9 +68,9 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
 
     override fun createFragment(): Fragment {
         if (editQuoteData != null) {
-            addQuoteView = AddQuoteFragment.createInstanceForEdit(editQuoteData!!, quoteType!!)
+            addQuoteView = AddQuoteFragment.createInstanceForEdit(editQuoteData!!, quoteType)
         } else {
-            addQuoteView = AddQuoteFragment.createInstance(quoteType!!, quoteCategory)
+            addQuoteView = AddQuoteFragment.createInstance(quoteType, quoteCategory)
         }
         return addQuoteView!!
     }
@@ -79,15 +85,16 @@ class AddQuoteActivity : SingleFragmentAbstractActivity() {
                 QuoteLocalDataSource.getInstance(AppDatabase.getAppDatabaseInstance(applicationContext)),
                 QuoteRemoteDataSource.getInstance())
         addQuotePresenter = AddQuotePresenter(quoteRepository,
-                addQuoteView ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
+                addQuoteView
+                        ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
     }
 
     override fun setFabImageResId(): Int = R.drawable.ic_check_white_24dp
 
     override fun defineActionWhenFabIsPressed() {
-        add_icon_fab.setOnClickListener {
-            (addQuoteView ?:
-                    supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
+        addFab.setOnClickListener {
+            (addQuoteView
+                    ?: supportFragmentManager.findFragmentByTag(FRAGMENT_TAG) as AddQuoteFragment)
                     .createMapOfQuoteProperties()
         }
     }

@@ -29,7 +29,7 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
                 R.string.drawer_close)
         drawer_layout.setDrawerListener(toggle)
         toggle.syncState()
-        nav_view.setNavigationItemSelectedListener(this)
+        navView.setNavigationItemSelectedListener(this)
     }
 
     override fun defineAppBarLayoutExpandableValue() {
@@ -64,9 +64,12 @@ abstract class NavigationDrawerAbstractActivity : SingleFragmentAbstractActivity
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         var intent: Intent? = null
         when (item.itemId) {
-            R.id.nav_book_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
-            R.id.nav_my_quote -> intent = QuoteCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
-            R.id.nav_all_quotes -> intent = AllQuotesActivity.newIntent(this)
+            R.id.nav_book_quote -> intent =
+                    QuoteCategoriesActivity.newIntent(this, getString(QuoteType.BOOK_QUOTE.resource))
+            R.id.nav_my_quote -> intent =
+                    QuoteCategoriesActivity.newIntent(this, getString(QuoteType.MY_QUOTE.resource))
+            R.id.nav_all_quotes -> intent =
+                    AllQuotesActivity.newIntent(this)
             R.id.nav_get_idea -> intent = GetIdeaActivity.newIntent(this)
         }
         if (intent != null) {
