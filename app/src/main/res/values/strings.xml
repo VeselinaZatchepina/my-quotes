@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">MyQuotes</string>
+
+    <!-- Navigation Drawer -->
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="book_quote_nav">Book\'s quotes</string>
+    <string name="my_quote_nav">My quotes</string>
+    <string name="get_idea">Get idea</string>
+
+    <!-- Quote types enum -->
+    <string name="my_quote_type">My quote</string>
+    <string name="book_quote_type">Book\'s quote</string>
+
+    <!-- fragment_empty_recycler_view layout -->
+    <string name="no_quotes_text">You don\'t have quotes</string>
+    <string name="no_coincide_quotes_text">You don\'t have coincide quotes</string>
+    <string name="please_push_text">Please push</string>
+    <string name="image_button_desc">image button</string>
+    <string name="button_text">button</string>
+
+    <!-- fragment_book_categories_recycler_view_item -->
+    <string name="item_icon_desc">category icon</string>
+
+    <!-- fragment_add_quote -->
+    <!-- add_main_part -->
+    <string name="add_main_quote_text_hint">Quote text</string>
+    <string name="add_main_spinner_title_text">Category</string>
+    <string name="spinner_add_category">+ add new category</string>
+    <string name="spinner_hint">Select quote category</string>
+
+    <!-- add_quote_book_part -->
+    <string name="add_book_name_hint">Book name</string>
+    <string name="hint_author_name">Author\'s first name</string>
+    <string name="hint_author_surname">Author\'s surname</string>
+    <string name="hint_author_second_name">Author\'s middle name</string>
+    <string name="add_author_button_text">Add author</string>
+
+    <!-- add_quote_other -->
+    <string name="add_other_publishing_name_hint">Publishing name</string>
+    <string name="add_other_year_hint">Year of publishing</string>
+    <string name="add_other_page_hint">Page number</string>
+    <string name="add_other_comments_hint">Comments</string>
+
+    <!-- Add category dialog -->
+    <string name="dialog_add_category_title">Enter the category name</string>
+    <string name="dialog_add_category_ok">OK</string>
+    <string name="dialog_add_category_cancel">CANCEL</string>
+
+    <!-- AllQuotesActivity -->
+    <string name="title_all_quotes">All quotes</string>
+    <string name="all_quotes_nav">All quotes</string>
+
+    <!-- AllQuotesFragment -->
+    <string name="quote_text_format">\"%1$s\"</string>
+    <string name="show_book_quotes">Book\'s quotes</string>
+    <string name="show_my_quotes">My quotes</string>
+    <string name="show_all_quotes">All quotes</string>
+
+    <!-- menu_all_quotes -->
+    <string name="menu_search_quote">Search</string>
+    <string name="menu_filter_quote">Filter</string>
+
+    <!-- CurrentQuoteActivity -->
+    <string name="current_quote_title">All quotes</string>
+
+    <!-- CurrentQuoteFragment -->
+    <string name="quote_author_title">Quote author:</string>
+    <string name="book_name_title">Book name:</string>
+    <string name="publisher_name_title">Book publisher:</string>
+    <string name="year_number_title">Year:</string>
+    <string name="page_number_title">Page:</string>
+    <string name="current_category_title">Category:</string>
+    <string name="quote_creation_date_title">Quote creation date:</string>
+    <string name="comments_title">Comments:</string>
+    <string name="default_value"> - </string>
+    <string name="share">Share quote</string>
+    <string name="delete_title">Delete quote</string>
+    <string name="dialog_delete_quote_title">Delete quote?</string>
+
+    <!--QuoteCategoriesFragment -->
+    <string name="dialog_delete_quote_category_title">Delete quote category?</string>
+
+    <!-- GetIdeaFragment -->
+    <string name="type_word">Enter the idea subject</string>
+    <string name="enter_text">Enter text here</string>
+    <string name="other_action">or just push the button</string>
+    <string name="idea_button_text">Generate idea!</string>
+    <string name="idea_title">Get idea</string>
+    <string name="idea_toast">You have no quote with this subject</string>
+
+    <!-- CoincideQuotesFragment -->
+    <string name="coincide_title">Coincide idea</string>
+
+</resources>

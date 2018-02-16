@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/add_quote_scroll_view_margin_top_bottom"
+        android:layout_marginEnd="@dimen/add_quote_scroll_view_margin_start_end"
+        android:layout_marginStart="@dimen/add_quote_scroll_view_margin_start_end"
+        android:layout_marginTop="@dimen/add_quote_scroll_view_margin_top_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/add_quote_linear_margin_bottom"
+            android:orientation="vertical">
+
+            <include layout="@layout/add_quote_main_part"/>
+
+            <include layout="@layout/add_quote_book_part"/>
+
+            <include layout="@layout/add_quote_other"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:card_view="http://schemas.android.com/tools">
+
+    <ScrollView android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginBottom="@dimen/current_quote_scroll_view_margin_top_bottom"
+                android:layout_marginEnd="@dimen/current_quote_scroll_view_margin_start_end"
+                android:layout_marginStart="@dimen/current_quote_scroll_view_margin_start_end"
+                android:layout_marginTop="@dimen/current_quote_scroll_view_margin_top_bottom"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/currentQuoteCardview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/cardview_margin_bottom_current_quote"
+            android:layout_marginEnd="@dimen/cardview_margin_end_current_quote"
+            android:layout_marginStart="@dimen/cardview_margin_start_current_quote"
+            android:layout_marginTop="@dimen/cardview_margin_top_current_quote"
+            card_view:cardBackgroundColor="@android:color/white"
+            card_view:cardCornerRadius="@dimen/corner_radius"
+            card_view:cardElevation="@dimen/card_elevation"
+            card_view:cardUseCompatPadding="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/linear_layout_current_quote_margin"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/currentQuoteText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:theme="@style/TextStyleBlack"
+                    tools:text="quote text"/>
+
+                <View
+                    android:id="@+id/textDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/divider_current_quote"
+                    android:layout_marginTop="@dimen/divider_current_quote_margin_Top"
+                    android:background="@color/card_background"/>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutQuoteAuthorTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/quoteAuthorTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/quote_author_title"/>
+
+                    <TextView
+                        android:id="@+id/currentAuthorName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="Author Name"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutBookNameTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/bookNameTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/book_name_title"/>
+
+                    <TextView
+                        android:id="@+id/currentBookName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="Book name"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutCategoryTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/categoryTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/current_category_title"/>
+
+                    <TextView
+                        android:id="@+id/currentCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="current category"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutPublisherNameTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/publisherNameTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/publisher_name_title"/>
+
+                    <TextView
+                        android:id="@+id/currentPublisherName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="publisher name"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutYearNumberTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/yearNumberTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/year_number_title"/>
+
+                    <TextView
+                        android:id="@+id/currentYearNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="year number"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayoutPageNumberTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/pageNumberTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/page_number_title"/>
+
+                    <TextView
+                        android:id="@+id/currentPageNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="page number"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/quoteCreationDateTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/quote_creation_date_title"/>
+
+                    <TextView
+                        android:id="@+id/quoteCreationDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="date"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/linear_layout_current_quote_margin"
+                    android:layout_marginBottom="@dimen/current_quote_linear_comments_margin_bottom"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/commentsTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/comments_title"/>
+
+                    <TextView
+                        android:id="@+id/comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/default_value"
+                        android:theme="@style/TextStyleBlack"
+                        tools:text="comments"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

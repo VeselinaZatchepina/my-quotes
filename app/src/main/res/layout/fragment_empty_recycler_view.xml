@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/noQuotesText"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/no_quotes_marhin_end"
+        android:layout_marginStart="@dimen/no_quotes_margin_start"
+        android:layout_marginTop="@dimen/no_quotes_margin_top"
+        android:text="@string/no_quotes_text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/pleaseText"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/please_text_margin_end"
+        android:layout_marginStart="@dimen/please_text_margin_start"
+        android:layout_marginTop="@dimen/please_text_margin_top"
+        android:text="@string/please_push_text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/noQuotesText"/>
+
+    <ImageView
+        android:id="@+id/imageButton"
+        android:layout_width="@dimen/image_button_width"
+        android:layout_height="@dimen/image_button_height"
+        android:layout_marginEnd="@dimen/image_button_margin_end"
+        android:layout_marginStart="@dimen/image_button_margin_start"
+        android:layout_marginTop="@dimen/image_button_margin_top"
+        android:contentDescription="@string/image_button_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pleaseText"
+        app:srcCompat="@drawable/ic_add_circle_red_24dp"/>
+
+    <TextView
+        android:id="@+id/buttonText"
+        style="@style/TextStyleWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/button_text_margin_end"
+        android:layout_marginStart="@dimen/button_text_margin_start"
+        android:layout_marginTop="@dimen/button_text_margin_top"
+        android:text="@string/button_text"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton"/>
+</android.support.constraint.ConstraintLayout>

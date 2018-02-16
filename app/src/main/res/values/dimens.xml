@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="nav_header_height">160dp</dimen>
+
+    <!-- Toolbar size -->
+    <dimen name="toolbar_height">223dp</dimen>
+    <dimen name="toolbar_height_normal_portrait">80dp</dimen>
+    <dimen name="toolbar_height_normal_landscape">72dp</dimen>
+    <dimen name="toolbar_text_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_bottom">24dp</dimen>
+    <dimen name="expanded_title_margin_start">69dp</dimen>
+
+    <dimen name="app_bar_divider">1dp</dimen>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="horizontal_margin">16dp</dimen>
+    <dimen name="vertical_margin">16dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <!-- AddQuoteFragment -->
+    <dimen name="add_quote_scroll_view_margin_start_end">16dp</dimen>
+    <dimen name="add_quote_scroll_view_margin_top_bottom">16dp</dimen>
+    <dimen name="add_quote_linear_margin_bottom">120dp</dimen>
+    <!-- add_quote_main_part -->
+    <dimen name="add_main_linear_margin">16dp</dimen>
+    <dimen name="add_main_quote_text_margin">10dp</dimen>
+    <dimen name="add_main_spinner_title_margin">10dp</dimen>
+    <dimen name="add_main_spinner_divider_height">1dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_bottom">40dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_end">10dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_start">10dp</dimen>
+    <dimen name="add_main_spinner_divider_margin_top">8dp</dimen>
+    <dimen name="add_main_card_margin_bottom">16dp</dimen>
+
+    <!-- add_quote_book_part -->
+    <dimen name="add_book_linear_margin">16dp</dimen>
+    <dimen name="add_book_name_margin">10dp</dimen>
+    <dimen name="add_author_name_margin">10dp</dimen>
+    <dimen name="add_author_surname_margin">10dp</dimen>
+    <dimen name="add_author_patronymic_margin">10dp</dimen>
+    <dimen name="add_button_margin_end">80dp</dimen>
+    <dimen name="add_button_margin_start">80dp</dimen>
+    <dimen name="add_book_card_margin_bottom">16dp</dimen>
+    <dimen name="add_author_fields_margin">10dp</dimen>
+
+    <!-- add_quote_other -->
+    <dimen name="add_other_linear_margin">16dp</dimen>
+    <dimen name="add_other_publish_margin">10dp</dimen>
+    <dimen name="add_other_year_margin">10dp</dimen>
+    <dimen name="add_other_page_margin">10dp</dimen>
+    <dimen name="add_other_comments_margin">10dp</dimen>
+    <dimen name="add_other_card_margin_bottom">250dp</dimen>
+    <dimen name="add_other_comments_margin_bottom">100dp</dimen>
+
+    <!-- Add category dialog -->
+    <dimen name="add_category_dialog_title_margin">24dp</dimen>
+
+    <!-- fragment_recycler_view layout -->
+    <dimen name="recycler_view_margin_bottom">8dp</dimen>
+    <dimen name="recycler_view_margin_end">8dp</dimen>
+    <dimen name="recycler_view_margin_start">8dp</dimen>
+    <dimen name="recycler_view_margin_top">16dp</dimen>
+    <dimen name="current_category_margin_start">16dp</dimen>
+    <dimen name="current_category_margin_top">16dp</dimen>
+
+    <!-- fragment_empty_recycler_view layout -->
+    <dimen name="no_quotes_marhin_end">8dp</dimen>
+    <dimen name="no_quotes_margin_start">8dp</dimen>
+    <dimen name="no_quotes_margin_top">100dp</dimen>
+    <dimen name="please_text_margin_end">8dp</dimen>
+    <dimen name="please_text_margin_start">8dp</dimen>
+    <dimen name="please_text_margin_top">8dp</dimen>
+    <dimen name="image_button_width">50dp</dimen>
+    <dimen name="image_button_height">50dp</dimen>
+    <dimen name="image_button_margin_end">8dp</dimen>
+    <dimen name="image_button_margin_start">8dp</dimen>
+    <dimen name="image_button_margin_top">8dp</dimen>
+    <dimen name="button_text_margin_end">8dp</dimen>
+    <dimen name="button_text_margin_start">8dp</dimen>
+    <dimen name="button_text_margin_top">8dp</dimen>
+
+    <!-- quote_categories_recycler_view_item -->
+    <dimen name="item_card_view_height">84dp</dimen>
+    <dimen name="item_card_view_margin_end">8dp</dimen>
+    <dimen name="item_card_view_margin_start">8dp</dimen>
+    <dimen name="item_icon_margin_start">8dp</dimen>
+    <dimen name="item_quote_count_margin_end">16dp</dimen>
+    <dimen name="quote_categories_category_name_margin_start">12dp</dimen>
+    <dimen name="quote_categories_card_margin_bottom">16dp</dimen>
+
+    <!-- popup fab -->
+    <dimen name="my_quote_fab_margin_bottom">58dp</dimen>
+    <dimen name="my_quote_fab_margin_end">84dp</dimen>
+    <dimen name="book_quote_fab_margin_bottom">90dp</dimen>
+    <dimen name="book_quote_fab_margin_end">16dp</dimen>
+    <dimen name="add_fab_margin">16dp</dimen>
+    <dimen name="all_quotes_linear_padding">16dp</dimen>
+
+    <!-- CurrentQuoteFragment -->
+    <dimen name="cardview_margin_top_current_quote">16dp</dimen>
+    <dimen name="cardview_margin_bottom_current_quote">16dp</dimen>
+    <dimen name="cardview_margin_start_current_quote">8dp</dimen>
+    <dimen name="cardview_margin_end_current_quote">8dp</dimen>
+    <dimen name="corner_radius">2dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="divider_current_quote">1dp</dimen>
+    <dimen name="divider_current_quote_margin_Top">16dp</dimen>
+    <dimen name="linear_layout_current_quote_margin">16dp</dimen>
+    <dimen name="current_quote_scroll_view_margin_start_end">8dp</dimen>
+    <dimen name="current_quote_scroll_view_margin_top_bottom">8dp</dimen>
+    <dimen name="current_quote_linear_margin_bottom">120dp</dimen>
+    <dimen name="current_quote_linear_comments_margin_bottom">120dp</dimen>
+
+
+    <!-- GetIdeaFragment -->
+    <dimen name="cardview_margin_top_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_bottom_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_start_get_idea">8dp</dimen>
+    <dimen name="cardview_margin_end_get_idea">8dp</dimen>
+    <dimen name="linear_layout_margin">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_top">16dp</dimen>
+    <dimen name="text_view_subtitle_margin_bottom">16dp</dimen>
+    <dimen name="button_height">250dp</dimen>
+    <dimen name="button_width">70dp</dimen>
+
+</resources>
