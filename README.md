@@ -14,6 +14,6 @@
 
 <p> Также можно просмотреть список всех цитат.</p>
 
-<img src="https://github.com/VeselinaZatchepina/my-quotes/blob/kotlin/screenshots/all_quotes.png" width="250px" hspace="15"/><img src="https://github.com/VeselinaZatchepina/my-quote/blob/master/screenshots/tablet_add_quote.png" width="250px" hspace="15"  />
+<img src="https://github.com/VeselinaZatchepina/my-quotes/blob/kotlin/screenshots/all_quotes.png" width="250px" hspace="15"/>
 
 <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/icon.png" width="100px" hspace="15"/>
