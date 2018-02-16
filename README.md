@@ -17,3 +17,15 @@
 <img src="https://github.com/VeselinaZatchepina/my-quotes/blob/kotlin/screenshots/all_quotes.png" width="250px" hspace="15"/>
 
 <img src="https://github.com/VeselinaZatchepina/your-quote/blob/master/screenshots/icon.png" width="100px" hspace="15"/>
+
+<h1></h1>
+Используемые технологии, библиотеки:
+<p></p>
+
+  1. Используемый архитектурный паттерн - MVP; 
+  2. RxJava2;
+  3. Room;
+  4. IcePick;
+  5. Anko;
+  6. Для тестирования использовались: JUnit4, Robolectric, Espresso, Mockito;
+  <h1></h1>
